@@ -1,0 +1,12 @@
+
+[{shop_url}] 
+
+Hi {firstname} {lastname},
+
+Thank you for request a seller account at {shop_name}. 
+
+Your request will be processed by our people and yo will recieve answer soon.
+After whole process you will see new options on your account page.
+
+{shop_name} [{shop_url}]
+

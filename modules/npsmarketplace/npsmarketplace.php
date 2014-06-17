@@ -52,7 +52,7 @@ class NpsMarketplace extends Module
         $id_customer = $this->context->customer->id;
         $query = new DbQuery();
         $query
-          ->select('`account_state`')
+          ->select('`state`')
           ->from('seller')
           ->where('`id_customer` = '.$id_customer)
           ;
@@ -251,8 +251,8 @@ class NpsMarketplace extends Module
                 `company_description` text,
                 `phone` int(14) NOT NULL,
                 `email` varchar(128) NOT NULL,
-                `name`` varchar(128) NOT NULL,
-                `commision` int(10)
+                `name` varchar(128) NOT NULL,
+                `commision` int(10),
                 PRIMARY KEY (`id_seller`),
                 KEY `id_customer` (`id_customer`)
             ) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8';

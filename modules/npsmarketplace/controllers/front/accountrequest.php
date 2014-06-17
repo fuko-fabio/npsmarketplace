@@ -1,6 +1,12 @@
 <?php
 class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontController {
 
+    public function setMedia()
+    {
+        parent::setMedia();
+        $this->addJS(_PS_JS_DIR_.'validate.js');
+    }
+
     public function postProcess()
     {
         if (Tools::isSubmit('company_name')
@@ -10,7 +16,7 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
         {
             $companyName = trim(Tools::getValue('company_name'));
             $sellerName = trim(Tools::getValue('seller_name'));
-            $sellerPhone = trim(Tools::getValue('seller_phone'));
+            $sellerPhone =  str_replace(' ', '', trim(Tools::getValue('seller_phone')));
             $sellerEmail = trim(Tools::getValue('seller_email'));
             $companyDescription = trim(Tools::getValue('company_description'));
             $companyLogo = trim(Tools::getValue('company_logo'));
@@ -21,11 +27,32 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
                 $this->errors[] = Tools::displayError('Invalid company name');
             else if (!Validate::isName($sellerName))
                 $this->errors[] = Tools::displayError('Invalid seller name');
-            else if (!Validate::isPhone($sellerPhone))
+            else if (!Validate::isPhoneNumber($sellerPhone))
                 $this->errors[] = Tools::displayError('Invalid phone number');
             {
                 $customer = $this->context->customer;
-                $sql = 'INSERT INTO '._DB_PREFIX_.'seller(id_customer, account_state, account_request_date) VALUES ('.$customer->id.', 1, NOW())';
+
+                $sql = 'INSERT INTO '._DB_PREFIX_.'seller(
+                            id_customer,
+                            state,
+                            request_date,
+                            company_name,
+                            company_description,
+                            company_logo,
+                            name,
+                            phone,
+                            email)
+                        VALUES (
+                            '.$customer->id.',
+                            1,
+                            NOW(),
+                            "'.$companyName.'",
+                            "'.$companyDescription.'",
+                            "'.$companyLogo.'",
+                            "'.$sellerName.'",
+                            '.$sellerPhone.',
+                            "'.$sellerEmail.'")';
+
                 if (!Db::getInstance()->execute($sql))
                     d("Nie udalo sie aktualizować bazy");
                 $mail_params = array(
@@ -61,8 +88,8 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
             $date = null;
             if ($result = Db::getInstance() -> executeS($query))
             {
-                $state = $result[0]['account_state'];
-                $date = $result[0]['account_request_date'];
+                $state = $result[0]['state'];
+                $date = $result[0]['request_date'];
             }
         }
         $this -> context -> smarty -> assign(
