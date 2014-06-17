@@ -1,0 +1,8 @@
+CREATE TABLE `ps_seller` (
+  `id_seller` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id_customer` int(10) unsigned NOT NULL,
+  `account_state` tinyint(1) unsigned NOT NULL default '0',
+  `account_request_date` datetime,
+  PRIMARY KEY (`id_seller`),
+  KEY `id_customer` (`id_customer`)
+) CHARSET=utf8
