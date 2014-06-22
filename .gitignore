@@ -1,4 +1,4 @@
-Ignore all
+# Ignore all
 *
 
 # Exclude
@@ -8,5 +8,6 @@ Ignore all
 !mails/pl/seller_account_request.txt
 
 !modules/npsmarketplace/*
+!modules/npsmarketplace/js/*
 
 !themes/nps/*
