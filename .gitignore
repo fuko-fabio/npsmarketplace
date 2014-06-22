@@ -1,29 +1,12 @@
-# Directories content
-cache/class_index.php
-cache/smarty/cache/*
-!cache/smarty/cache/index.php
-cache/smarty/compile/*
-!cache/smarty/compile/index.php
-cache/tcpdf/*
-!cache/tcpdf/index.php
+Ignore all
+*
 
-config/xml/*.xml
-config/settings.inc.php
+# Exclude
+!mails/en/seller_account_request.html
+!mails/en/seller_account_request.txt
+!mails/pl/seller_account_request.html
+!mails/pl/seller_account_request.txt
 
-log/*.log
+!modules/npsmarketplace/*
 
-img/*
-!img/index.php
-!img/*/index.php
-
-tools/smarty*/cache/*.php
-!tools/smarty*/cache/index.php
-tools/smarty*/compile/*.php
-!tools/smarty*/compile/index.php
-
-themes/default/cache/*.js
-themes/default/cache/*.css
-
-# Ignore files on root directory
-robots.txt
-sitemap.xml
+!themes/nps/*
