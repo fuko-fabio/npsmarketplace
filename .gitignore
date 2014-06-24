@@ -1,13 +1,16 @@
 # Ignore all
-*
+/*
 
 # Exclude
-!mails/en/seller_account_request.html
-!mails/en/seller_account_request.txt
-!mails/pl/seller_account_request.html
-!mails/pl/seller_account_request.txt
+!/mails/en/seller_account_request.html
+!/mails/en/seller_account_request.txt
+!/mails/pl/seller_account_request.html
+!/mails/pl/seller_account_request.txt
 
-!modules/npsmarketplace/*
-!modules/npsmarketplace/js/*
+!/modules
+/modules/*
+!/modules/npsmarketplace
 
-!themes/nps/*
+!/themes
+/themes/*
+!/themes/nps

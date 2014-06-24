@@ -5,8 +5,15 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
     {
         parent::setMedia();
         $this -> addJS(_PS_JS_DIR_.'validate.js');
-        $this -> addJS (_PS_MODULE_DIR_.'npsmarketplace/js/filedrop-min.js');
         $this -> addJS (_PS_MODULE_DIR_.'npsmarketplace/js/product.js');
+        $this -> addJS (_PS_MODULE_DIR_.'npsmarketplace/js/bootstrap.min.js');
+        $this -> addJS (_PS_MODULE_DIR_.'npsmarketplace/js/bootstrap-datetimepicker.min.js');
+        $this -> addJS (_PS_MODULE_DIR_.'npsmarketplace/js/fileinput.min.js');
+
+        $this -> addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/bootstrap.css');
+        $this -> addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/bootstrap-datetimepicker.min.css');
+        $this -> addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/fileinput.css');
+        
     }
 
     public function postProcess()
