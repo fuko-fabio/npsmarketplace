@@ -14,3 +14,7 @@
 !/themes
 /themes/*
 !/themes/nps
+
+!/js
+/js/*
+!/js/validate.js

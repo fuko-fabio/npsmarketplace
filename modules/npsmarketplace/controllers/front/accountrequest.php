@@ -104,7 +104,9 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
         $this -> context -> smarty -> assign(
             array(
                 'account_state' => $state,
-                'account_request_date' => $date
+                'account_request_date' => $date,
+                'user_agreement_url' => '#', #TODO Set real url's
+                'processing_data_url' => '#'
             )
         );
 

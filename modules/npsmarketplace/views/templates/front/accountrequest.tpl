@@ -14,9 +14,9 @@
     <p class="info-title">{l s='Your request has been sent to us on %s. Please wait for contact with our marketing team.' sprintf=$account_request_date mod='npsmarketplace'}</p>
     {/if}
     {if $account_state == 0}
-    <form role="form" action="{$request_uri|escape:'html':'UTF-8'}" method="post" id="formaccountrequest">
-        <h3 class="page-heading bottom-indent">{l s='Seller profile' mod='npsmarketplace'}</h3>
-        <fieldset>
+    <form role="form" action="{$request_uri}" method="post" id="formaccountrequest">
+        <fieldset id="seller_profile">
+            <h3 class="page-heading bottom-indent">{l s='Seller profile' mod='npsmarketplace'}</h3>
             <div class="form-group">
                 <label for="company_logo">{l s='Company Logo' mod='npsmarketplace'}</label></br>
                 <input id="company_logo" type="file">
@@ -43,9 +43,25 @@
                     <input class="is_required validate form-control" data-validate="isEmail" type="text" id="seller_email" name="seller_email" required=""/>
                 </div>
              </div>
+             <div class="row">
+                <div class="form-group col-md-6">
+                    <label class="required" for="seller_nip">{l s='NIP' mod='npsmarketplace'}</label>
+                    <input class="is_required validate form-control" data-validate="isNumber" type="number" id="seller_nip" name="seller_nip" required=""/>
+                </div>
+                <div class="form-group col-md-6">
+                    <label class="required" for="seller_regon">{l s='Regon' mod='npsmarketplace'}</label>
+                    <input class="is_required validate form-control" data-validate="isNumber" type="number" id="seller_regon" name="seller_regon" required=""/>
+                </div>
+             </div>
         </fieldset>
-        <h3 class="page-heading bottom-indent">{l s='First offer' mod='npsmarketplace'}</h3>
-        <fieldset>
+        <div class="page-heading"></div>
+        <p class="info-title">{l s='You can add now you first offer to our system. This offer will be available ony for our administrators an it can help you to get your account active faster.' mod='npsmarketplace'}</p>
+        <p class="checkbox">
+            <input type="checkbox" name="add_product" id="add_product"/>
+            <label for="add_product">{l s='I want add my first offer' mod='npsmarketplace'}</label>
+        </p>
+        <fieldset id="first_offer">
+            <h3 class="page-heading bottom-indent">{l s='First offer' mod='npsmarketplace'}</h3>
             <div class="form-group">
                 <label>{l s='Product images' mod='npsmarketplace'}</label>
                 <input id="product_images" type="file" multiple="true">
@@ -56,11 +72,11 @@
             </div>
             <div class="form-group">
                 <label class="required" for="product_short_description">{l s='Short Description' mod='npsmarketplace'}</label>
-                <textarea class="validate form-control" data-validate="isMessage" id="product_short_description" name="product_short_description" rows="2"></textarea>
+                <textarea class="is_required validate form-control" data-validate="isMessage" id="product_short_description" name="product_short_description" rows="2"></textarea>
             </div>
             <div class="form-group">
                 <label class="required" for="product_description">{l s='Description' mod='npsmarketplace'}</label>
-                <textarea class="validate form-control" data-validate="isMessage" id="product_description" name="product_description" rows="10"></textarea>
+                <textarea class="is_required validate form-control" data-validate="isMessage" id="product_description" name="product_description" rows="10"></textarea>
             </div>
             <div class="row">
                 <div class="form-group col-md-6">
@@ -77,7 +93,7 @@
                     <label class="required" for="product_date">{l s='Date' mod='npsmarketplace'}</label>
                     </br>
                     <div id="datePicker" class="input-append">
-                        <input class="is_required form-control" id="product_date" data-format="yyyy-MM-dd" type="text" readonly=""></input>
+                        <input class="is_required form-control" id="product_date" data-format="yyyy-MM-dd" type="text" readonly="" required=""/></input>
                         <span class="add-on">
                             <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
                         </span>
@@ -87,7 +103,7 @@
                     <label class="required" for="product_time">{l s='Time' mod='npsmarketplace'}</label>
                     </br>
                     <div id="timePicker" class="input-append">
-                        <input class="is_required form-control" id="product_time" data-format="hh:mm" type="text" readonly=""></input>
+                        <input class="is_required form-control" id="product_time" data-format="hh:mm" type="text" readonly="" required=""/></input>
                         <span class="add-on">
                             <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
                         </span>
@@ -108,10 +124,17 @@
                 </ul>
             </div>
         </fieldset>
-        <p class="required"><sup>*</sup>{l s='Required field' mod='npsmarketplace'}</p>
-    
+        </br>
+        <label class="required">{l s='Required field' mod='npsmarketplace'}</label>
+        </br>
+        <strong>{l s='By clicking "Submit" I agree that:' mod='npsmarketplace'}</strong>
+        <ul>
+            <li>{l s='I accept the' mod='npsmarketplace'} <a href="{$user_agreement_url}">{l s='User Agreement.'}</a></li>
+            <li>{l s='I give consent to the' mod='npsmarketplace'} <a href="{$processing_data_url}">{l s='processing of my data.'} </a></li>
+        </ul>
+        </br>
         <p class="submit">
-            <button type="submit" class="btn btn-default button button-medium"><span>{l s='Send request' mod='npsmarketplace'}<i class="icon-share right"></i></span></button>
+            <button type="submit" class="btn btn-default button button-medium"><span>{l s='Submit' mod='npsmarketplace'}<i class="icon-share right"></i></span></button>
         </p>
     </form>
     {/if}

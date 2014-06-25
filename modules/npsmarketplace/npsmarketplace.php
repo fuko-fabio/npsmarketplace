@@ -10,7 +10,7 @@ class NpsMarketplace extends Module
 {
     public function __construct()
     {
-    $this->name = 'npsmarketplace';
+        $this->name = 'npsmarketplace';
         $this->tab = 'market_place';
         $this->version = 1.0;
         $this->author = 'Norbert Pabian';

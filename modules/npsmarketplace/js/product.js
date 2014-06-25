@@ -39,4 +39,23 @@ $(document).ready(function(){
     $('#product_time').on('click', function() {
         $('#timePicker').datetimepicker('show');
     });
+
+    $('#add_product').change(function() {
+        toggleProductForm();
+    }); 
+    toggleProductForm();
 });
+
+function toggleProductForm() {
+    if ($('#add_product').is(':checked')) {
+        $('#first_offer').show();
+        $('#first_offer').find('.is_required').each(function() {
+            $(this).attr('required', '');
+        });
+    } else {
+        $('#first_offer').hide();
+        $('#first_offer').find('.is_required').each(function() {
+            $(this).removeAttr('required');
+        });
+    }
+}
