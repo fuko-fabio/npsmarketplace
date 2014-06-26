@@ -18,3 +18,7 @@
 !/js
 /js/*
 !/js/validate.js
+
+!/classes
+/classes/*
+!/classes/Validate.php

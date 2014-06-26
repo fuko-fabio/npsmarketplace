@@ -8,17 +8,17 @@
 <div class="box">
     {include file="$tpl_dir./errors.tpl"}
     <h1 class="page-heading bottom-indent">{l s='Become a seller' mod='npsmarketplace'}</h1>
-    {if $account_state == 0}
+    {if $account_state == 'none'}
     <p class="info-title">{l s='Send a request for permission to sell tickets on our website.' mod='npsmarketplace'}</p>
-    {else if $account_state == 1}
+    {else if $account_state == 'requested'}
     <p class="info-title">{l s='Your request has been sent to us on %s. Please wait for contact with our marketing team.' sprintf=$account_request_date mod='npsmarketplace'}</p>
     {/if}
-    {if $account_state == 0}
+    {if $account_state == 'none'}
     <form role="form" action="{$request_uri}" method="post" id="formaccountrequest">
         <fieldset id="seller_profile">
             <h3 class="page-heading bottom-indent">{l s='Seller profile' mod='npsmarketplace'}</h3>
             <div class="form-group">
-                <label for="company_logo">{l s='Company Logo' mod='npsmarketplace'}</label></br>
+                <label for="">{l s='Company Logo' mod='npsmarketplace'}</label></br>
                 <input id="company_logo" type="file">
             </div>
             <div class="form-group">
@@ -46,11 +46,11 @@
              <div class="row">
                 <div class="form-group col-md-6">
                     <label class="required" for="seller_nip">{l s='NIP' mod='npsmarketplace'}</label>
-                    <input class="is_required validate form-control" data-validate="isNumber" type="number" id="seller_nip" name="seller_nip" required=""/>
+                    <input class="is_required validate form-control" data-validate="isNip" type="number" id="seller_nip" name="seller_nip" required=""/>
                 </div>
                 <div class="form-group col-md-6">
                     <label class="required" for="seller_regon">{l s='Regon' mod='npsmarketplace'}</label>
-                    <input class="is_required validate form-control" data-validate="isNumber" type="number" id="seller_regon" name="seller_regon" required=""/>
+                    <input class="is_required validate form-control" data-validate="isRegon" type="number" id="seller_regon" name="seller_regon" required=""/>
                 </div>
              </div>
         </fieldset>
@@ -81,7 +81,7 @@
             <div class="row">
                 <div class="form-group col-md-6">
                     <label class="required" for="product_price">{l s='Price' mod='npsmarketplace'}</label>
-                    <input class="is_required validate form-control" data-validate="isUnsignedFloat" type="text" id="product_price" name="product_price" required=""/>
+                    <input class="is_required validate form-control" data-validate="isPrice" type="text" id="product_price" name="product_price" required=""/>
                 </div>
                 <div class="form-group col-md-6">
                     <label class="required" for="product_amount">{l s='Amount' mod='npsmarketplace'}</label>

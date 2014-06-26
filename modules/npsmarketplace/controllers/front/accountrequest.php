@@ -1,4 +1,7 @@
 <?php
+
+include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
+
 class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontController {
 
     public function setMedia()
@@ -21,49 +24,89 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
         if (Tools::isSubmit('company_name')
             && Tools::isSubmit('seller_name')
             && Tools::isSubmit('seller_phone')
-            && Tools::isSubmit('seller_email'))
+            && Tools::isSubmit('seller_email')
+            && Tools::isSubmit('seller_nip')
+            && Tools::isSubmit('seller_regon'))
         {
-            $companyName = trim(Tools::getValue('company_name'));
-            $sellerName = trim(Tools::getValue('seller_name'));
-            $sellerPhone =  str_replace(' ', '', trim(Tools::getValue('seller_phone')));
-            $sellerEmail = trim(Tools::getValue('seller_email'));
-            $companyDescription = trim(Tools::getValue('company_description'));
+            $company_name = trim(Tools::getValue('company_name'));
+            $name = trim(Tools::getValue('seller_name'));
+            $phone =  trim(Tools::getValue('seller_phone'));
+            $email = trim(Tools::getValue('seller_email'));
+            $nip = trim(Tools::getValue('seller_nip'));
+            $regon = trim(Tools::getValue('seller_regon'));
+            $company_description = trim(Tools::getValue('company_description'));
             $companyLogo = trim(Tools::getValue('company_logo'));
 
-            if ($companyDescription != '' && !Validate::isMessage($companyDescription))
+            if ($company_description != '' && !Validate::isMessage($company_description))
                 $this->errors[] = Tools::displayError('Your company description contains invalid characters.');
-            else if (!Validate::isName($companyName))
+            else if (!Validate::isName($company_name))
                 $this->errors[] = Tools::displayError('Invalid company name');
-            else if (!Validate::isName($sellerName))
+            else if (!Validate::isName($name))
                 $this->errors[] = Tools::displayError('Invalid seller name');
-            else if (!Validate::isPhoneNumber($sellerPhone))
+            else if (!Validate::isPhoneNumber($phone))
                 $this->errors[] = Tools::displayError('Invalid phone number');
+            else if (!Validate::isEmail($email))
+                $this->errors[] = Tools::displayError('Invalid email addres');
+            else if (!Validate::isNip($nip))
+                $this->errors[] = Tools::displayError('Invalid NIP number');
+            else if (!Validate::isRegon($regon))
+                $this->errors[] = Tools::displayError('Invalid REGON number');
+
+            $customer = $this->context->customer;
+
+            $seller = new SellerCore();
+            $seller->id_customer = $customer->id;
+            $seller->company_name = array((int)(Configuration::get('PS_LANG_DEFAULT')) => $company_name);
+            $seller->company_description = array((int)(Configuration::get('PS_LANG_DEFAULT')) => $company_description);
+            $seller->name = array((int)(Configuration::get('PS_LANG_DEFAULT')) => $name);
+            $seller->phone = $phone;
+            $seller->email = $email;
+            $seller->nip = $nip;
+            $seller->regon = $regon;
+            $seller->commision = Configuration::get('GLOBAL_COMMISION');
+
+            if (Tools::getValue('add_product') == 'on')
             {
-                $customer = $this->context->customer;
+                $product_name = trim(Tools::getValue('product_name'));
+                $product_short_description = trim(Tools::getValue('product_short_description'));
+                $product_description = trim(Tools::getValue('product_description'));
+                $product_price = trim(Tools::getValue('product_price'));
+                $product_amount = trim(Tools::getValue('product_amount'));
+                $product_date = trim(Tools::getValue('product_date'));
+                $product_time = trim(Tools::getValue('product_time'));
+                # TODO Read categories $product_category = trim(Tools::getValue('product_category'));
+                
+                if (!Validate::isGenericName($product_name))
+                    $this->errors[] = Tools::displayError('Invalid product name');
+                else if (!Validate::isMessage($product_short_description))
+                    $this->errors[] = Tools::displayError('Invalid product short description');
+                else if (!Validate::isMessage($product_description))
+                    $this->errors[] = Tools::displayError('Invalid product description');
+                else if (!Validate::isPhoneNumber($product_price))
+                    $this->errors[] = Tools::displayError('Invalid product price');
+                else if (!Validate::isInt($product_amount))
+                    $this->errors[] = Tools::displayError('Invalid product amount number');
+                #else if (!Validate::isNip($product_date))
+                #    $this->errors[] = Tools::displayError('Invalid product date');
+                #else if (!Validate::isRegon($product_time))
+                #    $this->errors[] = Tools::displayError('Invalid product time');
 
-                $sql = 'INSERT INTO '._DB_PREFIX_.'seller(
-                            id_customer,
-                            state,
-                            request_date,
-                            company_name,
-                            company_description,
-                            company_logo,
-                            name,
-                            phone,
-                            email)
-                        VALUES (
-                            '.$customer->id.',
-                            1,
-                            NOW(),
-                            "'.$companyName.'",
-                            "'.$companyDescription.'",
-                            "'.$companyLogo.'",
-                            "'.$sellerName.'",
-                            '.$sellerPhone.',
-                            "'.$sellerEmail.'")';
-
-                if (!Db::getInstance()->execute($sql))
-                    d("Nie udalo sie aktualizować bazy");
+                $product = new Product();
+                $product->wholesale_price = $product_price;
+                $product->name = array((int)(Configuration::get('PS_LANG_DEFAULT')) => $product_name);
+                $product->quantity = $product_amount;
+                $product->active = 0;
+                $product->description = array((int)(Configuration::get('PS_LANG_DEFAULT')) => $product_description);
+                $product->description_short = array((int)(Configuration::get('PS_LANG_DEFAULT')) => $product_short_description);
+                #$product->available_date = $product_date;
+                $product->link_rewrite =  array((int)(Configuration::get('PS_LANG_DEFAULT')) => Tools::link_rewrite($product_name));
+                $product->save();
+            }
+            if(empty($this->errors))
+            {
+                $seller->save();
+                if (isset($product))
+                    $product->save();
                 $mail_params = array(
                     '{lastname}' => $customer->lastname,
                     '{firstname}' => $customer->firstname,
@@ -93,7 +136,7 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
                 -> select('*')
                 -> from('seller')
                 -> where('`id_customer` = '.$id_customer);
-            $state = 0;
+            $state = 'none';
             $date = null;
             if ($result = Db::getInstance() -> executeS($query))
             {

@@ -83,6 +83,7 @@ class NpsMarketplace extends Module
             $global_commision = Tools::getValue('GLOBAL_COMMISION');
             $auto_enable_seller_accont = Tools::getValue('AUTO_ENABLE_SELLER_ACCOUNT');
             $email = Tools::getValue('EMAIL_ADDRESS');
+
             if (!$global_commision || !Validate::isInt($global_commision))
             {
                 $output .= $this->displayError($this->l('Invalid global commision value. Must be a number'));
@@ -238,27 +239,37 @@ class NpsMarketplace extends Module
         return true;
     }
 
+    /* Set database */
     private function _createTables()
     {
-        /* Set database */
-        $sql = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'seller` (
+        $sellerTable = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'seller` (
                 `id_seller` int(10) unsigned NOT NULL AUTO_INCREMENT,
                 `id_customer` int(10) unsigned NOT NULL,
-                `state` tinyint(1) unsigned NOT NULL DEFAULT 0,
+                `state` varchar(10) NOT NULL,
                 `request_date` datetime,
-                `company_name` varchar(64) NOT NULL,
-                `company_logo` varchar(64),
-                `company_description` text,
-                `phone` int(14) NOT NULL,
+                `phone` varchar(16) NOT NULL,
                 `email` varchar(128) NOT NULL,
-                `name` varchar(128) NOT NULL,
                 `commision` int(10),
+                `nip` int(14) NOT NULL,
+                `regon` int(14) NOT NULL,
                 PRIMARY KEY (`id_seller`),
                 KEY `id_customer` (`id_customer`)
             ) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8';
-        if (!Db::getInstance()->Execute($sql))
+
+        $sellerLangTable = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'seller_lang` (
+            `id_seller` int(10) unsigned NOT NULL,
+            `company_name` varchar(64) NOT NULL,
+            `company_description` text,
+            `name` varchar(128) NOT NULL,
+            `id_lang` int(10) unsigned NOT NULL,
+            KEY `id_seller` (`id_seller`)
+            ) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8';
+
+        $instance = Db::getInstance();
+        if ($instance->Execute($sellerTable) && $instance->Execute($sellerLangTable))
+            return true;
+        else
             return false;
-        return true;
     }
 }
 ?>

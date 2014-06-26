@@ -179,6 +179,23 @@ function validate_isPasswd(s)
 	return (s.length >= 5 && s.length < 255);
 }
 
+function validate_isNip(s)
+{
+    var reg = /^[0-9]{10}$/;
+    return reg.test(s);
+}
+
+function validate_isRegon(s)
+{
+    var reg = /^[0-9]{9}$/;
+    return reg.test(s);
+}
+
+function validate_isPrice (s) {
+  var reg = /^[0-9]{1,10}(\.[0-9]{1,9})?$/;
+  return reg.test(s);
+}
+
 $(document).on('focusout', 'input.validate, textarea.validate', function() {
 	if ($(this).hasClass('is_required') || $(this).val().length)
 	{

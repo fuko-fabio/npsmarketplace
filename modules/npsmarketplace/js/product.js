@@ -26,6 +26,7 @@ $(document).ready(function(){
         pickTime: false
     });
     $('#datePicker').on('changeDate', function(e) {
+        console.log(e);
         $('#datePicker').datetimepicker('hide');
     });
     $('#product_date').on('click', function() {
@@ -36,7 +37,8 @@ $(document).ready(function(){
         pickDate: false,
         pickSeconds: false
     });
-    $('#product_time').on('click', function() {
+    $('#product_time').on('click', function(e) {
+        console.log(e);
         $('#timePicker').datetimepicker('show');
     });
 
