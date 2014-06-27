@@ -1,5 +1,6 @@
 $(document).ready(function(){
 
+/*
     $("#company_logo").fileinput({
         browseClass: "btn btn-primary btn-block",
         showCaption: false,
@@ -20,7 +21,8 @@ $(document).ready(function(){
             "   </div>\n" +
             "   {caption}\n" +
             "</div>"
-    });
+    });*/
+// 
 
     $('#datePicker').datetimepicker({
         pickTime: false

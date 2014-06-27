@@ -14,12 +14,12 @@
     <p class="info-title">{l s='Your request has been sent to us on %s. Please wait for contact with our marketing team.' sprintf=$account_request_date mod='npsmarketplace'}</p>
     {/if}
     {if $account_state == 'none'}
-    <form role="form" action="{$request_uri}" method="post" id="formaccountrequest">
+    <form enctype="multipart/form-data" role="form" action="{$request_uri}" method="post" id="formaccountrequest">
         <fieldset id="seller_profile">
             <h3 class="page-heading bottom-indent">{l s='Seller profile' mod='npsmarketplace'}</h3>
             <div class="form-group">
                 <label for="">{l s='Company Logo' mod='npsmarketplace'}</label></br>
-                <input id="company_logo" type="file">
+                <input id="company_logo" type="file" name="logo">
             </div>
             <div class="form-group">
                 <label class="required" for="company_name">{l s='Company Name' mod='npsmarketplace'}</label>
@@ -64,7 +64,7 @@
             <h3 class="page-heading bottom-indent">{l s='First offer' mod='npsmarketplace'}</h3>
             <div class="form-group">
                 <label>{l s='Product images' mod='npsmarketplace'}</label>
-                <input id="product_images" type="file" multiple="true">
+                <input id="product_images" type="file" multiple="true" name="product[]">
             </div>
             <div class="form-group">
                 <label class="required" for="product_name">{l s='Name' mod='npsmarketplace'}</label>
