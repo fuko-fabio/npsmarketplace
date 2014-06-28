@@ -28,6 +28,7 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
             && Tools::isSubmit('seller_nip')
             && Tools::isSubmit('seller_regon'))
         {
+            d($_POST);
             $company_name = trim(Tools::getValue('company_name'));
             $name = trim(Tools::getValue('seller_name'));
             $phone =  trim(Tools::getValue('seller_phone'));
@@ -86,10 +87,10 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
                     $this->errors[] = Tools::displayError('Invalid product price');
                 else if (!Validate::isInt($product_amount))
                     $this->errors[] = Tools::displayError('Invalid product amount number');
-                #else if (!Validate::isNip($product_date))
-                #    $this->errors[] = Tools::displayError('Invalid product date');
-                #else if (!Validate::isRegon($product_time))
-                #    $this->errors[] = Tools::displayError('Invalid product time');
+                else if (!Validate::isBirthDate($product_date))
+                    $this->errors[] = Tools::displayError('Invalid product date');
+                else if (!Validate::isTime($product_time))
+                    $this->errors[] = Tools::displayError('Invalid product time');
 
                 $product = new Product();
                 $product->wholesale_price = $product_price;

@@ -1099,4 +1099,15 @@ class ValidateCore
     {
         return preg_match('/^[0-9]{9}$/', $regon);
     }
+    
+    /* Check for time validity  HH:MM
+     *
+     * @param string $time time to validate
+     * @return boolean Validity is ok or not
+     */
+    public static function isTime($time)
+    {
+        return preg_match('/^(?:[01][0-9]|2[0-3]):[0-5][0-9]$/',$time);
+    }
+    
 }
