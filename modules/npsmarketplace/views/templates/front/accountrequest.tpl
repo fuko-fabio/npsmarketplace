@@ -93,7 +93,7 @@
                     <label class="required" for="product_date">{l s='Date' mod='npsmarketplace'}</label>
                     </br>
                     <div id="datePicker" class="input-append">
-                        <input class="is_required form-control" id="product_date" data-format="yyyy-MM-dd" type="text" readonly="" required=""/></input>
+                        <input class="is_required form-control" id="product_date" name="product_date" data-format="yyyy-MM-dd" type="text" readonly="" required=""/></input>
                         <span class="add-on">
                             <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
                         </span>
@@ -103,11 +103,15 @@
                     <label class="required" for="product_time">{l s='Time' mod='npsmarketplace'}</label>
                     </br>
                     <div id="timePicker" class="input-append">
-                        <input class="is_required form-control" id="product_time" data-format="hh:mm" type="text" readonly="" required=""/></input>
+                        <input class="is_required form-control" id="product_time" name="product_time" data-format="hh:mm" type="text" readonly="" required=""/></input>
                         <span class="add-on">
                             <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
                         </span>
                     </div>
+                </div>
+                <div class="form-group">
+                    <label for="product_code">{l s='Product code' mod='npsmarketplace'}</label>
+                    <input class="is_required validate form-control" data-validate="isMessage" type="text" id="product_code" name="product_code" required=""/>
                 </div>
             </div>
             

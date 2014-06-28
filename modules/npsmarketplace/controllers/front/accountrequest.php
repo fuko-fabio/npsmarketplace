@@ -28,7 +28,6 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
             && Tools::isSubmit('seller_nip')
             && Tools::isSubmit('seller_regon'))
         {
-            d($_POST);
             $company_name = trim(Tools::getValue('company_name'));
             $name = trim(Tools::getValue('seller_name'));
             $phone =  trim(Tools::getValue('seller_phone'));
@@ -65,6 +64,7 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
             $seller->nip = $nip;
             $seller->regon = $regon;
             $seller->commision = Configuration::get('GLOBAL_COMMISION');
+            $seller->request_date = date("Y-m-d");
 
             if (Tools::getValue('add_product') == 'on')
             {
@@ -75,7 +75,7 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
                 $product_amount = trim(Tools::getValue('product_amount'));
                 $product_date = trim(Tools::getValue('product_date'));
                 $product_time = trim(Tools::getValue('product_time'));
-                # TODO Read categories $product_category = trim(Tools::getValue('product_category'));
+                $product_code = trim(Tools::getValue('product_code'));
                 
                 if (!Validate::isGenericName($product_name))
                     $this->errors[] = Tools::displayError('Invalid product name');
@@ -91,17 +91,22 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
                     $this->errors[] = Tools::displayError('Invalid product date');
                 else if (!Validate::isTime($product_time))
                     $this->errors[] = Tools::displayError('Invalid product time');
-
+                else if (!Validate::isMessage($product_code))
+                    $this->errors[] = Tools::displayError('Invalid product code');
+                
                 $product = new Product();
-                $product->wholesale_price = $product_price;
+                $product->price = $product_price;
                 $product->name = array((int)(Configuration::get('PS_LANG_DEFAULT')) => $product_name);
                 $product->quantity = $product_amount;
                 $product->active = 0;
                 $product->description = array((int)(Configuration::get('PS_LANG_DEFAULT')) => $product_description);
                 $product->description_short = array((int)(Configuration::get('PS_LANG_DEFAULT')) => $product_short_description);
-                #$product->available_date = $product_date;
+                $product->available_date = $product_date;
                 $product->link_rewrite =  array((int)(Configuration::get('PS_LANG_DEFAULT')) => Tools::link_rewrite($product_name));
                 $product->is_virtual = true;
+                $product->indexed = 1;
+                $product->id_tax_rules_group = 0;
+                $product->reference = $product_code;
             }
             if(empty($this->errors))
             {
@@ -109,6 +114,8 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
                 if (isset($product))
                 {
                     $product->save();
+                    if (!$product->addToCategories($_POST['category']))
+                        $this->errors[] = Tools::displayError('An error occurred while adding product to categories.');
                     $this->saveProductImages($product);
                 }
                 $mail_params = array(
