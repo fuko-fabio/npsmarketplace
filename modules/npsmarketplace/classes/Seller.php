@@ -102,15 +102,10 @@ class SellerCore extends ObjectModel
      */
     public function assignProduct($products = array())
     {
-        if (empty($products))
-            return false;
-
         if (!is_array($products))
             $products = array($products);
 
-        d($products);
-
-        if (!count($products))
+        if (count($products) < 0)
             return false;
 
         $products = array_map('intval', $products);
@@ -121,7 +116,7 @@ class SellerCore extends ObjectModel
                 if ($value == $current_product)
                     unset($products[$key]);
 
-        if (!count($products))
+        if (count($products) < 0)
             return true;
 
         foreach ($products as $new_id_product)
@@ -130,8 +125,7 @@ class SellerCore extends ObjectModel
                 'id_seller' => (int)$this->id,
             );
 
-        Db::getInstance()->insert('seller_product', $seller_products);
-        return true;
+        return Db::getInstance()->insert('seller_product', $seller_products);
     }
 
     /**

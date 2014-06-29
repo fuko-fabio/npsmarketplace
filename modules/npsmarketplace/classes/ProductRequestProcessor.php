@@ -51,10 +51,13 @@ class ProductRequestProcessor {
         $product -> reference = $product_code;
 
         if (empty($this -> errors)) {
-            $product->save();
-            if (!$product->addToCategories($_POST['category']))
-                $this->errors[] = Tools::displayError('An error occurred while adding product to categories.');
-            $this->saveProductImages($product);
+            if (!$product->save())
+                $this->errors[] = Tools::displayError('An error occurred while saving product.');
+            else 
+                if (!$product->addToCategories($_POST['category']))
+                    $this->errors[] = Tools::displayError('An error occurred while adding product to categories.');
+                else
+                    $this->saveProductImages($product);
         }
         return $product;
     }

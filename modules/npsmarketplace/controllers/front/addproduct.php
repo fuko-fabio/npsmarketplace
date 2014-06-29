@@ -41,7 +41,9 @@ class NpsMarketplaceAddProductModuleFrontController extends ModuleFrontControlle
             if(empty($this->errors))
             {
                 $seller = new SellerCore(null, $this->context->customer->id);
-                if (!Validate::isLoadedObject($seller) && !$seller->assignProduct($product->id))
+                if (!Validate::isLoadedObject($seller))
+                    $this->errors[] = Tools::displayError('An error occurred while updating seller information.');
+                if (!$seller->assignProduct($product->id))
                     $this->errors[] = Tools::displayError('An error occurred while updating seller information.');
             }
         }
