@@ -51,15 +51,18 @@ $(document).ready(function(){
 });
 
 function toggleProductForm() {
-    if ($('#add_product').is(':checked')) {
-        $('#first_offer').show();
-        $('#first_offer').find('.is_required').each(function() {
-            $(this).attr('required', '');
-        });
-    } else {
-        $('#first_offer').hide();
-        $('#first_offer').find('.is_required').each(function() {
-            $(this).removeAttr('required');
-        });
+    var el = $('#add_product');
+    if (el.length > 0) {
+        if (el.is(':checked')) {
+            $('#add_offer').show();
+            $('#add_offer').find('.is_required').each(function() {
+                $(this).attr('required', '');
+            });
+        } else {
+            $('#add_offer').hide();
+            $('#add_offer').find('.is_required').each(function() {
+                $(this).removeAttr('required');
+            });
+        }
     }
 }

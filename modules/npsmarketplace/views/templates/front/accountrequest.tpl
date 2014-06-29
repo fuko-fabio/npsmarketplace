@@ -12,6 +12,8 @@
     <p class="info-title">{l s='Send a request for permission to sell tickets on our website.' mod='npsmarketplace'}</p>
     {else if $account_state == 'requested'}
     <p class="info-title">{l s='Your request has been sent to us on %s. Please wait for contact with our marketing team.' sprintf=$account_request_date mod='npsmarketplace'}</p>
+    {else if $account_state == 'locked'}
+    <p class="info-title">{l s='Your account has been locked by administrator'}</p>
     {/if}
     {if $account_state == 'none'}
     <form enctype="multipart/form-data" role="form" action="{$request_uri}" method="post" id="formaccountrequest">
@@ -60,74 +62,7 @@
             <input type="checkbox" name="add_product" id="add_product"/>
             <label for="add_product">{l s='I want add my first offer' mod='npsmarketplace'}</label>
         </p>
-        <fieldset id="first_offer">
-            <h3 class="page-heading bottom-indent">{l s='First offer' mod='npsmarketplace'}</h3>
-            <div class="form-group">
-                <label>{l s='Product images' mod='npsmarketplace'}</label>
-                <input id="product_images" type="file" multiple="true" name="product[]">
-            </div>
-            <div class="form-group">
-                <label class="required" for="product_name">{l s='Name' mod='npsmarketplace'}</label>
-                <input class="is_required validate form-control" data-validate="isGenericName" type="text" id="product_name" name="product_name" required=""/>
-            </div>
-            <div class="form-group">
-                <label class="required" for="product_short_description">{l s='Short Description' mod='npsmarketplace'}</label>
-                <textarea class="is_required validate form-control" data-validate="isMessage" id="product_short_description" name="product_short_description" rows="2"></textarea>
-            </div>
-            <div class="form-group">
-                <label class="required" for="product_description">{l s='Description' mod='npsmarketplace'}</label>
-                <textarea class="is_required validate form-control" data-validate="isMessage" id="product_description" name="product_description" rows="10"></textarea>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-6">
-                    <label class="required" for="product_price">{l s='Price' mod='npsmarketplace'}</label>
-                    <input class="is_required validate form-control" data-validate="isPrice" type="text" id="product_price" name="product_price" required=""/>
-                </div>
-                <div class="form-group col-md-6">
-                    <label class="required" for="product_amount">{l s='Amount' mod='npsmarketplace'}</label>
-                    <input class="is_required validate form-control" data-validate="isNumber" type="number" id="product_amount" name="product_amount" required=""/>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-6">
-                    <label class="required" for="product_date">{l s='Date' mod='npsmarketplace'}</label>
-                    </br>
-                    <div id="datePicker" class="input-append">
-                        <input class="is_required form-control" id="product_date" name="product_date" data-format="yyyy-MM-dd" type="text" readonly="" required=""/></input>
-                        <span class="add-on">
-                            <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
-                        </span>
-                    </div>
-                </div>
-                <div class="form-group col-md-6">
-                    <label class="required" for="product_time">{l s='Time' mod='npsmarketplace'}</label>
-                    </br>
-                    <div id="timePicker" class="input-append">
-                        <input class="is_required form-control" id="product_time" name="product_time" data-format="hh:mm" type="text" readonly="" required=""/></input>
-                        <span class="add-on">
-                            <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
-                        </span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="product_code">{l s='Product code' mod='npsmarketplace'}</label>
-                    <input class="is_required validate form-control" data-validate="isMessage" type="text" id="product_code" name="product_code" required=""/>
-                </div>
-            </div>
-            
-            <div class="form-group">
-                <label class="required" for="product_category">{l s='Category' mod='npsmarketplace'}</label>
-                <ul class="tree">
-                {foreach from=$categories_tree.children item=child name=categories_tree}
-                    {if $smarty.foreach.categories_tree.last}
-                        {include file="$category_partial_tpl_path" node=$child last='true'}
-                    {else}
-                        {include file="$category_partial_tpl_path" node=$child}
-                    {/if}
-                {/foreach}
-                </ul>
-            </div>
-        </fieldset>
+        {include file="$product_fieldset_tpl_path" categories_tree=$categories_tree category_partial_tpl_path=$category_partial_tpl_path}
         </br>
         <label class="required">{l s='Required field' mod='npsmarketplace'}</label>
         </br>

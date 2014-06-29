@@ -24,22 +24,22 @@
 *  International Registered Trademark & Property of PrestaShop SA
 */
 
+include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
+
 class AdminSellersAccountsController extends AdminController
 {
 	protected $delete_mode;
 
-	protected $_defaultOrderBy = 'date_add';
+	protected $_defaultOrderBy = 'request_date';
 	protected $_defaultOrderWay = 'DESC';
-	protected $can_add_customer = true;
 
 	public function __construct()
 	{
 		$this->bootstrap = true;
 		$this->required_database = true;
 		$this->table = 'seller';
-		$this->className = 'Seller';
-		$this->lang = false;
-		$this->deleted = true;
+		$this->className = 'SellerCore';
+		$this->lang = true;
 		$this->explicitSelect = true;
 
 		$this->allow_export = true;
@@ -56,50 +56,54 @@ class AdminSellersAccountsController extends AdminController
 		);
 
 		$this->context = Context::getContext();
-
 		$this->default_form_language = $this->context->language->id;
-
-		$titles_array = array();
-		$genders = Gender::getGenders($this->context->language->id);
-		foreach ($genders as $gender)
-			$titles_array[$gender->id_gender] = $gender->name;
-
+		
 		$this->fields_list = array(
+			'id_seller' => array(
+                'title' => $this->l('ID'),
+                'align' => 'text-center',
+                'class' => 'fixed-width-xs'
+            ),
 			'id_customer' => array(
-				'title' => $this->l('ID'),
+				'title' => $this->l('Customer ID'),
 				'align' => 'text-center',
 				'class' => 'fixed-width-xs'
 			),
-			'title' => array(
-				'title' => $this->l('Title'),
-				'filter_key' => 'a!id_gender',
-				'type' => 'select',
-				'list' => $titles_array,
-				'filter_type' => 'int',
-				'order_key' => 'gl!name'
+			'name' => array(
+                'title' => $this->l('Name')
+            ),
+            'company_name' => array(
+                'title' => $this->l('Company Name')
+            ),
+			'nip' => array(
+				'title' => $this->l('NIP')
 			),
-			'lastname' => array(
-				'title' => $this->l('Last name')
-			),
-			'firstname' => array(
-				'title' => $this->l('First Name')
+			'regon' => array(
+				'title' => $this->l('REGON')
 			),
 			'email' => array(
 				'title' => $this->l('Email address')
 			),
-			'active' => array(
-				'title' => $this->l('Enabled'),
-				'align' => 'text-center',
-				'active' => 'status',
-				'type' => 'bool',
-				'orderby' => false,
-				'filter_key' => 'a!active'
-			),
-			'date_add' => array(
+            'locked' => array(
+                'title' => $this->l('Locked'),
+                'align' => 'text-center',
+                'type' => 'bool',
+                'callback' => 'printLockedIcon',
+                'orderby' => false
+            ),
+			'request_date' => array(
 				'title' => $this->l('Registration'),
 				'type' => 'date',
 				'align' => 'text-right'
-			)
+			),
+			'active' => array(
+                'title' => $this->l('Enabled'),
+                'align' => 'text-center',
+                'active' => 'status',
+                'type' => 'bool',
+                'orderby' => false,
+                'filter_key' => 'a!active'
+            )
 		);
 
 		$this->shopLinkType = 'shop';
@@ -107,6 +111,25 @@ class AdminSellersAccountsController extends AdminController
 
 		parent::__construct();
 	}
+
+	public function printLockedIcon($value, $seller)
+    {
+        return '<a class="list-action-enable '.($value ? 'action-enabled' : 'action-disabled').'" href="index.php?tab=AdminSellersAccounts&id_seller='
+            .(int)$seller['id_seller'].'&changeLockedVal&token='.Tools::getAdminTokenLite('AdminSellersAccounts').'">
+                '.($value ? '<i class="icon-check"></i>' : '<i class="icon-remove"></i>').
+            '</a>';
+    }
+
+    public function processChangeLockedVal()
+    {
+        $seller = new SellerCore($this->id_object);
+        if (!Validate::isLoadedObject($seller))
+            $this->errors[] = Tools::displayError('An error occurred while updating seller information.');
+        $seller->locked = $seller->locked ? 0 : 1;
+        if (!$seller->update())
+            $this->errors[] = Tools::displayError('An error occurred while updating seller information.');
+        Tools::redirectAdmin(self::$currentIndex.'&token='.$this->token);
+    }
 
 	public function initContent()
 	{
@@ -120,16 +143,6 @@ class AdminSellersAccountsController extends AdminController
 		parent::initContent();
 	}
 
-    public function getList($id_lang, $orderBy = null, $orderWay = null, $start = 0, $limit = null, $id_lang_shop = null)
-    {
-        parent::getList($id_lang, $orderBy, $orderWay, $start, $limit, $id_lang_shop);
-
-        if ($this->_list)
-            foreach ($this->_list as &$row)
-                $row['badge_success'] = $row['total_spent'] > 0;
-    }
-
-
     public function initToolbarTitle()
     {
         parent::initToolbarTitle();
@@ -141,12 +154,12 @@ class AdminSellersAccountsController extends AdminController
                 $this->toolbar_title[] = $this->l('Manage your Sellers');
                 break;
             case 'view':
-                if (($customer = $this->loadObject(true)) && Validate::isLoadedObject($customer))
-                    $this->toolbar_title[] = sprintf('Seller: %s', Tools::substr($customer->firstname, 0, 1).'. '.$customer->lastname);
+                if (($seller = $this->loadObject(true)) && Validate::isLoadedObject($seller))
+                    $this->toolbar_title[] = sprintf('Seller: %s', Tools::substr($seller->name, 0, 1));
                 break;
             case 'edit':
-                if (($customer = $this->loadObject(true)) && Validate::isLoadedObject($customer))
-                    $this->toolbar_title[] = sprintf($this->l('Editing Seller: %s'), Tools::substr($customer->firstname, 0, 1).'. '.$customer->lastname);
+                if (($seller = $this->loadObject(true)) && Validate::isLoadedObject($seller))
+                    $this->toolbar_title[] = sprintf($this->l('Editing Seller: %s'), Tools::substr($seller->name, 0, 1));
                 break;
         }
     }
@@ -155,13 +168,13 @@ class AdminSellersAccountsController extends AdminController
 	{
 		parent::initProcess();
 
-		if (Tools::isSubmit('submitGuestToCustomer') && $this->id_object)
-		{
-			if ($this->tabAccess['edit'] === '1')
-				$this->action = 'guest_to_customer';
-			else
-				$this->errors[] = Tools::displayError('You do not have permission to edit this.');
-		}
+		if (Tools::isSubmit('changeLockedVal') && $this->id_object)
+        {
+            if ($this->tabAccess['edit'] === '1')
+                $this->action = 'change_locked_val';
+            else
+                $this->errors[] = Tools::displayError('You do not have permission to edit this.');
+        }
 
 		// When deleting, first display a form to select the type of deletion
 		if ($this->action == 'delete' || $this->action == 'bulkdelete')
@@ -175,7 +188,7 @@ class AdminSellersAccountsController extends AdminController
 	{
 		if (Tools::isSubmit('submitBulkdelete'.$this->table) || Tools::isSubmit('delete'.$this->table))
 			$this->tpl_list_vars = array(
-				'delete_customer' => true,
+				'delete_seller' => true,
 				'REQUEST_URI' => $_SERVER['REQUEST_URI'],
 				'POST' => $_POST
 			);
@@ -202,18 +215,13 @@ class AdminSellersAccountsController extends AdminController
                     'class' => 't',
                     'values' => array(
                         array(
-                            'id' => 'account_requested',
+                            'id' => 'requested',
                             'value' => 1,
                             'label' => $this->l('Requested')
                         ),
                         array(
-                            'id' => 'disabled',
-                            'value' => 0,
-                            'label' => $this->l('Disabled')
-                        ),
-                        array(
                             'id' => 'locked',
-                            'value' => 2,
+                            'value' => 3,
                             'label' => $this->l('Locked')
                         ),
                         array(
@@ -234,13 +242,10 @@ class AdminSellersAccountsController extends AdminController
         return parent::renderForm();
     }
 
-    public function beforeAdd($customer)
-    {
-        $customer->id_shop = $this->context->shop->id;
-    }
 
 	public function renderKpis()
 	{
+	    return;
 		$time = time();
 		$kpis = array();
 
@@ -301,6 +306,7 @@ class AdminSellersAccountsController extends AdminController
 
 	public function renderView()
 	{
+	    return;
 		if (!($customer = $this->loadObject()))
 			return;
 
@@ -500,6 +506,7 @@ class AdminSellersAccountsController extends AdminController
 
 	public function processAdd()
 	{
+	    return false;
 		if (Tools::getValue('submitFormAjax'))
 			$this->redirect_after = false;
 		// Check that the new email is not already in use
@@ -529,6 +536,7 @@ class AdminSellersAccountsController extends AdminController
 
 	public function processUpdate()
 	{
+	    return false;
 		if (Validate::isLoadedObject($this->object))
 		{
 			$customer_email = strval(Tools::getValue('email'));
@@ -552,6 +560,7 @@ class AdminSellersAccountsController extends AdminController
 
 	public function processSave()
 	{
+	    return false;
 		// Check that default group is selected
 		if (!is_array(Tools::getValue('groupBox')) || !in_array(Tools::getValue('id_default_group'), Tools::getValue('groupBox')))
 			$this->errors[] = Tools::displayError('A default customer group must be selected in group box.');
@@ -574,65 +583,6 @@ class AdminSellersAccountsController extends AdminController
 			$address->save();
 		}
 		return true;
-	}
-	/**
-	 * Transform a guest account into a registered customer account
-	 */
-	public function processGuestToCustomer()
-	{
-		$customer = new Customer((int)Tools::getValue('id_customer'));
-		if (!Validate::isLoadedObject($customer))
-			$this->errors[] = Tools::displayError('This customer does not exist.');
-		if (Customer::customerExists($customer->email))
-			$this->errors[] = Tools::displayError('This customer already exists as a non-guest.');
-		else if ($customer->transformToCustomer(Tools::getValue('id_lang', $this->context->language->id)))
-			Tools::redirectAdmin(self::$currentIndex.'&'.$this->identifier.'='.$customer->id.'&conf=3&token='.$this->token);
-		else
-			$this->errors[] = Tools::displayError('An error occurred while updating customer information.');
-	}
-
-	/**
-	 * Toggle the newsletter flag
-	 */
-	public function processChangeNewsletterVal()
-	{
-		$customer = new Customer($this->id_object);
-		if (!Validate::isLoadedObject($customer))
-			$this->errors[] = Tools::displayError('An error occurred while updating customer information.');
-		$customer->newsletter = $customer->newsletter ? 0 : 1;
-		if (!$customer->update())
-			$this->errors[] = Tools::displayError('An error occurred while updating customer information.');
-		Tools::redirectAdmin(self::$currentIndex.'&token='.$this->token);
-	}
-
-	/**
-	 * Toggle newsletter optin flag
-	 */
-	public function processChangeOptinVal()
-	{
-		$customer = new Customer($this->id_object);
-		if (!Validate::isLoadedObject($customer))
-			$this->errors[] = Tools::displayError('An error occurred while updating customer information.');
-		$customer->optin = $customer->optin ? 0 : 1;
-		if (!$customer->update())
-			$this->errors[] = Tools::displayError('An error occurred while updating customer information.');
-		Tools::redirectAdmin(self::$currentIndex.'&token='.$this->token);
-	}
-
-	public function printNewsIcon($value, $customer)
-	{
-		return '<a class="list-action-enable '.($value ? 'action-enabled' : 'action-disabled').'" href="index.php?tab=AdminCustomers&id_customer='
-			.(int)$customer['id_customer'].'&changeNewsletterVal&token='.Tools::getAdminTokenLite('AdminCustomers').'">
-				'.($value ? '<i class="icon-check"></i>' : '<i class="icon-remove"></i>').
-			'</a>';
-	}
-
-	public function printOptinIcon($value, $customer)
-	{
-		return '<a class="list-action-enable '.($value ? 'action-enabled' : 'action-disabled').'" href="index.php?tab=AdminCustomers&id_customer='
-			.(int)$customer['id_customer'].'&changeOptinVal&token='.Tools::getAdminTokenLite('AdminCustomers').'">
-				'.($value ? '<i class="icon-check"></i>' : '<i class="icon-remove"></i>').
-			'</a>';
 	}
 
 	/**

@@ -31,8 +31,14 @@ class SellerCore extends ObjectModel
     /** @var integer REGON */
     public $regon;
 
-    /** @var string ENUM('requested', 'approved', 'locked', 'none') Seller account state*/
-    public $state = 'requested';
+    /** @var boolean account state */
+    public $active = false;
+
+    /** @var boolean account state */
+    public $requested = false;
+
+    /** @var boolean account lock state */
+    public $locked = false;
 
     /** @var integer NIP */
     public $commision;
@@ -42,6 +48,21 @@ class SellerCore extends ObjectModel
 
     /** @var string Company description */
     public $company_description;
+
+    public function __construct($id_seller = null, $id_customer = null)
+    {
+        if (empty($id_seller) && !empty($id_customer))
+        {
+            $query = new DbQuery();
+            $query
+                -> select('*')
+                -> from('seller')
+                -> where('`id_customer` = '.$id_customer);
+            if ($result = Db::getInstance() -> executeS($query))
+                $id_seller = $result[0]['id_seller'];
+        }
+        parent::__construct($id_seller);
+    }
 
     /**
      * @see ObjectModel::$definition
@@ -53,7 +74,9 @@ class SellerCore extends ObjectModel
         'fields' => array(
             'id_customer' =>         array('type' => self::TYPE_INT,    'validate' => 'isUnsignedId',  'required' => true),
             'request_date' =>        array('type' => self::TYPE_STRING, 'validate' => 'isDateFormat'),
-            'state' =>               array('type' => self::TYPE_STRING, 'validate' => 'isGenericName', 'required' => true, 'values' => array('requested', 'approved', 'locked'), 'default' => 'requested'),
+            'active' =>              array('type' => self::TYPE_BOOL,   'validate' => 'isBool',        'required' => true),
+            'requested' =>           array('type' => self::TYPE_BOOL,   'validate' => 'isBool',        'required' => true),
+            'locked' =>              array('type' => self::TYPE_BOOL,   'validate' => 'isBool',        'required' => true),
             'email' =>               array('type' => self::TYPE_STRING, 'validate' => 'isEmail',       'required' => true),
             'phone' =>               array('type' => self::TYPE_STRING, 'validate' => 'isPhoneNumber', 'required' => true),
             'nip' =>                 array('type' => self::TYPE_INT,    'validate' => 'isNip',         'required' => true),
@@ -66,55 +89,70 @@ class SellerCore extends ObjectModel
             'company_name' =>        array('type' => self::TYPE_STRING, 'validate' => 'isGenericName', 'required' => true,'lang' => true),
         ),
         'associations' => array(
-            'customer' => array('type' => self::HAS_ONE)
+            'customer' => array('type' => self::HAS_ONE,  'field' => 'id_customer', 'object' => 'Customer'),
+            'products' => array('type' => self::HAS_MANY, 'field' => 'id_product',  'object' => 'Product', 'association' => 'seller_product'),
         )
     );
-
+    
     /**
-      * Adds seller to database
-      *
-      * @return boolean success
-      */
-    // public function add($autodate = true, $null_values = false)
-    // {
-        // $sql = 'INSERT INTO '._DB_PREFIX_.'seller(
-                // id_customer,
-                // state,
-                // request_date,
-                // company_name,
-                // company_description,
-                // name,
-                // phone,
-                // email,
-                // nip,
-                // regon)
-            // VALUES (
-                // '.$id_customer.',
-                // "'.$state.'",
-                // NOW(),
-                // "'.$company_name.'",
-                // "'.$company_description.'",
-                // "'.$name.'",
-                // '.$phone.',
-                // "'.$emain.'"
-                // '.$nip.',
-                // '.$regon.',)';
-// 
-        // Db::getInstance()->execute($sql);
-    // }
-
-    /**
-      * Updates seller state
-      *
-      * @param integer $id_seller Seller ID 
-      * @param string $state Account state 
-      * @return boolean success
-      */
-    public function updateState()
+     * assignProduct assigns products to current seller.
+     *
+     * @param mixed $products id_product or array of id_product
+     * @return boolean true if succeed
+     */
+    public function assignProduct($products = array())
     {
-        Db::getInstance()->update('seller', array(
-            'state' => $state,
-        ), 'id_seller = '.(int)$id);
+        if (empty($products))
+            return false;
+
+        if (!is_array($products))
+            $products = array($products);
+
+        d($products);
+
+        if (!count($products))
+            return false;
+
+        $products = array_map('intval', $products);
+
+        $current_products = array_map('intval',$this->getSellerProducts($this->id));
+        foreach ($current_products as $current_product)
+            foreach ($products as $key => $value)
+                if ($value == $current_product)
+                    unset($products[$key]);
+
+        if (!count($products))
+            return true;
+
+        foreach ($products as $new_id_product)
+            $seller_products[] = array(
+                'id_product' => (int)$new_id_product,
+                'id_seller' => (int)$this->id,
+            );
+
+        Db::getInstance()->insert('seller_product', $seller_products);
+        return true;
+    }
+
+    /**
+     * getSellerProducts return an array of products which this seller belongs to
+     *
+     * @return array of products
+     */
+    public static function getSellerProducts($id_seller = '')
+    {
+        $ret = array();
+
+        $row = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS('
+            SELECT `id_product` FROM `'._DB_PREFIX_.'seller_product`
+            WHERE `id_seller` = '.(int)$id_seller
+        );
+
+        if ($row)
+            foreach ($row as $val)
+                $ret[] = $val['id_product'];
+
+        return $ret;
     }
 }
 

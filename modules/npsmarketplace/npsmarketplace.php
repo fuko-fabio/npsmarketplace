@@ -52,15 +52,23 @@ class NpsMarketplace extends Module
         $id_customer = $this->context->customer->id;
         $query = new DbQuery();
         $query
-          ->select('`state`')
-          ->from('seller')
-          ->where('`id_customer` = '.$id_customer)
-          ;
-        $account_state = 0;
-        if ($result = Db::getInstance()->getValue($query))
+            -> select('*')
+            -> from('seller')
+            -> where('`id_customer` = '.$id_customer);
+        $account_state = 'none';
+        if ($result = Db::getInstance() -> executeS($query))
         {
-            $account_state = $result;
+            $active = $result[0]['active'];
+            $locked = $result[0]['locked'];
+            $requested = $result[0]['requested'];
+            if ($requested == 1 && $active == 0 && $locked == 0)
+                $account_state = 'requested';
+            else if ($requested == 1 && $active == 1 && $locked == 0)
+                $account_state = 'active';
+            else if ($requested == 1 && $locked == 1)
+                $account_state = 'locked';
         }
+        
         $this->context->smarty->assign(
             array(
                 'account_state' => $account_state,
@@ -205,38 +213,52 @@ class NpsMarketplace extends Module
 
     private function _createTab()
     {
-        /* define data array for the tab  */
-        $data = array(
-                      'id_tab' => '', 
-                      'id_parent' => 11, 
-                      'class_name' => 'AdminSellersAccounts', 
-                      'module' => 'npsmarketplace', 
-                      'position' => 1, 'active' => 1 
-                     );
-
-        /* Insert the data to the tab table*/
-        $res = Db::getInstance()->insert('tab', $data);
-
-        //Get last insert id from db which will be the new tab id
-        $id_tab = Db::getInstance()->Insert_ID();
-    
-       //Define tab multi language data
-        $data_lang = array(
-                         'id_tab' => $id_tab, 
-                         'id_lang' => Configuration::get('PS_LANG_DEFAULT'),
-                         'name' => 'Sellers'
-                         );
-    
-        // Now insert the tab lang data
-        $res &= Db::getInstance()->insert('tab_lang', $data_lang);
-    
-        return true;
+        $tab = new Tab();
+        $tab->id_parent = 0;
+        $tab->position = 1;
+        $tab->module = $this->name;
+        $tab->class_name = 'AdminSellersAccounts';
+        $languages = Language::getLanguages();
+        foreach ($languages AS $language)
+            $tab->{'name'}[intval($language['id_lang'])] = 'Sellers';
+        $success = $tab->add();
+        
+        $sellers_tab = new Tab();
+        $sellers_tab->id_parent = $tab->id;
+        $sellers_tab->position = 0;
+        $sellers_tab->module = $this->name;
+        $sellers_tab->class_name = 'AdminSellersAccounts';
+        foreach ($languages AS $language)
+        {
+            $sellers_tab->{'name'}[intval($language['id_lang'])] = 'Sellers accounts';
+        }
+        $success = $success && $sellers_tab->add();
+        
+        $sellers_tab = new Tab();
+        $sellers_tab->id_parent = $tab->id;
+        $sellers_tab->position = 1;
+        $sellers_tab->module = $this->name;
+        $sellers_tab->class_name = 'AdminSellersProducts';
+        foreach ($languages AS $language)
+        {
+            $sellers_tab->{'name'}[intval($language['id_lang'])] = 'Sellers products';
+        }
+        $success = $success && $sellers_tab->add();
+        return $success;
     }
 
     private function _deleteTab()
     {
-        Db::getInstance()->delete('tab', 'module = `npsmarketplace`');
-        return true;
+        $tabs = Tab::getCollectionFromModule($this->name);
+        if (!empty($tabs))
+        {
+            foreach ($tabs as $tab)
+            {
+                $tab->delete();
+            }
+            return true;
+        }
+        return false;
     }
 
     /* Set database */
@@ -245,7 +267,9 @@ class NpsMarketplace extends Module
         $sellerTable = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'seller` (
                 `id_seller` int(10) unsigned NOT NULL AUTO_INCREMENT,
                 `id_customer` int(10) unsigned NOT NULL,
-                `state` varchar(10) NOT NULL,
+                `active` tinyint(1) NOT NULL,
+                `locked` tinyint(1) NOT NULL,
+                `requested` tinyint(1) NOT NULL,
                 `request_date` datetime,
                 `phone` varchar(16) NOT NULL,
                 `email` varchar(128) NOT NULL,
@@ -265,8 +289,15 @@ class NpsMarketplace extends Module
             KEY `id_seller` (`id_seller`)
             ) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8';
 
+        $sellerProductTable = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'seller_product` (
+            `id_seller` int(10) unsigned NOT NULL,
+            `id_product` int(10) unsigned NOT NULL,
+            KEY `id_seller` (`id_seller`),
+            KEY `id_product` (`id_product`)
+            ) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8';
+
         $instance = Db::getInstance();
-        if ($instance->Execute($sellerTable) && $instance->Execute($sellerLangTable))
+        if ($instance->Execute($sellerTable) && $instance->Execute($sellerLangTable) && $instance->Execute($sellerProductTable))
             return true;
         else
             return false;
