@@ -4,7 +4,7 @@ class NpsMarketplacePaymentSettingsModuleFrontController extends ModuleFrontCont
   public function initContent()
   {
     parent::initContent();
-    $this->setTemplate('payentsettings.tpl');
+    $this->setTemplate('PayentSettings.tpl');
   }
 }
 ?>

@@ -72,11 +72,11 @@ class NpsMarketplace extends Module
         $this->context->smarty->assign(
             array(
                 'account_state' => $account_state,
-                'seller_request_link' => $this->context->link->getModuleLink('npsmarketplace', 'accountrequest'),
-                'add_product_link' => $this->context->link->getModuleLink('npsmarketplace', 'addproduct'),
-                'products_list_link' => $this->context->link->getModuleLink('npsmarketplace', 'productslist'),
-                'orders_link' => $this->context->link->getModuleLink('npsmarketplace', 'orders'),
-                'payment_settings_link' => $this->context->link->getModuleLink('npsmarketplace', 'paymentsettings')
+                'seller_request_link' => $this->context->link->getModuleLink('npsmarketplace', 'AccountRequest'),
+                'add_product_link' => $this->context->link->getModuleLink('npsmarketplace', 'AddProduct'),
+                'products_list_link' => $this->context->link->getModuleLink('npsmarketplace', 'ProductsList'),
+                'orders_link' => $this->context->link->getModuleLink('npsmarketplace', 'Orders'),
+                'payment_settings_link' => $this->context->link->getModuleLink('npsmarketplace', 'PaymentSettings')
             )
         );
         return $this->display(__FILE__, 'npsmarketplace.tpl');

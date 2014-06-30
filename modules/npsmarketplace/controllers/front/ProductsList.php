@@ -24,10 +24,10 @@ class NpsMarketplaceProductsListModuleFrontController extends ModuleFrontControl
         $products = $this -> getProducts($seller);
 
         $this -> context -> smarty -> assign(array(
-            'add_product_link' => $this -> context -> link -> getModuleLink('npsmarketplace', 'addproduct'),
+            'add_product_link' => $this -> context -> link -> getModuleLink('npsmarketplace', 'AddProduct'),
             'products' => $products));
 
-        $this -> setTemplate('productslist.tpl');
+        $this -> setTemplate('ProductsList.tpl');
     }
 
     private function getProducts($seller = null) {

@@ -140,10 +140,10 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
         
         $categoriesList = new CategoriesList($this->context);
         $this -> context -> smarty -> assign('categories_tree', $categoriesList -> getTree());
-        $this -> context -> smarty -> assign('category_partial_tpl_path', _PS_MODULE_DIR_.'npsmarketplace/views/templates/front/category_tree_partial.tpl');
-        $this -> context -> smarty -> assign('product_fieldset_tpl_path', _PS_MODULE_DIR_.'npsmarketplace/views/templates/front/product_fieldset_partial.tpl');
+        $this -> context -> smarty -> assign('category_partial_tpl_path', _PS_MODULE_DIR_.'npsmarketplace/views/templates/front/CategoryTreePartial.tpl');
+        $this -> context -> smarty -> assign('product_fieldset_tpl_path', _PS_MODULE_DIR_.'npsmarketplace/views/templates/front/ProductFieldsetPartial.tpl');
 
-        $this -> setTemplate('accountrequest.tpl');
+        $this -> setTemplate('AccountRequest.tpl');
     }
 
  }
