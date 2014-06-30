@@ -129,6 +129,20 @@ class SellerCore extends ObjectModel
     }
 
     /**
+     * getProducts return an array of products which this seller belongs to
+     *
+     * @return array of products objects
+     */
+    public function getProducts()
+    {
+        $products = array();
+        $products_id = $this->getSellerProducts($this->id);
+        foreach ($products_id as $product_id)
+            $products[] = new Product($product_id);
+        return $products;
+    }
+
+    /**
      * getSellerProducts return an array of products which this seller belongs to
      *
      * @return array of products

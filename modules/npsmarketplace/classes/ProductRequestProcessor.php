@@ -9,6 +9,13 @@ class ProductRequestProcessor {
 
     public $errors = array();
 
+    public $context;
+
+    public function __construct(Context $context = null)
+    {
+        $this->context = $context;
+    }
+
     public function processAdd() {
         $product_name = trim(Tools::getValue('product_name'));
         $product_short_description = trim(Tools::getValue('product_short_description'));
@@ -18,6 +25,7 @@ class ProductRequestProcessor {
         $product_date = trim(Tools::getValue('product_date'));
         $product_time = trim(Tools::getValue('product_time'));
         $product_code = trim(Tools::getValue('product_code'));
+        $categories = $_POST['category'];
 
         if (!Validate::isGenericName($product_name))
             $this -> errors[] = Tools::displayError('Invalid product name');
@@ -35,11 +43,12 @@ class ProductRequestProcessor {
             $this -> errors[] = Tools::displayError('Invalid product time');
         else if (!Validate::isMessage($product_code))
             $this -> errors[] = Tools::displayError('Invalid product code');
-
-        $product = new Product();
+        else if (empty($categories))
+            $this -> errors[] = Tools::displayError('At least one category must be set');
+        
+        $product = new Product(null, false, $this->context->language->id, $this->context->shop->id, $this->context);
         $product -> price = $product_price;
         $product -> name = array((int)(Configuration::get('PS_LANG_DEFAULT')) => $product_name);
-        $product -> quantity = $product_amount;
         $product -> active = 0;
         $product -> description = array((int)(Configuration::get('PS_LANG_DEFAULT')) => $product_description);
         $product -> description_short = array((int)(Configuration::get('PS_LANG_DEFAULT')) => $product_short_description);
@@ -49,12 +58,14 @@ class ProductRequestProcessor {
         $product -> indexed = 1;
         $product -> id_tax_rules_group = 0;
         $product -> reference = $product_code;
+        $product -> id_category_default = $categories[0];
 
         if (empty($this -> errors)) {
             if (!$product->save())
                 $this->errors[] = Tools::displayError('An error occurred while saving product.');
             else 
-                if (!$product->addToCategories($_POST['category']))
+                StockAvailable::setQuantity($product->id, null, (int)$product_amount, $this->context->shop->id);
+                if (!$product->addToCategories($categories))
                     $this->errors[] = Tools::displayError('An error occurred while adding product to categories.');
                 else
                     $this->saveProductImages($product);

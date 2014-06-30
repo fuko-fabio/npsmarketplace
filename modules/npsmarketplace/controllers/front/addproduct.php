@@ -34,8 +34,7 @@ class NpsMarketplaceAddProductModuleFrontController extends ModuleFrontControlle
             && Tools::isSubmit('product_date')
             && Tools::isSubmit('product_time'))
         {
-            $pp = new ProductRequestProcessor();
-            $pp = new ProductRequestProcessor();
+            $pp = new ProductRequestProcessor($this->context);
             $product = $pp->processAdd();
             $this->errors = $pp->errors;
             if(empty($this->errors))
