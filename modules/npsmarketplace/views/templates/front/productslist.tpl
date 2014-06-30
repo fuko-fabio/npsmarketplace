@@ -28,7 +28,13 @@
                     <td>{$product['description']}</td>
                     <td>{$product['price']}</td>
                     <td>{$product['quantity']}</td>
-                    <td>{$product['active']}</td>
+                    <td>
+                        {if $product['active'] == 1}
+                        <i class="icon-check"></i>
+                        {else}
+                        <i class="icon-remove"></i>
+                        {/if}
+                    </td>
                     <td>
                         <div class="btn-group pull-right">
                             <a href="#" title="Edytuj" class="edit btn btn-default"><i class="icon-pencil"></i> Edit</a>

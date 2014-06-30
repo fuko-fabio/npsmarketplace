@@ -22,3 +22,9 @@
 !/classes
 /classes/*
 !/classes/Validate.php
+
+!/override
+/override/*
+!/override/classes
+/override/classes/*
+!/override/classes/Product.php
