@@ -11,29 +11,23 @@ class ProductRequestProcessor {
 
     public $context;
 
-    public function __construct(Context $context = null)
-    {
+    public function __construct(Context $context = null) {
         $this->context = $context;
     }
 
-    public function processAdd() {
-        $product_name = trim(Tools::getValue('product_name'));
-        $product_short_description = trim(Tools::getValue('product_short_description'));
-        $product_description = trim(Tools::getValue('product_description'));
+    public function processSubmit() {
+        $product_name = $_POST['product_name'];
+        $product_short_description = $_POST['product_short_description'];
+        $product_description = $_POST['product_description'];
         $product_price = trim(Tools::getValue('product_price'));
         $product_amount = trim(Tools::getValue('product_amount'));
         $product_date = trim(Tools::getValue('product_date'));
         $product_time = trim(Tools::getValue('product_time'));
         $product_code = trim(Tools::getValue('product_code'));
         $categories = $_POST['category'];
+        $link_rewrite = array();
 
-        if (!Validate::isGenericName($product_name))
-            $this -> errors[] = Tools::displayError('Invalid product name');
-        else if (!Validate::isMessage($product_short_description))
-            $this -> errors[] = Tools::displayError('Invalid product short description');
-        else if (!Validate::isMessage($product_description))
-            $this -> errors[] = Tools::displayError('Invalid product description');
-        else if (!Validate::isPhoneNumber($product_price))
+        if (!Validate::isPhoneNumber($product_price))
             $this -> errors[] = Tools::displayError('Invalid product price');
         else if (!Validate::isInt($product_amount))
             $this -> errors[] = Tools::displayError('Invalid product amount number');
@@ -45,15 +39,25 @@ class ProductRequestProcessor {
             $this -> errors[] = Tools::displayError('Invalid product code');
         else if (empty($categories))
             $this -> errors[] = Tools::displayError('At least one category must be set');
-        
-        $product = new Product(null, false, $this->context->language->id, $this->context->shop->id, $this->context);
+        foreach (Language::getLanguages() as $key => $lang) {
+            $p_name = $product_name[$lang['id_lang']];
+            if (!Validate::isGenericName($p_name))
+                $this -> errors[] = Tools::displayError('Invalid '.$lang->name.' product name');
+            else if (!Validate::isCleanHtml($product_short_description[$lang['id_lang']]))
+                $this -> errors[] = Tools::displayError('Invalid '.$lang->name.' product short description');
+            else if (!Validate::isCleanHtml($product_description[$lang['id_lang']]))
+                $this -> errors[] = Tools::displayError('Invalid '.$lang->name.' product description');
+
+            $link_rewrite[$lang['id_lang']] = Tools::link_rewrite($p_name);
+        }
+        $product = new Product((int)Tools::getValue('id_product', null));
         $product -> price = $product_price;
-        $product -> name = array((int)(Configuration::get('PS_LANG_DEFAULT')) => $product_name);
+        $product -> name = $product_name;
         $product -> active = 0;
-        $product -> description = array((int)(Configuration::get('PS_LANG_DEFAULT')) => $product_description);
-        $product -> description_short = array((int)(Configuration::get('PS_LANG_DEFAULT')) => $product_short_description);
+        $product -> description = $product_description;
+        $product -> description_short = $product_short_description;
         $product -> available_date = $product_date;
-        $product -> link_rewrite = array((int)(Configuration::get('PS_LANG_DEFAULT')) => Tools::link_rewrite($product_name));
+        $product -> link_rewrite = $link_rewrite;
         $product -> is_virtual = true;
         $product -> indexed = 1;
         $product -> id_tax_rules_group = 0;
@@ -65,7 +69,7 @@ class ProductRequestProcessor {
                 $this->errors[] = Tools::displayError('An error occurred while saving product.');
             else 
                 StockAvailable::setQuantity($product->id, null, (int)$product_amount, $this->context->shop->id);
-                if (!$product->addToCategories($categories))
+                if (!$product->updateCategories($categories))
                     $this->errors[] = Tools::displayError('An error occurred while adding product to categories.');
                 else
                     $this->saveProductImages($product);
@@ -164,6 +168,5 @@ class ProductRequestProcessor {
             }
         }
     }
-
 }
 ?>

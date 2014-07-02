@@ -76,13 +76,15 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
 
             if(empty($this->errors))
             {
+                $productAdded = false;
                 $seller->save();
                 if (Tools::getValue('add_product') == 'on')
                 {
-                    $pp = new ProductRequestProcessor();
-                    $product = $pp->processAdd();
+                    $pp = new ProductRequestProcessor($this->context);
+                    $product = $pp->processSubmit();
                     $this->errors = $pp->errors;
                     $seller->assignProduct($product->id);
+                    $productAdded = true;
                 }
                 $mail_params = array(
                     '{lastname}' => $customer->lastname,
@@ -94,6 +96,11 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
                     $this->context->smarty->assign(array('confirmation' => 2, 'customer_email' => $customer->email));
                 else
                    $this->errors[] = Tools::displayError('An error occurred while sending the email.');
+
+                if ($productAdded)
+                    Tools::redirect('index.php?controller=my-account');
+                else 
+                    Tools::redirect('index.php?fc=module&module=npsmarketplace&controller=ProductsList');
             }
         }
     }
@@ -129,19 +136,24 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
                     $account_state = 'locked';
             }
         }
+
+        $categoriesList = new CategoriesList($this->context);
+        $tpl_product = array('categories' => array());
+
         $this -> context -> smarty -> assign(
             array(
                 'account_state' => $account_state,
                 'account_request_date' => $date,
+                'product' => $tpl_product,
+                'current_id_lang' => (int)$this->context->language->id,
+                'languages' => Language::getLanguages(),
                 'user_agreement_url' => '#', #TODO Set real url's
-                'processing_data_url' => '#'
+                'processing_data_url' => '#',
+                'categories_tree' => $categoriesList -> getTree(),
+                'category_partial_tpl_path' => _PS_MODULE_DIR_.'npsmarketplace/views/templates/front/category_tree_partial.tpl',
+                'product_fieldset_tpl_path'=> _PS_MODULE_DIR_.'npsmarketplace/views/templates/front/product_form.tpl'
             )
         );
-        
-        $categoriesList = new CategoriesList($this->context);
-        $this -> context -> smarty -> assign('categories_tree', $categoriesList -> getTree());
-        $this -> context -> smarty -> assign('category_partial_tpl_path', _PS_MODULE_DIR_.'npsmarketplace/views/templates/front/CategoryTreePartial.tpl');
-        $this -> context -> smarty -> assign('product_fieldset_tpl_path', _PS_MODULE_DIR_.'npsmarketplace/views/templates/front/ProductFieldsetPartial.tpl');
 
         $this -> setTemplate('AccountRequest.tpl');
     }

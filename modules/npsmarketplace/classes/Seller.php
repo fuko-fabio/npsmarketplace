@@ -162,5 +162,23 @@ class SellerCore extends ObjectModel
 
         return $ret;
     }
+
+    /**
+     * customerHasProduct checks if given product is assigned to customer
+     *
+     * @param id_seller seller id
+     * @param id_product product id
+     * @return boolean true if product is assigned to user
+     */
+    public static function sellerHasProduct($id_seller, $id_product)
+    {
+        $result = Db::getInstance(_PS_USE_SQL_SLAVE_)->getValue('
+            SELECT `id_seller`
+            FROM `'._DB_PREFIX_.'seller_product`
+            WHERE `id_seller` = '.(int)$id_seller.'
+            AND `id_product` = '.(int)$id_product);
+
+        return isset($result);
+    }
 }
 

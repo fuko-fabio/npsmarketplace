@@ -1,10 +1,10 @@
 <?php
-class NpsMarketplaceOrdersModuleFrontController extends ModuleFrontController
+class NpsOrdersModuleFrontController extends ModuleFrontController
 {
   public function initContent()
   {
     parent::initContent();
-    $this->setTemplate('Orders.tpl');
+    $this->setTemplate('orders.tpl');
   }
 }
 ?>

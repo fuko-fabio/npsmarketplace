@@ -37,7 +37,7 @@
                     </td>
                     <td>
                         <div class="btn-group pull-right">
-                            <a href="#" title="Edytuj" class="edit btn btn-default"><i class="icon-pencil"></i> Edit</a>
+                            <a href="{$product.edit_url}" title="Edytuj" class="edit btn btn-default"><i class="icon-pencil"></i> Edit</a>
                             <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                                 <i class="icon-caret-down"></i>
                             </button>

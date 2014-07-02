@@ -23,7 +23,6 @@ $(document).ready(function(){
             "</div>"
     });*/
 // 
-
     $('#datePicker').datetimepicker({
         pickTime: false
     });

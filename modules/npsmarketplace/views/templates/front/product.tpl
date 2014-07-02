@@ -3,7 +3,11 @@
 		{l s='My account'}
 	</a>
 	<span class="navigation-pipe">{$navigationPipe}</span>
-	<span class="navigation_page">{l s='Add product'}</span>
+    {if isset($product['id'])}
+    <span class="navigation_page">{l s='Edit product'}</span>
+    {else}
+    <span class="navigation_page">{l s='Add product'}</span>
+    {/if}
 {/capture}
 {include file="$tpl_dir./errors.tpl"}
 
@@ -19,7 +23,11 @@
         </ul>
         </br>
         <p class="submit">
+            {if isset($product['id'])}
+            <button type="submit" class="btn btn-default button button-medium"><span>{l s='Save' mod='npsmarketplace'}<i class="icon-save right"></i></span></button>
+            {else}
             <button type="submit" class="btn btn-default button button-medium"><span>{l s='Add' mod='npsmarketplace'}<i class="icon-plus right"></i></span></button>
+            {/if}
         </p>
     </form>
 </div>

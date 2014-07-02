@@ -39,10 +39,11 @@ class NpsMarketplaceProductsListModuleFrontController extends ModuleFrontControl
             $result[] = array(
                 'cover' => $link->getImageLink($product->link_rewrite, $cover['id_image'], 'cart_default'),
                 'name' => Product::getProductName($product->id),
-                'description' => '',
+                'description' => $product->description_short[$this->context->language->id],
                 'price' => $product->getPrice(),
                 'quantity' => Product::getQuantity($product->id),
-                'active' => $product->active
+                'active' => $product->active,
+                'edit_url' => $this->context->link->getModuleLink('npsmarketplace', 'Product', array('id_product' => $product->id))
             );
         }
         return $result;
