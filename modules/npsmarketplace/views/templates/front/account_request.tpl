@@ -17,45 +17,7 @@
     {/if}
     {if $account_state == 'none'}
     <form enctype="multipart/form-data" role="form" action="{$request_uri}" method="post" id="formaccountrequest">
-        <fieldset id="seller_profile">
-            <h3 class="page-heading bottom-indent">{l s='Seller profile' mod='npsmarketplace'}</h3>
-            <div class="form-group">
-                <label for="">{l s='Company Logo' mod='npsmarketplace'}</label></br>
-                <input id="company_logo" type="file" name="logo">
-            </div>
-            <div class="form-group">
-                <label class="required" for="company_name">{l s='Company Name' mod='npsmarketplace'}</label>
-                <input class="is_required validate form-control" data-validate="isGenericName" type="text" id="company_name" name="company_name" required=""/>
-            </div>
-            <div class="form-group">
-                <label class="required" for="company_description">{l s='Company Description' mod='npsmarketplace'}</label>
-                <textarea class="validate form-control" data-validate="isMessage" id="company_description" name="company_description" rows="6"></textarea>
-            </div>
-            <div class="form-group">
-                <label class="required" for="seller_name">{l s='Seller Name' mod='npsmarketplace'}</label>
-                <input class="is_required validate form-control" data-validate="isGenericName" type="text" id="seller_name" name="seller_name" required=""/>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-6">
-                    <label class="required" for="seller_phone">{l s='Phone Number' mod='npsmarketplace'}</label>
-                    <input class="is_required validate form-control" data-validate="isPhoneNumber" type="tel" id="seller_phone" name="seller_phone" required=""/>
-                </div>
-                <div class="form-group col-md-6">
-                    <label class="required" for="seller_email">{l s='Buisness Email' mod='npsmarketplace'}</label>
-                    <input class="is_required validate form-control" data-validate="isEmail" type="text" id="seller_email" name="seller_email" required=""/>
-                </div>
-             </div>
-             <div class="row">
-                <div class="form-group col-md-6">
-                    <label class="required" for="seller_nip">{l s='NIP' mod='npsmarketplace'}</label>
-                    <input class="is_required validate form-control" data-validate="isNip" type="number" id="seller_nip" name="seller_nip" required=""/>
-                </div>
-                <div class="form-group col-md-6">
-                    <label class="required" for="seller_regon">{l s='Regon' mod='npsmarketplace'}</label>
-                    <input class="is_required validate form-control" data-validate="isRegon" type="number" id="seller_regon" name="seller_regon" required=""/>
-                </div>
-             </div>
-        </fieldset>
+        {include file="$seller_fieldset_tpl_path"}
         <div class="page-heading"></div>
         <p class="info-title">{l s='You can add now you first offer to our system. This offer will be available ony for our administrators an it can help you to get your account active faster.' mod='npsmarketplace'}</p>
         <p class="checkbox">

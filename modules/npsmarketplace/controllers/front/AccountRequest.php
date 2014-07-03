@@ -5,8 +5,8 @@
 *  @license    
 */
 
-include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/CategoriesList.php');
+include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/SellerRequestProcessor.php');
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/ProductRequestProcessor.php');
 
 class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontController {
@@ -35,57 +35,19 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
             && Tools::isSubmit('seller_nip')
             && Tools::isSubmit('seller_regon'))
         {
-            $company_name = trim(Tools::getValue('company_name'));
-            $name = trim(Tools::getValue('seller_name'));
-            $phone =  trim(Tools::getValue('seller_phone'));
-            $email = trim(Tools::getValue('seller_email'));
-            $nip = trim(Tools::getValue('seller_nip'));
-            $regon = trim(Tools::getValue('seller_regon'));
-            $company_description = trim(Tools::getValue('company_description'));
-            $companyLogo = trim(Tools::getValue('company_logo'));
-
-            if ($company_description != '' && !Validate::isMessage($company_description))
-                $this->errors[] = Tools::displayError('Your company description contains invalid characters.');
-            else if (!Validate::isName($company_name))
-                $this->errors[] = Tools::displayError('Invalid company name');
-            else if (!Validate::isName($name))
-                $this->errors[] = Tools::displayError('Invalid seller name');
-            else if (!Validate::isPhoneNumber($phone))
-                $this->errors[] = Tools::displayError('Invalid phone number');
-            else if (!Validate::isEmail($email))
-                $this->errors[] = Tools::displayError('Invalid email addres');
-            else if (!Validate::isNip($nip))
-                $this->errors[] = Tools::displayError('Invalid NIP number');
-            else if (!Validate::isRegon($regon))
-                $this->errors[] = Tools::displayError('Invalid REGON number');
-
-            $customer = $this->context->customer;
-
-            $seller = new SellerCore();
-            $seller->id_customer = $customer->id;
-            $seller->company_name = array((int)(Configuration::get('PS_LANG_DEFAULT')) => $company_name);
-            $seller->company_description = array((int)(Configuration::get('PS_LANG_DEFAULT')) => $company_description);
-            $seller->name = array((int)(Configuration::get('PS_LANG_DEFAULT')) => $name);
-            $seller->phone = $phone;
-            $seller->email = $email;
-            $seller->nip = $nip;
-            $seller->regon = $regon;
-            $seller->commision = Configuration::get('GLOBAL_COMMISION');
-            $seller->request_date = date("Y-m-d");
-            $seller->requested = true;
-
+            $sp = new SellerRequestProcessor($this->context);
+            $seller = $sp->processSubmit();
+            $this->errors = $pp->errors;
             if(empty($this->errors))
             {
-                $productAdded = false;
-                $seller->save();
                 if (Tools::getValue('add_product') == 'on')
                 {
                     $pp = new ProductRequestProcessor($this->context);
                     $product = $pp->processSubmit();
                     $this->errors = $pp->errors;
                     $seller->assignProduct($product->id);
-                    $productAdded = true;
                 }
+                $customer = $this->context->customer;
                 $mail_params = array(
                     '{lastname}' => $customer->lastname,
                     '{firstname}' => $customer->firstname,
@@ -97,10 +59,7 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
                 else
                    $this->errors[] = Tools::displayError('An error occurred while sending the email.');
 
-                if ($productAdded)
-                    Tools::redirect('index.php?controller=my-account');
-                else 
-                    Tools::redirect('index.php?fc=module&module=npsmarketplace&controller=ProductsList');
+                Tools::redirect('index.php?controller=my-account');
             }
         }
     }
@@ -151,11 +110,12 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
                 'processing_data_url' => '#',
                 'categories_tree' => $categoriesList -> getTree(),
                 'category_partial_tpl_path' => _PS_MODULE_DIR_.'npsmarketplace/views/templates/front/category_tree_partial.tpl',
-                'product_fieldset_tpl_path'=> _PS_MODULE_DIR_.'npsmarketplace/views/templates/front/product_form.tpl'
+                'product_fieldset_tpl_path'=> _PS_MODULE_DIR_.'npsmarketplace/views/templates/front/product_fieldset.tpl',
+                'seller_fieldset_tpl_path' => _PS_MODULE_DIR_.'npsmarketplace/views/templates/front/seller_fieldset.tpl',
             )
         );
 
-        $this -> setTemplate('AccountRequest.tpl');
+        $this -> setTemplate('account_request.tpl');
     }
 
  }

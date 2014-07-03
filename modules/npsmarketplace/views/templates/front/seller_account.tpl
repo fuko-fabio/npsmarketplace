@@ -6,8 +6,17 @@
 	<span class="navigation_page">{l s='Shop Profile'}</span>
 {/capture}
 {include file="$tpl_dir./errors.tpl"}
-<h1 class="page-heading bottom-indent">{l s='My Shop Profile'}</h1>
-<p class="info-title">{l s='Shop configuration.'}</p>
+<div class="box">
+    {include file="$tpl_dir./errors.tpl"}
+    <h1 class="page-heading bottom-indent">{l s='My Shop Profile' mod='npsmarketplace'}</h1>
+
+    <form enctype="multipart/form-data" role="form" action="{$request_uri}" method="post" id="selleraccount">
+        {include file="$seller_fieldset_tpl_path"}
+        <p class="submit">
+            <button type="submit" class="btn btn-default button button-medium"><span>{l s='Save' mod='npsmarketplace'}<i class="icon-save right"></i></span></button>
+        </p>
+    </form>
+</div>
 
 <ul class="footer_links clearfix">
 	<li>

@@ -1,5 +1,5 @@
 <?php
-class NpsOrdersModuleFrontController extends ModuleFrontController
+class NpsMarketplaceOrdersModuleFrontController extends ModuleFrontController
 {
   public function initContent()
   {

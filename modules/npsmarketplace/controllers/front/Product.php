@@ -13,7 +13,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
 {
 
         /**
-     * @var Address Current address
+     * @var _product Current product
      */
     protected $_product;
 
@@ -56,7 +56,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
     }
 
     /**
-     * Initialize address controller
+     * Initialize product controller
      * @see FrontController::init()
      */
     public function init()
@@ -110,7 +110,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
             'user_agreement_url' =>'#',
             'categories_tree' => $categoriesList -> getTree(),
             'category_partial_tpl_path' =>_PS_MODULE_DIR_.'npsmarketplace/views/templates/front/category_tree_partial.tpl',
-            'product_fieldset_tpl_path'=> _PS_MODULE_DIR_.'npsmarketplace/views/templates/front/product_form.tpl',
+            'product_fieldset_tpl_path'=> _PS_MODULE_DIR_.'npsmarketplace/views/templates/front/product_fieldset.tpl',
             'product' => $tpl_product,
             'current_id_lang' => (int)$this->context->language->id,
             'languages' => Language::getLanguages()

@@ -5,6 +5,8 @@
 *  @license    
 */
 
+define('_NPS_SEL_IMG_DIR_',           _PS_IMG_DIR_.'seller/');
+
 class SellerCore extends ObjectModel
 {
     /** @var integer id */
@@ -49,6 +51,12 @@ class SellerCore extends ObjectModel
     /** @var string Company description */
     public $company_description;
 
+    /** @var string Friendly URL */
+    public $link_rewrite;
+
+    /** @var string id_image is the seller ID when an image exists and 'default' otherwise */
+    public $id_image = 'default';
+
     public function __construct($id_seller = null, $id_customer = null)
     {
         if (empty($id_seller) && !empty($id_customer))
@@ -62,6 +70,9 @@ class SellerCore extends ObjectModel
                 $id_seller = $result[0]['id_seller'];
         }
         parent::__construct($id_seller);
+
+        $this->id_image = ($this->id && file_exists(_NPS_SEL_IMG_DIR_.(int)$this->id.'.jpg')) ? (int)$this->id : false;
+        $this->image_dir = _NPS_SEL_IMG_DIR_;
     }
 
     /**
@@ -82,11 +93,11 @@ class SellerCore extends ObjectModel
             'nip' =>                 array('type' => self::TYPE_INT,    'validate' => 'isNip',         'required' => true),
             'regon' =>               array('type' => self::TYPE_INT,    'validate' => 'isRegon',       'required' => true),
             'commision' =>           array('type' => self::TYPE_INT,    'validate' => 'isUnsignedInt', 'required' => true),
-
              // Lang fields
+            'link_rewrite' =>        array('type' => self::TYPE_STRING, 'validate' => 'isLinkRewrite', 'required' => true, 'lang' => true, 'size' => 128),
             'name' =>                array('type' => self::TYPE_STRING, 'validate' => 'isGenericName', 'required' => true, 'lang' => true, 'size' => 128),
-            'company_description' => array('type' => self::TYPE_STRING, 'validate' => 'isCleanHtml',   'required' => true,'lang' => true),
-            'company_name' =>        array('type' => self::TYPE_STRING, 'validate' => 'isGenericName', 'required' => true,'lang' => true),
+            'company_description' => array('type' => self::TYPE_STRING, 'validate' => 'isCleanHtml',   'required' => true, 'lang' => true),
+            'company_name' =>        array('type' => self::TYPE_STRING, 'validate' => 'isGenericName', 'required' => true, 'lang' => true),
         ),
         'associations' => array(
             'customer' => array('type' => self::HAS_ONE,  'field' => 'id_customer', 'object' => 'Customer'),

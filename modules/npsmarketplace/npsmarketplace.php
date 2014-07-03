@@ -4,6 +4,9 @@
 *  @copyright  nps software
 *  @license    
 */
+
+ include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
+
 if ( !defined( '_PS_VERSION_' ) )
 	exit;
 class NpsMarketplace extends Module
@@ -27,9 +30,9 @@ class NpsMarketplace extends Module
     {
         if (!parent::install() 
             || !$this->registerHook('displayCustomerAccount')
-            || !Configuration::updateValue('GLOBAL_COMMISION', 0)
-            || !Configuration::updateValue('AUTO_ENABLE_SELLER_ACCOUNT', 0)
-            || !Configuration::updateValue('EMAIL_ADDRESS', '')
+            || !Configuration::updateValue('NPS_GLOBAL_COMMISION', 0)
+            || !Configuration::updateValue('NPS_AUTO_ENABLE_SELLER_ACCOUNT', 0)
+            || !Configuration::updateValue('NPS_EMAIL_ADDRESS', '')
             || !$this->_createTables()
             || !$this->_createTab())
             return false;
@@ -39,9 +42,9 @@ class NpsMarketplace extends Module
     public function uninstall()
     {
         if (!parent::uninstall() 
-            || !Configuration::deleteByName('GLOBAL_COMMISION')
-            || !Configuration::deleteByName('AUTO_ENABLE_SELLER_ACCOUNT')
-            || !Configuration::deleteByName('EMAIL_ADDRESS')
+            || !Configuration::deleteByName('NPS_GLOBAL_COMMISION')
+            || !Configuration::deleteByName('NPS_AUTO_ENABLE_SELLER_ACCOUNT')
+            || !Configuration::deleteByName('NPS_EMAIL_ADDRESS')
             || !$this->_deleteTab())
             return false;
         return true;
@@ -49,26 +52,15 @@ class NpsMarketplace extends Module
 
     public function hookDisplayCustomerAccount( $params )
     {
-        $id_customer = $this->context->customer->id;
-        $query = new DbQuery();
-        $query
-            -> select('*')
-            -> from('seller')
-            -> where('`id_customer` = '.$id_customer);
-        $account_state = 'none';
-        if ($result = Db::getInstance() -> executeS($query))
-        {
-            $active = $result[0]['active'];
-            $locked = $result[0]['locked'];
-            $requested = $result[0]['requested'];
-            if ($requested == 1 && $active == 0 && $locked == 0)
-                $account_state = 'requested';
-            else if ($requested == 1 && $active == 1 && $locked == 0)
-                $account_state = 'active';
-            else if ($requested == 1 && $locked == 1)
-                $account_state = 'locked';
-        }
-        
+        $seller = new SellerCore(null, $this->context->customer->id);
+
+        if ($seller->requested == 1 && $seller->active == 0 && $seller->locked == 0)
+            $account_state = 'requested';
+        else if ($seller->requested == 1 && $seller->active == 1 && $seller->locked == 0)
+            $account_state = 'active';
+        else if ($seller->requested == 1 && $seller->locked == 1)
+            $account_state = 'locked';
+
         $this->context->smarty->assign(
             array(
                 'account_state' => $account_state,
@@ -78,7 +70,7 @@ class NpsMarketplace extends Module
                 'orders_link' => $this->context->link->getModuleLink('npsmarketplace', 'Orders'),
                 'payment_settings_link' => $this->context->link->getModuleLink('npsmarketplace', 'PaymentSettings'),
                 'unlock_account_link' => $this->context->link->getModuleLink('npsmarketplace', 'UnlockAccount'),
-                '$my_shop_profile_link' => $this->context->link->getModuleLink('npsmarketplace', 'MyShop')
+                'seller_profile_link' => $this->context->link->getModuleLink('npsmarketplace', 'SellerAccount', array('id_seller' => $seller->id))
             )
         );
         return $this->display(__FILE__, 'npsmarketplace.tpl');
@@ -90,11 +82,11 @@ class NpsMarketplace extends Module
     
         if (Tools::isSubmit('submit'.$this->name))
         {
-            $global_commision = Tools::getValue('GLOBAL_COMMISION');
-            $auto_enable_seller_accont = Tools::getValue('AUTO_ENABLE_SELLER_ACCOUNT');
-            $email = Tools::getValue('EMAIL_ADDRESS');
+            $NPS_GLOBAL_COMMISION = Tools::getValue('NPS_GLOBAL_COMMISION');
+            $auto_enable_seller_accont = Tools::getValue('NPS_AUTO_ENABLE_SELLER_ACCOUNT');
+            $email = Tools::getValue('NPS_EMAIL_ADDRESS');
 
-            if (!$global_commision || !Validate::isInt($global_commision))
+            if (!$NPS_GLOBAL_COMMISION || !Validate::isInt($NPS_GLOBAL_COMMISION))
             {
                 $output .= $this->displayError($this->l('Invalid global commision value. Must be a number'));
             }
@@ -108,9 +100,9 @@ class NpsMarketplace extends Module
             }
             else
             {
-                Configuration::updateValue('GLOBAL_COMMISION', $global_commision);
-                Configuration::updateValue('AUTO_ENABLE_SELLER_ACCOUNT', $auto_enable_seller_accont);
-                Configuration::updateValue('EMAIL_ADDRESS', $email);
+                Configuration::updateValue('NPS_GLOBAL_COMMISION', $NPS_GLOBAL_COMMISION);
+                Configuration::updateValue('NPS_AUTO_ENABLE_SELLER_ACCOUNT', $auto_enable_seller_accont);
+                Configuration::updateValue('NPS_EMAIL_ADDRESS', $email);
 	            $output .= $this->displayConfirmation($this->l('Settings updated'));
 	        }
 	    }
@@ -131,14 +123,14 @@ class NpsMarketplace extends Module
 	             array(
 	                'type' => 'text',
 	                'label' => $this->l('Global commision(%)'),
-	                'name' => 'GLOBAL_COMMISION',
+	                'name' => 'NPS_GLOBAL_COMMISION',
 	                'size' => 20,
 					'required' => true
 	            ),
                 array(
                     'type' => 'switch',
                     'label' => $this->l('Auto enable seller account'),
-                    'name' => 'AUTO_ENABLE_SELLER_ACCOUNT',
+                    'name' => 'NPS_AUTO_ENABLE_SELLER_ACCOUNT',
                     'is_bool' => true,
                     'desc' => $this->l('For all registered users seller account will be enabled by default'),
                     'values' => array(
@@ -157,7 +149,7 @@ class NpsMarketplace extends Module
                 array(
                     'type' => 'text',
                     'label' => $this->l('Email address'),
-                    'name' => 'EMAIL_ADDRESS',
+                    'name' => 'NPS_EMAIL_ADDRESS',
                     'desc' => $this->l('Seller requests account will be sent to this e-mail address.'),
                     'size' => 20,
                     'required' => true
@@ -207,9 +199,9 @@ class NpsMarketplace extends Module
 	public function getConfigFieldsValues()
 	{
 		return array(
-			'AUTO_ENABLE_SELLER_ACCOUNT' => Tools::getValue('AUTO_ENABLE_SELLER_ACCOUNT', Configuration::get('AUTO_ENABLE_SELLER_ACCOUNT')),
-			'GLOBAL_COMMISION' => Tools::getValue('GLOBAL_COMMISION', Configuration::get('GLOBAL_COMMISION')),
-			'EMAIL_ADDRESS' => Tools::getValue('EMAIL_ADDRESS', Configuration::get('EMAIL_ADDRESS')),
+			'NPS_AUTO_ENABLE_SELLER_ACCOUNT' => Tools::getValue('NPS_AUTO_ENABLE_SELLER_ACCOUNT', Configuration::get('NPS_AUTO_ENABLE_SELLER_ACCOUNT')),
+			'NPS_GLOBAL_COMMISION' => Tools::getValue('NPS_GLOBAL_COMMISION', Configuration::get('NPS_GLOBAL_COMMISION')),
+			'NPS_EMAIL_ADDRESS' => Tools::getValue('NPS_EMAIL_ADDRESS', Configuration::get('NPS_EMAIL_ADDRESS')),
 		);
 	}
 
@@ -287,6 +279,7 @@ class NpsMarketplace extends Module
             `company_name` varchar(64) NOT NULL,
             `company_description` text,
             `name` varchar(128) NOT NULL,
+            `link_rewrite` varchar(128) NOT NULL,
             `id_lang` int(10) unsigned NOT NULL,
             KEY `id_seller` (`id_seller`)
             ) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8';
@@ -298,8 +291,16 @@ class NpsMarketplace extends Module
             KEY `id_product` (`id_product`)
             ) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8';
 
+        $alterImageType = 'ALTER TABLE  `'._DB_PREFIX_.'image_type` ADD  `sellers` TINYINT( 1 ) NOT NULL AFTER  `stores`';
+
+        $updateImageType = 'UPDATE `'._DB_PREFIX_.'image_type` SET  `sellers` =  1 WHERE  `'._DB_PREFIX_.'image_type`.`id_image_type` IN (1, 2, 3, 4, 5)';
+
         $instance = Db::getInstance();
-        if ($instance->Execute($sellerTable) && $instance->Execute($sellerLangTable) && $instance->Execute($sellerProductTable))
+        if ($instance->Execute($sellerTable)
+            && $instance->Execute($sellerLangTable)
+            && $instance->Execute($sellerProductTable)
+            && $instance->Execute($alterImageType)
+            && $instance->Execute($updateImageType))
             return true;
         else
             return false;
