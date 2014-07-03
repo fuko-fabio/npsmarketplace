@@ -5,7 +5,6 @@
 *  @license    
 */
 
-define('_NPS_SEL_IMG_DIR_',           _PS_IMG_DIR_.'seller/');
 
 class SellerCore extends ObjectModel
 {

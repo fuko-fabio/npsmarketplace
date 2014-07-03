@@ -4,6 +4,7 @@
 *  @copyright  
 *  @license    
 */
+define('_NPS_SEL_IMG_DIR_', _PS_IMG_DIR_.'seller/');
 
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/SellerRequestProcessor.php');
 
@@ -85,10 +86,14 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
 
     protected function postImage($id)
     {
-        $ret = parent::postImage($id);
-        if (($id_category = (int)Tools::getValue('id_category')) &&
-            isset($_FILES) && count($_FILES) && $_FILES['image']['name'] != null &&
-            file_exists(_PS_CAT_IMG_DIR_.$id_category.'.jpg'))
+        $fieldImageSettings = array(
+            'name' => 'image',
+            'dir' => 'c'
+        );
+        $ret = $this->uploadImage($this->_seller->id, $fieldImageSettings['name'], $fieldImageSettings['dir'].'/');
+
+        if (isset($_FILES) && count($_FILES) && $_FILES['image']['name'] != null &&
+            file_exists(_NPS_SEL_IMG_DIR_.$this->_seller->id.'.jpg'))
         {
             $images_types = ImageType::getImagesTypes('categories');
             foreach ($images_types as $k => $image_type)
@@ -102,6 +107,48 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
         }
 
         return $ret;
+    }
+
+    protected function uploadImage($id, $name, $dir, $ext = false, $width = null, $height = null)
+    {
+        if (isset($_FILES[$name]['tmp_name']) && !empty($_FILES[$name]['tmp_name']))
+        {
+            // Delete old image
+            if (Validate::isLoadedObject($object = $this->loadObject()))
+                $object->deleteImage();
+            else
+                return false;
+
+            // Check image validity
+            $max_size = isset($this->max_image_size) ? $this->max_image_size : 0;
+            if ($error = ImageManager::validateUpload($_FILES[$name], Tools::getMaxUploadSize($max_size)))
+                $this->errors[] = $error;
+
+            $tmp_name = tempnam(_PS_TMP_IMG_DIR_, 'PS');
+            if (!$tmp_name)
+                return false;
+
+            if (!move_uploaded_file($_FILES[$name]['tmp_name'], $tmp_name))
+                return false;
+
+            // Evaluate the memory required to resize the image: if it's too much, you can't resize it.
+            if (!ImageManager::checkImageMemoryLimit($tmp_name))
+                $this->errors[] = Tools::displayError('Due to memory limit restrictions, this image cannot be loaded. Please increase your memory_limit value via your server\'s configuration settings. ');
+
+            // Copy new image
+            if (empty($this->errors) && !ImageManager::resize($tmp_name, _PS_IMG_DIR_.$dir.$id.'.'.$this->imageType, (int)$width, (int)$height, ($ext ? $ext : $this->imageType)))
+                $this->errors[] = Tools::displayError('An error occurred while uploading the image.');
+
+            if (count($this->errors))
+                return false;
+            if ($this->afterImageUpload())
+            {
+                unlink($tmp_name);
+                return true;
+            }
+            return false;
+        }
+        return true;
     }
 }
 ?>
