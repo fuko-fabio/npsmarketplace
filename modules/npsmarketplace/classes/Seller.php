@@ -5,7 +5,6 @@
 *  @license    
 */
 
-
 class SellerCore extends ObjectModel
 {
     /** @var integer id */
@@ -53,9 +52,6 @@ class SellerCore extends ObjectModel
     /** @var string Friendly URL */
     public $link_rewrite;
 
-    /** @var string id_image is the seller ID when an image exists and 'default' otherwise */
-    public $id_image = 'default';
-
     public function __construct($id_seller = null, $id_customer = null)
     {
         if (empty($id_seller) && !empty($id_customer))
@@ -69,8 +65,6 @@ class SellerCore extends ObjectModel
                 $id_seller = $result[0]['id_seller'];
         }
         parent::__construct($id_seller);
-
-        $this->id_image = ($this->id && file_exists(_NPS_SEL_IMG_DIR_.(int)$this->id.'.jpg')) ? (int)$this->id : false;
         $this->image_dir = _NPS_SEL_IMG_DIR_;
     }
 
@@ -189,6 +183,10 @@ class SellerCore extends ObjectModel
             AND `id_product` = '.(int)$id_product);
 
         return isset($result);
+    }
+
+    public function getImgFormat() {
+        return $this->image_format;
     }
 }
 

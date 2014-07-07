@@ -1,4 +1,9 @@
 <?php
+/*
+*  @author Norbert Pabian
+*  @copyright  
+*  @license    
+*/
 
 class Product extends ProductCore
 {

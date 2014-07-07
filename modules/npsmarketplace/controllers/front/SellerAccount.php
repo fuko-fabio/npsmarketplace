@@ -4,7 +4,6 @@
 *  @copyright  
 *  @license    
 */
-define('_NPS_SEL_IMG_DIR_', _PS_IMG_DIR_.'seller/');
 
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/SellerRequestProcessor.php');
 
@@ -29,8 +28,10 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
             $this->errors = $sp->errors;
             if(empty($this->errors))
             {
-                $this->saveAccountImage();
-                Tools::redirect('index.php?controller=my-account');
+                if ($this->postImage())
+                    Tools::redirect('index.php?controller=my-account');
+                else
+                    $this -> errors[] = Tools::displayError('Unable to save seller logo');
             }
         }
     }
@@ -51,11 +52,11 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
 
     public function initContent() {
         parent::initContent();
-
         $tpl_seller = array();
-        if (isset($this -> _seller -> id))
+        if (isset($this -> _seller -> id)) {
             $tpl_seller = array(
                 'id' => $this -> _seller -> id,
+                'image' => $this->getSellerImgLink('medium_default'),
                 'name' => $this -> _seller -> name,
                 'company_name' => $this -> _seller -> company_name,
                 'company_description' => $this -> _seller -> company_description,
@@ -67,6 +68,7 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
                 'request_date' => $this -> _seller -> request_date,
                 'commision' => $this -> _seller -> commision,
             );
+        }
         $this -> context -> smarty -> assign(array(
             'seller' => $tpl_seller,
             'current_id_lang' => (int)$this -> context -> language -> id,
@@ -77,50 +79,48 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
         $this -> setTemplate('seller_account.tpl');
     }
 
-    private function saveAccountImage() {
-        $image_uploader = new HelperImageUploader('seller');
-        $image_uploader -> setAcceptTypes(array('jpeg', 'gif', 'png', 'jpg')) -> setMaxSize((int)Configuration::get('PS_PRODUCT_PICTURE_MAX_SIZE'));
-        $files = $image_uploader -> process();
-        d($files);
+    public function getSellerImgLink($type = null)
+    {
+        if ($this->_seller->id) {
+            if($type)
+                $uri_path = _THEME_SEL_DIR_.$this->_seller->id.'-'.$type.'.jpg';
+            else
+                $uri_path = _THEME_SEL_DIR_.$this->_seller->id.($type ? '-'.$type : '').'.jpg';
+            return $this->context->link->protocol_content.Tools::getMediaServer($uri_path).$uri_path;
+        }
     }
 
-    protected function postImage($id)
+    protected function postImage()
     {
-        $fieldImageSettings = array(
-            'name' => 'image',
-            'dir' => 'c'
-        );
-        $ret = $this->uploadImage($this->_seller->id, $fieldImageSettings['name'], $fieldImageSettings['dir'].'/');
+        $ret = $this->uploadImage();
 
         if (isset($_FILES) && count($_FILES) && $_FILES['image']['name'] != null &&
-            file_exists(_NPS_SEL_IMG_DIR_.$this->_seller->id.'.jpg'))
+            file_exists(_NPS_SEL_IMG_DIR_.$this->_seller->id.'.'.$this->_seller->getImgFormat()))
         {
-            $images_types = ImageType::getImagesTypes('categories');
+            $images_types = ImageType::getImagesTypes('sellers');
             foreach ($images_types as $k => $image_type)
             {
                 ImageManager::resize(
-                    _PS_CAT_IMG_DIR_.$id_category.'.jpg',
-                    _PS_CAT_IMG_DIR_.$id_category.'-'.stripslashes($image_type['name']).'.jpg',
+                    _NPS_SEL_IMG_DIR_.$this->_seller->id.'.'.$this->_seller->getImgFormat(),
+                    _NPS_SEL_IMG_DIR_.$this->_seller->id.'-'.stripslashes($image_type['name']).'.'.$this->_seller->getImgFormat(),
                     (int)$image_type['width'], (int)$image_type['height']
                 );
             }
         }
-
         return $ret;
     }
 
-    protected function uploadImage($id, $name, $dir, $ext = false, $width = null, $height = null)
+    protected function uploadImage()
     {
+        $name = 'image';
+        $dir = 'seller/';
         if (isset($_FILES[$name]['tmp_name']) && !empty($_FILES[$name]['tmp_name']))
         {
             // Delete old image
-            if (Validate::isLoadedObject($object = $this->loadObject()))
-                $object->deleteImage();
-            else
-                return false;
+            $this->_seller->deleteImage();
 
             // Check image validity
-            $max_size = isset($this->max_image_size) ? $this->max_image_size : 0;
+            $max_size = (int)Configuration::get('PS_PRODUCT_PICTURE_MAX_SIZE');
             if ($error = ImageManager::validateUpload($_FILES[$name], Tools::getMaxUploadSize($max_size)))
                 $this->errors[] = $error;
 
@@ -136,17 +136,13 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
                 $this->errors[] = Tools::displayError('Due to memory limit restrictions, this image cannot be loaded. Please increase your memory_limit value via your server\'s configuration settings. ');
 
             // Copy new image
-            if (empty($this->errors) && !ImageManager::resize($tmp_name, _PS_IMG_DIR_.$dir.$id.'.'.$this->imageType, (int)$width, (int)$height, ($ext ? $ext : $this->imageType)))
+            if (empty($this->errors) && !ImageManager::resize($tmp_name, _PS_IMG_DIR_.$dir.$this->_seller->id.'.'.$this->_seller->getImgFormat()))
                 $this->errors[] = Tools::displayError('An error occurred while uploading the image.');
 
             if (count($this->errors))
                 return false;
-            if ($this->afterImageUpload())
-            {
-                unlink($tmp_name);
-                return true;
-            }
-            return false;
+            unlink($tmp_name);
+            return true;
         }
         return true;
     }

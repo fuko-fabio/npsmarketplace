@@ -5,10 +5,19 @@
 *  @license    
 */
 
- include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
-
 if ( !defined( '_PS_VERSION_' ) )
 	exit;
+
+
+if ( !defined( '_NPS_SEL_IMG_DIR_' ) )
+    define('_NPS_SEL_IMG_DIR_', _PS_IMG_DIR_.'seller/');
+
+if ( !defined( '_THEME_SEL_DIR_' ) )
+    define('_THEME_SEL_DIR_', _PS_IMG_.'seller/');
+
+
+include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
+
 class NpsMarketplace extends Module
 {
     public function __construct()
@@ -275,35 +284,43 @@ class NpsMarketplace extends Module
             ) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8';
 
         $sellerLangTable = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'seller_lang` (
-            `id_seller` int(10) unsigned NOT NULL,
-            `company_name` varchar(64) NOT NULL,
-            `company_description` text,
-            `name` varchar(128) NOT NULL,
-            `link_rewrite` varchar(128) NOT NULL,
-            `id_lang` int(10) unsigned NOT NULL,
-            KEY `id_seller` (`id_seller`)
+                `id_seller` int(10) unsigned NOT NULL,
+                `company_name` varchar(64) NOT NULL,
+                `company_description` text,
+                `name` varchar(128) NOT NULL,
+                `link_rewrite` varchar(128) NOT NULL,
+                `id_lang` int(10) unsigned NOT NULL,
+                KEY `id_seller` (`id_seller`)
             ) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8';
 
         $sellerProductTable = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'seller_product` (
-            `id_seller` int(10) unsigned NOT NULL,
-            `id_product` int(10) unsigned NOT NULL,
-            KEY `id_seller` (`id_seller`),
-            KEY `id_product` (`id_product`)
+                `id_seller` int(10) unsigned NOT NULL,
+                `id_product` int(10) unsigned NOT NULL,
+                KEY `id_seller` (`id_seller`),
+                KEY `id_product` (`id_product`)
             ) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8';
-
-        $alterImageType = 'ALTER TABLE  `'._DB_PREFIX_.'image_type` ADD  `sellers` TINYINT( 1 ) NOT NULL AFTER  `stores`';
-
-        $updateImageType = 'UPDATE `'._DB_PREFIX_.'image_type` SET  `sellers` =  1 WHERE  `'._DB_PREFIX_.'image_type`.`id_image_type` IN (1, 2, 3, 4, 5)';
 
         $instance = Db::getInstance();
         if ($instance->Execute($sellerTable)
             && $instance->Execute($sellerLangTable)
             && $instance->Execute($sellerProductTable)
-            && $instance->Execute($alterImageType)
-            && $instance->Execute($updateImageType))
+            && $this->alterImageTypeTable($instance))
             return true;
         else
             return false;
+    }
+
+    private function alterImageTypeTable($instance) {
+        $alterImageType = 'ALTER TABLE  `'._DB_PREFIX_.'image_type` ADD  `sellers` TINYINT(1) NOT NULL AFTER  `stores`';
+
+        $updateImageType = 'UPDATE `'._DB_PREFIX_.'image_type` SET  `sellers` =  1 WHERE  `'._DB_PREFIX_.'image_type`.`id_image_type` IN (1, 2, 3, 4, 5)';
+
+        $sql = 'SELECT * FROM '._DB_PREFIX_.'image_type';
+        $result = Db::getInstance()->ExecuteS($sql);
+        if (!isset($result[0]['sellers']))
+            return $instance->Execute($alterImageType) && $instance->Execute($updateImageType);
+        else 
+          return true;
     }
 }
 ?>

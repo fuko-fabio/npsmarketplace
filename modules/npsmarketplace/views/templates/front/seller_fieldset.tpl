@@ -1,6 +1,7 @@
 <fieldset id="seller_profile">
     <div class="form-group">
         <label for="">{l s='Company Logo' mod='npsmarketplace'}</label></br>
+        <img d="company_log_img" {if $seller['image']}src="{$seller['image']}?{time()}"{/if}/>
         <input id="company_logo" type="file" name="image">
     </div>
     <!-- Nav tabs -->
