@@ -26,16 +26,19 @@ class NpsMarketplaceOrdersModuleFrontController extends ModuleFrontController
         $products = $seller -> getProducts();
         foreach ($products as $product) {
             $id_order = Db::getInstance()->getValue('SELECT `id_order` FROM `'._DB_PREFIX_.'order_detail` WHERE `product_id` = '.(int)$product->id);
-            if(isset($id_order)) {
+            if(isset($id_order) && !empty($id_order)) {
                 $order = new Order($id_order);
+                $cover = Product::getCover($product->id);
                 $result[] = array(
-                    'id_order' => $order->id,
+                    'cover' => $this->context->link->getImageLink($product->link_rewrite, $cover['id_image'], 'cart_default'),
+                    'product' => $product->name[$this->context->language->id],
                     'reference' => $order->reference,
-                    'customer' => $order->getCustomer()->lastname,
+                    'customer' => $order->getCustomer()->firstname.' '.$order->getCustomer()->lastname,
                     'total_paid_tax_incl' => $order->total_paid_tax_incl,
                     'payment' => $order->payment,
-                    'state' => $order-> getCurrentState(),
+                    'state' => $order-> getCurrentOrderState()->name[$this->context->language->id],
                     'date_add' => $order->date_add,
+                    'link' => $this->context->link->getModuleLink('npsmarketplace', 'OrderView', array('id_order' => $id_order, 'id_seller' => $seller->id))
                 );
             }
         }

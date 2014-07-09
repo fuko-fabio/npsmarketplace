@@ -11,13 +11,13 @@
         <table class="table">
             <thead>
                 <tr class="active">
-                    <td>Image</td>
-                    <td>Name</td>
-                    <td>Description</td>
-                    <td>Price</td>
-                    <td>Quantity</td>
-                    <td>Status</td>
-                    <td>Action</td>
+                    <td>{l s='Image' mod='npsmarketplace'}</td>
+                    <td width="120px" >{l s='Name' mod='npsmarketplace'}</td>
+                    <td>{l s='Description' mod='npsmarketplace'}</td>
+                    <td width="60px">{l s='Price' mod='npsmarketplace'}</td>
+                    <td width="60px">{l s='Quantity' mod='npsmarketplace'}</td>
+                    <td width="60px">{l s='State' mod='npsmarketplace'}</td>
+                    <td width="120px">{l s='Action' mod='npsmarketplace'}</td>
                 </tr>
             </thead>
             <tbody>
@@ -30,24 +30,26 @@
                     <td>{$product['quantity']}</td>
                     <td>
                         {if $product['active'] == 1}
-                        <i class="icon-check"></i>
+                        <i class="icon-ok"></i>
                         {else}
                         <i class="icon-remove"></i>
                         {/if}
                     </td>
                     <td>
                         <div class="btn-group pull-right">
-                            <a href="{$product.edit_url}" title="Edytuj" class="edit btn btn-default"><i class="icon-pencil"></i> Edit</a>
+                            <a href="{$product.edit_url}" class="edit btn btn-default"><i class="icon-pencil"></i> {l s='Edit' mod='npsmarketplace'}</a>
                             <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                                 <i class="icon-caret-down"></i>
                             </button>
                             <ul class="dropdown-menu">
+                                {if $product['active'] == 1}
                                 <li>
-                                    <a href="#" title="Skopiuj"> <i class="icon-copy"></i> Preview </a>
+                                    <a href="{$product.view_url}"> <i class="icon-search"></i> {l s='Preview' mod='npsmarketplace'} </a>
                                 </li>
                                 <li class="divider"></li>
+                                {/if}
                                 <li>
-                                    <a href="#" title="Usuń" class="delete"> <i class="icon-trash"></i> Delete </a>
+                                    <a href="{$product.delete_url}" class="delete"> <i class="icon-trash"></i> {l s='Delete' mod='npsmarketplace'} </a>
                                 </li>
                             </ul>
                         </div>
@@ -56,6 +58,9 @@
                 {/foreach}
             </tbody>
         </table>
+        <script>
+            $('.dropdown-toggle').dropdown();
+        </script>
     </div>
     {else}
         <p class="alert alert-info">{l s='You have not added any product yet.' mod='npsmarketplace'}</p>

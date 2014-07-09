@@ -3,32 +3,32 @@
 		{l s='My account'}
 	</a>
 	<span class="navigation-pipe">{$navigationPipe}</span>
-	<span class="navigation_page">{l s='Customers Orders'}</span>
+	<span class="navigation_page">{l s='Customers Orders' mod='npsmarketplace'}</span>
 {/capture}
 {include file="$tpl_dir./errors.tpl"}
 <div class="box">
-    <h1 class="page-heading bottom-indent">{l s='Customers Orders'}</h1>
+    <h1 class="page-heading bottom-indent">{l s='Customers Orders' mod='npsmarketplace'}</h1>
 
     {if $orders}
     <div class="table-responsive">
         <table class="table">
             <thead>
                 <tr class="active">
-                    <td>ID</td>
-                    <td>Reference</td>
-                    <td>Customer</td>
-                    <td>Total</td>
-                    <td>Payment</td>
-                    <td>Status</td>
-                    <td>Date</td>
+                    <td></td>
+                    <td width="120px">{l s='Product' mod='npsmarketplace'}</td>
+                    <td>{l s='Customer' mod='npsmarketplace'}</td>
+                    <td width="60px" >{l s='Total' mod='npsmarketplace'}</td>
+                    <td>{l s='Payment' mod='npsmarketplace'}</td>
+                    <td>{l s='State' mod='npsmarketplace'}</td>
+                    <td width="100px">{l s='Date' mod='npsmarketplace'}</td>
+                    <td width="100px" >{l s='Action' mod='npsmarketplace'}</td>
                 </tr>
             </thead>
             <tbody>
                 {foreach from=$orders item=order}
                 <tr class="active">
-                    <td><img src="{$product['cover']}" class="imgm img-thumbnail" width="52"/></td>
-                    <td>{$order['id_order']}</td>
-                    <td>{$order['reference']}</td>
+                    <td><img src="{$order['cover']}" class="imgm img-thumbnail" width="52"/></td>
+                    <td>{$order['product']}</td>
                     <td>{$order['customer']}</td>
                     <td>{$order['total_paid_tax_incl']}</td>
                     <td>{$order['payment']}</td>
@@ -36,7 +36,7 @@
                     <td>{$order['date_add']}</td>
                     <td>
                         <div class="btn-group pull-right">
-                            <a href="{$view_order_link}" class="edit btn btn-default"><i class="icon-pencil"></i> View</a>
+                            <a href="{$order['link']}" class="edit btn btn-default"><i class="icon-search"></i> {l s='View' mod='npsmarketplace'}</a>
                         </div>
                     </td>
                     </tr>

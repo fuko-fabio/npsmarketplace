@@ -15,7 +15,7 @@ class ProductRequestProcessor {
         $this->context = $context;
     }
 
-    public function processSubmit() {
+    public function processSubmit($active = 0) {
         $product_name = $_POST['product_name'];
         $product_short_description = $_POST['product_short_description'];
         $product_description = $_POST['product_description'];
@@ -53,7 +53,7 @@ class ProductRequestProcessor {
         $product = new Product((int)Tools::getValue('id_product', null));
         $product -> price = $product_price;
         $product -> name = $product_name;
-        $product -> active = 0;
+        $product -> active = $active;
         $product -> description = $product_description;
         $product -> description_short = $product_short_description;
         $product -> available_date = $product_date;
