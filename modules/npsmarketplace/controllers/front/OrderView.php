@@ -19,7 +19,8 @@ class NpsMarketplaceOrderViewModuleFrontController extends ModuleFrontController
         $this -> context -> smarty -> assign(array(
             'order' => $this->orderForView($order),
             'address' => $this->deliveryAddressForView($order->id_address_delivery),
-            'customer' => $this->customerForView($order->id_customer)
+            'customer' => $this->customerForView($order->id_customer),
+            'products' => $this->productsForView($seller, $order)
             )
         );
 
@@ -58,6 +59,23 @@ class NpsMarketplaceOrderViewModuleFrontController extends ModuleFrontController
             'lastname' => $customer->lastname,
             'email' => $customer->email,
         );
+    }
+
+    private function productsForView($seller, $order) {
+        $result = array();
+        $pd = $order->getProductsDetail();
+
+        foreach ($seller->getSellerProducts($seller->id) as $product_id) {
+            foreach ($pd as $product_detail) {
+                if($product_detail['id_product'] == $product_id) {
+                    $cover = Product::getCover($product_id);
+                    $product_detail['current_stock'] = StockAvailable::getQuantityAvailableByProduct($product_id);
+                    $product_detail['cover'] = $this->context->link->getImageLink(Tools::link_rewrite($product_detail['product_name']), $cover['id_image'], 'cart_default');
+                    $result[] = $product_detail;
+                }
+            }
+        }
+        return $result;
     }
 }
 ?>

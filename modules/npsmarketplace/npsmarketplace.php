@@ -85,6 +85,14 @@ class NpsMarketplace extends Module
         return $this->display(__FILE__, 'npsmarketplace.tpl');
     }
 
+    public function hookIframe()
+    {
+        $seller = new SellerCore(Tools::getValue('id'));
+        $products = $seller->getProducts();
+
+        return $products;
+    }
+
     public function getContent()
     {
         $output = null;

@@ -31,6 +31,24 @@
                     </tr>
                 </table>
             </div>
+            </br>
+            <h4>{l s='Customer' mod='npsmarketplace'}</h4>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <tr>
+                        <th scope="row">{l s='Firstname' mod='npsmarketplace'}</th>
+                        <td>{$customer['firstname']}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">{l s='Lastname' mod='npsmarketplace'}</th>
+                        <td>{$customer['lastname']}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">{l s='Email' mod='npsmarketplace'}</th>
+                        <td><a href="mailto:{$customer['email']}"><i class="icon-envelope"></i> {$customer['email']}</a></td>
+                    </tr>
+                </table>
+            </div>
         </div>
         <div class="col-md-6">
             <h4>{l s='Delivery Address' mod='npsmarketplace'}</h4>
@@ -45,12 +63,6 @@
                             {if $address['phone']}{$address['phone']}</br>{/if}
                             {if $address['phone_mobile']}{$address['phone_mobile']}</br>{/if}
                             </br>
-                            {if $address['message']}
-                            <p class="info-title">{l s='Message' mod='npsmarketplace'}</p>
-                            <textarea class="form-control" readonly="">{$address['message']}</textarea>
-                            </br>
-                            {/if}
-                            <p class="info-title">{l s='Map' mod='npsmarketplace'}</p>
                             <div id="map_canvas" style="min-height: 250px;" data-target="{$address['address1']} {$address['address2']} {$address['city']}"></div>
                         </td>
                     </tr>
@@ -59,34 +71,32 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6">
-            <h4>{l s='Customer' mod='npsmarketplace'}</h4>
+        <div class="col-md-12">
+            <h4>{l s='Products' mod='npsmarketplace'}</h4>
             <div class="table-responsive">
                 <table class="table table-bordered">
-                    <tr>
-                        <th scope="row">{l s='Firstname' mod='npsmarketplace'}</th>
-                        <td>{$customer['firstname']}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">{l s='Payment Method' mod='npsmarketplace'}</th>
-                        <td>{$customer['lastname']}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">{l s='Date & Time' mod='npsmarketplace'}</th>
-                        <td><a href="mailto:{$customer['email']}"><i class="icon-envelope"></i> {$customer['email']}</a></td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <h4>{l s='Product' mod='npsmarketplace'}</h4>
-            <div class="table-responsive">
-                <table class="table table-bordered">
-                    <tr>
-                        <td>
-
-                        </td>
-                    </tr>
+                    <thead>
+                        <tr class="active">
+                            <td>{l s='Image' mod='npsmarketplace'}</td>
+                            <td>{l s='Name' mod='npsmarketplace'}</td>
+                            <td>{l s='Unit Price' mod='npsmarketplace'}</td>
+                            <td>{l s='Quantity' mod='npsmarketplace'}</td>
+                            <td>{l s='Available Quantity' mod='npsmarketplace'}</td>
+                            <td>{l s='Total Price' mod='npsmarketplace'}</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {foreach from=$products item=product}
+                        <tr class="active">
+                            <td><img src="{$product['cover']}" class="imgm img-thumbnail" width="52"/></td>
+                            <td>{$product['product_name']}</td>
+                            <td>{$product['unit_price_tax_incl']}</td>
+                            <td>{$product['product_quantity']}</td>
+                            <td>{$product['current_stock']}</td>
+                            <td>{$product['total_price_tax_incl']}</td>
+                        </tr>
+                        {/foreach}
+                    </tbody>
                 </table>
             </div>
         </div>

@@ -14,8 +14,7 @@
         <table class="table">
             <thead>
                 <tr class="active">
-                    <td></td>
-                    <td width="120px">{l s='Product' mod='npsmarketplace'}</td>
+                    <td>{l s='Reference' mod='npsmarketplace'}</td>
                     <td>{l s='Customer' mod='npsmarketplace'}</td>
                     <td width="60px" >{l s='Total' mod='npsmarketplace'}</td>
                     <td>{l s='Payment' mod='npsmarketplace'}</td>
@@ -27,8 +26,7 @@
             <tbody>
                 {foreach from=$orders item=order}
                 <tr class="active">
-                    <td><img src="{$order['cover']}" class="imgm img-thumbnail" width="52"/></td>
-                    <td>{$order['product']}</td>
+                    <td>{$order['reference']}</td>
                     <td>{$order['customer']}</td>
                     <td>{$order['total_paid_tax_incl']}</td>
                     <td>{$order['payment']}</td>
