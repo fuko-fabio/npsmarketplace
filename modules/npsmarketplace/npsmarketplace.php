@@ -15,11 +15,12 @@ if ( !defined( '_NPS_SEL_IMG_DIR_' ) )
 if ( !defined( '_THEME_SEL_DIR_' ) )
     define('_THEME_SEL_DIR_', _PS_IMG_.'seller/');
 
-
-include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
+include_once(dirname(__FILE__).'/classes/Seller.php');
 
 class NpsMarketplace extends Module
 {
+    const INSTALL_SQL_FILE = 'install.sql';
+
     public function __construct()
     {
         $this->name = 'npsmarketplace';
@@ -29,6 +30,7 @@ class NpsMarketplace extends Module
         $this->need_instance = 0;
         $this->ps_versions_compliancy = array('min' => '1.5', 'max' => '1.6');
         $this->bootstrap = true;
+        $this->secure_key = Tools::encrypt($this->name);
         parent::__construct();
         $this->displayName = $this->l( 'nps Marketplace' );
         $this->description = $this->l( 'Allow customers to add and sell products in your store.' );
@@ -37,12 +39,23 @@ class NpsMarketplace extends Module
 
     public function install()
     {
-        if (!parent::install() 
+        if (!file_exists(dirname(__FILE__).'/'.self::INSTALL_SQL_FILE))
+            return false;
+        else if (!$sql = file_get_contents(dirname(__FILE__).'/'.self::INSTALL_SQL_FILE))
+            return false;
+        $sql = str_replace(array('PREFIX_', 'ENGINE_TYPE'), array(_DB_PREFIX_, _MYSQL_ENGINE_), $sql);
+        $sql = preg_split("/;\s*[\r\n]+/", trim($sql));
+
+        if (!parent::install()
+            || !$this->registerHook('header')
             || !$this->registerHook('displayCustomerAccount')
-            || !Configuration::updateValue('NPS_GLOBAL_COMMISION', 0)
-            || !Configuration::updateValue('NPS_AUTO_ENABLE_SELLER_ACCOUNT', 0)
-            || !Configuration::updateValue('NPS_EMAIL_ADDRESS', '')
-            || !$this->_createTables()
+            || !$this->registerHook('productTab')
+            || !$this->registerHook('productTabContent')
+            || !Configuration::updateValue('NPS_GLOBAL_COMMISION', 3)
+            || !Configuration::updateValue('NPS_SELLER_COMMENTS_MODERATE', 1)
+            || !Configuration::updateValue('NPS_SELLER_COMMENTS_ALLOW_GUESTS', 0)
+            || !Configuration::updateValue('NPS_SELLER_COMMENTS_MINIMAL_TIME', 30)
+            || !$this->_createTables($sql)
             || !$this->_createTab())
             return false;
         return true;
@@ -52,8 +65,9 @@ class NpsMarketplace extends Module
     {
         if (!parent::uninstall() 
             || !Configuration::deleteByName('NPS_GLOBAL_COMMISION')
-            || !Configuration::deleteByName('NPS_AUTO_ENABLE_SELLER_ACCOUNT')
-            || !Configuration::deleteByName('NPS_EMAIL_ADDRESS')
+            || !Configuration::deleteByName('NPS_SELLER_COMMENTS_MODERATE')
+            || !Configuration::deleteByName('NPS_SELLER_COMMENTS_ALLOW_GUESTS')
+            || !Configuration::deleteByName('NPS_SELLER_COMMENTS_MINIMAL_TIME')
             || !$this->_deleteTab())
             return false;
         return true;
@@ -93,91 +107,104 @@ class NpsMarketplace extends Module
         return $products;
     }
 
+    public function hookHeader()
+    {
+        $this->context->controller->addCSS($this->_path.'npsmarketplace.css', 'all');
+    }
+
     public function getContent()
     {
         $output = null;
-    
-        if (Tools::isSubmit('submit'.$this->name))
-        {
-            $NPS_GLOBAL_COMMISION = Tools::getValue('NPS_GLOBAL_COMMISION');
-            $auto_enable_seller_accont = Tools::getValue('NPS_AUTO_ENABLE_SELLER_ACCOUNT');
-            $email = Tools::getValue('NPS_EMAIL_ADDRESS');
 
-            if (!$NPS_GLOBAL_COMMISION || !Validate::isInt($NPS_GLOBAL_COMMISION))
-            {
-                $output .= $this->displayError($this->l('Invalid global commision value. Must be a number'));
-            }
-            else if ($auto_enable_seller_accont != 0 && $auto_enable_seller_accont != 1)
-            {
-                $output .= $this->displayError($this->l('Invalid auto enable seller account settings'));
-            }
-            else if (!$email || !Validate::isEmail($email))
-            {
-                $output .= $this->displayError($this->l('Invalid email address'));
-            }
-            else
-            {
-                Configuration::updateValue('NPS_GLOBAL_COMMISION', $NPS_GLOBAL_COMMISION);
-                Configuration::updateValue('NPS_AUTO_ENABLE_SELLER_ACCOUNT', $auto_enable_seller_accont);
-                Configuration::updateValue('NPS_EMAIL_ADDRESS', $email);
-	            $output .= $this->displayConfirmation($this->l('Settings updated'));
-	        }
-	    }
-	    return $output.$this->displayForm();
-	}
+        if (Tools::isSubmit('submitConfiguration')) {
+            Configuration::updateValue('NPS_GLOBAL_COMMISION', Tools::getValue('NPS_GLOBAL_COMMISION'));
+            $output .= $this->displayConfirmation($this->l('Settings updated'));
+        } elseif (Tools::isSubmit('submitModerate')) {
+            Configuration::updateValue('NPS_SELLER_COMMENTS_MODERATE', (int)Tools::getValue('NPS_SELLER_COMMENTS_MODERATE'));
+            Configuration::updateValue('NPS_SELLER_COMMENTS_ALLOW_GUESTS', (int)Tools::getValue('NPS_SELLER_COMMENTS_ALLOW_GUESTS'));
+            Configuration::updateValue('NPS_SELLER_COMMENTS_MINIMAL_TIME', (int)Tools::getValue('NPS_SELLER_COMMENTS_MINIMAL_TIME'));
+            $output .= $this->displayConfirmation($this->l('Settings updated'));
+        }
+        return $output.$this->displayForm();
+    }
 
-	private function displayForm()
-	{
-	    // Get default language
-	    $default_lang = (int)Configuration::get('PS_LANG_DEFAULT');
-	     
-	    // Init Fields form array
-	    $fields_form[0]['form'] = array(
-	        'legend' => array(
-	            'title' => $this->l('Settings'),
-	        ),
-	        'input' => array(
-	             array(
-	                'type' => 'text',
-	                'label' => $this->l('Global commision(%)'),
-	                'name' => 'NPS_GLOBAL_COMMISION',
-	                'size' => 20,
-					'required' => true
-	            ),
-                array(
-                    'type' => 'switch',
-                    'label' => $this->l('Auto enable seller account'),
-                    'name' => 'NPS_AUTO_ENABLE_SELLER_ACCOUNT',
-                    'is_bool' => true,
-                    'desc' => $this->l('For all registered users seller account will be enabled by default'),
-                    'values' => array(
-                        array(
-                            'id' => 'on',
-                            'value' => 1,
-                            'label' => $this->l('Enabled')
-                        ),
-                        array(
-                            'id' => 'off',
-                            'value' => 0,
-                            'label' => $this->l('Disabled')
-                        )
-                    ),
-                ),
-                array(
-                    'type' => 'text',
-                    'label' => $this->l('Email address'),
-                    'name' => 'NPS_EMAIL_ADDRESS',
-                    'desc' => $this->l('Seller requests account will be sent to this e-mail address.'),
-                    'size' => 20,
-                    'required' => true
-                )
-	        ),
-	        'submit' => array(
-	            'title' => $this->l('Save'),
-	            'class' => 'button'
-	        )
-	    );
-	     
+    public function hookProductTab($params)
+    {
+        require_once(dirname(__FILE__).'/classes/SellerComment.php');
+        require_once(dirname(__FILE__).'/classes/SellerCommentCriterion.php');
+
+        $id_seller = (int)SellerCore::getSellerByProduct(Tools::getValue('id_product'));
+        $average = SellerComment::getAverageGrade((int)$id_seller);
+
+        $this->context->smarty->assign(array(
+                                            'allow_guests' => (int)Configuration::get('NPS_SELLER_COMMENTS_ALLOW_GUESTS'),
+                                            'comments' => SellerComment::getBySeller($id_seller),
+                                            'criterions' => SellerCommentCriterion::getBySeller($id_seller, $this->context->language->id),
+                                            'averageTotal' => round($average['grade']),
+                                            'nbComments' => (int)(SellerComment::getCommentNumber($id_seller))
+                                       ));
+
+        return ($this->display(__FILE__, '/tab.tpl'));
+    }
+
+    public function hookProductTabContent($params)
+    {
+        $this->context->controller->addJS($this->_path.'js/jquery.rating.pack.js');
+        $this->context->controller->addJS($this->_path.'js/jquery.textareaCounter.plugin.js');
+        $this->context->controller->addJS($this->_path.'js/sellercomments.js');
+
+        $seller = new SellerCore(SellerCore::getSellerByProduct(Tools::getValue('id_product')));
+
+        $id_guest = (!$id_customer = (int)$this->context->cookie->id_customer) ? (int)$this->context->cookie->id_guest : false;
+        $customerComment = SellerComment::getByCustomer($seller->id, (int)$this->context->cookie->id_customer, true, (int)$id_guest);
+
+        $averages = SellerComment::getAveragesBySeller($seller->id, $this->context->language->id);
+        $averageTotal = 0;
+        foreach ($averages as $average)
+            $averageTotal += (float)($average);
+        $averageTotal = count($averages) ? ($averageTotal / count($averages)) : 0;
+
+        $product = new Product(Tools::getValue('id_product'));
+
+/*
+        // $this->context->smarty->assign(array(
+            // 'logged' => $this->context->customer->isLogged(true),
+            // 'action_url' => '',
+            // 'product' => $product,
+            // 'comments' => SellerComment::getBySeller($seller->id, 1, null, $this->context->cookie->id_customer),
+            // 'criterions' => SellerCommentCriterion::getBySeller($seller->id, $this->context->language->id),
+            // 'averages' => $averages,
+            // 'seller_comment_path' => $this->_path,
+            // 'averageTotal' => $averageTotal,
+            // 'allow_guests' => (int)Configuration::get('NPS_SELLER_COMMENTS_ALLOW_GUESTS'),
+            // 'too_early' => ($customerComment && (strtotime($customerComment['date_add']) + Configuration::get('NPS_SELLER_COMMENTS_MINIMAL_TIME')) > time()),
+            // 'delay' => Configuration::get('NPS_SELLER_COMMENTS_MINIMAL_TIME'),
+            // 'id_seller_comment_form' => $seller->id,
+            // 'secure_key' => $this->secure_key,
+            // 'sellercomments_cover' => '',
+            // 'sellercomments_cover_image' => $seller->getImageLink(),
+            // 'mediumSize' => Image::getSize(ImageType::getFormatedName('medium')),
+            // 'nbComments' => (int)SellerComment::getCommentNumber($seller->id),
+            // 'sellercomments_controller_url' => $this->context->link->getModuleLink('npsmarketplace', 'SellerComments'),
+            // 'sellercomments_url_rewriting_activated' => Configuration::get('PS_REWRITING_SETTINGS', 0),
+            // 'moderation_active' => (int)Configuration::get('NPS_SELLER_COMMENTS_MODERATE')
+       // ));*/
+
+
+        $this->context->controller->pagination((int)SellerComment::getCommentNumber($seller->id));
+
+        return ($this->display(__FILE__, '/sellercomments.tpl'));
+    }
+
+    private function displayForm()
+    {
+        // Get default language
+        $default_lang = (int)Configuration::get('PS_LANG_DEFAULT');
+         
+        // Init Fields form array
+        $fields_form[0] = $this->configurationForm();
+        $fields_form[1] = $this->moderateForm();
+         
 	    $helper = new HelperForm();
 	     
 	    // Module, token and currentIndex
@@ -213,14 +240,102 @@ class NpsMarketplace extends Module
 	    return $helper->generateForm($fields_form);
 	}
 
-	public function getConfigFieldsValues()
-	{
-		return array(
-			'NPS_AUTO_ENABLE_SELLER_ACCOUNT' => Tools::getValue('NPS_AUTO_ENABLE_SELLER_ACCOUNT', Configuration::get('NPS_AUTO_ENABLE_SELLER_ACCOUNT')),
-			'NPS_GLOBAL_COMMISION' => Tools::getValue('NPS_GLOBAL_COMMISION', Configuration::get('NPS_GLOBAL_COMMISION')),
-			'NPS_EMAIL_ADDRESS' => Tools::getValue('NPS_EMAIL_ADDRESS', Configuration::get('NPS_EMAIL_ADDRESS')),
-		);
-	}
+    private function configurationForm() {
+        return array(
+            'form' => array(
+                'legend' => array(
+                    'title' => $this->l('General Settings'),
+                ),
+                'input' => array(
+                     array(
+                        'type' => 'text',
+                        'label' => $this->l('Global commision'),
+                        'name' => 'NPS_GLOBAL_COMMISION',
+                        'class' => 'fixed-width-xs',
+                        'suffix' => '%',
+                        'required' => true
+                    ),
+                ),
+                'submit' => array(
+                    'title' => $this->l('Save'),
+                    'class' => 'btn btn-default pull-right',
+                    'name' => 'submitConfiguration',
+                )
+            )
+        );
+    }
+
+    public function moderateForm() {
+        return array(
+            'form' => array(
+                'legend' => array(
+                    'title' => $this->l('Seller Comments Configuration'),
+                    'icon' => 'icon-cogs'
+                ),
+                'input' => array(
+                    array(
+                        'type' => 'switch',
+                        'is_bool' => true, //retro compat 1.5
+                        'label' => $this->l('All reviews must be validated by an employee'),
+                        'name' => 'NPS_SELLER_COMMENTS_MODERATE',
+                        'values' => array(
+                                        array(
+                                            'id' => 'active_on',
+                                            'value' => 1,
+                                            'label' => $this->l('Enabled')
+                                        ),
+                                        array(
+                                            'id' => 'active_off',
+                                            'value' => 0,
+                                            'label' => $this->l('Disabled')
+                                        )
+                                    ),
+                    ),
+                    array(
+                        'type' => 'switch',
+                        'is_bool' => true, //retro compat 1.5
+                        'label' => $this->l('Allow guest reviews'),
+                        'name' => 'NPS_SELLER_COMMENTS_ALLOW_GUESTS',
+                        'values' => array(
+                                        array(
+                                            'id' => 'active_on',
+                                            'value' => 1,
+                                            'label' => $this->l('Enabled')
+                                        ),
+                                        array(
+                                            'id' => 'active_off',
+                                            'value' => 0,
+                                            'label' => $this->l('Disabled')
+                                        )
+                                    ),
+                    ),
+                    array(
+                        'type' => 'text',
+                        'label' => $this->l('Minimum time between 2 reviews from the same user'),
+                        'name' => 'NPS_SELLER_COMMENTS_MINIMAL_TIME',
+                        'class' => 'fixed-width-xs',
+                        'suffix' => 'seconds',
+                    ),
+                ),
+            'submit' => array(
+                'title' => $this->l('Save'),
+                'class' => 'btn btn-default pull-right',
+                'name' => 'submitModerate',
+                )
+            )
+        );
+    }
+
+    public function getConfigFieldsValues()
+    {
+        return array(
+            'NPS_GLOBAL_COMMISION' => Tools::getValue('NPS_GLOBAL_COMMISION', Configuration::get('NPS_GLOBAL_COMMISION')),
+            'NPS_SELLER_COMMENTS_MODERATE' => Tools::getValue('NPS_SELLER_COMMENTS_MODERATE', Configuration::get('NPS_SELLER_COMMENTS_MODERATE')),
+            'NPS_SELLER_COMMENTS_ALLOW_GUESTS' => Tools::getValue('NPS_SELLER_COMMENTS_ALLOW_GUESTS', Configuration::get('NPS_SELLER_COMMENTS_ALLOW_GUESTS')),
+            'NPS_SELLER_COMMENTS_MINIMAL_TIME' => Tools::getValue('NPS_SELLER_COMMENTS_MINIMAL_TIME', Configuration::get('NPS_SELLER_COMMENTS_MINIMAL_TIME')),
+
+        );
+    }
 
     private function _createTab()
     {
@@ -231,7 +346,7 @@ class NpsMarketplace extends Module
         $tab->class_name = 'AdminSellersAccounts';
         $languages = Language::getLanguages();
         foreach ($languages AS $language)
-            $tab->{'name'}[intval($language['id_lang'])] = 'Sellers';
+            $tab->{'name'}[intval($language['id_lang'])] = $this->l('Marketplace');
         $success = $tab->add();
         
         $sellers_tab = new Tab();
@@ -241,7 +356,7 @@ class NpsMarketplace extends Module
         $sellers_tab->class_name = 'AdminSellersAccounts';
         foreach ($languages AS $language)
         {
-            $sellers_tab->{'name'}[intval($language['id_lang'])] = 'Sellers accounts';
+            $sellers_tab->{'name'}[intval($language['id_lang'])] = $this->l('Sellers');
         }
         $success = $success && $sellers_tab->add();
         
@@ -249,10 +364,10 @@ class NpsMarketplace extends Module
         $sellers_tab->id_parent = $tab->id;
         $sellers_tab->position = 1;
         $sellers_tab->module = $this->name;
-        $sellers_tab->class_name = 'AdminSellersProducts';
+        $sellers_tab->class_name = 'AdminSellersComments';
         foreach ($languages AS $language)
         {
-            $sellers_tab->{'name'}[intval($language['id_lang'])] = 'Sellers products';
+            $sellers_tab->{'name'}[intval($language['id_lang'])] = 'Comments';
         }
         $success = $success && $sellers_tab->add();
         return $success;
@@ -273,52 +388,32 @@ class NpsMarketplace extends Module
     }
 
     /* Set database */
-    private function _createTables()
+    private function _createTables($sql)
     {
-        $sellerTable = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'seller` (
-                `id_seller` int(10) unsigned NOT NULL AUTO_INCREMENT,
-                `id_customer` int(10) unsigned NOT NULL,
-                `active` tinyint(1) NOT NULL,
-                `locked` tinyint(1) NOT NULL,
-                `requested` tinyint(1) NOT NULL,
-                `request_date` datetime,
-                `phone` varchar(16) NOT NULL,
-                `email` varchar(128) NOT NULL,
-                `commision` int(10),
-                `nip` int(14) NOT NULL,
-                `regon` int(14) NOT NULL,
-                PRIMARY KEY (`id_seller`),
-                KEY `id_customer` (`id_customer`)
-            ) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8';
+        foreach ($sql as $query)
+            if (!Db::getInstance()->execute(trim($query)))
+                return false;
 
-        $sellerLangTable = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'seller_lang` (
-                `id_seller` int(10) unsigned NOT NULL,
-                `company_name` varchar(64) NOT NULL,
-                `company_description` text,
-                `name` varchar(128) NOT NULL,
-                `link_rewrite` varchar(128) NOT NULL,
-                `id_lang` int(10) unsigned NOT NULL,
-                KEY `id_seller` (`id_seller`)
-            ) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8';
-
-        $sellerProductTable = 'CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'seller_product` (
-                `id_seller` int(10) unsigned NOT NULL,
-                `id_product` int(10) unsigned NOT NULL,
-                KEY `id_seller` (`id_seller`),
-                KEY `id_product` (`id_product`)
-            ) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8';
-
-        $instance = Db::getInstance();
-        if ($instance->Execute($sellerTable)
-            && $instance->Execute($sellerLangTable)
-            && $instance->Execute($sellerProductTable)
-            && $this->alterImageTypeTable($instance))
-            return true;
-        else
-            return false;
+        return $this->_alterImageTypeTable();
     }
 
-    private function alterImageTypeTable($instance) {
+    private function _deleteTables()
+    {
+        return Db::getInstance()->execute('
+            DROP TABLE IF EXISTS
+            `'._DB_PREFIX_.'seller`,
+            `'._DB_PREFIX_.'seller_lang`,
+            `'._DB_PREFIX_.'seller_product`,
+            `'._DB_PREFIX_.'seller_comment`,
+            `'._DB_PREFIX_.'seller_comment_criterion`,
+            `'._DB_PREFIX_.'seller_comment_criterion_seller`,
+            `'._DB_PREFIX_.'seller_comment_criterion_lang`,
+            `'._DB_PREFIX_.'seller_comment_grade`,
+            `'._DB_PREFIX_.'seller_comment_usefulness`,
+            `'._DB_PREFIX_.'seller_comment_report`');
+    }
+
+    private function _alterImageTypeTable() {
         $alterImageType = 'ALTER TABLE  `'._DB_PREFIX_.'image_type` ADD  `sellers` TINYINT(1) NOT NULL AFTER  `stores`';
 
         $updateImageType = 'UPDATE `'._DB_PREFIX_.'image_type` SET  `sellers` =  1 WHERE  `'._DB_PREFIX_.'image_type`.`id_image_type` IN (1, 2, 3, 4, 5)';
@@ -326,7 +421,7 @@ class NpsMarketplace extends Module
         $sql = 'SELECT * FROM '._DB_PREFIX_.'image_type';
         $result = Db::getInstance()->ExecuteS($sql);
         if (!isset($result[0]['sellers']))
-            return $instance->Execute($alterImageType) && $instance->Execute($updateImageType);
+            return Db::getInstance()->Execute($alterImageType) && Db::getInstance()->Execute($updateImageType);
         else 
           return true;
     }

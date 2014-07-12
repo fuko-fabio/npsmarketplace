@@ -168,6 +168,19 @@ class SellerCore extends ObjectModel
     }
 
     /**
+     * getSellerByProducts return seller id by products which this seller belongs to
+     *
+     * @return seller id
+     */
+    public static function getSellerByProduct($id_product = '')
+    {
+        return Db::getInstance(_PS_USE_SQL_SLAVE_)->getValue('
+            SELECT `id_seller`
+            FROM `'._DB_PREFIX_.'seller_product`
+            WHERE `id_product` = '.(int)$id_product);
+    }
+
+    /**
      * customerHasProduct checks if given product is assigned to customer
      *
      * @param id_seller seller id
@@ -187,6 +200,17 @@ class SellerCore extends ObjectModel
 
     public function getImgFormat() {
         return $this->image_format;
+    }
+    
+    public function getImageLink($type = null)
+    {
+        if ($this->id) {
+            if($type)
+                $uri_path = _THEME_SEL_DIR_.$this->id.'-'.$type.'.jpg';
+            else
+                $uri_path = _THEME_SEL_DIR_.$this->id.($type ? '-'.$type : '').'.jpg';
+            return $this->context->link->protocol_content.Tools::getMediaServer($uri_path).$uri_path;
+        }
     }
 }
 
