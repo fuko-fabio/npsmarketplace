@@ -101,6 +101,7 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
 
         $this -> context -> smarty -> assign(
             array(
+                'seller' => array('image' => ''),
                 'account_state' => $account_state,
                 'account_request_date' => $date,
                 'product' => $tpl_product,

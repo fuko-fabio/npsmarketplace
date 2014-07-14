@@ -65,7 +65,7 @@
     </div>
     <div class="form-group">
         <label for="product_code">{l s='Product code' mod='npsmarketplace'}</label>
-        <input class="is_required validate form-control" data-validate="isMessage" type="text" id="product_code" name="product_code" value="{if isset($product['reference'])}{$product['reference']|escape:'html':'UTF-8'}{/if}"/>
+        <input class="validate form-control" data-validate="isMessage" type="text" id="product_code" name="product_code" value="{if isset($product['reference'])}{$product['reference']|escape:'html':'UTF-8'}{/if}"/>
     </div>
 
     <div class="form-group">

@@ -201,7 +201,7 @@ class SellerCore extends ObjectModel
     public function getImgFormat() {
         return $this->image_format;
     }
-    
+
     public function getImageLink($type = null)
     {
         if ($this->id) {
@@ -211,6 +211,16 @@ class SellerCore extends ObjectModel
                 $uri_path = _THEME_SEL_DIR_.$this->id.($type ? '-'.$type : '').'.jpg';
             return $this->context->link->protocol_content.Tools::getMediaServer($uri_path).$uri_path;
         }
+    }
+
+    public function getAccountState() {
+        if ($this->requested == 1 && $this->active == 0 && $this->locked == 0)
+            return 'requested';
+        else if ($this->requested == 1 && $this->active == 1 && $this->locked == 0)
+            return 'active';
+        else if ($this->requested == 1 && $this->locked == 1)
+            return 'locked';
+        return 'none';
     }
 }
 

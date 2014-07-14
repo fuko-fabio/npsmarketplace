@@ -53,6 +53,7 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
     public function initContent() {
         parent::initContent();
         $tpl_seller = array();
+
         if (isset($this -> _seller -> id)) {
             $tpl_seller = array(
                 'id' => $this -> _seller -> id,
@@ -67,8 +68,10 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
                 'active' => $this -> _seller -> active,
                 'request_date' => $this -> _seller -> request_date,
                 'commision' => $this -> _seller -> commision,
+                'account_state' => $this -> _seller->getAccountState(),
             );
         }
+
         $this -> context -> smarty -> assign(array(
             'seller' => $tpl_seller,
             'current_id_lang' => (int)$this -> context -> language -> id,

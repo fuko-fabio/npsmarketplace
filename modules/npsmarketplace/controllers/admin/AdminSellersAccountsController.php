@@ -40,26 +40,21 @@ class AdminSellersAccountsController extends AdminController
                 'align' => 'text-center',
                 'class' => 'fixed-width-xs'
             ),
-			'id_customer' => array(
-				'title' => $this->l('Customer ID'),
-				'align' => 'text-center',
-				'class' => 'fixed-width-xs'
-			),
-			'name' => array(
+            'name' => array(
                 'title' => $this->l('Name')
             ),
             'company_name' => array(
                 'title' => $this->l('Company Name')
             ),
-			'nip' => array(
-				'title' => $this->l('NIP')
-			),
-			'regon' => array(
-				'title' => $this->l('REGON')
-			),
-			'email' => array(
-				'title' => $this->l('Email address')
-			),
+            'nip' => array(
+                'title' => $this->l('NIP')
+            ),
+            'regon' => array(
+                'title' => $this->l('REGON')
+            ),
+            'email' => array(
+                'title' => $this->l('Email address')
+            ),
             'locked' => array(
                 'title' => $this->l('Locked'),
                 'align' => 'text-center',
@@ -67,19 +62,24 @@ class AdminSellersAccountsController extends AdminController
                 'callback' => 'printLockedIcon',
                 'orderby' => false
             ),
-			'request_date' => array(
-				'title' => $this->l('Registration'),
-				'type' => 'date',
-				'align' => 'text-right'
-			),
-			'active' => array(
+            'request_date' => array(
+            'title' => $this->l('Registration'),
+                'type' => 'date',
+                'align' => 'text-right'
+            ),
+            'active' => array(
                 'title' => $this->l('Enabled'),
                 'align' => 'text-center',
                 'active' => 'status',
                 'type' => 'bool',
                 'orderby' => false,
                 'filter_key' => 'a!active'
-            )
+            ),
+            'commision' => array(
+                'title' => $this->l('Commision'),
+                'align' => 'text-center',
+                'class' => 'fixed-width-xs'
+            ),
 		);
 
 		$this->shopLinkType = 'shop';
@@ -105,6 +105,8 @@ class AdminSellersAccountsController extends AdminController
         if (!$seller->update())
             $this->errors[] = Tools::displayError('An error occurred while updating seller information.');
         Tools::redirectAdmin(self::$currentIndex.'&token='.$this->token);
+        
+        //TODO Activate/Deactivate products
     }
 
 	public function initContent()

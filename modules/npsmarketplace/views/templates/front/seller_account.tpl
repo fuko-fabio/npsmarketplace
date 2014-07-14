@@ -8,7 +8,15 @@
 {include file="$tpl_dir./errors.tpl"}
 <div class="box">
     {include file="$tpl_dir./errors.tpl"}
-    <h1 class="page-heading bottom-indent">{l s='My Shop Profile' mod='npsmarketplace'}</h1>
+    <h1 class="page-heading bottom-indent">{l s='Shop Profile' mod='npsmarketplace'}</h1>
+    {if $seller['account_state'] == 'requested'}
+    <p class="alert alert-info">{l s='Your account is not activated. Please wait for contact with our administrator. Request has been sent on %s' sprintf=$seller['request_date'] mod='npsmarketplace'}</p>
+   </br>
+    {/if}
+    {if $seller['account_state'] == 'locked'}
+    <p class="alert alert-warning">{l s='Your account has been locked.' mod='npsmarketplace'}</p>
+    </br>
+    {/if}
     <form enctype="multipart/form-data" role="form" action="{$request_uri}" method="post" id="selleraccount">
         {include file="$seller_fieldset_tpl_path"}
         <p class="submit">

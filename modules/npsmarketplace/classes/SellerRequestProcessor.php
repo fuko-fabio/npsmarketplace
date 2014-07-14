@@ -49,7 +49,6 @@ class SellerRequestProcessor {
         }
 
         $seller = new SellerCore((int)Tools::getValue('id_seller', null));
-        $seller -> id_customer = $this -> context -> customer -> id;
         $seller -> company_name = $company_name;
         $seller -> company_description = $company_description;
         $seller -> name = $name;
@@ -57,10 +56,13 @@ class SellerRequestProcessor {
         $seller -> email = $email;
         $seller -> nip = $nip;
         $seller -> regon = $regon;
-        $seller -> commision = Configuration::get('NPS_GLOBAL_COMMISION');
-        $seller -> request_date = date("Y-m-d");
-        $seller -> requested = true;
         $seller -> link_rewrite = $link_rewrite;
+        if($seller->id == null) {
+            $seller -> id_customer = $this -> context -> customer -> id;
+            $seller -> commision = Configuration::get('NPS_GLOBAL_COMMISION');
+            $seller -> request_date = date("Y-m-d H:i:s");
+            $seller -> requested = true;
+        }
 
         if(empty($this->errors))
             $seller->save();

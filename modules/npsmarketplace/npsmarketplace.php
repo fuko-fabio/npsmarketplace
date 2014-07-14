@@ -8,7 +8,6 @@
 if ( !defined( '_PS_VERSION_' ) )
 	exit;
 
-
 if ( !defined( '_NPS_SEL_IMG_DIR_' ) )
     define('_NPS_SEL_IMG_DIR_', _PS_IMG_DIR_.'seller/');
 
@@ -68,7 +67,8 @@ class NpsMarketplace extends Module
             || !Configuration::deleteByName('NPS_SELLER_COMMENTS_MODERATE')
             || !Configuration::deleteByName('NPS_SELLER_COMMENTS_ALLOW_GUESTS')
             || !Configuration::deleteByName('NPS_SELLER_COMMENTS_MINIMAL_TIME')
-            || !$this->_deleteTab())
+            || !$this->_deleteTab()
+            || !$this->_deleteTables())
             return false;
         return true;
     }
@@ -77,6 +77,7 @@ class NpsMarketplace extends Module
     {
         $seller = new SellerCore(null, $this->context->customer->id);
 
+        $account_state = 'none';
         if ($seller->requested == 1 && $seller->active == 0 && $seller->locked == 0)
             $account_state = 'requested';
         else if ($seller->requested == 1 && $seller->active == 1 && $seller->locked == 0)
@@ -416,7 +417,13 @@ class NpsMarketplace extends Module
     private function _alterImageTypeTable() {
         $alterImageType = 'ALTER TABLE  `'._DB_PREFIX_.'image_type` ADD  `sellers` TINYINT(1) NOT NULL AFTER  `stores`';
 
-        $updateImageType = 'UPDATE `'._DB_PREFIX_.'image_type` SET  `sellers` =  1 WHERE  `'._DB_PREFIX_.'image_type`.`id_image_type` IN (1, 2, 3, 4, 5)';
+        $updateImageType = "UPDATE `"._DB_PREFIX_."_image_type` SET  `sellers` =  1 WHERE
+            `"._DB_PREFIX_."_image_type`.`name` IN (
+                'cart_default',
+                'small_default',
+                'medium_default',
+                'home_default',
+                 'large_default')";
 
         $sql = 'SELECT * FROM '._DB_PREFIX_.'image_type';
         $result = Db::getInstance()->ExecuteS($sql);
