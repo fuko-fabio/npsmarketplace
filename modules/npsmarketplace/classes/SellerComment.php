@@ -299,10 +299,10 @@ class SellerComment extends ObjectModel
      */
     public function delete()
     {
-        parent::delete();
-        SellerComment::deleteGrades($this->id);
-        SellerComment::deleteReports($this->id);
-        SellerComment::deleteUsefulness($this->id);
+        return parent::delete()
+            && SellerComment::deleteGrades($this->id)
+            && SellerComment::deleteReports($this->id)
+            && SellerComment::deleteUsefulness($this->id);
     }
 
     /**

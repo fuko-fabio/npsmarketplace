@@ -75,7 +75,7 @@ class NpsMarketplace extends Module
 
     public function hookDisplayCustomerAccount( $params )
     {
-        $seller = new SellerCore(null, $this->context->customer->id);
+        $seller = new Seller(null, $this->context->customer->id);
 
         $account_state = 'none';
         if ($seller->requested == 1 && $seller->active == 0 && $seller->locked == 0)
@@ -102,7 +102,7 @@ class NpsMarketplace extends Module
 
     public function hookIframe()
     {
-        $seller = new SellerCore(Tools::getValue('id'));
+        $seller = new Seller(Tools::getValue('id'));
         $products = $seller->getProducts();
 
         return $products;
@@ -134,7 +134,7 @@ class NpsMarketplace extends Module
         require_once(dirname(__FILE__).'/classes/SellerComment.php');
         require_once(dirname(__FILE__).'/classes/SellerCommentCriterion.php');
 
-        $id_seller = (int)SellerCore::getSellerByProduct(Tools::getValue('id_product'));
+        $id_seller = (int)Seller::getSellerByProduct(Tools::getValue('id_product'));
         $average = SellerComment::getAverageGrade((int)$id_seller);
 
         $this->context->smarty->assign(array(
@@ -154,7 +154,7 @@ class NpsMarketplace extends Module
         $this->context->controller->addJS($this->_path.'js/jquery.textareaCounter.plugin.js');
         $this->context->controller->addJS($this->_path.'js/sellercomments.js');
 
-        $seller = new SellerCore(SellerCore::getSellerByProduct(Tools::getValue('id_product')));
+        $seller = new Seller(Seller::getSellerByProduct(Tools::getValue('id_product')));
 
         $id_guest = (!$id_customer = (int)$this->context->cookie->id_customer) ? (int)$this->context->cookie->id_guest : false;
         $customerComment = SellerComment::getByCustomer($seller->id, (int)$this->context->cookie->id_customer, true, (int)$id_guest);
@@ -167,34 +167,42 @@ class NpsMarketplace extends Module
 
         $product = new Product(Tools::getValue('id_product'));
 
-/*
-        // $this->context->smarty->assign(array(
-            // 'logged' => $this->context->customer->isLogged(true),
-            // 'action_url' => '',
-            // 'product' => $product,
-            // 'comments' => SellerComment::getBySeller($seller->id, 1, null, $this->context->cookie->id_customer),
-            // 'criterions' => SellerCommentCriterion::getBySeller($seller->id, $this->context->language->id),
-            // 'averages' => $averages,
-            // 'seller_comment_path' => $this->_path,
-            // 'averageTotal' => $averageTotal,
-            // 'allow_guests' => (int)Configuration::get('NPS_SELLER_COMMENTS_ALLOW_GUESTS'),
-            // 'too_early' => ($customerComment && (strtotime($customerComment['date_add']) + Configuration::get('NPS_SELLER_COMMENTS_MINIMAL_TIME')) > time()),
-            // 'delay' => Configuration::get('NPS_SELLER_COMMENTS_MINIMAL_TIME'),
-            // 'id_seller_comment_form' => $seller->id,
-            // 'secure_key' => $this->secure_key,
-            // 'sellercomments_cover' => '',
-            // 'sellercomments_cover_image' => $seller->getImageLink(),
-            // 'mediumSize' => Image::getSize(ImageType::getFormatedName('medium')),
-            // 'nbComments' => (int)SellerComment::getCommentNumber($seller->id),
-            // 'sellercomments_controller_url' => $this->context->link->getModuleLink('npsmarketplace', 'SellerComments'),
-            // 'sellercomments_url_rewriting_activated' => Configuration::get('PS_REWRITING_SETTINGS', 0),
-            // 'moderation_active' => (int)Configuration::get('NPS_SELLER_COMMENTS_MODERATE')
-       // ));*/
-
+         $this->context->smarty->assign(array(
+             'sellercomments_logged' => $this->context->customer->isLogged(true),
+             'sellercomments_action_url' => '',
+             'seller' => $seller,
+             'sellercomments' => SellerComment::getBySeller($seller->id, 1, null, $this->context->cookie->id_customer),
+             'sellercomments_criterions' => SellerCommentCriterion::getBySeller($seller->id, $this->context->language->id),
+             'sellercomments_averages' => $averages,
+             'sellercomments_path' => $this->_path,
+             'sellercomments_averageTotal' => $averageTotal,
+             'sellercomments_allow_guests' => (int)Configuration::get('NPS_SELLER_COMMENTS_ALLOW_GUESTS'),
+             'sellercomments_too_early' => ($customerComment && (strtotime($customerComment['date_add']) + Configuration::get('NPS_SELLER_COMMENTS_MINIMAL_TIME')) > time()),
+             'sellercomments_delay' => Configuration::get('NPS_SELLER_COMMENTS_MINIMAL_TIME'),
+             'id_sellercomments_form' => $seller->id,
+             'sellercomments_secure_key' => $this->secure_key,
+             'sellercomments_cover' => '',
+             'sellercomments_cover_image' => $this->getSellerImgLink($seller),
+             'sellercomments_mediumSize' => Image::getSize(ImageType::getFormatedName('medium')),
+             'sellercomments_nbComments' => (int)SellerComment::getCommentNumber($seller->id),
+             'sellercomments_controller_url' => $this->context->link->getModuleLink('npsmarketplace', 'SellerComments'),
+             'sellercomments_url_rewriting_activated' => Configuration::get('PS_REWRITING_SETTINGS', 0),
+             'sellercomments_moderation_active' => (int)Configuration::get('NPS_SELLER_COMMENTS_MODERATE'),
+             'current_id_lang' => (int)$this->context->language->id,
+        ));
 
         $this->context->controller->pagination((int)SellerComment::getCommentNumber($seller->id));
 
-        return ($this->display(__FILE__, '/sellercomments.tpl'));
+        return ($this->display(__FILE__, '/views/templates/front/sellercomments.tpl'));
+    }
+
+    public function getSellerImgLink($seller, $type = null)
+    {
+        if($type)
+            $uri_path = _THEME_SEL_DIR_.$seller->id.'-'.$type.'.jpg';
+        else
+            $uri_path = _THEME_SEL_DIR_.$seller->id.($type ? '-'.$type : '').'.jpg';
+        return $this->context->link->protocol_content.Tools::getMediaServer($uri_path).$uri_path;
     }
 
     private function displayForm()

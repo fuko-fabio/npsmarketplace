@@ -32,7 +32,7 @@ class NpsMarketplaceProductsListModuleFrontController extends ModuleFrontControl
     public function initContent() {
         parent::initContent();
 
-        $seller = new SellerCore(null, $this -> context -> customer -> id);
+        $seller = new Seller(null, $this -> context -> customer -> id);
         $products = $this -> getProducts($seller);
 
         $this -> context -> smarty -> assign(array(

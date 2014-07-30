@@ -11,7 +11,7 @@ class NpsMarketplaceOrdersModuleFrontController extends ModuleFrontController
     public function initContent() {
         parent::initContent();
 
-        $seller = new SellerCore(null, $this -> context -> customer -> id);
+        $seller = new Seller(null, $this -> context -> customer -> id);
         $orders = $this -> getOrders($seller);
 
         $this -> context -> smarty -> assign(array(
@@ -31,6 +31,7 @@ class NpsMarketplaceOrdersModuleFrontController extends ModuleFrontController
                 $result[] = array(
                     'reference' => $order->reference,
                     'customer' => $order->getCustomer()->firstname.' '.$order->getCustomer()->lastname,
+                    //TODO Total price must be without items from other users
                     'total_paid_tax_incl' => $order->total_paid_tax_incl,
                     'payment' => $order->payment,
                     'state' => $order-> getCurrentOrderState()->name[$this->context->language->id],

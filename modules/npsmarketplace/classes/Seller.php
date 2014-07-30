@@ -4,8 +4,10 @@
 *  @copyright  
 *  @license    
 */
+if ( !defined( '_NPS_SEL_IMG_DIR_' ) )
+    define('_NPS_SEL_IMG_DIR_', _PS_IMG_DIR_.'seller/');
 
-class SellerCore extends ObjectModel
+class Seller extends ObjectModel
 {
     /** @var integer id */
     public $id;
@@ -200,17 +202,6 @@ class SellerCore extends ObjectModel
 
     public function getImgFormat() {
         return $this->image_format;
-    }
-
-    public function getImageLink($type = null)
-    {
-        if ($this->id) {
-            if($type)
-                $uri_path = _THEME_SEL_DIR_.$this->id.'-'.$type.'.jpg';
-            else
-                $uri_path = _THEME_SEL_DIR_.$this->id.($type ? '-'.$type : '').'.jpg';
-            return $this->context->link->protocol_content.Tools::getMediaServer($uri_path).$uri_path;
-        }
     }
 
     public function getAccountState() {

@@ -44,8 +44,6 @@
     </div>
     {else}
         <p class="alert alert-info">{l s='You have no orders.' mod='npsmarketplace'}</p>
-        </br>
-        {l s='Click' mod='npsmarketplace'} <a href="{$add_product_link}">{l s='here'}</a> {l s='to add your first product.' mod='npsmarketplace'}
     {/if}
 </div>
 <ul class="footer_links clearfix">

@@ -47,7 +47,7 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
         $id_seller = (int)Tools::getValue('id_seller', 0);
         // Initialize seller
         if ($id_seller)
-            $this->_seller = new SellerCore($id_seller);
+            $this->_seller = new Seller($id_seller);
     }
 
     public function initContent() {

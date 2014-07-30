@@ -45,7 +45,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
             $this->errors = $pp->errors;
             if(empty($this->errors))
             {
-                $seller = new SellerCore(null, $this->context->customer->id);
+                $seller = new Seller(null, $this->context->customer->id);
                 if (!Validate::isLoadedObject($seller))
                     $this->errors[] = Tools::displayError('An error occurred while updating seller information.');
                 if (!$seller->assignProduct($product->id))
@@ -68,8 +68,8 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
         if ($id_product)
         {
             $this->_product = new Product($id_product);
-            $seller = new SellerCore(null, $this->context->customer->id);
-            if (Validate::isLoadedObject($this->_product) && Validate::isLoadedObject($seller) && SellerCore::sellerHasProduct($seller->id, $id_product))
+            $seller = new Seller(null, $this->context->customer->id);
+            if (Validate::isLoadedObject($this->_product) && Validate::isLoadedObject($seller) && Seller::sellerHasProduct($seller->id, $id_product))
             {
                 if (Tools::isSubmit('delete'))
                 {

@@ -48,7 +48,7 @@ class SellerRequestProcessor {
             $link_rewrite[$lang['id_lang']] = Tools::link_rewrite($n);
         }
 
-        $seller = new SellerCore((int)Tools::getValue('id_seller', null));
+        $seller = new Seller((int)Tools::getValue('id_seller', null));
         $seller -> company_name = $company_name;
         $seller -> company_description = $company_description;
         $seller -> name = $name;

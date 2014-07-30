@@ -28,3 +28,9 @@
 !/override/classes
 /override/classes/*
 !/override/classes/Product.php
+
+!/override/controllers
+/override/controllers/*
+!/override/controllers/admin
+/override/controllers/admin/*
+!/override/controllers/admin/AdminStatsController.php

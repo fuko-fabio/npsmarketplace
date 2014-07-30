@@ -13,7 +13,7 @@ class NpsMarketplaceOrderViewModuleFrontController extends ModuleFrontController
     {
         parent::initContent();
 
-        $seller = new SellerCore(Tools::getValue('id_seller'));
+        $seller = new Seller(Tools::getValue('id_seller'));
         $order = new Order(Tools::getValue('id_order'));
 
         $this -> context -> smarty -> assign(array(
