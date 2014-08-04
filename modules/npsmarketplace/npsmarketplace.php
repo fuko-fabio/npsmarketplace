@@ -131,13 +131,13 @@ class NpsMarketplace extends Module
 
     public function hookProductTab($params)
     {
-        require_once(dirname(__FILE__).'/classes/SellerComment.php');
-        require_once(dirname(__FILE__).'/classes/SellerCommentCriterion.php');
-
         $id_seller = (int)Seller::getSellerByProduct(Tools::getValue('id_product'));
-        $average = SellerComment::getAverageGrade((int)$id_seller);
+        if(isset($id_seller) && $id_seller > 0) {
+            require_once(dirname(__FILE__).'/classes/SellerComment.php');
+            require_once(dirname(__FILE__).'/classes/SellerCommentCriterion.php');
+            $average = SellerComment::getAverageGrade((int)$id_seller);
 
-        $this->context->smarty->assign(array(
+            $this->context->smarty->assign(array(
                                             'allow_guests' => (int)Configuration::get('NPS_SELLER_COMMENTS_ALLOW_GUESTS'),
                                             'comments' => SellerComment::getBySeller($id_seller),
                                             'criterions' => SellerCommentCriterion::getBySeller($id_seller, $this->context->language->id),
@@ -145,55 +145,59 @@ class NpsMarketplace extends Module
                                             'nbComments' => (int)(SellerComment::getCommentNumber($id_seller))
                                        ));
 
-        return ($this->display(__FILE__, '/tab.tpl'));
+            return ($this->display(__FILE__, '/tab.tpl'));
+        }
     }
 
     public function hookProductTabContent($params)
     {
-        $this->context->controller->addJS($this->_path.'js/jquery.rating.pack.js');
-        $this->context->controller->addJS($this->_path.'js/jquery.textareaCounter.plugin.js');
-        $this->context->controller->addJS($this->_path.'js/sellercomments.js');
-
-        $seller = new Seller(Seller::getSellerByProduct(Tools::getValue('id_product')));
-
-        $id_guest = (!$id_customer = (int)$this->context->cookie->id_customer) ? (int)$this->context->cookie->id_guest : false;
-        $customerComment = SellerComment::getByCustomer($seller->id, (int)$this->context->cookie->id_customer, true, (int)$id_guest);
-
-        $averages = SellerComment::getAveragesBySeller($seller->id, $this->context->language->id);
-        $averageTotal = 0;
-        foreach ($averages as $average)
-            $averageTotal += (float)($average);
-        $averageTotal = count($averages) ? ($averageTotal / count($averages)) : 0;
-
-        $product = new Product(Tools::getValue('id_product'));
-
-         $this->context->smarty->assign(array(
-             'sellercomments_logged' => $this->context->customer->isLogged(true),
-             'sellercomments_action_url' => '',
-             'seller' => $seller,
-             'sellercomments' => SellerComment::getBySeller($seller->id, 1, null, $this->context->cookie->id_customer),
-             'sellercomments_criterions' => SellerCommentCriterion::getBySeller($seller->id, $this->context->language->id),
-             'sellercomments_averages' => $averages,
-             'sellercomments_path' => $this->_path,
-             'sellercomments_averageTotal' => $averageTotal,
-             'sellercomments_allow_guests' => (int)Configuration::get('NPS_SELLER_COMMENTS_ALLOW_GUESTS'),
-             'sellercomments_too_early' => ($customerComment && (strtotime($customerComment['date_add']) + Configuration::get('NPS_SELLER_COMMENTS_MINIMAL_TIME')) > time()),
-             'sellercomments_delay' => Configuration::get('NPS_SELLER_COMMENTS_MINIMAL_TIME'),
-             'id_sellercomments_form' => $seller->id,
-             'sellercomments_secure_key' => $this->secure_key,
-             'sellercomments_cover' => '',
-             'sellercomments_cover_image' => $this->getSellerImgLink($seller),
-             'sellercomments_mediumSize' => Image::getSize(ImageType::getFormatedName('medium')),
-             'sellercomments_nbComments' => (int)SellerComment::getCommentNumber($seller->id),
-             'sellercomments_controller_url' => $this->context->link->getModuleLink('npsmarketplace', 'SellerComments'),
-             'sellercomments_url_rewriting_activated' => Configuration::get('PS_REWRITING_SETTINGS', 0),
-             'sellercomments_moderation_active' => (int)Configuration::get('NPS_SELLER_COMMENTS_MODERATE'),
-             'current_id_lang' => (int)$this->context->language->id,
-        ));
-
-        $this->context->controller->pagination((int)SellerComment::getCommentNumber($seller->id));
-
-        return ($this->display(__FILE__, '/views/templates/front/sellercomments.tpl'));
+        $id_seller = (int)Seller::getSellerByProduct(Tools::getValue('id_product'));
+        if(isset($id_seller) && $id_seller > 0) {
+            $this->context->controller->addJS($this->_path.'js/jquery.rating.pack.js');
+            $this->context->controller->addJS($this->_path.'js/jquery.textareaCounter.plugin.js');
+            $this->context->controller->addJS($this->_path.'js/sellercomments.js');
+    
+            $seller = new Seller(Seller::getSellerByProduct(Tools::getValue('id_product')));
+    
+            $id_guest = (!$id_customer = (int)$this->context->cookie->id_customer) ? (int)$this->context->cookie->id_guest : false;
+            $customerComment = SellerComment::getByCustomer($seller->id, (int)$this->context->cookie->id_customer, true, (int)$id_guest);
+    
+            $averages = SellerComment::getAveragesBySeller($seller->id, $this->context->language->id);
+            $averageTotal = 0;
+            foreach ($averages as $average)
+                $averageTotal += (float)($average);
+            $averageTotal = count($averages) ? ($averageTotal / count($averages)) : 0;
+    
+            $product = new Product(Tools::getValue('id_product'));
+    
+             $this->context->smarty->assign(array(
+                 'sellercomments_logged' => $this->context->customer->isLogged(true),
+                 'sellercomments_action_url' => '',
+                 'seller' => $seller,
+                 'sellercomments' => SellerComment::getBySeller($seller->id, 1, null, $this->context->cookie->id_customer),
+                 'sellercomments_criterions' => SellerCommentCriterion::getBySeller($seller->id, $this->context->language->id),
+                 'sellercomments_averages' => $averages,
+                 'sellercomments_path' => $this->_path,
+                 'sellercomments_averageTotal' => $averageTotal,
+                 'sellercomments_allow_guests' => (int)Configuration::get('NPS_SELLER_COMMENTS_ALLOW_GUESTS'),
+                 'sellercomments_too_early' => ($customerComment && (strtotime($customerComment['date_add']) + Configuration::get('NPS_SELLER_COMMENTS_MINIMAL_TIME')) > time()),
+                 'sellercomments_delay' => Configuration::get('NPS_SELLER_COMMENTS_MINIMAL_TIME'),
+                 'id_sellercomments_form' => $seller->id,
+                 'sellercomments_secure_key' => $this->secure_key,
+                 'sellercomments_cover' => '',
+                 'sellercomments_cover_image' => $this->getSellerImgLink($seller),
+                 'sellercomments_mediumSize' => Image::getSize(ImageType::getFormatedName('medium')),
+                 'sellercomments_nbComments' => (int)SellerComment::getCommentNumber($seller->id),
+                 'sellercomments_controller_url' => $this->context->link->getModuleLink('npsmarketplace', 'SellerComments'),
+                 'sellercomments_url_rewriting_activated' => Configuration::get('PS_REWRITING_SETTINGS', 0),
+                 'sellercomments_moderation_active' => (int)Configuration::get('NPS_SELLER_COMMENTS_MODERATE'),
+                 'current_id_lang' => (int)$this->context->language->id,
+            ));
+    
+            $this->context->controller->pagination((int)SellerComment::getCommentNumber($seller->id));
+    
+            return ($this->display(__FILE__, '/views/templates/front/sellercomments.tpl'));
+        }
     }
 
     public function getSellerImgLink($seller, $type = null)
