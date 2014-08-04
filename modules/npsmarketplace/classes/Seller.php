@@ -85,8 +85,8 @@ class Seller extends ObjectModel
             'locked' =>              array('type' => self::TYPE_BOOL,   'validate' => 'isBool',        'required' => true),
             'email' =>               array('type' => self::TYPE_STRING, 'validate' => 'isEmail',       'required' => true),
             'phone' =>               array('type' => self::TYPE_STRING, 'validate' => 'isPhoneNumber', 'required' => true),
-            'nip' =>                 array('type' => self::TYPE_INT,    'validate' => 'isNip',         'required' => true),
-            'regon' =>               array('type' => self::TYPE_INT,    'validate' => 'isRegon',       'required' => true),
+            'nip' =>                 array('type' => self::TYPE_INT,    'validate' => 'isNip',         ),
+            'regon' =>               array('type' => self::TYPE_INT,    'validate' => 'isRegon',       ),
             'commision' =>           array('type' => self::TYPE_INT,    'validate' => 'isUnsignedInt', 'required' => true),
              // Lang fields
             'link_rewrite' =>        array('type' => self::TYPE_STRING, 'validate' => 'isLinkRewrite', 'required' => true, 'lang' => true, 'size' => 128),

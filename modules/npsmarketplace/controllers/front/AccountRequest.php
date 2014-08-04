@@ -14,15 +14,15 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
     public function setMedia()
     {
         parent::setMedia();
+        $this -> addJS ("https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places");
         $this -> addJS(_PS_JS_DIR_.'validate.js');
         $this -> addJS (_PS_MODULE_DIR_.'npsmarketplace/js/product.js');
         $this -> addJS (_PS_MODULE_DIR_.'npsmarketplace/js/bootstrap.min.js');
         $this -> addJS (_PS_MODULE_DIR_.'npsmarketplace/js/bootstrap-datetimepicker.min.js');
         $this -> addJS (_PS_MODULE_DIR_.'npsmarketplace/js/fileinput.min.js');
-
         $this -> addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/bootstrap.css');
         $this -> addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/bootstrap-datetimepicker.min.css');
-        $this -> addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/fileinput.css');
+        $this -> addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/map.css');
         
     }
 
@@ -37,7 +37,7 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
         {
             $sp = new SellerRequestProcessor($this->context);
             $seller = $sp->processSubmit();
-            $this->errors = $pp->errors;
+            $this->errors = $sp->errors;
             if(empty($this->errors))
             {
                 if (Tools::getValue('add_product') == 'on')
@@ -45,7 +45,9 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
                     $pp = new ProductRequestProcessor($this->context);
                     $product = $pp->processSubmit();
                     $this->errors = $pp->errors;
-                    $seller->assignProduct($product->id);
+                    if(empty($this->errors)) {
+                        $seller->assignProduct($product->id);
+                    }
                 }
                 $customer = $this->context->customer;
                 $mail_params = array(

@@ -39,6 +39,7 @@ class ProductRequestProcessor {
             $this -> errors[] = Tools::displayError('Invalid product code');
         else if (empty($categories))
             $this -> errors[] = Tools::displayError('At least one category must be set');
+
         foreach (Language::getLanguages() as $key => $lang) {
             $p_name = $product_name[$lang['id_lang']];
             if (!Validate::isGenericName($p_name))
@@ -50,21 +51,21 @@ class ProductRequestProcessor {
 
             $link_rewrite[$lang['id_lang']] = Tools::link_rewrite($p_name);
         }
-        $product = new Product((int)Tools::getValue('id_product', null));
-        $product -> price = $product_price;
-        $product -> name = $product_name;
-        $product -> active = $active;
-        $product -> description = $product_description;
-        $product -> description_short = $product_short_description;
-        $product -> available_date = $product_date;
-        $product -> link_rewrite = $link_rewrite;
-        $product -> is_virtual = true;
-        $product -> indexed = 1;
-        $product -> id_tax_rules_group = 0;
-        $product -> reference = $product_code;
-        $product -> id_category_default = $categories[0];
 
+        $product = new Product((int)Tools::getValue('id_product', null));
         if (empty($this -> errors)) {
+            $product -> price = $product_price;
+            $product -> name = $product_name;
+            $product -> active = $active;
+            $product -> description = $product_description;
+            $product -> description_short = $product_short_description;
+            $product -> available_date = $product_date;
+            $product -> link_rewrite = $link_rewrite;
+            $product -> is_virtual = true;
+            $product -> indexed = 1;
+            $product -> id_tax_rules_group = 0;
+            $product -> reference = $product_code;
+            $product -> id_category_default = $categories[0];
             if (!$product->save())
                 $this->errors[] = Tools::displayError('An error occurred while saving product.');
             else 

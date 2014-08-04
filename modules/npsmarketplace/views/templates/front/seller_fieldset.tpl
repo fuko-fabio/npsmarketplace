@@ -41,12 +41,12 @@
     </div>
     <div class="row">
         <div class="form-group col-md-6">
-            <label class="required" for="seller_nip">{l s='NIP' mod='npsmarketplace'}</label>
-            <input class="is_required validate form-control" data-validate="isNip" type="number" id="seller_nip" name="seller_nip" required="" value="{if isset($seller['nip'])}{$seller['nip']|escape:'html':'UTF-8'}{/if}"/>
+            <label for="seller_nip">{l s='NIP' mod='npsmarketplace'}</label>
+            <input class="validate form-control" data-validate="isNip" type="number" id="seller_nip" name="seller_nip" required="" value="{if isset($seller['nip'])}{$seller['nip']|escape:'html':'UTF-8'}{/if}"/>
         </div>
         <div class="form-group col-md-6">
-            <label class="required" for="seller_regon">{l s='Regon' mod='npsmarketplace'}</label>
-            <input class="is_required validate form-control" data-validate="isRegon" type="number" id="seller_regon" name="seller_regon" required="" value="{if isset($seller['regon'])}{$seller['regon']|escape:'html':'UTF-8'}{/if}"/>
+            <label for="seller_regon">{l s='Regon' mod='npsmarketplace'}</label>
+            <input class="validate form-control" data-validate="isRegon" type="number" id="seller_regon" name="seller_regon" required="" value="{if isset($seller['regon'])}{$seller['regon']|escape:'html':'UTF-8'}{/if}"/>
         </div>
     </div>
 </fieldset>
