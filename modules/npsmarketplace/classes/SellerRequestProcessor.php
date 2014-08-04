@@ -32,9 +32,9 @@ class SellerRequestProcessor {
             $this -> errors[] = Tools::displayError('Invalid phone number');
         else if (!Validate::isEmail($email))
             $this -> errors[] = Tools::displayError('Invalid email addres');
-        else if (!Validate::isNip($nip))
+        else if (!empty($nip) && !Validate::isNip($nip))
             $this -> errors[] = Tools::displayError('Invalid NIP number');
-        else if (!Validate::isRegon($regon))
+        else if (!empty($regon) && !Validate::isRegon($regon))
             $this -> errors[] = Tools::displayError('Invalid REGON number');
         foreach (Language::getLanguages() as $key => $lang) {
             $n = $name[$lang['id_lang']];

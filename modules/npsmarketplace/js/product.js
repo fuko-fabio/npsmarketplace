@@ -30,29 +30,7 @@ $(document).ready(function(){
     $('#product_date_time').on('click', function() {
         $('#datePicker').datetimepicker('show');
     });
-
-    $('#add_product').change(function() {
-        toggleProductForm();
-    }); 
-    toggleProductForm();
 });
-
-function toggleProductForm() {
-    var el = $('#add_product');
-    if (el.length > 0) {
-        if (el.is(':checked')) {
-            $('#add_offer').show();
-            $('#add_offer').find('.is_required').each(function() {
-                $(this).attr('required', '');
-            });
-        } else {
-            $('#add_offer').hide();
-            $('#add_offer').find('.is_required').each(function() {
-                $(this).removeAttr('required');
-            });
-        }
-    }
-}
 
 // This example adds a search box to a map, using the Google Place Autocomplete
 // feature. People can enter geographical searches. The search box will return a

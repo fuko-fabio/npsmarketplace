@@ -16,7 +16,7 @@
             <div class="tab-pane {if $lang.id_lang == $current_id_lang}active{/if}" id="shop_lang{$lang.id_lang}">
                 <div class="form-group">
                     <label class="required" for="company_name">{l s='Company Name' mod='npsmarketplace'}</label>
-                    <input class="is_required validate form-control" data-validate="isGenericName" type="text" id="company_name" name="company_name[{$lang.id_lang}]" required="" value="{if isset($seller['company_name'][$lang.id_lang])}{$seller['company_name'][$lang.id_lang]|escape:'html':'UTF-8'}{/if}"/>
+                    <input class="validate form-control" data-validate="isGenericName" type="text" id="company_name" name="company_name[{$lang.id_lang}]" value="{if isset($seller['company_name'][$lang.id_lang])}{$seller['company_name'][$lang.id_lang]|escape:'html':'UTF-8'}{/if}"/>
                 </div>
                 <div class="form-group">
                     <label class="required" for="company_description">{l s='Company Description' mod='npsmarketplace'}</label>
@@ -24,7 +24,7 @@
                 </div>
                 <div class="form-group">
                     <label class="required" for="seller_name">{l s='Seller Name' mod='npsmarketplace'}</label>
-                    <input class="is_required validate form-control" data-validate="isGenericName" type="text" id="seller_name" name="seller_name[{$lang.id_lang}]" required="" value="{if isset($seller['name'][$lang.id_lang])}{$seller['name'][$lang.id_lang]|escape:'html':'UTF-8'}{/if}"/>
+                    <input class="validate form-control" data-validate="isGenericName" type="text" id="seller_name" name="seller_name[{$lang.id_lang}]" value="{if isset($seller['name'][$lang.id_lang])}{$seller['name'][$lang.id_lang]|escape:'html':'UTF-8'}{/if}"/>
                 </div>
             </div>
         {/foreach}
@@ -42,11 +42,11 @@
     <div class="row">
         <div class="form-group col-md-6">
             <label for="seller_nip">{l s='NIP' mod='npsmarketplace'}</label>
-            <input class="validate form-control" data-validate="isNip" type="number" id="seller_nip" name="seller_nip" required="" value="{if isset($seller['nip'])}{$seller['nip']|escape:'html':'UTF-8'}{/if}"/>
+            <input class="validate form-control" data-validate="isNip" type="number" id="seller_nip" name="seller_nip" value="{if isset($seller['nip'])}{$seller['nip']|escape:'html':'UTF-8'}{/if}"/>
         </div>
         <div class="form-group col-md-6">
             <label for="seller_regon">{l s='Regon' mod='npsmarketplace'}</label>
-            <input class="validate form-control" data-validate="isRegon" type="number" id="seller_regon" name="seller_regon" required="" value="{if isset($seller['regon'])}{$seller['regon']|escape:'html':'UTF-8'}{/if}"/>
+            <input class="validate form-control" data-validate="isRegon" type="number" id="seller_regon" name="seller_regon" value="{if isset($seller['regon'])}{$seller['regon']|escape:'html':'UTF-8'}{/if}"/>
         </div>
     </div>
 </fieldset>

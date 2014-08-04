@@ -8,9 +8,7 @@
 <div class="box">
     {include file="$tpl_dir./errors.tpl"}
     <h1 class="page-heading bottom-indent">{l s='Become a seller' mod='npsmarketplace'}</h1>
-    {if $account_state == 'none'}
-    <p class="info-title">{l s='Send a request for permission to sell tickets on our website.' mod='npsmarketplace'}</p>
-    {else if $account_state == 'requested'}
+    {if $account_state == 'requested'}
     <p class="info-title">{l s='Your request has been sent to us on %s. Please wait for contact with our marketing team.' sprintf=$account_request_date mod='npsmarketplace'}</p>
     {else if $account_state == 'locked'}
     <p class="info-title">{l s='Your account has been locked by administrator'}</p>
@@ -18,14 +16,6 @@
     {if $account_state == 'none'}
     <form enctype="multipart/form-data" role="form" action="{$request_uri}" method="post" id="formaccountrequest">
         {include file="$seller_fieldset_tpl_path"}
-        <div class="page-heading"></div>
-        <p class="info-title">{l s='You can add now you first offer to our system. This offer will be available ony for our administrators an it can help you to get your account active faster.' mod='npsmarketplace'}</p>
-        <p class="checkbox">
-            <input type="checkbox" name="add_product" id="add_product"/>
-            <label for="add_product">{l s='I want add my first offer' mod='npsmarketplace'}</label>
-        </p>
-        {include file="$product_fieldset_tpl_path" categories_tree=$categories_tree category_partial_tpl_path=$category_partial_tpl_path}
-        </br>
         <label class="required">{l s='Required field' mod='npsmarketplace'}</label>
         </br>
         <strong>{l s='By clicking "Submit" I agree that:' mod='npsmarketplace'}</strong>

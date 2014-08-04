@@ -76,7 +76,6 @@ class NpsMarketplace extends Module
     public function hookDisplayCustomerAccount( $params )
     {
         $seller = new Seller(null, $this->context->customer->id);
-
         $account_state = 'none';
         if ($seller->requested == 1 && $seller->active == 0 && $seller->locked == 0)
             $account_state = 'requested';
@@ -88,6 +87,7 @@ class NpsMarketplace extends Module
         $this->context->smarty->assign(
             array(
                 'account_state' => $account_state,
+                'products_count' => count($seller->getSellerProducts($seller->id)),
                 'seller_request_link' => $this->context->link->getModuleLink('npsmarketplace', 'AccountRequest'),
                 'add_product_link' => $this->context->link->getModuleLink('npsmarketplace', 'Product'),
                 'products_list_link' => $this->context->link->getModuleLink('npsmarketplace', 'ProductsList'),
@@ -273,6 +273,37 @@ class NpsMarketplace extends Module
                     'title' => $this->l('Save'),
                     'class' => 'btn btn-default pull-right',
                     'name' => 'submitConfiguration',
+                )
+            )
+        );
+    }
+
+    private function linksForm() {
+        return array(
+            'form' => array(
+                'legend' => array(
+                    'title' => $this->l('User Guide URL\'s'),
+                ),
+                'input' => array(
+                     array(
+                        'type' => 'text',
+                        'label' => $this->l('Seller Guide'),
+                        'name' => 'NPS_SELLER_GUIDE',
+                        'required' => true
+                    ),
+                ),
+                'input' => array(
+                     array(
+                        'type' => 'text',
+                        'label' => $this->l('Product Guide'),
+                        'name' => 'NPS_PRODUCT_GUIDE',
+                        'required' => true
+                    ),
+                ),
+                'submit' => array(
+                    'title' => $this->l('Save'),
+                    'class' => 'btn btn-default pull-right',
+                    'name' => 'submitUrls',
                 )
             )
         );
