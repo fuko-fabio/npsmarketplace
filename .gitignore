@@ -34,3 +34,17 @@
 !/override/controllers/admin
 /override/controllers/admin/*
 !/override/controllers/admin/AdminStatsController.php
+!/override/controllers/admin/AdminProductsController.php
+
+!/override/controllers/admin/templates
+/override/controllers/admin/templates/*
+!/override/controllers/admin/templates/products
+/override/controllers/admin/templates/products/*
+!/override/controllers/admin/templates/products/combinations.tpl
+!/override/controllers/admin/templates/products/virtualproduct.tpl
+
+!/override/controllers/admin/templates/products/helpers
+/override/controllers/admin/templates/products/helpers/*
+!/override/controllers/admin/templates/products/helpers/form
+/override/controllers/admin/templates/products/helpers/form/*
+!/override/controllers/admin/templates/products/helpers/form/form.tpl
