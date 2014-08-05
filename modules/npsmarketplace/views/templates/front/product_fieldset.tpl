@@ -52,7 +52,11 @@
     <div class="row">
         <div class="form-group col-md-6">
             <label class="required" for="product_town">{l s='Town' mod='npsmarketplace'}</label>
-            <input class="is_required validate form-control" data-validate="isGenericName" type="text" id="product_town" name="product_town" required="" value="{if isset($product['town'])}{$product['town']|escape:'html':'UTF-8'}{/if}"/>
+            <select class="form-control" id="product_town" name="product_town">
+                {foreach from=$towns item=town}
+                    <option value="{$town}">{$town}</option> 
+                {/foreach}
+            </select>
         </div>
         <div class="form-group col-md-6">
             <label class="required" for="product_date_time">{l s='Date & Time' mod='npsmarketplace'}</label>
@@ -63,10 +67,14 @@
             </div>
         </div>
     </div>
-    <input id="map-lat-input" class="hide" name="product_lat" type="text">
-    <input id="map-lng-input" class="hide" name="product_lng" type="text">
-    <input id="map-address-input" class="controls" name="product_address" type="text" placeholder="Search...">
-    <div id="map-canvas"></div>
+    <div class="form-group">
+        <label class="required" for="map-address-input">{l s='Product address' mod='npsmarketplace'}</label>
+        <input id="map-lat-input" class="hide" name="product_lat" type="text">
+        <input id="map-lng-input" class="hide" name="product_lng" type="text">
+        <input id="map-address-input" class="controls" name="product_address" type="text" placeholder="Search...">
+        <div id="map-canvas"></div>
+    </div>
+
     <div class="form-group">
         <label class="required" for="product_category">{l s='Category' mod='npsmarketplace'}</label>
         <ul class="tree">

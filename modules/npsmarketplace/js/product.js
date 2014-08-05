@@ -18,6 +18,7 @@ function initialize() {
   };
 
   var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions );
+  var geocoder = new google.maps.Geocoder();
 
   var marker = new google.maps.Marker({
     map: map,
@@ -29,10 +30,20 @@ function initialize() {
   var inputId = 'map-address-input';
   // Create the search box and link it to the UI element.
   var input = (document.getElementById(inputId));
-  // Block Enter events
+
+    // Block Enter events
   $('#' + inputId).bind('keypress keydown keyup', function(e){
     if(e.keyCode == 13) { e.preventDefault(); }
   });
+
+  $('#product_town').on('change', function() {
+    $('#map-address-input').val(this.value);
+    codeAddress(this.value);
+  });
+
+  var currentAddress = $('#product_town').val();
+  $('#' + inputId).val(currentAddress);
+  codeAddress(currentAddress);
 
   map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
@@ -58,23 +69,32 @@ function initialize() {
   });
 
   google.maps.event.addListener(marker, 'dragend', function() {
-    geocodePosition(marker.getPosition());
+    var pos = marker.getPosition();
+    $('#map-lat-input').val(pos.lat());
+    $('#map-lng-input').val(pos.lng());
+    geocodePosition(pos);
   });
-  // [END region_getplaces]
 
-  // Bias the SearchBox results towards places that are within the bounds of the
-  // current map's viewport.
   google.maps.event.addListener(map, 'bounds_changed', function() {
     var bounds = map.getBounds();
     searchBox.setBounds(bounds);
   });
-  
+
   function geocodePosition(pos) {
     geocoder = new google.maps.Geocoder();
     geocoder.geocode
     ({ latLng: pos }, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
         $('#' + inputId).val(results[0].formatted_address);
+      }
+    });
+  }
+
+  function codeAddress(address) {
+    geocoder.geocode({ 'address' : address }, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        marker.setPosition(results[0].geometry.location);
+        map.setCenter(results[0].geometry.location);
       }
     });
   }

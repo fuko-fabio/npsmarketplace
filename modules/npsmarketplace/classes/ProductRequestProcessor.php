@@ -20,8 +20,11 @@ class ProductRequestProcessor {
         $product_description = $_POST['product_description'];
         $product_price = trim(Tools::getValue('product_price'));
         $product_amount = trim(Tools::getValue('product_amount'));
-        $product_date = trim(Tools::getValue('product_date'));
-        $product_time = trim(Tools::getValue('product_time'));
+        $product_date_time = trim(Tools::getValue('product_date_time'));
+        $product_town = trim(Tools::getValue('product_town'));
+        $product_address = trim(Tools::getValue('product_address'));
+        $product_lat = trim(Tools::getValue('product_lat'));
+        $product_lng = trim(Tools::getValue('product_lng'));
         $product_code = trim(Tools::getValue('product_code'));
         $categories = $_POST['category'];
         $link_rewrite = array();
@@ -30,10 +33,6 @@ class ProductRequestProcessor {
             $this -> errors[] = Tools::displayError('Invalid product price');
         else if (!Validate::isInt($product_amount))
             $this -> errors[] = Tools::displayError('Invalid product amount number');
-        else if (!Validate::isDateFormat($product_date))
-            $this -> errors[] = Tools::displayError('Invalid product date');
-        else if (!Validate::isTime($product_time))
-            $this -> errors[] = Tools::displayError('Invalid product time');
         else if (!Validate::isMessage($product_code))
             $this -> errors[] = Tools::displayError('Invalid product code');
         else if (empty($categories))
@@ -58,17 +57,22 @@ class ProductRequestProcessor {
             $product -> active = $active;
             $product -> description = $product_description;
             $product -> description_short = $product_short_description;
-            $product -> available_date = $product_date;
             $product -> link_rewrite = $link_rewrite;
             $product -> is_virtual = true;
             $product -> indexed = 1;
             $product -> id_tax_rules_group = 0;
             $product -> reference = $product_code;
+            #$product -> location_lat = $product_lat;
+            #$product -> location_lng = $product_lng;
             $product -> id_category_default = $categories[0];
             if (!$product->save())
                 $this->errors[] = Tools::displayError('An error occurred while saving product.');
             else 
                 StockAvailable::setQuantity($product->id, null, (int)$product_amount, $this->context->shop->id);
+                // TODO IDS
+                Product::addFeatureProductImport($product->id, 8, $product_town);
+                Product::addFeatureProductImport($product->id, 9, $product_address);
+
                 if (!$product->updateCategories($categories))
                     $this->errors[] = Tools::displayError('An error occurred while adding product to categories.');
                 else

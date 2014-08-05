@@ -11,6 +11,9 @@
     {if $account_state == 'locked'}
         <li><a href="{$unlock_account_link}"><i class="icon-lock"></i><span>{l s='Unlock Account' mod='npsmarketplace'}</span></a></li>
     {/if}
+    {if $account_state == 'requested'}
+        <li><a href="{$products_list_link}"><i class="icon-th-list"></i><span>{l s='My products' mod='npsmarketplace'}</span></a></li>
+    {/if}
     {if $account_state == 'active'}
         <li><a href="{$add_product_link}"><i class="icon-plus"></i><span>{l s='Add Product' mod='npsmarketplace'}</span></a></li>
         <li><a href="{$products_list_link}"><i class="icon-th-list"></i><span>{l s='My products' mod='npsmarketplace'}</span></a></li>

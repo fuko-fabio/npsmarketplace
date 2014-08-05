@@ -35,11 +35,12 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
         if (Tools::isSubmit('product_name')
             && Tools::isSubmit('product_price')
             && Tools::isSubmit('product_amount')
-            && Tools::isSubmit('product_date')
-            && Tools::isSubmit('product_time'))
+            && Tools::isSubmit('product_date_time')
+            && Tools::isSubmit('product_town')
+            && Tools::isSubmit('product_address'))
         {
             $pp = new ProductRequestProcessor($this->context);
-            $product = $pp->processAdd(1);
+            $product = $pp->processSubmit(1);
             $this->errors = $pp->errors;
             if(empty($this->errors))
             {
@@ -86,7 +87,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
     public function initContent()
     {
         parent::initContent();
-        
+
         $tpl_product = array('categories' => array());
         if (isset($this->_product->id)) {
             $tpl_product = array(
@@ -102,7 +103,8 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
                 'categories' => $this->_product->getCategories(),
             );
         }
-
+        // TODO Read towns
+        $towns = array('Kraków', 'Warszawa');
         $categoriesList = new CategoriesList($this->context);
         $this -> context -> smarty -> assign(array(
             'user_agreement_url' =>'#',
@@ -111,7 +113,8 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
             'product_fieldset_tpl_path'=> _PS_MODULE_DIR_.'npsmarketplace/views/templates/front/product_fieldset.tpl',
             'product' => $tpl_product,
             'current_id_lang' => (int)$this->context->language->id,
-            'languages' => Language::getLanguages()
+            'languages' => Language::getLanguages(),
+            'towns' => $towns,
         ));
 
         $this->setTemplate('product.tpl');
