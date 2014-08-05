@@ -70,16 +70,17 @@ class ProductRequestProcessor {
                 $this->errors[] = Tools::displayError('An error occurred while saving product.');
             else 
                 StockAvailable::setQuantity($product->id, null, (int)$product_amount, $this->context->shop->id);
-                if (!$product->updateCategories($categories))
-                    $this->errors[] = Tools::displayError('An error occurred while adding product to categories.');
-                else
-                    $this->saveProductImages($product);
                 $this->saveFeatures($product, $product_town, $product_district, $product_address);
+                $this->saveAttribute($product, $product_date_time);
+                $product->updateCategories($categories);
+                $this->saveProductImages($product);
         }
         return $product;
     }
 
     private function saveFeatures($product, $town, $district, $address) {
+        if (!Feature::isFeatureActive())
+            return;
         $feature_id = Configuration::get('NPS_FEATURE_TOWN_ID');
         $feature_value_id = FeatureValue::addFeatureValueImport($feature_id, $town, $product->id);
         Product::addFeatureProductImport($product->id, $feature_id, $feature_value_id);
@@ -93,6 +94,28 @@ class ProductRequestProcessor {
         Product::addFeatureProductImport($product->id, $feature_id, $feature_value_id);
 
         return true;
+    }
+
+    private function saveAttribute($product, $date_time) {
+        if (!Combination::isFeatureActive() || empty($date_time))
+            return;
+        $attr = new Attribute();
+        $attr->name[$this->context->language->id] = $date_time;
+        $attr->id_attribute_group = Configuration::get('NPS_ATTRIBUTE_DT_ID');
+        $attr->position = -1;
+        $attr->save();
+
+        $id_combination = $product->addAttribute(
+            0,//$price,
+            null,//$weight,
+            null,//$unit_impact,
+            null,//$ecotax,
+            null,//$id_images,
+            null,//$reference,
+            null,//$ean13,
+            $default);
+       $combination = new Combination($id_combination);
+       $combination->setAttributes(array($attr->id));
     }
 
     private function saveProductImages($product) {

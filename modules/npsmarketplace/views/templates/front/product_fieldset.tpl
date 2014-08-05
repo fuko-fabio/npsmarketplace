@@ -1,11 +1,11 @@
-<fieldset id="add_offer">
+<fieldset>
     {if isset($product['id'])}
-    <h3 class="page-heading bottom-indent">{l s='Edit product' mod='npsmarketplace'}</h3>
+    <h3 class="page-heading bottom-indent">{l s='Edit Event' mod='npsmarketplace'}</h3>
     {else}
-    <h3 class="page-heading bottom-indent">{l s='Add product' mod='npsmarketplace'}</h3>
+    <h3 class="page-heading bottom-indent">{l s='Add Event' mod='npsmarketplace'}</h3>
     {/if}
     <div class="form-group">
-        <label>{l s='Product images' mod='npsmarketplace'}</label>
+        <label>{l s='Images' mod='npsmarketplace'}</label>
         <input id="product_images" type="file" multiple="true" name="product[]">
     </div>
     <!-- Nav tabs -->
@@ -45,26 +45,16 @@
             <input class="is_required validate form-control" data-validate="isNumber" type="number" id="product_amount" name="product_amount" required="" value="{if isset($product['quantity'])}{$product['quantity']|escape:'html':'UTF-8'}{/if}"/>
         </div>
     </div>
-    <div class="row">
-        <div class="form-group col-md-6">
-            <label class="required" for="product_date_time">{l s='Date & Time' mod='npsmarketplace'}</label>
-            </br>
-            <div id="datePicker" class="input-append">
-                <input class="is_required form-control" id="product_date_time" name="product_date_time" data-format="yyyy-MM-dd hh:mm" type="text" readonly="" required="" value="{if isset($product['date_time'])}{$product['date_time']|escape:'html':'UTF-8'}{/if}"/>
-                <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
-            </div>
-        </div>
-        <div class="form-group col-md-6">
-            <label for="product_code">{l s='Product code' mod='npsmarketplace'}</label>
-            <input class="validate form-control" data-validate="isMessage" type="text" id="product_code" name="product_code" value="{if isset($product['reference'])}{$product['reference']|escape:'html':'UTF-8'}{/if}"/>
-        </div>
+    <div class="form-group">
+        <label for="product_code">{l s='Reference' mod='npsmarketplace'}</label>
+        <input class="validate form-control" data-validate="isMessage" type="text" id="product_code" name="product_code" value="{if isset($product['reference'])}{$product['reference']|escape:'html':'UTF-8'}{/if}"/>
     </div>
     <div class="row">
         <div class="form-group col-md-6">
             <label class="required" for="product_town">{l s='Town' mod='npsmarketplace'}</label>
             <select class="form-control" id="product_town" name="product_town">
                 {foreach from=$towns item=town}
-                    <option value="{$town}">{$town}</option> 
+                    <option value="{$town}" {if $product['town'] eq $town}selected{/if}>{$town}</option> 
                 {/foreach}
             </select>
         </div>
@@ -74,22 +64,31 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="required" for="map-address-input">{l s='Product address' mod='npsmarketplace'}</label>
+        <label class="required" for="map-address-input">{l s='Address' mod='npsmarketplace'}</label>
         <input id="map-lat-input" class="hide" name="product_lat" type="text">
         <input id="map-lng-input" class="hide" name="product_lng" type="text">
-        <input id="map-address-input" class="controls" name="product_address" type="text" placeholder="Search...">
+        <input id="map-address-input" class="controls" name="product_address" type="text" placeholder="Search..." value="{if isset($product['address'])}{$product['address']|escape:'html':'UTF-8'}{/if}">
         <div id="map-canvas"></div>
     </div>
+    {if $edit_product == 0}
+    <div class="form-group">
+        <label class="required" for="date_time_input">{l s='Date & Time' mod='npsmarketplace'}</label>
+        <div id="datePicker" class="input-append">
+            <input class="is_required form-control" id="date_time_input" name="product_date_time" data-format="yyyy-MM-dd hh:mm" type="text" readonly="" required="" value="{if isset($product['date_time'])}{$product['date_time']|escape:'html':'UTF-8'}{/if}"/>
+            <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
+        </div>
+    </div>
+    {/if}
 
     <div class="form-group">
         <label class="required" for="product_category">{l s='Category' mod='npsmarketplace'}</label>
         <ul class="tree">
             {foreach from=$categories_tree.children item=child name=categories_tree}
-                {if $smarty.foreach.categories_tree.last}
-                    {include file="$category_partial_tpl_path" node=$child last='true'}
-                {else}
-                    {include file="$category_partial_tpl_path" node=$child}
-                {/if}
+            {if $smarty.foreach.categories_tree.last}
+            {include file="$category_partial_tpl_path" node=$child last='true'}
+            {else}
+            {include file="$category_partial_tpl_path" node=$child}
+            {/if}
             {/foreach}
         </ul>
     </div>

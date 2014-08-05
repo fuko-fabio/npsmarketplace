@@ -62,7 +62,8 @@ class NpsMarketplace extends Module
             || !Configuration::updateValue('NPS_MERCHANT_EMAILS', Configuration::get('PS_SHOP_EMAIL'))
             || !$this->_createTables($sql)
             || !$this->_createTab()
-            || !$this->_createFeatures())
+            || !$this->_createFeatures()
+            || !$this->_createAttributes())
             return false;
         return true;
     }
@@ -77,6 +78,10 @@ class NpsMarketplace extends Module
             || !Configuration::deleteByName('NPS_PRODUCT_GUIDE_URL')
             || !Configuration::deleteByName('NPS_SELLER_GUIDE_URL')
             || !Configuration::deleteByName('NPS_MERCHANT_EMAILS')
+            || !Configuration::deleteByName('NPS_FEATURE_TOWN_ID')
+            || !Configuration::deleteByName('NPS_FEATURE_DISTRICT_ID')
+            || !Configuration::deleteByName('NPS_FEATURE_ADDRESS_ID')
+            || !Configuration::deleteByName('NPS_ATTRIBUTE_DT_ID')
             || !$this->_deleteTab()
             || !$this->_deleteTables())
             return false;
@@ -507,6 +512,18 @@ class NpsMarketplace extends Module
             $id = Feature::addFeatureImport($name);
             Configuration::updateValue('NPS_FEATURE_'.strtoupper($name).'_ID', $id);
         }
+        return true;
+    }
+
+    private function _createAttributes() {
+        $name = 'Date & Time';
+        $attributeGroup = new AttributeGroup();
+        $attributeGroup->name[$this->context->language->id] = $name;
+        $attributeGroup->public_name[$this->context->language->id] = $name;
+        $attributeGroup->group_type = 'select';
+        $attributeGroup->position = -1;
+        $attributeGroup->save();
+        Configuration::updateValue('NPS_ATTRIBUTE_DT_ID', $attributeGroup->id);
         return true;
     }
 }

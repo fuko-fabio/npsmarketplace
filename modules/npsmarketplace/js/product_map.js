@@ -1,13 +1,3 @@
-$(document).ready(function(){
-    $('#datePicker').datetimepicker({
-        pickSeconds: false
-    });
-
-    $('#product_date_time').on('click', function() {
-        $('#datePicker').datetimepicker('show');
-    });
-});
-
 function initialize() {
 
   var defaultLatLng = new google.maps.LatLng(50.0646, 19.9449);
@@ -41,9 +31,7 @@ function initialize() {
     codeAddress(this.value);
   });
 
-  var currentAddress = $('#product_town').val();
-  $('#' + inputId).val(currentAddress);
-  codeAddress(currentAddress);
+  codeAddress($('#' + inputId).val());
 
   map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 

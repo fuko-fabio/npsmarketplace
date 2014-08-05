@@ -4,9 +4,9 @@
 	</a>
 	<span class="navigation-pipe">{$navigationPipe}</span>
     {if isset($product['id'])}
-    <span class="navigation_page">{l s='Edit product'}</span>
+    <span class="navigation_page">{l s='Edit Event'}</span>
     {else}
-    <span class="navigation_page">{l s='Add product'}</span>
+    <span class="navigation_page">{l s='Add Event'}</span>
     {/if}
 {/capture}
 {include file="$tpl_dir./errors.tpl"}

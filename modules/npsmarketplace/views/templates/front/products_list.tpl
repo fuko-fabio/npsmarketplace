@@ -46,6 +46,12 @@
                                 <li>
                                     <a href="{$product.view_url}"> <i class="icon-search"></i> {l s='Preview' mod='npsmarketplace'} </a>
                                 </li>
+                                <li>
+                                    <a href="{$product.new_combination_url}"> <i class="icon-calendar"></i> {l s='New Term' mod='npsmarketplace'} </a>
+                                </li>
+                                <li>
+                                    <a href="{$product.edit_combination_url}"> <i class="icon-calendar"></i> {l s='Edit Terms' mod='npsmarketplace'} </a>
+                                </li>
                                 <li class="divider"></li>
                                 {/if}
                                 <li>

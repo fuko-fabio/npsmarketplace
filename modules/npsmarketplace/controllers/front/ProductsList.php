@@ -12,7 +12,6 @@ class NpsMarketplaceProductsListModuleFrontController extends ModuleFrontControl
     {
         parent::setMedia();
         $this -> addJS (_PS_MODULE_DIR_.'npsmarketplace/js/bootstrap.min.js');
-
         $this -> addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/bootstrap.css');
     }
 
@@ -23,8 +22,6 @@ class NpsMarketplaceProductsListModuleFrontController extends ModuleFrontControl
                 $p = new Product(Tools::getValue('id_product'));
                 if ($p->delete())
                     Tools::redirect('index.php?fc=module&module=npsmarketplace&controller=ProductsList');
-            } elseif (Tools::getValue('action') == 'view') {
-                d('viev');
             }
         }
     }
@@ -56,7 +53,9 @@ class NpsMarketplaceProductsListModuleFrontController extends ModuleFrontControl
                 'active' => $product->active,
                 'view_url' => $this->context->link->getProductLink($product),
                 'delete_url' => $this->context->link->getModuleLink('npsmarketplace', 'ProductsList', array('id_product' => $product->id, 'action' => 'delete')),
-                'edit_url' => $this->context->link->getModuleLink('npsmarketplace', 'Product', array('id_product' => $product->id))
+                'edit_url' => $this->context->link->getModuleLink('npsmarketplace', 'Product', array('id_product' => $product->id)),
+                'new_combination_url' => $this->context->link->getModuleLink('npsmarketplace', 'ProductCombination', array('id_product' => $product->id)),
+                'edit_combination_url' => $this->context->link->getModuleLink('npsmarketplace', 'ProductCombinationList', array('id_product' => $product->id))
             );
         }
         return $result;
