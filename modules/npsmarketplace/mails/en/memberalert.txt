@@ -1,0 +1,17 @@
+Hello,
+
+A new seller has been register in {shop_name} with the following details:
+
+Seller Name: {name}
+
+Shop Name: {company_name}
+Shop Description: {company_description}
+Email: {email}
+Phone: {phone}
+NIP: {nip}
+REGON: {regon}
+
+Go to admin panel and enable account: {admin_link}
+
+--
+{shop_name}

@@ -1,9 +1,9 @@
 <?php
 /*
 *  @author Norbert Pabian
-*  @copyright  
-*  @license    
+*  @copyright 2014 npsoftware
 */
+
 
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/SellerRequestProcessor.php');
 

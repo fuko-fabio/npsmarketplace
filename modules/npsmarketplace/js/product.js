@@ -1,28 +1,4 @@
 $(document).ready(function(){
-
-/*
-    $("#company_logo").fileinput({
-        browseClass: "btn btn-primary btn-block",
-        showCaption: false,
-        showUpload: false
-    });
-
-    $("#product_images").fileinput({
-        showUpload: false,
-        showCaption: false,
-        showUpload: false,
-        mainTemplate:
-            "{preview}\n" +
-            "<div class='input-group {class}'>\n" +
-            "   <div class='input-group-btn'>\n" +
-            "       {browse}\n" +
-            "       {upload}\n" +
-            "       {remove}\n" +
-            "   </div>\n" +
-            "   {caption}\n" +
-            "</div>"
-    });*/
-// 
     $('#datePicker').datetimepicker({
         pickSeconds: false
     });
@@ -32,29 +8,35 @@ $(document).ready(function(){
     });
 });
 
-// This example adds a search box to a map, using the Google Place Autocomplete
-// feature. People can enter geographical searches. The search box will return a
-// pick list containing a mix of places and predicted search terms.
-
 function initialize() {
 
-  var markers = [];
-  var map = new google.maps.Map(document.getElementById('map-canvas'), {
-    mapTypeId: google.maps.MapTypeId.ROADMAP
+  var defaultLatLng = new google.maps.LatLng(50.0646, 19.9449);
+  var mapOptions = {
+    center : defaultLatLng,
+    zoom : 10,
+    mapTypeId : google.maps.MapTypeId.ROADMAP
+  };
+
+  var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions );
+
+  var marker = new google.maps.Marker({
+    map: map,
+    position: defaultLatLng,
+    draggable: true,
+    animation: google.maps.Animation.DROP,
   });
 
-  var defaultBounds = new google.maps.LatLngBounds(
-      new google.maps.LatLng(-33.8902, 151.1759),
-      new google.maps.LatLng(-33.8474, 151.2631));
-  map.fitBounds(defaultBounds);
-
+  var inputId = 'map-address-input';
   // Create the search box and link it to the UI element.
-  var input = /** @type {HTMLInputElement} */(
-      document.getElementById('pac-input'));
+  var input = (document.getElementById(inputId));
+  // Block Enter events
+  $('#' + inputId).bind('keypress keydown keyup', function(e){
+    if(e.keyCode == 13) { e.preventDefault(); }
+  });
+
   map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
-  var searchBox = new google.maps.places.SearchBox(
-    /** @type {HTMLInputElement} */(input));
+  var searchBox = new google.maps.places.SearchBox((input));
 
   // [START region_getplaces]
   // Listen for the event fired when the user selects an item from the
@@ -65,36 +47,18 @@ function initialize() {
     if (places.length == 0) {
       return;
     }
-    for (var i = 0, marker; marker = markers[i]; i++) {
-      marker.setMap(null);
-    }
 
-    // For each place, get the icon, place name, and location.
-    markers = [];
     var bounds = new google.maps.LatLngBounds();
-    for (var i = 0, place; place = places[i]; i++) {
-      var image = {
-        url: place.icon,
-        size: new google.maps.Size(71, 71),
-        origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(17, 34),
-        scaledSize: new google.maps.Size(25, 25)
-      };
 
-      // Create a marker for each place.
-      var marker = new google.maps.Marker({
-        map: map,
-        icon: image,
-        title: place.name,
-        position: place.geometry.location
-      });
-
-      markers.push(marker);
-
-      bounds.extend(place.geometry.location);
-    }
-
+    marker.setTitle(places[0].name);
+    marker.setPosition(places[0].geometry.location);
+    bounds.extend(places[0].geometry.location);
     map.fitBounds(bounds);
+    map.setZoom(16);
+  });
+
+  google.maps.event.addListener(marker, 'dragend', function() {
+    geocodePosition(marker.getPosition());
   });
   // [END region_getplaces]
 
@@ -104,6 +68,16 @@ function initialize() {
     var bounds = map.getBounds();
     searchBox.setBounds(bounds);
   });
+  
+  function geocodePosition(pos) {
+    geocoder = new google.maps.Geocoder();
+    geocoder.geocode
+    ({ latLng: pos }, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        $('#' + inputId).val(results[0].formatted_address);
+      }
+    });
+  }
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);

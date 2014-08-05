@@ -1,8 +1,7 @@
 <?php
 /*
-*  @author Norbert Pabian
-*  @copyright  
-*  @license    
+*  @author Norbert Pabian <norbert.pabian@gmail.com>
+*  @copyright 2014 npsoftware
 */
 
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/CategoriesList.php');
@@ -10,6 +9,9 @@ include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/SellerRequestProcessor.php'
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/ProductRequestProcessor.php');
 
 class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontController {
+
+    private $_merchant_mails;
+    const __MA_MAIL_DELIMITOR__ = ',';
 
     public function setMedia()
     {
@@ -38,45 +40,63 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
         }
     }
 
-    private function mailToAdmin($seller) {
+    private function mailToSeller($seller) {
         $customer = $this->context->customer;
         $mail_params = array(
             '{lastname}' => $customer->lastname,
             '{firstname}' => $customer->firstname,
             '{shop_name}' => Configuration::get('PS_SHOP_NAME'),
             '{shop_url}' => Tools::getHttpHost(true).__PS_BASE_URI__,
-            '{seller_shop_url}' => 'TODO',
-            '{product_guide_url}' => 'TODO',
-            '{seller_guide_url}' => 'TODO',
+            '{seller_shop_url}' => $this->context->link->getModuleLink('npsmarketplace', 'SellerShop', array('id_seller' => $seller->id)),
+            '{product_guide_url}' => Configuration::get('NPS_PRODUCT_GUIDE_URL'),
+            '{seller_guide_url}' => Configuration::get('NPS_SELLER_GUIDE_URL'),
         );
-        Mail::Send($this->context->language->id,
-                   'seller_account_request',
-                   Mail::l('Seller account request'),
-                   $mail_params,
-                   $customer->email,
-                   $customer->firstname.' '.$customer->lastname);
+        return Mail::Send($this->context->language->id,
+            'seller_account_request',
+            Mail::l('Seller account request'),
+            $mail_params,
+            $seller->email,
+            $customer->firstname.' '.$customer->lastname);
     }
 
-    private function mailToAdmin() {
-        $customer = $this->context->customer;
+    private function mailToAdmin($seller) {
+        $lang_id = intval(Configuration::get('PS_LANG_DEFAULT'));
+        $name = strval(Configuration::get('PS_SHOP_NAME'));
+        $email = strval(Configuration::get('PS_SHOP_EMAIL'));
         $mail_params = array(
-            '{lastname}' => $customer->lastname,
-            '{firstname}' => $customer->firstname,
+            '{name}' => $seller->name[$lang_id],
+            '{company_name}' => $seller->company_name[$lang_id],
+            '{company_description}' => $seller->company_description[$lang_id],
+            '{email}' => $seller->email,
+            '{phone}' => $seller->phone,
+            '{nip}' => $seller->nip,
+            '{regon}' => $seller->regon,
             '{shop_name}' => Configuration::get('PS_SHOP_NAME'),
-            '{shop_url}' => Tools::getHttpHost(true).__PS_BASE_URI__
+            '{shop_url}' => Tools::getHttpHost(true).__PS_BASE_URI__,
+            '{admin_link}' => $this->context->link->getAdminLink('AdminSellers'),
         );
-        Mail::Send($this->context->language->id,
-                   'seller_account_request',
-                   Mail::l('Seller account request'),
-                   $mail_params,
-                   $customer->email,
-                   $customer->firstname.' '.$customer->lastname);
+        return Mail::Send($lang_id,
+            'memberalert',
+            $this->l('New seller registration!'),
+            $mail_params,
+            explode(self::__MA_MAIL_DELIMITOR__, $this->_merchant_mails),
+            null,
+            strval(Configuration::get('PS_SHOP_EMAIL')),
+            strval(Configuration::get('PS_SHOP_NAME')),
+            null,
+            null,
+            _NPS_MAILS_DIR_);
+        
     }
 
     public function initContent() {
-    $this -> page_name =
- 'accountrequest';
+        $this -> page_name = 'accountrequest';
         $this -> display_column_right = false;
+        if (!is_null(Configuration::get('NPS_MERCHANT_MAILS')) && Configuration::get('NPS_MERCHANT_MAILS')!='') 
+            $this->_merchant_mails = Configuration::get('NPS_MERCHANT_MAILS');
+        else
+            $this->_merchant_mails = Configuration::get('PS_SHOP_EMAIL');
+
         parent::initContent();
 
         if (!$this->context->customer->isLogged() && $this->php_self != 'authentication' && $this->php_self != 'password')

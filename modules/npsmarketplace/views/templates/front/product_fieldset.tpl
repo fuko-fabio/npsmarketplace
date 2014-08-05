@@ -63,14 +63,10 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="form-group col-md-12">
-            <label class="required" for="product_address">{l s='Address' mod='npsmarketplace'}</label>
-            <input class="is_required validate form-control" data-validate="isGenericName" type="text" id="product_address" name="product_address" required="" value="{if isset($product['address'])}{$product['address']|escape:'html':'UTF-8'}{/if}"/>
-        </div>
-    </div>
-    <input id="pac-input" class="controls" type="text" placeholder="Search...">
-    <div id="map-canvas" style="min-height: 250px;"></div>
+    <input id="map-lat-input" class="hide" name="product_lat" type="text">
+    <input id="map-lng-input" class="hide" name="product_lng" type="text">
+    <input id="map-address-input" class="controls" name="product_address" type="text" placeholder="Search...">
+    <div id="map-canvas"></div>
     <div class="form-group">
         <label class="required" for="product_category">{l s='Category' mod='npsmarketplace'}</label>
         <ul class="tree">

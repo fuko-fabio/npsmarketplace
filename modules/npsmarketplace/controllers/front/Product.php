@@ -1,8 +1,7 @@
 <?php
 /*
-*  @author Norbert Pabian
-*  @copyright  
-*  @license    
+*  @author Norbert Pabian <norbert.pabian@gmail.com>
+*  @copyright 2014 npsoftware
 */
 
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/CategoriesList.php');
@@ -20,16 +19,15 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
     public function setMedia()
     {
         parent::setMedia();
+        $this -> addJS ("https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places");
         $this -> addJS(_PS_JS_DIR_.'validate.js');
         $this -> addJS (_PS_MODULE_DIR_.'npsmarketplace/js/product.js');
         $this -> addJS (_PS_MODULE_DIR_.'npsmarketplace/js/bootstrap.min.js');
         $this -> addJS (_PS_MODULE_DIR_.'npsmarketplace/js/bootstrap-datetimepicker.min.js');
-        $this -> addJS (_PS_MODULE_DIR_.'npsmarketplace/js/fileinput.min.js');
 
         $this -> addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/bootstrap.css');
         $this -> addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/bootstrap-datetimepicker.min.css');
-        $this -> addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/fileinput.css');
-        
+        $this -> addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/map.css');
     }
 
     public function postProcess()

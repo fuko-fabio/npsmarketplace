@@ -1,4 +1,8 @@
 <?php
+/*
+*  @author Norbert Pabian <norbert.pabian@gmail.com>
+*  @copyright 2014 npsoftware
+*/
 
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/SellerComment.php');
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/SellerCommentCriterion.php');

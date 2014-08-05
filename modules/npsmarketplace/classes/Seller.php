@@ -1,9 +1,9 @@
 <?php
 /*
-*  @author Norbert Pabian
-*  @copyright  
-*  @license    
+*  @author Norbert Pabian <norbert.pabian@gmail.com>
+*  @copyright 2014 npsoftware
 */
+
 if ( !defined( '_NPS_SEL_IMG_DIR_' ) )
     define('_NPS_SEL_IMG_DIR_', _PS_IMG_DIR_.'seller/');
 

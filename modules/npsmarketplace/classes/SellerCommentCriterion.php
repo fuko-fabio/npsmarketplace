@@ -1,8 +1,7 @@
 <?php
 /*
 *  @author Norbert Pabian <norbert.pabian@gmail.com>
-*  @copyright  nps software
-*  @license    
+*  @copyright 2014 npsoftware
 */
 
 class SellerCommentCriterion extends ObjectModel

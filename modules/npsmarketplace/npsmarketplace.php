@@ -1,8 +1,7 @@
 <?php
 /*
 *  @author Norbert Pabian <norbert.pabian@gmail.com>
-*  @copyright  nps software
-*  @license    
+*  @copyright 2014 npsoftware
 */
 
 if ( !defined( '_PS_VERSION_' ) )
@@ -13,6 +12,9 @@ if ( !defined( '_NPS_SEL_IMG_DIR_' ) )
 
 if ( !defined( '_THEME_SEL_DIR_' ) )
     define('_THEME_SEL_DIR_', _PS_IMG_.'seller/');
+
+if ( !defined( '_NPS_MAILS_DIR_' ) )
+    define('_NPS_MAILS_DIR_', dirname(__FILE__).'/mails/');
 
 include_once(dirname(__FILE__).'/classes/Seller.php');
 
@@ -44,6 +46,7 @@ class NpsMarketplace extends Module
             return false;
         $sql = str_replace(array('PREFIX_', 'ENGINE_TYPE'), array(_DB_PREFIX_, _MYSQL_ENGINE_), $sql);
         $sql = preg_split("/;\s*[\r\n]+/", trim($sql));
+        $shop_url = Tools::getHttpHost(true).__PS_BASE_URI__;
 
         if (!parent::install()
             || !$this->registerHook('header')
@@ -54,6 +57,9 @@ class NpsMarketplace extends Module
             || !Configuration::updateValue('NPS_SELLER_COMMENTS_MODERATE', 1)
             || !Configuration::updateValue('NPS_SELLER_COMMENTS_ALLOW_GUESTS', 0)
             || !Configuration::updateValue('NPS_SELLER_COMMENTS_MINIMAL_TIME', 30)
+            || !Configuration::updateValue('NPS_PRODUCT_GUIDE_URL', $shop_url)
+            || !Configuration::updateValue('NPS_SELLER_GUIDE_URL', $shop_url)
+            || !Configuration::updateValue('NPS_MERCHANT_EMAILS', Configuration::get('PS_SHOP_EMAIL'))
             || !$this->_createTables($sql)
             || !$this->_createTab())
             return false;
@@ -67,6 +73,9 @@ class NpsMarketplace extends Module
             || !Configuration::deleteByName('NPS_SELLER_COMMENTS_MODERATE')
             || !Configuration::deleteByName('NPS_SELLER_COMMENTS_ALLOW_GUESTS')
             || !Configuration::deleteByName('NPS_SELLER_COMMENTS_MINIMAL_TIME')
+            || !Configuration::deleteByName('NPS_PRODUCT_GUIDE_URL')
+            || !Configuration::deleteByName('NPS_SELLER_GUIDE_URL')
+            || !Configuration::deleteByName('NPS_MERCHANT_EMAILS')
             || !$this->_deleteTab()
             || !$this->_deleteTables())
             return false;
@@ -119,12 +128,17 @@ class NpsMarketplace extends Module
 
         if (Tools::isSubmit('submitConfiguration')) {
             Configuration::updateValue('NPS_GLOBAL_COMMISION', Tools::getValue('NPS_GLOBAL_COMMISION'));
-            $output .= $this->displayConfirmation($this->l('Settings updated'));
+            Configuration::updateValue('NPS_MERCHANT_EMAILS', Tools::getValue('NPS_MERCHANT_EMAILS'));
+            $output .= $this->displayConfirmation($this->l('General settings updated'));
         } elseif (Tools::isSubmit('submitModerate')) {
             Configuration::updateValue('NPS_SELLER_COMMENTS_MODERATE', (int)Tools::getValue('NPS_SELLER_COMMENTS_MODERATE'));
             Configuration::updateValue('NPS_SELLER_COMMENTS_ALLOW_GUESTS', (int)Tools::getValue('NPS_SELLER_COMMENTS_ALLOW_GUESTS'));
             Configuration::updateValue('NPS_SELLER_COMMENTS_MINIMAL_TIME', (int)Tools::getValue('NPS_SELLER_COMMENTS_MINIMAL_TIME'));
-            $output .= $this->displayConfirmation($this->l('Settings updated'));
+            $output .= $this->displayConfirmation($this->l('Seller comments settings updated'));
+        } elseif (Tools::isSubmit('submitUrls')) {
+            Configuration::updateValue('NPS_PRODUCT_GUIDE_URL', Tools::getValue('NPS_PRODUCT_GUIDE_URL'));
+            Configuration::updateValue('NPS_SELLER_GUIDE_URL', Tools::getValue('NPS_SELLER_GUIDE_URL'));
+            $output .= $this->displayConfirmation($this->l('URL\'s settings updated'));
         }
         return $output.$this->displayForm();
     }
@@ -211,12 +225,14 @@ class NpsMarketplace extends Module
 
     private function displayForm()
     {
+        $this->context->controller->addJqueryPlugin('tagify');
         // Get default language
         $default_lang = (int)Configuration::get('PS_LANG_DEFAULT');
          
         // Init Fields form array
         $fields_form[0] = $this->configurationForm();
-        $fields_form[1] = $this->moderateForm();
+        $fields_form[1] = $this->linksForm();
+        $fields_form[2] = $this->moderateForm();
          
 	    $helper = new HelperForm();
 	     
@@ -268,6 +284,13 @@ class NpsMarketplace extends Module
                         'suffix' => '%',
                         'required' => true
                     ),
+                    array(
+                        'type' => 'tags',
+                        'label' => $this->l('Merchant emails'),
+                        'name' => 'NPS_MERCHANT_EMAILS',
+                        'lang' => false,
+                        'hint' => $this->l('To add "emails," click in the field, write something, and then press "Enter."'),
+                    ),
                 ),
                 'submit' => array(
                     'title' => $this->l('Save'),
@@ -287,16 +310,14 @@ class NpsMarketplace extends Module
                 'input' => array(
                      array(
                         'type' => 'text',
-                        'label' => $this->l('Seller Guide'),
-                        'name' => 'NPS_SELLER_GUIDE',
+                        'label' => $this->l('Seller Guide  URL'),
+                        'name' => 'NPS_SELLER_GUIDE_URL',
                         'required' => true
                     ),
-                ),
-                'input' => array(
                      array(
                         'type' => 'text',
-                        'label' => $this->l('Product Guide'),
-                        'name' => 'NPS_PRODUCT_GUIDE',
+                        'label' => $this->l('Product Guide URL'),
+                        'name' => 'NPS_PRODUCT_GUIDE_URL',
                         'required' => true
                     ),
                 ),
@@ -377,6 +398,9 @@ class NpsMarketplace extends Module
             'NPS_SELLER_COMMENTS_MODERATE' => Tools::getValue('NPS_SELLER_COMMENTS_MODERATE', Configuration::get('NPS_SELLER_COMMENTS_MODERATE')),
             'NPS_SELLER_COMMENTS_ALLOW_GUESTS' => Tools::getValue('NPS_SELLER_COMMENTS_ALLOW_GUESTS', Configuration::get('NPS_SELLER_COMMENTS_ALLOW_GUESTS')),
             'NPS_SELLER_COMMENTS_MINIMAL_TIME' => Tools::getValue('NPS_SELLER_COMMENTS_MINIMAL_TIME', Configuration::get('NPS_SELLER_COMMENTS_MINIMAL_TIME')),
+            'NPS_PRODUCT_GUIDE_URL' => Tools::getValue('NPS_PRODUCT_GUIDE_URL', Configuration::get('NPS_PRODUCT_GUIDE_URL')),
+            'NPS_SELLER_GUIDE_URL' => Tools::getValue('NPS_SELLER_GUIDE_URL', Configuration::get('NPS_SELLER_GUIDE_URL')),
+            'NPS_MERCHANT_EMAILS' => Tools::getValue('NPS_MERCHANT_EMAILS', Configuration::get('NPS_MERCHANT_EMAILS')),
 
         );
     }
