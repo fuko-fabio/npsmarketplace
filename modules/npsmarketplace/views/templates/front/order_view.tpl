@@ -1,12 +1,10 @@
 {capture name=path}
-    <a href="{$link->getPageLink('my-account', true)|escape:'html':'UTF-8'}">
-        {l s='My account'}
-    </a>
-    <span class="navigation-pipe">{$navigationPipe}</span>
-    <span class="navigation_page">{l s='Order Details' mod='npsmarketplace'}</span>
+<a href="{$link->getPageLink('my-account', true)|escape:'html':'UTF-8'}"> {l s='My account'} </a>
+<span class="navigation-pipe">{$navigationPipe}</span>
+<span class="navigation_page">{l s='Order Details' mod='npsmarketplace'}</span>
 {/capture}
 {include file="$tpl_dir./errors.tpl"}
-<div class="box">
+<div class="block-center" id="block-seller-order-view">
     <h1 class="page-heading bottom-indent">{l s='Order Details' mod='npsmarketplace'}</h1>
     <div class="row">
         <div class="col-md-6">
@@ -60,10 +58,10 @@
                             {if $address['address1']}{$address['address1']}</br>{/if}
                             {if $address['address2']}{$address['address2']}</br>{/if}
                             {$address['postcode']} {$address['city']}</br>
-                            {if $address['phone']}{$address['phone']}</br>{/if}
-                            {if $address['phone_mobile']}{$address['phone_mobile']}</br>{/if}
+                            {if $address['phone']}<a href="tel:{$address['phone']}"><i class="icon-phone"></i>  {$address['phone']}</a></br>{/if}
+                            {if $address['phone_mobile']}<a href="tel:{$address['phone_mobile']}"><i class="icon-phone"></i>  {$address['phone_mobile']}</a></br>{/if}
                             </br>
-                            <div id="map_canvas" style="min-height: 250px;" data-target="{$address['address1']} {$address['address2']} {$address['city']}"></div>
+                            <div id="map_canvas" style="min-height: 250px;" data-target="{$address['address1']} {$address['address2']}"></div>
                         </td>
                     </tr>
                 </table>
@@ -81,7 +79,6 @@
                             <td>{l s='Name' mod='npsmarketplace'}</td>
                             <td>{l s='Unit Price' mod='npsmarketplace'}</td>
                             <td>{l s='Quantity' mod='npsmarketplace'}</td>
-                            <td>{l s='Available Quantity' mod='npsmarketplace'}</td>
                             <td>{l s='Total Price' mod='npsmarketplace'}</td>
                         </tr>
                     </thead>
@@ -92,7 +89,6 @@
                             <td>{$product['product_name']}</td>
                             <td>{$product['unit_price_tax_incl']}</td>
                             <td>{$product['product_quantity']}</td>
-                            <td>{$product['current_stock']}</td>
                             <td>{$product['total_price_tax_incl']}</td>
                         </tr>
                         {/foreach}
@@ -102,18 +98,11 @@
         </div>
     </div>
 </div>
-
 <ul class="footer_links clearfix">
     <li>
-        <a class="btn btn-default button button-small" href="{$link->getPageLink('my-account', true)|escape:'html':'UTF-8'}">
-            <span>
-                <i class="icon-chevron-left"></i> {l s='Back to Your Account'}
-            </span>
-        </a>
+        <a class="btn btn-default button button-small" href="{$link->getPageLink('my-account', true)|escape:'html':'UTF-8'}"> <span> <i class="icon-chevron-left"></i> {l s='Back to Your Account'} </span> </a>
     </li>
     <li>
-        <a class="btn btn-default button button-small" href="{$base_dir}">
-            <span><i class="icon-chevron-left"></i> {l s='Home'}</span>
-        </a>
+        <a class="btn btn-default button button-small" href="{$base_dir}"> <span><i class="icon-chevron-left"></i> {l s='Home'}</span> </a>
     </li>
 </ul>

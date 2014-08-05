@@ -1,9 +1,4 @@
 <fieldset>
-    {if isset($product['id'])}
-    <h3 class="page-heading bottom-indent">{l s='Edit Event' mod='npsmarketplace'}</h3>
-    {else}
-    <h3 class="page-heading bottom-indent">{l s='Add Event' mod='npsmarketplace'}</h3>
-    {/if}
     <div class="form-group">
         <label>{l s='Images' mod='npsmarketplace'}</label>
         <input id="product_images" type="file" multiple="true" name="product[]">

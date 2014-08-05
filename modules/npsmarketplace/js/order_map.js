@@ -10,10 +10,7 @@ function initialize() {
         mapTypeId : google.maps.MapTypeId.ROADMAP
     };
     map = new google.maps.Map(map_canvas, map_options);
-    codeAddress();
-}
 
-function codeAddress() {
     var address = $('#map_canvas').attr('data-target');
     geocoder.geocode({
         'address' : address

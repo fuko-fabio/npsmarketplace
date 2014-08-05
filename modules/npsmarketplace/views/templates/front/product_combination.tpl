@@ -6,11 +6,11 @@
     <span class="navigation_page">{l s='New Event Term'}</span>
 {/capture}
 {include file="$tpl_dir./errors.tpl"}
+<h1 class="page-heading bottom-indent">{l s='New Event Term' mod='npsmarketplace'}</h1>
 
-<div class="box">
+<div class="block-center" id="block-seller-product-combination">
     <form enctype="multipart/form-data" role="form" action="{$request_uri}" method="post" id="formaddproduct">
         <fieldset>
-            <h3 class="page-heading bottom-indent">{l s='New Event Term' mod='npsmarketplace'}</h3>
             <div class="row">
                 <div class="col-md-12">
                     <h4>{l s='Event' mod='npsmarketplace'}</h4>
@@ -29,7 +29,7 @@
                                 <td>{$product['price']}</td>
                             </tr>
                             <tr>
-                                <th scope="row">{l s='Price' mod='npsmarketplace'}</th>
+                                <th scope="row">{l s='Quantity' mod='npsmarketplace'}</th>
                                 <td>{$product['quantity']}</td>
                             </tr>
                             <tr>
@@ -49,7 +49,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="required" for="date_time_input">{l s='Date & Time' mod='npsmarketplace'}</label>
+                <label class="required" for="date_time_input">{l s='New Date & Time' mod='npsmarketplace'}</label>
                 <div id="datePicker" class="input-append">
                     <input class="is_required form-control" id="date_time_input" name="product_date_time" data-format="yyyy-MM-dd hh:mm" type="text" readonly="" required="" value="{if isset($product['date_time'])}{$product['date_time']|escape:'html':'UTF-8'}{/if}"/>
                     <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
@@ -70,7 +70,6 @@
         </p>
     </form>
 </div>
-
 <ul class="footer_links clearfix">
     <li>
         <a class="btn btn-default button button-small" href="{$link->getPageLink('my-account', true)|escape:'html':'UTF-8'}"> <span> <i class="icon-chevron-left"></i> {l s='Back to Your Account'} </span> </a>

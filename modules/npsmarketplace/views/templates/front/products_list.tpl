@@ -1,11 +1,12 @@
-{capture name=path} <a href="{$link->getPageLink('my-account', true)|escape:'html':'UTF-8'}"> {l s='My account'} </a>
+{capture name=path}
+<a href="{$link->getPageLink('my-account', true)|escape:'html':'UTF-8'}"> {l s='My account'} </a>
 <span class="navigation-pipe">{$navigationPipe}</span>
 <span class="navigation_page">{l s='My products'}</span>
 {/capture}
 {include file="$tpl_dir./errors.tpl"}
-<div class="box">
-    <h1 class="page-heading bottom-indent">{l s='My products'}</h1>
+<h1 class="page-heading bottom-indent">{l s='My products'}</h1>
 
+<div class="block-center" id="block-seller-products-list">
     {if $products}
     <div class="table-responsive">
         <table class="table">

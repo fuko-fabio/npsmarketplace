@@ -14,6 +14,14 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
      */
     protected $_seller;
 
+    public function setMedia()
+    {
+        parent::setMedia();
+        $this -> addJS(array(
+                _PS_JS_DIR_.'validate.js',
+            ));
+    }
+
     public function postProcess()
     {
         if (Tools::isSubmit('company_name')
@@ -53,7 +61,8 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
     public function initContent() {
         parent::initContent();
         $tpl_seller = array();
-
+        $iso_tiny_mce = $this->context->language->iso_code;
+        $iso_tiny_mce = (file_exists(_PS_JS_DIR_.'tiny_mce/langs/'.$iso_tiny_mce.'.js') ? $iso_tiny_mce : 'en');
         if (isset($this -> _seller -> id)) {
             $tpl_seller = array(
                 'id' => $this -> _seller -> id,

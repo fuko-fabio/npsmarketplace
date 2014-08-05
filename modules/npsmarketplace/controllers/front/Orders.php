@@ -11,6 +11,9 @@ class NpsMarketplaceOrdersModuleFrontController extends ModuleFrontController
         parent::setMedia();
         $this -> addJS (_PS_MODULE_DIR_.'npsmarketplace/js/bootstrap.min.js');
         $this -> addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/bootstrap.css');
+        $this->addJqueryPlugin('footable');
+        $this->addJqueryPlugin('footable-sort');
+        $this->addJqueryPlugin('scrollTo');
     }
     
     public function initContent() {
@@ -26,23 +29,37 @@ class NpsMarketplaceOrdersModuleFrontController extends ModuleFrontController
         $this -> setTemplate('orders.tpl');
     }
 
-    private function getOrders($seller = null) {
+    private function getOrders($seller, $showHiddenStatus = false) {
         $result = array();
         $products = $seller -> getProducts();
         foreach ($products as $product) {
             $id_order = Db::getInstance()->getValue('SELECT `id_order` FROM `'._DB_PREFIX_.'order_detail` WHERE `product_id` = '.(int)$product->id);
             if(isset($id_order) && !empty($id_order)) {
-                $order = new Order($id_order);
-                $result[] = array(
-                    'reference' => $order->reference,
-                    'customer' => $order->getCustomer()->firstname.' '.$order->getCustomer()->lastname,
-                    //TODO Total price must be without items from other users
-                    'total_paid_tax_incl' => $order->total_paid_tax_incl,
-                    'payment' => $order->payment,
-                    'state' => $order-> getCurrentOrderState()->name[$this->context->language->id],
-                    'date_add' => $order->date_add,
+                $res = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS('
+                SELECT o.*, (SELECT SUM(od.`product_quantity`) FROM `'._DB_PREFIX_.'order_detail` od WHERE od.`id_order` = o.`id_order`) nb_products
+                FROM `'._DB_PREFIX_.'orders` o
+                WHERE o.`id_order` = '.(int)$id_order.'
+                GROUP BY o.`id_order`
+                ORDER BY o.`date_add` DESC');
+                if (!$res)
+                    return array();
+
+                $res2 = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS('
+                    SELECT os.`id_order_state`, osl.`name` AS order_state, os.`invoice`, os.`color` as order_state_color
+                    FROM `'._DB_PREFIX_.'order_history` oh
+                    LEFT JOIN `'._DB_PREFIX_.'order_state` os ON (os.`id_order_state` = oh.`id_order_state`)
+                    INNER JOIN `'._DB_PREFIX_.'order_state_lang` osl ON (os.`id_order_state` = osl.`id_order_state` AND osl.`id_lang` = '.(int)$this->context->language->id.')
+                    WHERE oh.`id_order` = '.(int)($res[0]['id_order']).(!$showHiddenStatus ? ' AND os.`hidden` != 1' : '').'
+                    ORDER BY oh.`date_add` DESC, oh.`id_order_history` DESC
+                    LIMIT 1');
+
+                if ($res2)
+                    $res[0] = array_merge($res[0], $res2[0]);
+                $customer = new Customer($res[0]['id_customer']);
+                $result[] = array_merge($res[0], array(
+                    'customer' => $customer->firstname.' '.$customer->lastname,
                     'link' => $this->context->link->getModuleLink('npsmarketplace', 'OrderView', array('id_order' => $id_order, 'id_seller' => $seller->id))
-                );
+                ));
             }
         }
         return $result;

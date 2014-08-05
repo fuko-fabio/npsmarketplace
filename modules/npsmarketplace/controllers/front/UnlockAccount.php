@@ -9,7 +9,7 @@ class NpsMarketplaceUnlockAccountModuleFrontController extends ModuleFrontContro
   public function initContent()
   {
     parent::initContent();
-    $this->setTemplate('UnlockAccount.tpl');
+    $this->setTemplate('unlock_account.tpl');
   }
 }
 ?>

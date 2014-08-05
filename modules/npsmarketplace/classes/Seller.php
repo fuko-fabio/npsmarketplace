@@ -51,6 +51,12 @@ class Seller extends ObjectModel
     /** @var string Company description */
     public $company_description;
 
+    /** @var boolean Company regulations activity */
+    public $regulations_active;
+
+    /** @var string Company regulations */
+    public $regulations;
+
     /** @var string Friendly URL */
     public $link_rewrite;
 
@@ -88,11 +94,13 @@ class Seller extends ObjectModel
             'nip' =>                 array('type' => self::TYPE_INT,    'validate' => 'isNip',         ),
             'regon' =>               array('type' => self::TYPE_INT,    'validate' => 'isRegon',       ),
             'commision' =>           array('type' => self::TYPE_INT,    'validate' => 'isUnsignedInt', 'required' => true),
+            'regulations_active' =>  array('type' => self::TYPE_BOOL,   'validate' => 'isBool',        ),
              // Lang fields
             'link_rewrite' =>        array('type' => self::TYPE_STRING, 'validate' => 'isLinkRewrite', 'required' => true, 'lang' => true, 'size' => 128),
             'name' =>                array('type' => self::TYPE_STRING, 'validate' => 'isGenericName', 'required' => true, 'lang' => true, 'size' => 128),
-            'company_description' => array('type' => self::TYPE_STRING, 'validate' => 'isCleanHtml',   'required' => true, 'lang' => true),
+            'company_description' => array('type' => self::TYPE_STRING, 'validate' => 'isCleanHtml',   'required' => false,'lang' => true),
             'company_name' =>        array('type' => self::TYPE_STRING, 'validate' => 'isGenericName', 'required' => true, 'lang' => true),
+            'regulations' =>         array('type' => self::TYPE_STRING, 'validate' => 'isCleanHtml',   'required' => false,'lang' => true),
         ),
         'associations' => array(
             'customer' => array('type' => self::HAS_ONE,  'field' => 'id_customer', 'object' => 'Customer'),

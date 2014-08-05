@@ -24,11 +24,29 @@ class NpsMarketplaceProductCombinationModuleFrontController extends ModuleFrontC
 
     public function postProcess()
     {
-        if (Tools::isSubmit('product_name')
-            && Tools::isSubmit('product_date_time'))
+        if (Tools::isSubmit('product_date_time'))
         {
+            if (!Combination::isFeatureActive())
+                return;
+            $date_time = trim(Tools::getValue('product_date_time'));
             $seller = new Seller(null, $this->context->customer->id);
-            //TODO add new combination
+            $attr = new Attribute();
+            $attr->name[$this->context->language->id] = $date_time;
+            $attr->id_attribute_group = Configuration::get('NPS_ATTRIBUTE_DT_ID');
+            $attr->position = -1;
+            $attr->save();
+
+            $id_combination = $this->_product->addAttribute(
+                0,//$price,
+                null,//$weight,
+                null,//$unit_impact,
+                null,//$ecotax,
+                null,//$id_images,
+                null,//$reference,
+                null,//$ean13,
+                $default);
+           $combination = new Combination($id_combination);
+           $combination->setAttributes(array($attr->id));
             Tools::redirect('index.php?fc=module&module=npsmarketplace&controller=ProductsList');
         }
     }

@@ -10,7 +10,7 @@ class NpsMarketplaceOrderViewModuleFrontController extends ModuleFrontController
     {
         parent::setMedia();
         $this -> addJS ("https://maps.googleapis.com/maps/api/js");
-        $this -> addJS (_PS_MODULE_DIR_.'npsmarketplace/js/googlemap.js');
+        $this -> addJS (_PS_MODULE_DIR_.'npsmarketplace/js/order_map.js');
         
     }
 
