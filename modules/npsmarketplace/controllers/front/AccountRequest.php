@@ -10,7 +10,6 @@ include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/ProductRequestProcessor.php
 
 class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontController {
 
-    private $_merchant_mails;
     const __MA_MAIL_DELIMITOR__ = ',';
 
     public function setMedia()
@@ -28,9 +27,7 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
         if (Tools::isSubmit('company_name')
             && Tools::isSubmit('seller_name')
             && Tools::isSubmit('seller_phone')
-            && Tools::isSubmit('seller_email')
-            && Tools::isSubmit('seller_nip')
-            && Tools::isSubmit('seller_regon'))
+            && Tools::isSubmit('seller_email'))
         {
             $sp = new SellerRequestProcessor($this->context);
             $seller = $sp->processSubmit();
@@ -56,7 +53,7 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
             '{seller_guide_url}' => Configuration::get('NPS_SELLER_GUIDE_URL'),
         );
         return Mail::Send($this->context->language->id,
-            'seller_account_request',
+            'account_request',
             Mail::l('Seller account request'),
             $mail_params,
             $seller->email,
@@ -84,11 +81,16 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
             '{shop_url}' => Tools::getHttpHost(true).__PS_BASE_URI__,
             '{admin_link}' => $this->context->link->getAdminLink('AdminSellers'),
         );
+        if (!is_null(Configuration::get('NPS_MERCHANT_EMAILS')) && !empty(Configuration::get('NPS_MERCHANT_EMAILS'))) 
+            $emails = Configuration::get('NPS_MERCHANT_EMAILS');
+        else
+            $emails = Configuration::get('PS_SHOP_EMAIL');
+
         return Mail::Send($lang_id,
             'memberalert',
             Mail::l('New seller registration!'),
             $mail_params,
-            explode(self::__MA_MAIL_DELIMITOR__, $this->_merchant_mails),
+            explode(self::__MA_MAIL_DELIMITOR__, $emails),
             null,
             strval(Configuration::get('PS_SHOP_EMAIL')),
             strval(Configuration::get('PS_SHOP_NAME')),
@@ -100,11 +102,6 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
     public function initContent() {
         $this -> page_name = 'accountrequest';
         $this -> display_column_right = false;
-        if (!is_null(Configuration::get('NPS_MERCHANT_MAILS')) && Configuration::get('NPS_MERCHANT_MAILS')!='') 
-            $this->_merchant_mails = Configuration::get('NPS_MERCHANT_MAILS');
-        else
-            $this->_merchant_mails = Configuration::get('PS_SHOP_EMAIL');
-
         parent::initContent();
 
         if (!$this->context->customer->isLogged() && $this->php_self != 'authentication' && $this->php_self != 'password')
@@ -136,7 +133,7 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
 
         $this -> context -> smarty -> assign(
             array(
-                'seller' => array('image' => ''),
+                'seller' => array('image' => '', 'regulations_active' => false),
                 'account_state' => $account_state,
                 'account_request_date' => $date,
                 'current_id_lang' => (int)$this->context->language->id,

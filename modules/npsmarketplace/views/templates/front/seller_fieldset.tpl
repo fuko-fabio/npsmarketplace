@@ -51,7 +51,7 @@
     </div>
     <div class="form-group">
         <label for="regulations_active">{l s='Add Company Regulations' mod='npsmarketplace'}</label>
-        <input class="form-control" type="checkbox" id="regulations_active" name="regulations_active" value="{if isset($seller['regulations_active'])}{$seller['regulations_active']|escape:'html':'UTF-8'}{/if}"/>
+        <input class="form-control" type="checkbox" id="regulations_active" name="regulations_active" {if $seller['regulations_active'] == 1}checked{/if}/>
     </div>
         <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">

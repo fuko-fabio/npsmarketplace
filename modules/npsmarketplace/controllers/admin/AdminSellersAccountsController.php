@@ -3,7 +3,8 @@
 *  @author Norbert Pabian <norbert.pabian@gmail.com>
 *  @copyright 2014 npsoftware
 */
-
+if ( !defined( '_NPS_MAILS_DIR_' ) )
+    define('_NPS_MAILS_DIR_', _PS_MODULE_DIR_.'npsmarketplace/mails/');
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
 
 class AdminSellersAccountsController extends AdminController
@@ -114,6 +115,34 @@ class AdminSellersAccountsController extends AdminController
         Tools::redirectAdmin(self::$currentIndex.'&token='.$this->token);
         
         //TODO Activate/Deactivate products
+        $customer = new Customer($seller->id_customer);
+        $mail_params = array(
+            '{lastname}' => $customer->lastname,
+            '{firstname}' => $customer->firstname,
+            '{shop_name}' => Configuration::get('PS_SHOP_NAME'),
+            '{shop_url}' => Tools::getHttpHost(true).__PS_BASE_URI__,
+            '{seller_shop_url}' => $this->context->link->getModuleLink('npsmarketplace', 'SellerShop', array('id_seller' => $seller->id)),
+            '{product_guide_url}' => Configuration::get('NPS_PRODUCT_GUIDE_URL'),
+            '{seller_guide_url}' => Configuration::get('NPS_SELLER_GUIDE_URL'),
+        );
+        if ($seller->locked) {
+            $template = 'account_locked';
+            $title = Mail::l('Your account has been locked');
+        } else {
+            $template = 'account_unlocked';
+            $title = Mail::l('Your account has been unlocked');
+        }
+        Mail::Send($this->context->language->id,
+            $template,
+            $title,
+            $mail_params,
+            $seller->email,
+            null,
+            strval(Configuration::get('PS_SHOP_EMAIL')),
+            strval(Configuration::get('PS_SHOP_NAME')),
+            null,
+            null,
+            _NPS_MAILS_DIR_);
     }
 
     public function processStatus()
@@ -135,7 +164,7 @@ class AdminSellersAccountsController extends AdminController
                 '{seller_guide_url}' => Configuration::get('NPS_SELLER_GUIDE_URL'),
             );
             Mail::Send($this->context->language->id,
-                'seller_account_active',
+                'account_active',
                 Mail::l('Seller account activated'),
                 $mail_params,
                 $seller->email,

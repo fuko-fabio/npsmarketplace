@@ -27,9 +27,7 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
         if (Tools::isSubmit('company_name')
             && Tools::isSubmit('seller_name')
             && Tools::isSubmit('seller_phone')
-            && Tools::isSubmit('seller_email')
-            && Tools::isSubmit('seller_nip')
-            && Tools::isSubmit('seller_regon'))
+            && Tools::isSubmit('seller_email'))
         {
             $sp = new SellerRequestProcessor($this->context);
             $seller = $sp->processSubmit();
@@ -78,6 +76,8 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
                 'request_date' => $this -> _seller -> request_date,
                 'commision' => $this -> _seller -> commision,
                 'account_state' => $this -> _seller->getAccountState(),
+                'regulations' => $this -> _seller -> regulations,
+                'regulations_active' => $this -> _seller -> regulations_active,
             );
         }
 
@@ -93,12 +93,14 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
 
     public function getSellerImgLink($type = null)
     {
-        if ($this->_seller->id) {
-            if($type)
-                $uri_path = _THEME_SEL_DIR_.$this->_seller->id.'-'.$type.'.jpg';
-            else
-                $uri_path = _THEME_SEL_DIR_.$this->_seller->id.($type ? '-'.$type : '').'.jpg';
-            return $this->context->link->protocol_content.Tools::getMediaServer($uri_path).$uri_path;
+        if (file_exists(_NPS_SEL_IMG_DIR_.$this->_seller->id.'.'.$this->_seller->getImgFormat())) {
+            if ($this->_seller->id) {
+                if($type)
+                    $uri_path = _THEME_SEL_DIR_.$this->_seller->id.'-'.$type.'.jpg';
+                else
+                    $uri_path = _THEME_SEL_DIR_.$this->_seller->id.($type ? '-'.$type : '').'.jpg';
+                return $this->context->link->protocol_content.Tools::getMediaServer($uri_path).$uri_path;
+            }
         }
     }
 

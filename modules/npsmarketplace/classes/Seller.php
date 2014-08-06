@@ -27,11 +27,11 @@ class Seller extends ObjectModel
     /** @var string phone */
     public $phone;
 
-    /** @var integer NIP */
-    public $nip;
+    /** @var string NIP */
+    public $nip = null;
 
-    /** @var integer REGON */
-    public $regon;
+    /** @var string REGON */
+    public $regon = null;
 
     /** @var boolean account state */
     public $active = false;
@@ -52,7 +52,7 @@ class Seller extends ObjectModel
     public $company_description;
 
     /** @var boolean Company regulations activity */
-    public $regulations_active;
+    public $regulations_active = false;
 
     /** @var string Company regulations */
     public $regulations;
@@ -91,8 +91,8 @@ class Seller extends ObjectModel
             'locked' =>              array('type' => self::TYPE_BOOL,   'validate' => 'isBool',        'required' => true),
             'email' =>               array('type' => self::TYPE_STRING, 'validate' => 'isEmail',       'required' => true),
             'phone' =>               array('type' => self::TYPE_STRING, 'validate' => 'isPhoneNumber', 'required' => true),
-            'nip' =>                 array('type' => self::TYPE_INT,    'validate' => 'isNip',         ),
-            'regon' =>               array('type' => self::TYPE_INT,    'validate' => 'isRegon',       ),
+            'nip' =>                 array('type' => self::TYPE_STRING, 'validate' => 'isNip',         ),
+            'regon' =>               array('type' => self::TYPE_STRING, 'validate' => 'isRegon',       ),
             'commision' =>           array('type' => self::TYPE_INT,    'validate' => 'isUnsignedInt', 'required' => true),
             'regulations_active' =>  array('type' => self::TYPE_BOOL,   'validate' => 'isBool',        ),
              // Lang fields

@@ -9,8 +9,8 @@ CREATE TABLE IF NOT EXISTS `PREFIX_seller` (
   `phone` varchar(16) NOT NULL,
   `email` varchar(128) NOT NULL,
   `commision` int(10),
-  `nip` int(14),
-  `regon` int(14),
+  `nip` varchar(14),
+  `regon` varchar(14),
   PRIMARY KEY (`id_seller`),
   KEY `id_customer` (`id_customer`)
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;

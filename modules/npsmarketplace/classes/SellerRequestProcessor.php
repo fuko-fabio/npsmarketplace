@@ -21,10 +21,12 @@ class SellerRequestProcessor {
         $name = $_POST['seller_name'];
         $phone = trim(Tools::getValue('seller_phone'));
         $email = trim(Tools::getValue('seller_email'));
-        $nip = trim(Tools::getValue('seller_nip'));
-        $regon = trim(Tools::getValue('seller_regon'));
+        $nip = Tools::getValue('seller_nip');
+        $regon = Tools::getValue('seller_regon');
         $company_description = $_POST['company_description'];
         $companyLogo = trim(Tools::getValue('company_logo'));
+        $regulations_active = Tools::getIsset('regulations_active');
+        $regulations = Tools::getValue('regulations');
         $link_rewrite = array();
 
         if (!Validate::isPhoneNumber($phone))
@@ -43,6 +45,8 @@ class SellerRequestProcessor {
                 $this -> errors[] = Tools::displayError('Invalid '.$lang->name.' company name');
             else if (!Validate::isCleanHtml($company_description[$lang['id_lang']]))
                 $this -> errors[] = Tools::displayError('Invalid '.$lang->name.' company description');
+            else if (!Validate::isCleanHtml($regulations[$lang['id_lang']]))
+                $this -> errors[] = Tools::displayError('Invalid '.$lang->name.' regulations content');
 
             $link_rewrite[$lang['id_lang']] = Tools::link_rewrite($n);
         }
@@ -56,13 +60,14 @@ class SellerRequestProcessor {
         $seller -> nip = $nip;
         $seller -> regon = $regon;
         $seller -> link_rewrite = $link_rewrite;
+        $seller -> regulations = $regulations;
+        $seller -> regulations_active = $regulations_active;
         if($seller->id == null) {
             $seller -> id_customer = $this -> context -> customer -> id;
             $seller -> commision = Configuration::get('NPS_GLOBAL_COMMISION');
             $seller -> request_date = date("Y-m-d H:i:s");
             $seller -> requested = true;
         }
-
         if(empty($this->errors))
             $seller->save();
         return $seller;
