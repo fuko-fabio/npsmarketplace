@@ -56,7 +56,12 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
             Mail::l('Seller account request'),
             $mail_params,
             $seller->email,
-            $customer->firstname.' '.$customer->lastname);
+            null,
+            strval(Configuration::get('PS_SHOP_EMAIL')),
+            strval(Configuration::get('PS_SHOP_NAME')),
+            null,
+            null,
+            _NPS_MAILS_DIR_);
     }
 
     private function mailToAdmin($seller) {
@@ -77,7 +82,7 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
         );
         return Mail::Send($lang_id,
             'memberalert',
-            $this->l('New seller registration!'),
+            Mail::l('New seller registration!'),
             $mail_params,
             explode(self::__MA_MAIL_DELIMITOR__, $this->_merchant_mails),
             null,
@@ -86,7 +91,6 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
             null,
             null,
             _NPS_MAILS_DIR_);
-        
     }
 
     public function initContent() {

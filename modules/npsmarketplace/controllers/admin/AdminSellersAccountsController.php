@@ -116,6 +116,38 @@ class AdminSellersAccountsController extends AdminController
         //TODO Activate/Deactivate products
     }
 
+    public function processStatus()
+    {
+        parent::processStatus();
+        $seller = new Seller($this->id_object);
+        if (!Validate::isLoadedObject($seller))
+            $this->errors[] = Tools::displayError('An error occurred while updating seller information.');
+
+        if ($seller->active) {
+            $customer = new Customer($seller->id_customer);
+            $mail_params = array(
+                '{lastname}' => $customer->lastname,
+                '{firstname}' => $customer->firstname,
+                '{shop_name}' => Configuration::get('PS_SHOP_NAME'),
+                '{shop_url}' => Tools::getHttpHost(true).__PS_BASE_URI__,
+                '{seller_shop_url}' => $this->context->link->getModuleLink('npsmarketplace', 'SellerShop', array('id_seller' => $seller->id)),
+                '{product_guide_url}' => Configuration::get('NPS_PRODUCT_GUIDE_URL'),
+                '{seller_guide_url}' => Configuration::get('NPS_SELLER_GUIDE_URL'),
+            );
+            Mail::Send($this->context->language->id,
+                'seller_account_active',
+                Mail::l('Seller account activated'),
+                $mail_params,
+                $seller->email,
+                null,
+                strval(Configuration::get('PS_SHOP_EMAIL')),
+                strval(Configuration::get('PS_SHOP_NAME')),
+                null,
+                null,
+                _NPS_MAILS_DIR_);
+        }
+    }
+
 	public function initContent()
 	{
 		if ($this->action == 'select_delete')

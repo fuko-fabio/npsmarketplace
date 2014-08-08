@@ -45,9 +45,19 @@
             <input class="is_required validate form-control" data-validate="isNumber" type="number" id="product_amount" name="product_amount" required="" value="{if isset($product['quantity'])}{$product['quantity']|escape:'html':'UTF-8'}{/if}"/>
         </div>
     </div>
-    <div class="form-group">
-        <label for="product_code">{l s='Product code' mod='npsmarketplace'}</label>
-        <input class="validate form-control" data-validate="isMessage" type="text" id="product_code" name="product_code" value="{if isset($product['reference'])}{$product['reference']|escape:'html':'UTF-8'}{/if}"/>
+    <div class="row">
+        <div class="form-group col-md-6">
+            <label class="required" for="product_date_time">{l s='Date & Time' mod='npsmarketplace'}</label>
+            </br>
+            <div id="datePicker" class="input-append">
+                <input class="is_required form-control" id="product_date_time" name="product_date_time" data-format="yyyy-MM-dd hh:mm" type="text" readonly="" required="" value="{if isset($product['date_time'])}{$product['date_time']|escape:'html':'UTF-8'}{/if}"/>
+                <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
+            </div>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="product_code">{l s='Product code' mod='npsmarketplace'}</label>
+            <input class="validate form-control" data-validate="isMessage" type="text" id="product_code" name="product_code" value="{if isset($product['reference'])}{$product['reference']|escape:'html':'UTF-8'}{/if}"/>
+        </div>
     </div>
     <div class="row">
         <div class="form-group col-md-6">
@@ -59,12 +69,8 @@
             </select>
         </div>
         <div class="form-group col-md-6">
-            <label class="required" for="product_date_time">{l s='Date & Time' mod='npsmarketplace'}</label>
-            </br>
-            <div id="datePicker" class="input-append">
-                <input class="is_required form-control" id="product_date_time" name="product_date_time" data-format="yyyy-MM-dd hh:mm" type="text" readonly="" required="" value="{if isset($product['date_time'])}{$product['date_time']|escape:'html':'UTF-8'}{/if}"/>
-                <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
-            </div>
+            <label class="required" for="product_district">{l s='District' mod='npsmarketplace'}</label>
+            <input class="is_required validate form-control" data-validate="isGenericName" type="text" id="product_district" name="product_district" required="" value="{if isset($product['district'])}{$product['district']|escape:'html':'UTF-8'}{/if}"/>
         </div>
     </div>
     <div class="form-group">

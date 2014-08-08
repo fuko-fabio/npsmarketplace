@@ -22,6 +22,7 @@ class ProductRequestProcessor {
         $product_amount = trim(Tools::getValue('product_amount'));
         $product_date_time = trim(Tools::getValue('product_date_time'));
         $product_town = trim(Tools::getValue('product_town'));
+        $product_district = trim(Tools::getValue('product_district'));
         $product_address = trim(Tools::getValue('product_address'));
         $product_lat = trim(Tools::getValue('product_lat'));
         $product_lng = trim(Tools::getValue('product_lng'));
@@ -69,16 +70,29 @@ class ProductRequestProcessor {
                 $this->errors[] = Tools::displayError('An error occurred while saving product.');
             else 
                 StockAvailable::setQuantity($product->id, null, (int)$product_amount, $this->context->shop->id);
-                // TODO IDS
-                Product::addFeatureProductImport($product->id, 8, $product_town);
-                Product::addFeatureProductImport($product->id, 9, $product_address);
-
                 if (!$product->updateCategories($categories))
                     $this->errors[] = Tools::displayError('An error occurred while adding product to categories.');
                 else
                     $this->saveProductImages($product);
+                $this->saveFeatures($product, $product_town, $product_district, $product_address);
         }
         return $product;
+    }
+
+    private function saveFeatures($product, $town, $district, $address) {
+        $feature_id = Configuration::get('NPS_FEATURE_TOWN_ID');
+        $feature_value_id = FeatureValue::addFeatureValueImport($feature_id, $town, $product->id);
+        Product::addFeatureProductImport($product->id, $feature_id, $feature_value_id);
+
+        $feature_id = Configuration::get('NPS_FEATURE_DISTRICT_ID');
+        $feature_value_id = FeatureValue::addFeatureValueImport($feature_id, $district, $product->id);
+        Product::addFeatureProductImport($product->id, $feature_id, $feature_value_id);
+
+        $feature_id = Configuration::get('NPS_FEATURE_ADDRESS_ID');
+        $feature_value_id = FeatureValue::addFeatureValueImport($feature_id, $address, $product->id);
+        Product::addFeatureProductImport($product->id, $feature_id, $feature_value_id);
+
+        return true;
     }
 
     private function saveProductImages($product) {

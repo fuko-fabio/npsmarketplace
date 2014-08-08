@@ -61,7 +61,8 @@ class NpsMarketplace extends Module
             || !Configuration::updateValue('NPS_SELLER_GUIDE_URL', $shop_url)
             || !Configuration::updateValue('NPS_MERCHANT_EMAILS', Configuration::get('PS_SHOP_EMAIL'))
             || !$this->_createTables($sql)
-            || !$this->_createTab())
+            || !$this->_createTab()
+            || !$this->_createFeatures())
             return false;
         return true;
     }
@@ -498,6 +499,15 @@ class NpsMarketplace extends Module
             return Db::getInstance()->Execute($alterImageType) && Db::getInstance()->Execute($updateImageType);
         else 
           return true;
+    }
+    
+    private function _createFeatures() {
+        $names = array('Town', 'District', 'Address');
+        foreach ($names as $name) {
+            $id = Feature::addFeatureImport($name);
+            Configuration::updateValue('NPS_FEATURE_'.strtoupper($name).'_ID', $id);
+        }
+        return true;
     }
 }
 ?>
