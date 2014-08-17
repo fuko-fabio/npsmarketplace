@@ -25,6 +25,7 @@ class NpsMarketplaceProductsListModuleFrontController extends ModuleFrontControl
             }
         }
     }
+
     public function initContent() {
         parent::initContent();
 

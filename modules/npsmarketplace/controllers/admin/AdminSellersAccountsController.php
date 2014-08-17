@@ -112,9 +112,12 @@ class AdminSellersAccountsController extends AdminController
         $seller->locked = $seller->locked ? 0 : 1;
         if (!$seller->update())
             $this->errors[] = Tools::displayError('An error occurred while updating seller information.');
-        Tools::redirectAdmin(self::$currentIndex.'&token='.$this->token);
-        
-        //TODO Activate/Deactivate products
+        foreach ($seller->getProducts() as $product) {
+            $product->setFieldsToUpdate(array('active' => true));
+            $product->active = $seller->locked ? 0 : 1;
+            $product->update(false);
+        }
+
         $customer = new Customer($seller->id_customer);
         $mail_params = array(
             '{lastname}' => $customer->lastname,
@@ -143,6 +146,7 @@ class AdminSellersAccountsController extends AdminController
             null,
             null,
             _NPS_MAILS_DIR_);
+        Tools::redirectAdmin(self::$currentIndex.'&token='.$this->token);
     }
 
     public function processStatus()
@@ -174,6 +178,12 @@ class AdminSellersAccountsController extends AdminController
                 null,
                 null,
                 _NPS_MAILS_DIR_);
+        } else {
+            foreach ($seller->getProducts() as $product) {
+                $product->setFieldsToUpdate(array('active' => true));
+                $product->active = 0;
+                $product->update(false);
+            }
         }
     }
 
@@ -395,12 +405,6 @@ class AdminSellersAccountsController extends AdminController
         return $ret;
     }
 
-    protected function afterDelete($object, $old_id)
-    {
-        //TODO Delete products
-        return true;
-    }
-    
     public function renderKpis()
     {
         $time = time();

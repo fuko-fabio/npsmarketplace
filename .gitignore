@@ -10,6 +10,7 @@
 !/modules
 /modules/*
 !/modules/npsmarketplace
+!/modules/npsmsellercomments
 
 !/themes
 /themes/*

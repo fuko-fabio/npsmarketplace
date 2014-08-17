@@ -7,7 +7,7 @@
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/SellerComment.php');
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/SellerCommentCriterion.php');
 
-class NpsMarketplaceSellerCommentsModuleFrontController extends ModuleFrontController
+class NpsMSellerCommentsSellerCommentsModuleFrontController extends ModuleFrontController
 {
     public function __construct()
     {

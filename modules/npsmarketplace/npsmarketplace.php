@@ -35,7 +35,7 @@ class NpsMarketplace extends Module
         parent::__construct();
         $this->displayName = $this->l( 'nps Marketplace' );
         $this->description = $this->l( 'Allow customers to add and sell products in your store.' );
-        $this->confirmUninstall = $this->l('Are you sure you want to delete mymodule ? This will have serious impact on your products and orders. Think twice before you do that.');
+        $this->confirmUninstall = $this->l('Are you sure you want to delete module ? This will have serious impact on your products and orders. Think twice before you do that.');
     }
 
     public function install()
@@ -54,9 +54,6 @@ class NpsMarketplace extends Module
             || !$this->registerHook('productTab')
             || !$this->registerHook('productTabContent')
             || !Configuration::updateValue('NPS_GLOBAL_COMMISION', 3)
-            || !Configuration::updateValue('NPS_SELLER_COMMENTS_MODERATE', 1)
-            || !Configuration::updateValue('NPS_SELLER_COMMENTS_ALLOW_GUESTS', 0)
-            || !Configuration::updateValue('NPS_SELLER_COMMENTS_MINIMAL_TIME', 30)
             || !Configuration::updateValue('NPS_PRODUCT_GUIDE_URL', $shop_url)
             || !Configuration::updateValue('NPS_SELLER_GUIDE_URL', $shop_url)
             || !Configuration::updateValue('NPS_MERCHANT_EMAILS', Configuration::get('PS_SHOP_EMAIL'))
@@ -70,11 +67,12 @@ class NpsMarketplace extends Module
 
     public function uninstall()
     {
-        if (!parent::uninstall() 
+        if (!parent::uninstall()
+            || !$this->unregisterHook('header')
+            || !$this->unregisterHook('displayCustomerAccount')
+            || !$this->unregisterHook('productTab')
+            || !$this->unregisterHook('productTabContent')
             || !Configuration::deleteByName('NPS_GLOBAL_COMMISION')
-            || !Configuration::deleteByName('NPS_SELLER_COMMENTS_MODERATE')
-            || !Configuration::deleteByName('NPS_SELLER_COMMENTS_ALLOW_GUESTS')
-            || !Configuration::deleteByName('NPS_SELLER_COMMENTS_MINIMAL_TIME')
             || !Configuration::deleteByName('NPS_PRODUCT_GUIDE_URL')
             || !Configuration::deleteByName('NPS_SELLER_GUIDE_URL')
             || !Configuration::deleteByName('NPS_MERCHANT_EMAILS')
@@ -136,11 +134,6 @@ class NpsMarketplace extends Module
             Configuration::updateValue('NPS_GLOBAL_COMMISION', Tools::getValue('NPS_GLOBAL_COMMISION'));
             Configuration::updateValue('NPS_MERCHANT_EMAILS', Tools::getValue('NPS_MERCHANT_EMAILS'));
             $output .= $this->displayConfirmation($this->l('General settings updated'));
-        } elseif (Tools::isSubmit('submitModerate')) {
-            Configuration::updateValue('NPS_SELLER_COMMENTS_MODERATE', (int)Tools::getValue('NPS_SELLER_COMMENTS_MODERATE'));
-            Configuration::updateValue('NPS_SELLER_COMMENTS_ALLOW_GUESTS', (int)Tools::getValue('NPS_SELLER_COMMENTS_ALLOW_GUESTS'));
-            Configuration::updateValue('NPS_SELLER_COMMENTS_MINIMAL_TIME', (int)Tools::getValue('NPS_SELLER_COMMENTS_MINIMAL_TIME'));
-            $output .= $this->displayConfirmation($this->l('Seller comments settings updated'));
         } elseif (Tools::isSubmit('submitUrls')) {
             Configuration::updateValue('NPS_PRODUCT_GUIDE_URL', Tools::getValue('NPS_PRODUCT_GUIDE_URL'));
             Configuration::updateValue('NPS_SELLER_GUIDE_URL', Tools::getValue('NPS_SELLER_GUIDE_URL'));
@@ -153,80 +146,26 @@ class NpsMarketplace extends Module
     {
         $id_seller = (int)Seller::getSellerByProduct(Tools::getValue('id_product'));
         if(isset($id_seller) && $id_seller > 0) {
-            require_once(dirname(__FILE__).'/classes/SellerComment.php');
-            require_once(dirname(__FILE__).'/classes/SellerCommentCriterion.php');
-            $average = SellerComment::getAverageGrade((int)$id_seller);
-
-            $this->context->smarty->assign(array(
-                                            'allow_guests' => (int)Configuration::get('NPS_SELLER_COMMENTS_ALLOW_GUESTS'),
-                                            'comments' => SellerComment::getBySeller($id_seller),
-                                            'criterions' => SellerCommentCriterion::getBySeller($id_seller, $this->context->language->id),
-                                            'averageTotal' => round($average['grade']),
-                                            'nbComments' => (int)(SellerComment::getCommentNumber($id_seller))
-                                       ));
-
-            return ($this->display(__FILE__, '/tab.tpl'));
+            $seller = new Seller(Seller::getSellerByProduct(Tools::getValue('id_product')));
+            if($seller->regulations_active) {
+                return ($this->display(__FILE__, '/tab.tpl'));
+            }
         }
     }
 
     public function hookProductTabContent($params)
     {
-        $id_seller = (int)Seller::getSellerByProduct(Tools::getValue('id_product'));
+$id_seller = (int)Seller::getSellerByProduct(Tools::getValue('id_product'));
         if(isset($id_seller) && $id_seller > 0) {
-            $this->context->controller->addJS($this->_path.'js/jquery.rating.pack.js');
-            $this->context->controller->addJS($this->_path.'js/jquery.textareaCounter.plugin.js');
-            $this->context->controller->addJS($this->_path.'js/sellercomments.js');
-    
             $seller = new Seller(Seller::getSellerByProduct(Tools::getValue('id_product')));
-    
-            $id_guest = (!$id_customer = (int)$this->context->cookie->id_customer) ? (int)$this->context->cookie->id_guest : false;
-            $customerComment = SellerComment::getByCustomer($seller->id, (int)$this->context->cookie->id_customer, true, (int)$id_guest);
-    
-            $averages = SellerComment::getAveragesBySeller($seller->id, $this->context->language->id);
-            $averageTotal = 0;
-            foreach ($averages as $average)
-                $averageTotal += (float)($average);
-            $averageTotal = count($averages) ? ($averageTotal / count($averages)) : 0;
-    
-            $product = new Product(Tools::getValue('id_product'));
-    
-             $this->context->smarty->assign(array(
-                 'sellercomments_logged' => $this->context->customer->isLogged(true),
-                 'sellercomments_action_url' => '',
-                 'seller' => $seller,
-                 'sellercomments' => SellerComment::getBySeller($seller->id, 1, null, $this->context->cookie->id_customer),
-                 'sellercomments_criterions' => SellerCommentCriterion::getBySeller($seller->id, $this->context->language->id),
-                 'sellercomments_averages' => $averages,
-                 'sellercomments_path' => $this->_path,
-                 'sellercomments_averageTotal' => $averageTotal,
-                 'sellercomments_allow_guests' => (int)Configuration::get('NPS_SELLER_COMMENTS_ALLOW_GUESTS'),
-                 'sellercomments_too_early' => ($customerComment && (strtotime($customerComment['date_add']) + Configuration::get('NPS_SELLER_COMMENTS_MINIMAL_TIME')) > time()),
-                 'sellercomments_delay' => Configuration::get('NPS_SELLER_COMMENTS_MINIMAL_TIME'),
-                 'id_sellercomments_form' => $seller->id,
-                 'sellercomments_secure_key' => $this->secure_key,
-                 'sellercomments_cover' => '',
-                 'sellercomments_cover_image' => $this->getSellerImgLink($seller),
-                 'sellercomments_mediumSize' => Image::getSize(ImageType::getFormatedName('medium')),
-                 'sellercomments_nbComments' => (int)SellerComment::getCommentNumber($seller->id),
-                 'sellercomments_controller_url' => $this->context->link->getModuleLink('npsmarketplace', 'SellerComments'),
-                 'sellercomments_url_rewriting_activated' => Configuration::get('PS_REWRITING_SETTINGS', 0),
-                 'sellercomments_moderation_active' => (int)Configuration::get('NPS_SELLER_COMMENTS_MODERATE'),
-                 'current_id_lang' => (int)$this->context->language->id,
-            ));
-    
-            $this->context->controller->pagination((int)SellerComment::getCommentNumber($seller->id));
-    
-            return ($this->display(__FILE__, '/views/templates/front/sellercomments.tpl'));
+            if($seller->regulations_active) {
+                $this->context->smarty->assign(array(
+                    'current_id_lang' => (int)$this->context->language->id,
+                    'regulations' => $seller->regulations
+                 ));
+                return ($this->display(__FILE__, '/regulations.tpl'));
+            }
         }
-    }
-
-    public function getSellerImgLink($seller, $type = null)
-    {
-        if($type)
-            $uri_path = _THEME_SEL_DIR_.$seller->id.'-'.$type.'.jpg';
-        else
-            $uri_path = _THEME_SEL_DIR_.$seller->id.($type ? '-'.$type : '').'.jpg';
-        return $this->context->link->protocol_content.Tools::getMediaServer($uri_path).$uri_path;
     }
 
     private function displayForm()
@@ -234,12 +173,10 @@ class NpsMarketplace extends Module
         $this->context->controller->addJqueryPlugin('tagify');
         // Get default language
         $default_lang = (int)Configuration::get('PS_LANG_DEFAULT');
-         
+
         // Init Fields form array
         $fields_form[0] = $this->configurationForm();
         $fields_form[1] = $this->linksForm();
-        $fields_form[2] = $this->moderateForm();
-         
 	    $helper = new HelperForm();
 	     
 	    // Module, token and currentIndex
@@ -336,74 +273,10 @@ class NpsMarketplace extends Module
         );
     }
 
-    public function moderateForm() {
-        return array(
-            'form' => array(
-                'legend' => array(
-                    'title' => $this->l('Seller Comments Configuration'),
-                    'icon' => 'icon-cogs'
-                ),
-                'input' => array(
-                    array(
-                        'type' => 'switch',
-                        'is_bool' => true, //retro compat 1.5
-                        'label' => $this->l('All reviews must be validated by an employee'),
-                        'name' => 'NPS_SELLER_COMMENTS_MODERATE',
-                        'values' => array(
-                                        array(
-                                            'id' => 'active_on',
-                                            'value' => 1,
-                                            'label' => $this->l('Enabled')
-                                        ),
-                                        array(
-                                            'id' => 'active_off',
-                                            'value' => 0,
-                                            'label' => $this->l('Disabled')
-                                        )
-                                    ),
-                    ),
-                    array(
-                        'type' => 'switch',
-                        'is_bool' => true, //retro compat 1.5
-                        'label' => $this->l('Allow guest reviews'),
-                        'name' => 'NPS_SELLER_COMMENTS_ALLOW_GUESTS',
-                        'values' => array(
-                                        array(
-                                            'id' => 'active_on',
-                                            'value' => 1,
-                                            'label' => $this->l('Enabled')
-                                        ),
-                                        array(
-                                            'id' => 'active_off',
-                                            'value' => 0,
-                                            'label' => $this->l('Disabled')
-                                        )
-                                    ),
-                    ),
-                    array(
-                        'type' => 'text',
-                        'label' => $this->l('Minimum time between 2 reviews from the same user'),
-                        'name' => 'NPS_SELLER_COMMENTS_MINIMAL_TIME',
-                        'class' => 'fixed-width-xs',
-                        'suffix' => 'seconds',
-                    ),
-                ),
-            'submit' => array(
-                'title' => $this->l('Save'),
-                'class' => 'btn btn-default pull-right',
-                'name' => 'submitModerate',
-                )
-            )
-        );
-    }
-
     public function getConfigFieldsValues()
     {
         return array(
             'NPS_GLOBAL_COMMISION' => Tools::getValue('NPS_GLOBAL_COMMISION', Configuration::get('NPS_GLOBAL_COMMISION')),
-            'NPS_SELLER_COMMENTS_MODERATE' => Tools::getValue('NPS_SELLER_COMMENTS_MODERATE', Configuration::get('NPS_SELLER_COMMENTS_MODERATE')),
-            'NPS_SELLER_COMMENTS_ALLOW_GUESTS' => Tools::getValue('NPS_SELLER_COMMENTS_ALLOW_GUESTS', Configuration::get('NPS_SELLER_COMMENTS_ALLOW_GUESTS')),
-            'NPS_SELLER_COMMENTS_MINIMAL_TIME' => Tools::getValue('NPS_SELLER_COMMENTS_MINIMAL_TIME', Configuration::get('NPS_SELLER_COMMENTS_MINIMAL_TIME')),
             'NPS_PRODUCT_GUIDE_URL' => Tools::getValue('NPS_PRODUCT_GUIDE_URL', Configuration::get('NPS_PRODUCT_GUIDE_URL')),
             'NPS_SELLER_GUIDE_URL' => Tools::getValue('NPS_SELLER_GUIDE_URL', Configuration::get('NPS_SELLER_GUIDE_URL')),
             'NPS_MERCHANT_EMAILS' => Tools::getValue('NPS_MERCHANT_EMAILS', Configuration::get('NPS_MERCHANT_EMAILS')),
@@ -431,17 +304,6 @@ class NpsMarketplace extends Module
         foreach ($languages AS $language)
         {
             $sellers_tab->{'name'}[intval($language['id_lang'])] = $this->l('Sellers');
-        }
-        $success = $success && $sellers_tab->add();
-        
-        $sellers_tab = new Tab();
-        $sellers_tab->id_parent = $tab->id;
-        $sellers_tab->position = 1;
-        $sellers_tab->module = $this->name;
-        $sellers_tab->class_name = 'AdminSellersComments';
-        foreach ($languages AS $language)
-        {
-            $sellers_tab->{'name'}[intval($language['id_lang'])] = 'Comments';
         }
         $success = $success && $sellers_tab->add();
         return $success;
@@ -477,14 +339,7 @@ class NpsMarketplace extends Module
             DROP TABLE IF EXISTS
             `'._DB_PREFIX_.'seller`,
             `'._DB_PREFIX_.'seller_lang`,
-            `'._DB_PREFIX_.'seller_product`,
-            `'._DB_PREFIX_.'seller_comment`,
-            `'._DB_PREFIX_.'seller_comment_criterion`,
-            `'._DB_PREFIX_.'seller_comment_criterion_seller`,
-            `'._DB_PREFIX_.'seller_comment_criterion_lang`,
-            `'._DB_PREFIX_.'seller_comment_grade`,
-            `'._DB_PREFIX_.'seller_comment_usefulness`,
-            `'._DB_PREFIX_.'seller_comment_report`');
+            `'._DB_PREFIX_.'seller_product`');
     }
 
     private function _alterImageTypeTable() {

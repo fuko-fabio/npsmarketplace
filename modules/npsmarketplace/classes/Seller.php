@@ -107,7 +107,18 @@ class Seller extends ObjectModel
             'products' => array('type' => self::HAS_MANY, 'field' => 'id_product',  'object' => 'Product', 'association' => 'seller_product'),
         )
     );
-    
+
+    public function delete() {
+        $result = true;
+        foreach ($this->getProducts() as $product) {
+            $product->delete() ? $result = $result : $result = false;
+        }
+        if($result) {
+            return parent::delete();
+        }
+        return $result;
+    }
+
     /**
      * assignProduct assigns products to current seller.
      *
@@ -140,6 +151,19 @@ class Seller extends ObjectModel
             );
 
         return Db::getInstance()->insert('seller_product', $seller_products);
+    }
+
+    public function getImageLink($type = null, $context)
+    {
+        if (file_exists(_NPS_SEL_IMG_DIR_.$this->id.'.'.$this->getImgFormat())) {
+            if ($this->id) {
+                if($type)
+                    $uri_path = _THEME_SEL_DIR_.$this->id.'-'.$type.'.jpg';
+                else
+                    $uri_path = _THEME_SEL_DIR_.$this->id.($type ? '-'.$type : '').'.jpg';
+                return $context->link->protocol_content.Tools::getMediaServer($uri_path).$uri_path;
+            }
+        }
     }
 
     /**

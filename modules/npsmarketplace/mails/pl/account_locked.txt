@@ -1,19 +1,12 @@
 
-[{shop_url}] 
+[{shop_url}]
 
 Witaj {firstname}!
 
-Właśnie otworzyłeś swój butik w {shop_name}. 
+Twoje kont zostało zablokowane.
 
-Adres Twojego butiku to: {seller_shop_url
+Skontaktuj się z obsługą klienta.
 
-Dodaj swój pierwszy produkt, a następnie czekaj na aktywację konta sprzedawcy.
-
-Aby było Ci łatwiej, przygotowaliśmy pomocne instrukcje któte możesz znależć tutaj: {product_guide_url}
-
-Dodatkowe przydatne informacje znajdziesz w naszym poradniku sprzedawcy: {seller_guide_url}
-
-Pozdrawiamy i życzymy dobrej zabawy,
-zespół {shop_name}.
+Zespół {shop_name}.
 
 To jest automatyczna wiadomość, prosimy na nią NIE odpowiadać.

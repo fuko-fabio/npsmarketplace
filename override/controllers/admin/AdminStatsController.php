@@ -9,7 +9,6 @@ class AdminStatsController extends AdminStatsControllerCore
 {
     public function displayAjaxGetKpi()
     {
-        d('dupa');
         switch (Tools::getValue('kpi'))
         {
             case 'registered_sellers':
@@ -59,7 +58,7 @@ class AdminStatsController extends AdminStatsControllerCore
         return (int)Db::getInstance(_PS_USE_SQL_SLAVE_)->getValue('
         SELECT COUNT(*)
         FROM `'._DB_PREFIX_.'seller` s
-        WHERE s.active = 0');
+        WHERE s.active = 1');
     }
 
     public static function getDisabledSellers()
@@ -67,7 +66,7 @@ class AdminStatsController extends AdminStatsControllerCore
         return (int)Db::getInstance(_PS_USE_SQL_SLAVE_)->getValue('
         SELECT COUNT(*)
         FROM `'._DB_PREFIX_.'seller` s
-        WHERE s.active = 1');
+        WHERE s.active = 0');
     }
 
     public static function getTotalSellers()
