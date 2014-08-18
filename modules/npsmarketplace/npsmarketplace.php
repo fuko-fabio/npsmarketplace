@@ -56,6 +56,7 @@ class NpsMarketplace extends Module
             || !Configuration::updateValue('NPS_GLOBAL_COMMISION', 3)
             || !Configuration::updateValue('NPS_PRODUCT_GUIDE_URL', $shop_url)
             || !Configuration::updateValue('NPS_SELLER_GUIDE_URL', $shop_url)
+            || !Configuration::updateValue('NPS_PAYMENT_SETTINGS_GUIDE_URL', $shop_url)
             || !Configuration::updateValue('NPS_MERCHANT_EMAILS', Configuration::get('PS_SHOP_EMAIL'))
             || !$this->_createTables($sql)
             || !$this->_createTab()
@@ -75,6 +76,7 @@ class NpsMarketplace extends Module
             || !Configuration::deleteByName('NPS_GLOBAL_COMMISION')
             || !Configuration::deleteByName('NPS_PRODUCT_GUIDE_URL')
             || !Configuration::deleteByName('NPS_SELLER_GUIDE_URL')
+            || !Configuration::deleteByName('NPS_PAYMENT_SETTINGS_GUIDE_URL')
             || !Configuration::deleteByName('NPS_MERCHANT_EMAILS')
             || !Configuration::deleteByName('NPS_FEATURE_TOWN_ID')
             || !Configuration::deleteByName('NPS_FEATURE_DISTRICT_ID')
@@ -137,6 +139,7 @@ class NpsMarketplace extends Module
         } elseif (Tools::isSubmit('submitUrls')) {
             Configuration::updateValue('NPS_PRODUCT_GUIDE_URL', Tools::getValue('NPS_PRODUCT_GUIDE_URL'));
             Configuration::updateValue('NPS_SELLER_GUIDE_URL', Tools::getValue('NPS_SELLER_GUIDE_URL'));
+            Configuration::updateValue('NPS_PAYMENT_SETTINGS_GUIDE_URL', Tools::getValue('NPS_PAYMENT_SETTINGS_GUIDE_URL'));
             $output .= $this->displayConfirmation($this->l('URL\'s settings updated'));
         }
         return $output.$this->displayForm();
@@ -263,6 +266,12 @@ $id_seller = (int)Seller::getSellerByProduct(Tools::getValue('id_product'));
                         'name' => 'NPS_PRODUCT_GUIDE_URL',
                         'required' => true
                     ),
+                    array(
+                        'type' => 'text',
+                        'label' => $this->l('Payment Settings Guide URL'),
+                        'name' => 'NPS_PAYMENT_SETTINGS_GUIDE_URL',
+                        'required' => true
+                    ),
                 ),
                 'submit' => array(
                     'title' => $this->l('Save'),
@@ -280,6 +289,7 @@ $id_seller = (int)Seller::getSellerByProduct(Tools::getValue('id_product'));
             'NPS_PRODUCT_GUIDE_URL' => Tools::getValue('NPS_PRODUCT_GUIDE_URL', Configuration::get('NPS_PRODUCT_GUIDE_URL')),
             'NPS_SELLER_GUIDE_URL' => Tools::getValue('NPS_SELLER_GUIDE_URL', Configuration::get('NPS_SELLER_GUIDE_URL')),
             'NPS_MERCHANT_EMAILS' => Tools::getValue('NPS_MERCHANT_EMAILS', Configuration::get('NPS_MERCHANT_EMAILS')),
+            'NPS_PAYMENT_SETTINGS_GUIDE_URL' => Tools::getValue('NPS_PAYMENT_SETTINGS_GUIDE_URL', Configuration::get('NPS_PAYMENT_SETTINGS_GUIDE_URL')),
 
         );
     }

@@ -3,13 +3,13 @@
 
 Witaj {firstname}!
 
-Właśnie otworzyłeś swój butik w {shop_name}. 
+Twój butik został otwarty. 
 
 Adres Twojego butiku to: {seller_shop_url
 
-Dodaj swój pierwszy produkt, a następnie czekaj na aktywację konta sprzedawcy.
+Skonfiguruj płatności abyś mógł swobodnie sprzedawać własne pomysły.<br />
 
-Aby było Ci łatwiej, przygotowaliśmy pomocne instrukcje któte możesz znależć tutaj: {product_guide_url}
+Aby było Ci łatwiej, przygotowaliśmy pomocne instrukcje któte możesz znależć tutaj: {payment_settings_guide_url}
 
 Dodatkowe przydatne informacje znajdziesz w naszym poradniku sprzedawcy: {seller_guide_url}
 

@@ -3,7 +3,7 @@
 
 Witaj {firstname}!
 
-Właśnie otworzyłeś swój butik w {shop_name}. 
+Właśnie otrzymaliśmy twoją prośbę otwarcia butiku w {shop_name}. 
 
 Adres Twojego butiku to: {seller_shop_url
 

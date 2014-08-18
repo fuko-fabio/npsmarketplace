@@ -1,17 +1,17 @@
-Hello,
+Cześć,
 
-A new seller has been register in {shop_name} with the following details:
+Nowy sprzedawca zarejestrował się w serwisie {shop_name} podając następujące dane:
 
-Seller Name: {name}
+Nazwa sprzedawcy: {name}
 
-Shop Name: {company_name}
-Shop Description: {company_description}
+Nazwa sklepu: {company_name}
+Opis sklepu: {company_description}
 Email: {email}
-Phone: {phone}
+Telefon: {phone}
 NIP: {nip}
 REGON: {regon}
 
-Go to admin panel and enable account: {admin_link}
+Przejdź do panelu administracyjnego i aktywuj konto: {admin_link}
 
 --
 {shop_name}

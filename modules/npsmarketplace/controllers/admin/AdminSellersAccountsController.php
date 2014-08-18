@@ -163,6 +163,7 @@ class AdminSellersAccountsController extends AdminController
                 '{seller_shop_url}' => $this->context->link->getModuleLink('npsmarketplace', 'SellerShop', array('id_seller' => $seller->id)),
                 '{product_guide_url}' => Configuration::get('NPS_PRODUCT_GUIDE_URL'),
                 '{seller_guide_url}' => Configuration::get('NPS_SELLER_GUIDE_URL'),
+                '{payment_settings_guide_url}' => Configuration::get('NPS_PAYMENT_SETTINGS_GUIDE_URL'),
             );
             Mail::Send($this->context->language->id,
                 'account_active',
