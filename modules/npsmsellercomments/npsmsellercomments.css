@@ -203,7 +203,7 @@ h
 
 #seller_comments_block_tab a:hover {text-decoration: underline}
 
-#seller_comments_block_tab button.usefulness_btn {
+#seller_comments_block_tab button.nps_usefulness_btn {
     cursor: pointer;
     margin:0 0 0 5px;
     display: inline-block;
@@ -214,11 +214,11 @@ h
     font-weight: bold;
     background: url("img/bg_bt.gif") repeat-x scroll 0 0 #F4B61B
 }
-#seller_comments_block_tab button.usefulness_btn:hover {background-position: left -50px}
-#seller_comments_block_tab button.usefulness_btn:active {background-position: left -100px}
+#seller_comments_block_tab button.nps_usefulness_btn:hover {background-position: left -50px}
+#seller_comments_block_tab button.nps_usefulness_btn:active {background-position: left -100px}
 
-#seller_comments_block_tab span.report_btn {cursor: pointer}
-#seller_comments_block_tab span.report_btn:hover {text-decoration:underline}
+#seller_comments_block_tab span.nps_report_btn {cursor: pointer}
+#seller_comments_block_tab span.nps_report_btn:hover {text-decoration:underline}
 
 .fl { float: left; }
 .fr { float: right; }

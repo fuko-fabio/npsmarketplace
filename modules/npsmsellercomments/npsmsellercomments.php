@@ -21,7 +21,7 @@ if ( !defined( '_NPS_MARKETPLACE_DIR_' ) )
 
 include_once(_NPS_MARKETPLACE_DIR_.'/classes/Seller.php');
 
-class NpsMSellerComments extends Module
+class npsmsellercomments extends Module
 {
     const INSTALL_SQL_FILE = 'install.sql';
 
@@ -76,11 +76,6 @@ class NpsMSellerComments extends Module
         return true;
     }
 
-    public function hookHeader()
-    {
-        $this->context->controller->addCSS($this->_path.'npsmsellercomments.css', 'all');
-    }
-
     public function getContent()
     {
         $output = null;
@@ -120,21 +115,20 @@ class NpsMSellerComments extends Module
         if(isset($id_seller) && $id_seller > 0) {
             $this->context->controller->addJS($this->_path.'js/jquery.rating.pack.js');
             $this->context->controller->addJS($this->_path.'js/jquery.textareaCounter.plugin.js');
-            $this->context->controller->addJS($this->_path.'js/productcomments.js');
-    
+            $this->context->controller->addJS($this->_path.'js/sellercomments.js');
+            $this->context->controller->addCSS($this->_path.'npsmsellercomments.css', 'all');
+
             $seller = new Seller(Seller::getSellerByProduct(Tools::getValue('id_product')));
-    
             $id_guest = (!$id_customer = (int)$this->context->cookie->id_customer) ? (int)$this->context->cookie->id_guest : false;
             $customerComment = SellerComment::getByCustomer($seller->id, (int)$this->context->cookie->id_customer, true, (int)$id_guest);
-    
             $averages = SellerComment::getAveragesBySeller($seller->id, $this->context->language->id);
             $averageTotal = 0;
             foreach ($averages as $average)
                 $averageTotal += (float)($average);
             $averageTotal = count($averages) ? ($averageTotal / count($averages)) : 0;
-    
+
             $product = new Product(Tools::getValue('id_product'));
-    
+
              $this->context->smarty->assign(array(
                  'sellercomments_logged' => $this->context->customer->isLogged(true),
                  'sellercomments_action_url' => '',
@@ -153,8 +147,7 @@ class NpsMSellerComments extends Module
                  'sellercomments_cover_image' => $this->getSellerImgLink($seller),
                  'sellercomments_mediumSize' => Image::getSize(ImageType::getFormatedName('medium')),
                  'sellercomments_nbComments' => (int)SellerComment::getCommentNumber($seller->id),
-                 'sellercomments_controller_url' => $this->context->link->getModuleLink('npsmarketplace', 'SellerComments'),
-                 'sellercomments_url_rewriting_activated' => Configuration::get('PS_REWRITING_SETTINGS', 0),
+                 'sellercomments_controller_url' => $this->context->link->getModuleLink('npsmsellercomments', 'SellerComments'),
                  'sellercomments_moderation_active' => (int)Configuration::get('NPS_SELLER_COMMENTS_MODERATE'),
                  'current_id_lang' => (int)$this->context->language->id,
             ));

@@ -1,12 +1,11 @@
 $(function() {
     $('input.seller-star').rating();
-    $('.auto-submit-star').rating();
 
-    $('.open-comment-form').fancybox({
+    $('.open-seller-comment-form').fancybox({
         'hideOnContentClick' : false
     });
 
-    $('button.usefulness_btn').click(function() {
+    $('button.nps_usefulness_btn').click(function() {
         var id_seller_comment = $(this).data('id-seller-comment');
         var is_usefull = $(this).data('is-usefull');
         var parent = $(this).parent();
@@ -30,7 +29,7 @@ $(function() {
         });
     });
 
-    $('span.report_btn').click(function() {
+    $('span.nps_report_btn').click(function() {
         if (confirm(sellercomments_confirm_report_message)) {
             var idSellerComment = $(this).data('id-seller-comment');
             var parent = $(this).parent();
@@ -59,13 +58,8 @@ $(function() {
         e.preventDefault();
 
         // Form element
-
-        url_options = '?';
-        if (!sellercomments_url_rewrite)
-            url_options = '&';
-
         $.ajax({
-            url : sellercomments_controller_url + url_options + 'action=add_comment&secure_key=' + sellercomments_secure_key + '&rand=' + new Date().getTime(),
+            url : sellercomments_controller_url + '&' + 'action=add_comment&secure_key=' + sellercomments_secure_key + '&rand=' + new Date().getTime(),
             data : $('#id_new_seller_comment_form').serialize(),
             type : 'POST',
             headers : {

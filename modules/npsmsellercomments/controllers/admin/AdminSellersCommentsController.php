@@ -6,15 +6,13 @@
 
 include_once(_PS_MODULE_DIR_.'npsmsellercomments/classes/SellerComment.php');
 
-class AdminSellersCommentsController extends AdminController
-{
+class AdminSellersCommentsController extends AdminController {
     protected $delete_mode;
 
     protected $_defaultOrderBy = 'date_add';
     protected $_defaultOrderWay = 'DESC';
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->bootstrap = true;
         $this->required_database = true;
         $this->table = 'seller_comment';
@@ -23,7 +21,7 @@ class AdminSellersCommentsController extends AdminController
         $this->explicitSelect = true;
         $this->allow_export = true;
 
-        $this->addRowAction('view');
+        $this->addRowAction('edit');
         $this->addRowAction('delete');
         $this->bulk_actions = array(
             'delete' => array(
@@ -81,16 +79,14 @@ class AdminSellersCommentsController extends AdminController
         parent::__construct();
     }
 
-    public function printValidateIcon($value, $comment)
-    {
+    public function printValidateIcon($value, $comment) {
         return '<a class="list-action-enable '.($value ? 'action-enabled' : 'action-disabled').'" href="index.php?tab=AdminSellersComments&id_seller_comment='
             .(int)$comment['id_seller_comment'].'&changeValidateVal&token='.Tools::getAdminTokenLite('AdminSellersComments').'">
                 '.($value ? '<i class="icon-check"></i>' : '<i class="icon-remove"></i>').
             '</a>';
     }
 
-    public function processChangeValidateVal()
-    {
+    public function processChangeValidateVal() {
         $object = new $this->className($this->id_object);
         if (!Validate::isLoadedObject($object))
             $this->errors[] = $this->l('An error occurred while updating seller comment information.');
@@ -100,8 +96,7 @@ class AdminSellersCommentsController extends AdminController
         Tools::redirectAdmin(self::$currentIndex.'&token='.$this->token);
     }
 
-    public function initContent()
-    {
+    public function initContent() {
         if ($this->action == 'select_delete')
             $this->context->smarty->assign(array(
                 'delete_form' => true,
@@ -112,8 +107,7 @@ class AdminSellersCommentsController extends AdminController
         parent::initContent();
     }
 
-    public function initToolbarTitle()
-    {
+    public function initToolbarTitle() {
         parent::initToolbarTitle();
 
         switch ($this->display)
@@ -128,8 +122,7 @@ class AdminSellersCommentsController extends AdminController
         }
     }
 
-    public function initProcess()
-    {
+    public function initProcess() {
         parent::initProcess();
         if (Tools::isSubmit('changeValidateVal') && $this->id_object) {
             if ($this->tabAccess['edit'] === '1')
@@ -152,5 +145,57 @@ class AdminSellersCommentsController extends AdminController
                 $this->errors[] = $this->l('You must select at least one element to change visibility status.');
             }
         }
+    }
+
+    public function renderForm() {
+        if (!($obj = $this->loadObject(true)))
+            return;
+        $obj = $this->loadObject(true);
+
+        $this->fields_form = array(
+            'legend' => array(
+                'title' => $this->l('Seller Comment'),
+                'icon' => 'icon-comment'
+            ),
+            'input' => array(
+                array(
+                    'type' => 'switch',
+                    'label' => $this->l('Visible'),
+                    'name' => 'active',
+                    'hint' => $this->l('Change comment visibility'),
+                    'values' => array(
+                        array(
+                            'id' => 'active_on',
+                            'value' => 1,
+                            'label' => $this->l('Visible')
+                        ),
+                        array(
+                            'id' => 'active_off',
+                            'value' => 0,
+                            'label' => $this->l('Not Visible')
+                        )
+                    ),
+                ),
+                array(
+                    'type' => 'text',
+                    'label' => $this->l('Title'),
+                    'name' => 'title',
+                    'required' => true,
+                ),
+                array(
+                    'type' => 'textarea',
+                    'label' => $this->l('Content'),
+                    'name' => 'content',
+                    'required' => true,
+                ),
+            ),
+            'submit' => array(
+                'title' => $this->l('Save'),
+                'class' => 'btn btn-default pull-right',
+                'name' => 'submit',
+            )
+        );
+
+        return parent::renderForm();
     }
 }

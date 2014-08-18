@@ -3,47 +3,44 @@
 *  @author Norbert Pabian <norbert.pabian@gmail.com>
 *  @copyright 2014 npsoftware
 */
+
 if ( !defined( '_NPS_MAILS_DIR_' ) )
     define('_NPS_MAILS_DIR_', _PS_MODULE_DIR_.'npsmarketplace/mails/');
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
 
 class AdminSellersAccountsController extends AdminController
 {
-	protected $delete_mode;
+    protected $delete_mode;
 
-	protected $_defaultOrderBy = 'request_date';
-	protected $_defaultOrderWay = 'DESC';
+    protected $_defaultOrderBy = 'request_date';
+    protected $_defaultOrderWay = 'DESC';
 
-	public function __construct()
-	{
-		$this->bootstrap = true;
-		$this->required_database = true;
-		$this->table = 'seller';
-		$this->className = 'Seller';
-		$this->lang = true;
-		$this->explicitSelect = true;
-
-		$this->allow_export = true;
+    public function __construct() {
+        $this->bootstrap = true;
+        $this->required_database = true;
+        $this->table = 'seller';
+        $this->className = 'Seller';
+        $this->lang = true;
+        $this->explicitSelect = true;
+        $this->allow_export = true;
         $this->fieldImageSettings = array(
             'name' => 'image',
-            'dir' => 'seller'
+            'dir' => 'seller' );
+        $this->addRowAction('edit');
+        $this->addRowAction('delete');
+        $this->bulk_actions = array(
+            'delete' => array(
+            'text' => $this->l('Delete selected'),
+            'confirm' => $this->l('Delete selected items?'),
+            'icon' => 'icon-trash'
+        )
         );
 
-		$this->addRowAction('edit');
-		$this->addRowAction('delete');
-		$this->bulk_actions = array(
-			'delete' => array(
-				'text' => $this->l('Delete selected'),
-				'confirm' => $this->l('Delete selected items?'),
-				'icon' => 'icon-trash'
-			)
-		);
+            $this->context = Context::getContext();
+            $this->default_form_language = $this->context->language->id;
 
-		$this->context = Context::getContext();
-		$this->default_form_language = $this->context->language->id;
-		
-		$this->fields_list = array(
-			'id_seller' => array(
+            $this->fields_list = array(
+                'id_seller' => array(
                 'title' => $this->l('ID'),
                 'align' => 'text-center',
                 'class' => 'fixed-width-xs'
@@ -88,13 +85,13 @@ class AdminSellersAccountsController extends AdminController
                 'align' => 'text-center',
                 'class' => 'fixed-width-xs'
             ),
-		);
+        );
 
-		$this->shopLinkType = 'shop';
-		$this->shopShareDatas = Shop::SHARE_CUSTOMER;
+        $this->shopLinkType = 'shop';
+        $this->shopShareDatas = Shop::SHARE_CUSTOMER;
 
-		parent::__construct();
-	}
+        parent::__construct();
+    }
 
 	public function printLockedIcon($value, $seller)
     {
@@ -187,17 +184,17 @@ class AdminSellersAccountsController extends AdminController
         }
     }
 
-	public function initContent()
-	{
-		if ($this->action == 'select_delete')
-			$this->context->smarty->assign(array(
-				'delete_form' => true,
-				'url_delete' => htmlentities($_SERVER['REQUEST_URI']),
-				'boxes' => $this->boxes,
-			));
+    public function initContent()
+    {
+        if ($this->action == 'select_delete')
+            $this->context->smarty->assign(array(
+                'delete_form' => true,
+                'url_delete' => htmlentities($_SERVER['REQUEST_URI']),
+                'boxes' => $this->boxes,
+            ));
 
-		parent::initContent();
-	}
+        parent::initContent();
+    }
 
     public function initToolbarTitle()
     {
@@ -216,11 +213,10 @@ class AdminSellersAccountsController extends AdminController
         }
     }
 
-	public function initProcess()
-	{
-		parent::initProcess();
+    public function initProcess() {
+        parent::initProcess();
 
-		if (Tools::isSubmit('changeLockedVal') && $this->id_object)
+        if (Tools::isSubmit('changeLockedVal') && $this->id_object)
         {
             if ($this->tabAccess['edit'] === '1')
                 $this->action = 'change_locked_val';
@@ -228,28 +224,26 @@ class AdminSellersAccountsController extends AdminController
                 $this->errors[] = Tools::displayError('You do not have permission to edit this.');
         }
 
-		// When deleting, first display a form to select the type of deletion
-		if ($this->action == 'delete' || $this->action == 'bulkdelete')
-			if (Tools::getValue('deleteMode') == 'real' || Tools::getValue('deleteMode') == 'deleted')
-				$this->delete_mode = Tools::getValue('deleteMode');
-			else
-				$this->action = 'select_delete';
-	}
+        // When deleting, first display a form to select the type of deletion
+        if ($this->action == 'delete' || $this->action == 'bulkdelete')
+            if (Tools::getValue('deleteMode') == 'real' || Tools::getValue('deleteMode') == 'deleted')
+                $this->delete_mode = Tools::getValue('deleteMode');
+            else
+                $this->action = 'select_delete';
+    }
 
-	public function renderList()
-	{
-		if (Tools::isSubmit('submitBulkdelete'.$this->table) || Tools::isSubmit('delete'.$this->table))
-			$this->tpl_list_vars = array(
-				'delete_seller' => true,
-				'REQUEST_URI' => $_SERVER['REQUEST_URI'],
-				'POST' => $_POST
-			);
+    public function renderList() {
+        if (Tools::isSubmit('submitBulkdelete'.$this->table) || Tools::isSubmit('delete'.$this->table))
+            $this->tpl_list_vars = array(
+                'delete_seller' => true,
+                'REQUEST_URI' => $_SERVER['REQUEST_URI'],
+                'POST' => $_POST
+            );
 
-		return parent::renderList();
-	}
+        return parent::renderList();
+    }
 
-    public function renderForm()
-    {
+    public function renderForm() {
         if (!($obj = $this->loadObject(true)))
             return;
         $obj = $this->loadObject(true);
@@ -348,13 +342,11 @@ class AdminSellersAccountsController extends AdminController
                     'type' => 'text',
                     'label' => $this->l('NIP'),
                     'name' => 'nip',
-                    'required' => true,
                 ),
                 array(
                     'type' => 'text',
                     'label' => $this->l('REGON'),
                     'name' => 'regon',
-                    'required' => true,
                 ),
                 array(
                     'type' => 'file',
@@ -373,6 +365,29 @@ class AdminSellersAccountsController extends AdminController
                     'required' => true,
                     'lang' => true
                 ),
+                array(
+                    'type' => 'switch',
+                    'label' => $this->l('Append Company Regulations'),
+                    'name' => 'regulations_active',
+                    'values' => array(
+                        array(
+                            'id' => 'append',
+                            'value' => 1,
+                            'label' => $this->l('Append')
+                        ),
+                        array(
+                            'id' => 'not_append',
+                            'value' => 0,
+                            'label' => $this->l('Don\'t Append')
+                        )
+                    ),
+                ),
+                array(
+                    'type' => 'textarea',
+                    'label' => $this->l('Company Regulations'),
+                    'name' => 'regulations',
+                    'lang' => true,
+                ),
             ),
             'submit' => array(
                 'title' => $this->l('Save'),
@@ -384,8 +399,7 @@ class AdminSellersAccountsController extends AdminController
         return parent::renderForm();
     }
 
-    protected function postImage($id)
-    {
+    protected function postImage($id) {
         $ret = parent::postImage($id);
         if (($id_seller = (int)Tools::getValue('id_seller')) &&
             isset($_FILES) && count($_FILES) && $_FILES['image']['name'] != null &&
@@ -405,8 +419,7 @@ class AdminSellersAccountsController extends AdminController
         return $ret;
     }
 
-    public function renderKpis()
-    {
+    public function renderKpis() {
         $time = time();
         $kpis = array();
 

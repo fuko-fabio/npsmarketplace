@@ -2,7 +2,6 @@
 var sellercomments_controller_url = '{$sellercomments_controller_url}';
 var sellercomments_confirm_report_message = '{l s='Are you sure that you want to report this comment?' mod='npsmsellercomments' js=1}';
 var sellercomments_secure_key = '{$sellercomments_secure_key}';
-var sellercomments_url_rewrite = '{$sellercomments_url_rewriting_activated}';
 var sellercomment_added = '{l s='Your comment has been added!' mod='npsmsellercomments' js=1}';
 var sellercomment_added_moderation = '{l s='Your comment has been submitted and will be available once approved by a moderator.' mod='npsmsellercomments' js=1}';
 var sellercomment_title = '{l s='New comment' mod='npsmsellercomments' js=1}';
@@ -41,10 +40,10 @@ var sellercomments_moderation_active = {$sellercomments_moderation_active};
 						{/if}
 						{if $sellercomments_logged}
 							{if !$comment.customer_advice}
-							<li>{l s='Was this comment useful to you?' mod='npsmsellercomments'}<button class="usefulness_btn" data-is-usefull="1" data-id-seller-comment="{$comment.id_seller_comment}">{l s='yes' mod='npsmsellercomments'}</button><button class="usefulness_btn" data-is-usefull="0" data-id-seller-comment="{$comment.id_seller_comment}">{l s='no' mod='npsmsellercomments'}</button></li>
+							<li>{l s='Was this comment useful to you?' mod='npsmsellercomments'}<button class="nps_usefulness_btn" data-is-usefull="1" data-id-seller-comment="{$comment.id_seller_comment}">{l s='yes' mod='npsmsellercomments'}</button><button class="nps_usefulness_btn" data-is-usefull="0" data-id-seller-comment="{$comment.id_seller_comment}">{l s='no' mod='npsmsellercomments'}</button></li>
 							{/if}
 							{if !$comment.customer_report}
-							<li><span class="report_btn" data-id-seller-comment="{$comment.id_seller_comment}">{l s='Report abuse' mod='npsmsellercomments'}</span></li>
+							<li><span class="nps_report_btn" data-id-seller-comment="{$comment.id_seller_comment}">{l s='Report abuse' mod='npsmsellercomments'}</span></li>
 							{/if}
 						{/if}
 					</ul>
@@ -54,13 +53,13 @@ var sellercomments_moderation_active = {$sellercomments_moderation_active};
 		{/foreach}
         {if (!$sellercomments_too_early AND ($sellercomments_logged OR $sellercomments_allow_guests))}
 		<p class="align_center">
-			<a id="new_comment_tab_btn" class="open-comment-form" href="#new_seller_comment_form">{l s='Write your review' mod='npsmsellercomments'} !</a>
+			<a id="new_comment_tab_btn" class="open-seller-comment-form" href="#new_seller_comment_form">{l s='Write your review' mod='npsmsellercomments'} !</a>
 		</p>
         {/if}
 	{else}
 		{if (!$sellercomments_too_early AND ($sellercomments_logged OR $sellercomments_allow_guests))}
 		<p class="align_center">
-			<a id="new_comment_tab_btn" class="open-comment-form" href="#new_seller_comment_form">{l s='Be the first to write your review' mod='npsmsellercomments'} !</a>
+			<a id="new_comment_tab_btn" class="open-seller-comment-form" href="#new_seller_comment_form">{l s='Be the first to write your review' mod='npsmsellercomments'} !</a>
 		</p>
 		{else}
 		<p class="align_center">{l s='No customer reviews for the moment.' mod='npsmsellercomments'}</p>
