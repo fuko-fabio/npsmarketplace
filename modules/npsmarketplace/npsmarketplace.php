@@ -57,11 +57,13 @@ class NpsMarketplace extends Module
             || !Configuration::updateValue('NPS_PRODUCT_GUIDE_URL', $shop_url)
             || !Configuration::updateValue('NPS_SELLER_GUIDE_URL', $shop_url)
             || !Configuration::updateValue('NPS_PAYMENT_SETTINGS_GUIDE_URL', $shop_url)
+            || !Configuration::updateValue('NPS_SELLER_AGREEMENT_URL', $shop_url)
             || !Configuration::updateValue('NPS_MERCHANT_EMAILS', Configuration::get('PS_SHOP_EMAIL'))
             || !$this->_createTables($sql)
             || !$this->_createTab()
             || !$this->_createFeatures()
-            || !$this->_createAttributes())
+            || !$this->_createAttributes()
+            || !mkdir(_NPS_SEL_IMG_DIR_))
             return false;
         return true;
     }
@@ -76,6 +78,7 @@ class NpsMarketplace extends Module
             || !Configuration::deleteByName('NPS_GLOBAL_COMMISION')
             || !Configuration::deleteByName('NPS_PRODUCT_GUIDE_URL')
             || !Configuration::deleteByName('NPS_SELLER_GUIDE_URL')
+            || !Configuration::deleteByName('NPS_SELLER_AGREEMENT_URL')
             || !Configuration::deleteByName('NPS_PAYMENT_SETTINGS_GUIDE_URL')
             || !Configuration::deleteByName('NPS_MERCHANT_EMAILS')
             || !Configuration::deleteByName('NPS_FEATURE_TOWN_ID')
@@ -83,7 +86,8 @@ class NpsMarketplace extends Module
             || !Configuration::deleteByName('NPS_FEATURE_ADDRESS_ID')
             || !Configuration::deleteByName('NPS_ATTRIBUTE_DT_ID')
             || !$this->_deleteTab()
-            || !$this->_deleteTables())
+            || !$this->_deleteTables()
+            || !Tools::deleteDirectory(_NPS_SEL_IMG_DIR_))
             return false;
         return true;
     }
@@ -137,6 +141,7 @@ class NpsMarketplace extends Module
             Configuration::updateValue('NPS_MERCHANT_EMAILS', Tools::getValue('NPS_MERCHANT_EMAILS'));
             $output .= $this->displayConfirmation($this->l('General settings updated'));
         } elseif (Tools::isSubmit('submitUrls')) {
+            Configuration::updateValue('NPS_SELLER_AGREEMENT_URL', Tools::getValue('NPS_SELLER_AGREEMENT_URL'));
             Configuration::updateValue('NPS_PRODUCT_GUIDE_URL', Tools::getValue('NPS_PRODUCT_GUIDE_URL'));
             Configuration::updateValue('NPS_SELLER_GUIDE_URL', Tools::getValue('NPS_SELLER_GUIDE_URL'));
             Configuration::updateValue('NPS_PAYMENT_SETTINGS_GUIDE_URL', Tools::getValue('NPS_PAYMENT_SETTINGS_GUIDE_URL'));
@@ -256,6 +261,12 @@ $id_seller = (int)Seller::getSellerByProduct(Tools::getValue('id_product'));
                 'input' => array(
                      array(
                         'type' => 'text',
+                        'label' => $this->l('Seller Agreement  URL'),
+                        'name' => 'NPS_SELLER_AGREEMENT_URL',
+                        'required' => true
+                    ),
+                    array(
+                        'type' => 'text',
                         'label' => $this->l('Seller Guide  URL'),
                         'name' => 'NPS_SELLER_GUIDE_URL',
                         'required' => true
@@ -288,6 +299,7 @@ $id_seller = (int)Seller::getSellerByProduct(Tools::getValue('id_product'));
             'NPS_GLOBAL_COMMISION' => Tools::getValue('NPS_GLOBAL_COMMISION', Configuration::get('NPS_GLOBAL_COMMISION')),
             'NPS_PRODUCT_GUIDE_URL' => Tools::getValue('NPS_PRODUCT_GUIDE_URL', Configuration::get('NPS_PRODUCT_GUIDE_URL')),
             'NPS_SELLER_GUIDE_URL' => Tools::getValue('NPS_SELLER_GUIDE_URL', Configuration::get('NPS_SELLER_GUIDE_URL')),
+            'NPS_SELLER_AGREEMENT_URL' => Tools::getValue('NPS_SELLER_AGREEMENT_URL', Configuration::get('NPS_SELLER_AGREEMENT_URL')),
             'NPS_MERCHANT_EMAILS' => Tools::getValue('NPS_MERCHANT_EMAILS', Configuration::get('NPS_MERCHANT_EMAILS')),
             'NPS_PAYMENT_SETTINGS_GUIDE_URL' => Tools::getValue('NPS_PAYMENT_SETTINGS_GUIDE_URL', Configuration::get('NPS_PAYMENT_SETTINGS_GUIDE_URL')),
 
@@ -374,14 +386,15 @@ $id_seller = (int)Seller::getSellerByProduct(Tools::getValue('id_product'));
             `'._DB_PREFIX_.'seller_product`,
             `'._DB_PREFIX_.'town`,
             `'._DB_PREFIX_.'town_lang`,
-            `'._DB_PREFIX_.'district`');
+            `'._DB_PREFIX_.'district`')
+            && Db::getInstance()->execute('ALTER TABLE `'._DB_PREFIX_.'image_type` DROP `sellers`');
     }
 
     private function _alterImageTypeTable() {
         $alterImageType = 'ALTER TABLE  `'._DB_PREFIX_.'image_type` ADD  `sellers` TINYINT(1) NOT NULL AFTER  `stores`';
 
-        $updateImageType = "UPDATE `"._DB_PREFIX_."_image_type` SET  `sellers` =  1 WHERE
-            `"._DB_PREFIX_."_image_type`.`name` IN (
+        $updateImageType = "UPDATE `"._DB_PREFIX_."image_type` SET  `sellers` =  1 WHERE
+            `"._DB_PREFIX_."image_type`.`name` IN (
                 'cart_default',
                 'small_default',
                 'medium_default',

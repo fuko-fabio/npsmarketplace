@@ -4,9 +4,6 @@
 *  @copyright 2014 npsoftware
 */
 
-
-include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/SellerRequestProcessor.php');
-
 class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontController {
 
     /**
@@ -17,9 +14,7 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
     public function setMedia()
     {
         parent::setMedia();
-        $this -> addJS(array(
-                _PS_JS_DIR_.'validate.js',
-            ));
+        $this -> addJS(array(_PS_JS_DIR_.'validate.js'));
     }
 
     public function postProcess()
@@ -27,12 +22,72 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
         if (Tools::isSubmit('company_name')
             && Tools::isSubmit('seller_name')
             && Tools::isSubmit('seller_phone')
-            && Tools::isSubmit('seller_email'))
-        {
-            $sp = new SellerRequestProcessor($this->context);
-            $seller = $sp->processSubmit();
-            $this->postImage();
-            Tools::redirect('index.php?controller=my-account');
+            && Tools::isSubmit('seller_email')) {
+
+            $nps_instance = new NpsMarketplace();
+
+            $company_name = trim(Tools::getValue('company_name'));
+            $name = trim(Tools::getValue('seller_name'));
+            $phone = trim(Tools::getValue('seller_phone'));
+            $email = trim(Tools::getValue('seller_email'));
+            $nip = Tools::getValue('seller_nip');
+            $regon = Tools::getValue('seller_regon');
+            $company_description = $_POST['company_description'];
+            $companyLogo = trim(Tools::getValue('company_logo'));
+            $regulations_active = Tools::getIsset('regulations_active');
+            $regulations = Tools::getValue('regulations');
+            $link_rewrite = array();
+
+            if (empty($name))
+                $this -> errors[] = $nps_instance->l('Seller name is required');
+            if (!Validate::isGenericName($name))
+                $this -> errors[] = $nps_instance->l('Invalid seller name');
+
+            if (empty($phone))
+                $this -> errors[] = $nps_instance->l('Phone number is required');
+            if (!Validate::isPhoneNumber($phone))
+                $this -> errors[] = $nps_instance->l('Invalid phone number');
+
+            if (empty($email))
+                $this -> errors[] = $nps_instance->l('Buisness email is required');
+            if (!Validate::isEmail($email))
+                $this -> errors[] = $nps_instance->l('Invalid email addres');
+
+            if (empty($company_name))
+                $this -> errors[] = $nps_instance->l('Company name is required');
+            if (!Validate::isGenericName($company_name))
+                $this -> errors[] = $nps_instance->l('Invalid company name');
+
+            if (!empty($nip) && !Validate::isNip($nip))
+                $this -> errors[] = $nps_instance->l('Invalid NIP number');
+
+            if (!empty($regon) && !Validate::isRegon($regon))
+                $this -> errors[] = $nps_instance->l('Invalid REGON number');
+
+            foreach (Language::getLanguages() as $key => $lang) {
+                if (!Validate::isCleanHtml($company_description[$lang['id_lang']]))
+                    $this -> errors[] = $nps_instance->l('Invalid company description');
+                if (!Validate::isCleanHtml($regulations[$lang['id_lang']]))
+                    $this -> errors[] = $nps_instance->l('Invalid regulations content');
+
+                $link_rewrite[$lang['id_lang']] = Tools::link_rewrite($name);
+            }
+
+            if(empty($this->errors)) {
+                $this->_seller -> company_name = $company_name;
+                $this->_seller -> company_description = $company_description;
+                $this->_seller -> name = $name;
+                $this->_seller -> phone = $phone;
+                $this->_seller -> email = $email;
+                $this->_seller -> nip = $nip;
+                $this->_seller -> regon = $regon;
+                $this->_seller -> link_rewrite = $link_rewrite;
+                $this->_seller -> regulations = $regulations;
+                $this->_seller -> regulations_active = $regulations_active;
+                $this->_seller->save();
+                $this->postImage();
+                Tools::redirect('index.php?controller=my-account' );
+            }
         }
     }
 
@@ -53,8 +108,6 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
     public function initContent() {
         parent::initContent();
         $tpl_seller = array();
-        $iso_tiny_mce = $this->context->language->iso_code;
-        $iso_tiny_mce = (file_exists(_PS_JS_DIR_.'tiny_mce/langs/'.$iso_tiny_mce.'.js') ? $iso_tiny_mce : 'en');
         if (isset($this -> _seller -> id)) {
             $tpl_seller = array(
                 'id' => $this -> _seller -> id,

@@ -24,11 +24,12 @@ class NpsMarketplaceProductCombinationModuleFrontController extends ModuleFrontC
 
     public function postProcess()
     {
-        if (Tools::isSubmit('product_date_time'))
+        if (Tools::isSubmit('date_time') && Tools::isSubmit('quantity'))
         {
             if (!Combination::isFeatureActive())
                 return;
-            $date_time = trim(Tools::getValue('product_date_time'));
+            $date_time = trim(Tools::getValue('date_time'));
+            $quantity = trim(Tools::getValue('quantity'));
             $seller = new Seller(null, $this->context->customer->id);
             $attr = new Attribute();
             $attr->name[$this->context->language->id] = $date_time;
@@ -44,10 +45,11 @@ class NpsMarketplaceProductCombinationModuleFrontController extends ModuleFrontC
                 null,//$id_images,
                 null,//$reference,
                 null,//$ean13,
-                $default);
+                false);
            $combination = new Combination($id_combination);
            $combination->setAttributes(array($attr->id));
-            Tools::redirect('index.php?fc=module&module=npsmarketplace&controller=ProductsList');
+           StockAvailable::setQuantity($this->_product->id, $attr->id, $quantity, $this->context->shop->id);
+           Tools::redirect('index.php?fc=module&module=npsmarketplace&controller=ProductsList');
         }
     }
 
@@ -97,7 +99,6 @@ class NpsMarketplaceProductCombinationModuleFrontController extends ModuleFrontC
                 'description_short' => $this->_product->description_short,
                 'description' => $this->_product->description,
                 'price' => $this->_product->getPrice(),
-                'quantity' => Product::getQuantity($this->_product->id),
                 'reference' => $this->_product->reference,
                 'town' => $this->getFeatureValue($features, 'town'),
                 'address' => $this->getFeatureValue($features, 'address'),

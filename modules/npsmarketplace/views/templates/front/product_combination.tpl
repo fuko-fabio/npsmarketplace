@@ -29,10 +29,6 @@
                                 <td>{$product['price']}</td>
                             </tr>
                             <tr>
-                                <th scope="row">{l s='Quantity' mod='npsmarketplace'}</th>
-                                <td>{$product['quantity']}</td>
-                            </tr>
-                            <tr>
                                 <th scope="row">{l s='Town' mod='npsmarketplace'}</th>
                                 <td>{$product['town']}</td>
                             </tr>
@@ -48,11 +44,17 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group">
-                <label class="required" for="date_time_input">{l s='New Date & Time' mod='npsmarketplace'}</label>
-                <div id="datePicker" class="input-append">
-                    <input class="is_required form-control" id="date_time_input" name="product_date_time" data-format="yyyy-MM-dd hh:mm" type="text" readonly="" required="" value="{if isset($product['date_time'])}{$product['date_time']|escape:'html':'UTF-8'}{/if}"/>
-                    <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label class="required" for="date_time_input">{l s='New Date & Time' mod='npsmarketplace'}</label>
+                    <div id="datePicker" class="input-append">
+                        <input class="is_required form-control" id="date_time_input" name="date_time" data-format="yyyy-MM-dd hh:mm" type="text" readonly="" required="" value="{if isset($product['date_time'])}{$product['date_time']|escape:'html':'UTF-8'}{/if}"/>
+                        <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <label class="required" for="product_amount">{l s='Quantity' mod='npsmarketplace'}</label>
+                    <input class="is_required validate form-control" data-validate="isNumber" type="number" id="product_amount" name="quantity" required=""/>
                 </div>
             </div>
         </fieldset>

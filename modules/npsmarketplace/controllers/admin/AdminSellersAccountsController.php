@@ -311,7 +311,6 @@ class AdminSellersAccountsController extends AdminController
                     'label' => $this->l('Company Name'),
                     'name' => 'company_name',
                     'required' => true,
-                    'lang' => true
                 ),
                 array(
                     'type' => 'textarea',
