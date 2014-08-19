@@ -6,7 +6,6 @@
 
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/CategoriesList.php');
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/SellerRequestProcessor.php');
-include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/ProductRequestProcessor.php');
 
 class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontController {
 
@@ -34,6 +33,7 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
             $this->errors = $sp->errors;
             if(empty($this->errors))
             {
+                $this->postImage();
                 $this->mailToSeller($seller);
                 $this->mailToAdmin($seller);
                 Tools::redirect('index.php?controller=my-account' );
@@ -148,5 +148,61 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
         $this -> setTemplate('account_request.tpl');
     }
 
+    protected function postImage()
+    {
+        $ret = $this->uploadImage();
+
+        if (isset($_FILES) && count($_FILES) && $_FILES['image']['name'] != null &&
+            file_exists(_NPS_SEL_IMG_DIR_.$this->_seller->id.'.'.$this->_seller->getImgFormat()))
+        {
+            $images_types = ImageType::getImagesTypes('sellers');
+            foreach ($images_types as $k => $image_type)
+            {
+                ImageManager::resize(
+                    _NPS_SEL_IMG_DIR_.$this->_seller->id.'.'.$this->_seller->getImgFormat(),
+                    _NPS_SEL_IMG_DIR_.$this->_seller->id.'-'.stripslashes($image_type['name']).'.'.$this->_seller->getImgFormat(),
+                    (int)$image_type['width'], (int)$image_type['height']
+                );
+            }
+        }
+        return $ret;
+    }
+
+    protected function uploadImage()
+    {
+        $name = 'image';
+        $dir = 'seller/';
+        if (isset($_FILES[$name]['tmp_name']) && !empty($_FILES[$name]['tmp_name']))
+        {
+            // Delete old image
+            $this->_seller->deleteImage();
+
+            // Check image validity
+            $max_size = (int)Configuration::get('PS_PRODUCT_PICTURE_MAX_SIZE');
+            if ($error = ImageManager::validateUpload($_FILES[$name], Tools::getMaxUploadSize($max_size)))
+                $this->errors[] = $error;
+
+            $tmp_name = tempnam(_PS_TMP_IMG_DIR_, 'PS');
+            if (!$tmp_name)
+                return false;
+
+            if (!move_uploaded_file($_FILES[$name]['tmp_name'], $tmp_name))
+                return false;
+
+            // Evaluate the memory required to resize the image: if it's too much, you can't resize it.
+            if (!ImageManager::checkImageMemoryLimit($tmp_name))
+                $this->errors[] = Tools::displayError('Due to memory limit restrictions, this image cannot be loaded. Please increase your memory_limit value via your server\'s configuration settings. ');
+
+            // Copy new image
+            if (empty($this->errors) && !ImageManager::resize($tmp_name, _PS_IMG_DIR_.$dir.$this->_seller->id.'.'.$this->_seller->getImgFormat()))
+                $this->errors[] = Tools::displayError('An error occurred while uploading the image.');
+
+            if (count($this->errors))
+                return false;
+            unlink($tmp_name);
+            return true;
+        }
+        return true;
+    }
  }
 ?>

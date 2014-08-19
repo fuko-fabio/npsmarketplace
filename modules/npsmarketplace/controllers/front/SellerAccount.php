@@ -31,14 +31,8 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
         {
             $sp = new SellerRequestProcessor($this->context);
             $seller = $sp->processSubmit();
-            $this->errors = $sp->errors;
-            if(empty($this->errors))
-            {
-                if ($this->postImage())
-                    Tools::redirect('index.php?controller=my-account');
-                else
-                    $this -> errors[] = Tools::displayError('Unable to save seller logo');
-            }
+            $this->postImage();
+            Tools::redirect('index.php?controller=my-account');
         }
     }
 
