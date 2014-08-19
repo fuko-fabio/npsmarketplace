@@ -305,7 +305,7 @@ $id_seller = (int)Seller::getSellerByProduct(Tools::getValue('id_product'));
         foreach ($languages AS $language)
             $tab->{'name'}[intval($language['id_lang'])] = $this->l('Marketplace');
         $success = $tab->add();
-        
+
         $sellers_tab = new Tab();
         $sellers_tab->id_parent = $tab->id;
         $sellers_tab->position = 0;
@@ -314,6 +314,28 @@ $id_seller = (int)Seller::getSellerByProduct(Tools::getValue('id_product'));
         foreach ($languages AS $language)
         {
             $sellers_tab->{'name'}[intval($language['id_lang'])] = $this->l('Sellers');
+        }
+        $success = $success && $sellers_tab->add();
+
+        $sellers_tab = new Tab();
+        $sellers_tab->id_parent = $tab->id;
+        $sellers_tab->position = 0;
+        $sellers_tab->module = $this->name;
+        $sellers_tab->class_name = 'AdminTowns';
+        foreach ($languages AS $language)
+        {
+            $sellers_tab->{'name'}[intval($language['id_lang'])] = $this->l('Towns');
+        }
+        $success = $success && $sellers_tab->add();
+
+        $sellers_tab = new Tab();
+        $sellers_tab->id_parent = $tab->id;
+        $sellers_tab->position = 0;
+        $sellers_tab->module = $this->name;
+        $sellers_tab->class_name = 'AdminDistricts';
+        foreach ($languages AS $language)
+        {
+            $sellers_tab->{'name'}[intval($language['id_lang'])] = $this->l('Districts');
         }
         $success = $success && $sellers_tab->add();
         return $success;
@@ -349,7 +371,10 @@ $id_seller = (int)Seller::getSellerByProduct(Tools::getValue('id_product'));
             DROP TABLE IF EXISTS
             `'._DB_PREFIX_.'seller`,
             `'._DB_PREFIX_.'seller_lang`,
-            `'._DB_PREFIX_.'seller_product`');
+            `'._DB_PREFIX_.'seller_product`,
+            `'._DB_PREFIX_.'town`,
+            `'._DB_PREFIX_.'town_lang`,
+            `'._DB_PREFIX_.'district`');
     }
 
     private function _alterImageTypeTable() {
@@ -361,14 +386,9 @@ $id_seller = (int)Seller::getSellerByProduct(Tools::getValue('id_product'));
                 'small_default',
                 'medium_default',
                 'home_default',
-                 'large_default')";
+                'large_default')";
 
-        $sql = 'SELECT * FROM '._DB_PREFIX_.'image_type';
-        $result = Db::getInstance()->ExecuteS($sql);
-        if (!isset($result[0]['sellers']))
-            return Db::getInstance()->Execute($alterImageType) && Db::getInstance()->Execute($updateImageType);
-        else 
-          return true;
+        return Db::getInstance()->Execute($alterImageType) && Db::getInstance()->Execute($updateImageType);
     }
     
     private function _createFeatures() {

@@ -33,7 +33,7 @@ function initialize() {
 
   codeAddress($('#' + inputId).val());
 
-  map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+  //map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
   var searchBox = new google.maps.places.SearchBox((input));
 

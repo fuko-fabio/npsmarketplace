@@ -18,7 +18,7 @@ class SellerRequestProcessor {
 
     public function processSubmit() {
         $company_name = $_POST['company_name'];
-        $name = $_POST['seller_name'];
+        $name = trim(Tools::getValue('seller_name'));
         $phone = trim(Tools::getValue('seller_phone'));
         $email = trim(Tools::getValue('seller_email'));
         $nip = Tools::getValue('seller_nip');
@@ -29,7 +29,9 @@ class SellerRequestProcessor {
         $regulations = Tools::getValue('regulations');
         $link_rewrite = array();
 
-        if (!Validate::isPhoneNumber($phone))
+        if (!Validate::isGenericName($name))
+            $this -> errors[] = Tools::displayError('Invalid seller name');
+        else if (!Validate::isPhoneNumber($phone))
             $this -> errors[] = Tools::displayError('Invalid phone number');
         else if (!Validate::isEmail($email))
             $this -> errors[] = Tools::displayError('Invalid email addres');
@@ -38,17 +40,14 @@ class SellerRequestProcessor {
         else if (!empty($regon) && !Validate::isRegon($regon))
             $this -> errors[] = Tools::displayError('Invalid REGON number');
         foreach (Language::getLanguages() as $key => $lang) {
-            $n = $name[$lang['id_lang']];
-            if (!Validate::isGenericName($n))
-                $this -> errors[] = Tools::displayError('Invalid '.$lang->name.' seller name');
-            else if (!Validate::isGenericName($company_name[$lang['id_lang']]))
+            if (!Validate::isGenericName($company_name[$lang['id_lang']]))
                 $this -> errors[] = Tools::displayError('Invalid '.$lang->name.' company name');
             else if (!Validate::isCleanHtml($company_description[$lang['id_lang']]))
                 $this -> errors[] = Tools::displayError('Invalid '.$lang->name.' company description');
             else if (!Validate::isCleanHtml($regulations[$lang['id_lang']]))
                 $this -> errors[] = Tools::displayError('Invalid '.$lang->name.' regulations content');
 
-            $link_rewrite[$lang['id_lang']] = Tools::link_rewrite($n);
+            $link_rewrite[$lang['id_lang']] = Tools::link_rewrite($name);
         }
 
         $seller = new Seller((int)Tools::getValue('id_seller', null));
