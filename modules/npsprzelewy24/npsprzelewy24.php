@@ -21,17 +21,6 @@ class NpsPrzelewy24 extends PaymentModule {
         $this->displayName = $this->l( 'nps Przelewy24' );
         $this->description = $this->l( 'nps Marketplace Przelewy24 payment service 1.0' );
         $this->confirmUninstall = $this->l('Are you sure you want to uninstall?');
-
-        if (Configuration::get('NPS_P24_ORDER_STATE_1') === null){
-            Configuration::updateValue('NPS_P24_ORDER_STATE_1', 1);
-        }
-        if (Configuration::get('NPS_P24_ORDER_STATE_2') === null){
-            Configuration::updateValue('NPS_P24_ORDER_STATE_2', 2);
-        }
-
-        if (Configuration::get('NPS_P24_INSTALLMENT_SHOW') === null){
-            Configuration::updateValue('NPS_P24_INSTALLMENT_SHOW', 0);
-        }
     }
 
     /**
@@ -39,18 +28,34 @@ class NpsPrzelewy24 extends PaymentModule {
      */
     public function install() {
         parent::install();
-        
+
+        Configuration::updateValue('NPS_P24_ORDER_STATE_1', 1);
+        Configuration::updateValue('NPS_P24_ORDER_STATE_2', 2);
+        Configuration::updateValue('NPS_P24_UNIQUE_KEY', '');
+        Configuration::updateValue('NPS_P24_CRC_KEY', '');
+        Configuration::updateValue('NPS_P24_WEB_SERVICE_URL', 'https://secure.przelewy24.pl/external/wsdl/service.php?wsdl');
+        Configuration::updateValue('NPS_P24_URL', 'https://secure.przelewy24.pl');
+        Configuration::updateValue('NPS_P24_SANDBOX_URL', 'https://sandbox.przelewy24.pl');
+
         if (!defined('NPS_P24_ORDER_STATE_1')) {
-            $rq = Db::getInstance()->getRow('SELECT `id_order_state` FROM `'._DB_PREFIX_.'order_state_lang` WHERE id_lang = \''.pSQL('1').'\' AND  name = \''.pSQL('Oczekiwanie na płatność Przelewy24').'\'');
+            $rq = Db::getInstance()->getRow(
+                'SELECT `id_order_state`
+                FROM `'._DB_PREFIX_.'order_state_lang`
+                WHERE id_lang = \''.pSQL('1').'\'
+                AND  name = \''.pSQL('Oczekiwanie na płatność Przelewy24').'\'');
             if ($rq && isset($rq['id_order_state']) && intval($rq['id_order_state']) > 0) {
                 define('NPS_P24_ORDER_STATE_1', $rq['id_order_state']);
                 Configuration::updateValue('NPS_P24_ORDER_STATE_1', $rq['id_order_state']);
             } else {
-                Db::getInstance()->Execute('INSERT INTO `'._DB_PREFIX_.'order_state` (`unremovable`, `color`) VALUES(1, \'lightblue\')');
+                Db::getInstance()->Execute(
+                    'INSERT INTO `'._DB_PREFIX_.'order_state` (`unremovable`, `module_name`, `color`)
+                    VALUES(1, \''.$this->name.'\', \'LightBlue\')');
                 $stateid = Db::getInstance()->Insert_ID();
                 $result = Db::getInstance()->ExecuteS('SELECT `id_lang` FROM `'._DB_PREFIX_.'lang`');
                 foreach ($result as $row) {
-                    Db::getInstance()->Execute('INSERT INTO `'._DB_PREFIX_.'order_state_lang` (`id_order_state`, `id_lang`, `name`) VALUES('.intval($stateid).', '.intval($row['id_lang']).', \'Oczekiwanie na płatność Przelewy24\')');
+                    Db::getInstance()->Execute(
+                    'INSERT INTO `'._DB_PREFIX_.'order_state_lang` (`id_order_state`, `id_lang`, `name`)
+                    VALUES('.intval($stateid).', '.intval($row['id_lang']).', \'Oczekiwanie na płatność Przelewy24\')');
                 }
 
                 define('NPS_P24_ORDER_STATE_1', $stateid);
@@ -59,15 +64,23 @@ class NpsPrzelewy24 extends PaymentModule {
         }
 
         if (!defined('NPS_P24_ORDER_STATE_2')) {
-            $rq = Db::getInstance()->getRow('SELECT `id_order_state` FROM `'._DB_PREFIX_.'order_state_lang` WHERE id_lang = \''.pSQL('1').'\' AND  name = \''.pSQL('Płatność Przelewy24 zatwierdzona').'\'');
+            $rq = Db::getInstance()->getRow(
+                'SELECT `id_order_state`
+                FROM `'._DB_PREFIX_.'order_state_lang`
+                WHERE id_lang = \''.pSQL('1').'\'
+                AND  name = \''.pSQL('Płatność Przelewy24 zatwierdzona').'\'');
             if ($rq && isset($rq['id_order_state']) && intval($rq['id_order_state']) > 0) {
                 define('NPS_P24_ORDER_STATE_2', $rq['id_order_state']);
                 Configuration::updateValue('NPS_P24_ORDER_STATE_2', $rq['id_order_state']);
             } else {
-                Db::getInstance()->Execute('INSERT INTO `'._DB_PREFIX_.'order_state` (`unremovable`, `color`) VALUES(1, \'lightblue\')');
+                Db::getInstance()->Execute(
+                    'INSERT INTO `'._DB_PREFIX_.'order_state` (`unremovable`, `module_name`, `color`)
+                    VALUES(1, \''.$this->name.'\', \'RoyalBlue\')');
                 $stateid = Db::getInstance()->Insert_ID();
                 foreach ($result as $row) {
-                    Db::getInstance()->Execute('INSERT INTO `'._DB_PREFIX_.'order_state_lang` (`id_order_state`, `id_lang`, `name`) VALUES('.intval($stateid).', '.intval($row['id_lang']).', \'Płatność Przelewy24 przyjęta\')');
+                    Db::getInstance()->Execute(
+                    'INSERT INTO `'._DB_PREFIX_.'order_state_lang` (`id_order_state`, `id_lang`, `name`)
+                    VALUES('.intval($stateid).', '.intval($row['id_lang']).', \'Płatność Przelewy24 przyjęta\')');
                 }
                 define('NPS_P24_ORDER_STATE_2', $stateid);
                 Configuration::updateValue('NPS_P24_ORDER_STATE_2', $stateid);
@@ -75,8 +88,24 @@ class NpsPrzelewy24 extends PaymentModule {
         }
         if (!$this->registerHook('payment')
             || !$this->registerHook('displayOrderDetail')
-            || !$this->registerHook('displayRightColumnProduct')
             || !$this->createAmountTable())
+            return false;
+        return true;
+    }
+
+    public function uninstall()
+    {
+        if (!parent::uninstall()
+            || !$this->unregisterHook('payment')
+            || !$this->unregisterHook('displayOrderDetail')
+            || !Configuration::deleteByName('NPS_P24_ORDER_STATE_1')
+            || !Configuration::deleteByName('NPS_P24_ORDER_STATE_2')
+            || !Configuration::deleteByName('NPS_P24_UNIQUE_KEY')
+            || !Configuration::deleteByName('NPS_P24_CRC_KEY')
+            || !Configuration::deleteByName('NPS_P24_WEB_SERVICE_URL')
+            || !Configuration::deleteByName('NPS_P24_URL')
+            || !Configuration::deleteByName('NPS_P24_SANDBOX_URL')
+            || !$this->deleteTables());
             return false;
         return true;
     }
@@ -87,8 +116,11 @@ class NpsPrzelewy24 extends PaymentModule {
         if (Tools::isSubmit('submit')) {
             Configuration::updateValue('NPS_P24_MERCHANT_ID', Tools::getValue('NPS_P24_MERCHANT_ID'));
             Configuration::updateValue('NPS_P24_UNIQUE_KEY', Tools::getValue('NPS_P24_UNIQUE_KEY'));
+            Configuration::updateValue('NPS_P24_CRC_KEY', Tools::getValue('NPS_P24_CRC_KEY'));
             Configuration::updateValue('NPS_P24_SANDBOX_MODE', Tools::getValue('NPS_P24_SANDBOX_MODE'));
-            Configuration::updateValue('NPS_P24_INSTALLMENT_SHOW', Tools::getValue('NPS_P24_INSTALLMENT_SHOW'));
+            Configuration::updateValue('NPS_P24_URL', Tools::getValue('NPS_P24_URL'));
+            Configuration::updateValue('NPS_P24_SANDBOX_URL', Tools::getValue('NPS_P24_SANDBOX_URL'));
+            Configuration::updateValue('NPS_P24_WEB_SERVICE_URL', Tools::getValue('NPS_P24_WEB_SERVICE_URL'));
             $output .= $this->displayConfirmation($this->l('Settings updated sucessfully'));
         }
         return $output.$this->displayForm();
@@ -98,7 +130,7 @@ class NpsPrzelewy24 extends PaymentModule {
      * @return bool
      */
     private function createAmountTable() {
-        Db::getInstance()->Execute('CREATE TABLE `'._DB_PREFIX_.'przelewy24_amount` (
+        Db::getInstance()->Execute('CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'przelewy24_amount` (
             `i_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
             `s_sid` char(32) NOT NULL,
             `i_id_order` INT UNSIGNED NOT NULL ,
@@ -106,6 +138,13 @@ class NpsPrzelewy24 extends PaymentModule {
             ) ENGINE=MYISAM;');
 
         return true;
+    }
+
+    private function deleteTables()
+    {
+        return Db::getInstance()->execute('
+            DROP TABLE IF EXISTS
+            `'._DB_PREFIX_.'przelewy24_amount`');
     }
 
     private function displayForm() {
@@ -163,11 +202,37 @@ class NpsPrzelewy24 extends PaymentModule {
                         'name' => 'NPS_P24_MERCHANT_ID',
                         'required' => true
                     ),
-                     array(
+                    array(
                         'type' => 'text',
                         'label' => $this->l('Merchant Unique Key'),
                         'hint' => $this->l('Unique key retrieved from Przelewy24'),
                         'name' => 'NPS_P24_UNIQUE_KEY',
+                        'required' => true
+                    ),
+                    array(
+                        'type' => 'text',
+                        'label' => $this->l('Merchant CRC Key'),
+                        'hint' => $this->l('CRC key retrieved from Przelewy24'),
+                        'name' => 'NPS_P24_CRC_KEY',
+                        'required' => true
+                    ),
+                    array(
+                        'type' => 'text',
+                        'label' => $this->l('Web Service URL'),
+                        'name' => 'NPS_P24_URL',
+                        'required' => true
+                    ),
+                    array(
+                        'type' => 'text',
+                        'label' => $this->l('Web Service Sandbox URL'),
+                        'name' => 'NPS_P24_SANDBOX_URL',
+                        'required' => true
+                    ),
+                    array(
+                        'type' => 'text',
+                        'label' => $this->l('SOAP Web Service URL'),
+                        'hint' => $this->l('Endpoint of the Przelewy24 WebService'),
+                        'name' => 'NPS_P24_WEB_SERVICE_URL',
                         'required' => true
                     ),
                     array(
@@ -188,28 +253,6 @@ class NpsPrzelewy24 extends PaymentModule {
                             )
                         ),
                     ),
-                    array(
-                        'type' => 'radio',
-                        'label' => $this->l('Installment Settings'),
-                        'name' => 'NPS_P24_INSTALLMENT_SHOW',
-                        'values' => array(
-                            array(
-                                'id' => 'is_two',
-                                'value' => 2,
-                                'label' => $this->l('button (payment page) and information (product page)')
-                            ),
-                            array(
-                                'id' => 'is_one',
-                                'value' => 1,
-                                'label' => $this->l('button (payment page) only')
-                            ),
-                            array(
-                                'id' => 'is_zero',
-                                'value' => 0,
-                                'label' => $this->l('hide all')
-                            ),
-                        )
-                    ),
                 ),
                 'submit' => array(
                     'title' => $this->l('Save'),
@@ -223,73 +266,21 @@ class NpsPrzelewy24 extends PaymentModule {
     public function getConfigFieldsValues() {
         return array(
             'NPS_P24_MERCHANT_ID' => Tools::getValue('NPS_P24_MERCHANT_ID', Configuration::get('NPS_P24_MERCHANT_ID')),
-            'NPS_P24_UNIQUE_KEY' => Tools::getValue('NPS_PRODUCT_GUIDE_URL', Configuration::get('NPS_P24_UNIQUE_KEY')),
-            'NPS_P24_SANDBOX_MODE' => Tools::getValue('NPS_SELLER_GUIDE_URL', Configuration::get('NPS_P24_SANDBOX_MODE')),
-            'NPS_P24_INSTALLMENT_SHOW' => Tools::getValue('NPS_P24_INSTALLMENT_SHOW', Configuration::get('NPS_P24_INSTALLMENT_SHOW')),
+            'NPS_P24_UNIQUE_KEY' => Tools::getValue('NPS_P24_UNIQUE_KEY', Configuration::get('NPS_P24_UNIQUE_KEY')),
+            'NPS_P24_CRC_KEY' => Tools::getValue('NPS_P24_CRC_KEY', Configuration::get('NPS_P24_CRC_KEY')),
+            'NPS_P24_SANDBOX_MODE' => Tools::getValue('NPS_P24_SANDBOX_MODE', Configuration::get('NPS_P24_SANDBOX_MODE')),
+            'NPS_P24_SANDBOX_MODE' => Tools::getValue('NPS_P24_URL', Configuration::get('NPS_P24_URL')),
+            'NPS_P24_SANDBOX_MODE' => Tools::getValue('NPS_P24_SANDBOX_URL', Configuration::get('NPS_P24_SANDBOX_URL')),
+            'NPS_P24_WEB_SERVICE_URL' => Tools::getValue('NPS_P24_WEB_SERVICE_URL', Configuration::get('NPS_P24_WEB_SERVICE_URL')),
         );
     }
 
     public function hookPayment() {
-        global $smarty, $cart;
-        $amount = $cart->getOrderTotal(true, Cart::BOTH);
-        $protocol = NpsPrzelewy24::getHttpProtocol();
-
-        $smarty->assign('p24_url', $protocol.htmlspecialchars($_SERVER['HTTP_HOST'], ENT_COMPAT, 'UTF-8').__PS_BASE_URI__);
-        $smarty->assign('p24_url_payment', $this->context->link->getModuleLink('npsprzelewy24', 'paymentConfirmation'));
-        #TODO Payment method??
-        $smarty->assign('p24_url_installment', $this->context->link->getModuleLink('npsprzelewy24', 'paymentConfirmation', array('payment_method' => '129')));
-        if($amount >= 300){
-            $smarty->assign('p24_installment_show', Configuration::get('NPS_P24_INSTALLMENT_SHOW'));
-        }
+        $this->context->smarty->assign('p24_payment_url', $this->context->link->getModuleLink('npsprzelewy24', 'paymentConfirmation'));
         return $this->display(__FILE__, 'payment.tpl');
     }
 
-    public function hookDisplayRightColumnProduct(){
-        global $smarty, $cookie;
-        if(Configuration::get('NPS_P24_INSTALLMENT_SHOW') == 2){
-            $productID = Tools::getValue('id_product');
-
-            if (isset($productID) && $productID != '')
-            {
-                $product = new Product((int)$productID, true, $cookie->id_lang);
-                $amount = $product->getPrice(true,null,2,null,false,true,1);
-                if($amount >= 300){
-                    $amountGrosh = $amount*100;
-
-                    $isCurl=function_exists('curl_init')&&
-                        function_exists('curl_setopt')&&
-                        function_exists('curl_exec')&&
-                        function_exists('curl_close');
-
-                    if($isCurl){
-                        $userAgent = "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)";
-                        $url = "https://secure.przelewy24.pl/kalkulator_raty.php?ammount=".$amountGrosh;
-
-                        $curlConnection = curl_init();
-                        curl_setopt($curlConnection, CURLOPT_URL,$url);
-                        curl_setopt($curlConnection, CURLOPT_SSL_VERIFYHOST, 2);
-                        curl_setopt($curlConnection, CURLOPT_USERAGENT, $userAgent);
-                        curl_setopt($curlConnection, CURLOPT_RETURNTRANSFER,1);
-                        curl_setopt($curlConnection, CURLOPT_SSL_VERIFYPEER, FALSE);
-                        $result = curl_exec ($curlConnection);
-
-                    }
-
-                    $result_tab = explode('<br>', $result);
-
-                    $smarty->assign(array(
-                        'part_count' => $result_tab[0],
-                        'part_cost' => $result_tab[1],
-                        'product_ammount' => $amount,
-                    ));
-
-                    return $this->display(__FILE__, 'installmentRightColumnProduct.tpl');
-                }
-            }
-        }
-    }
-
-    public function hookDisplayOrderDetail(){
+    public function hookDisplayOrderDetail() {
         global $smarty;
 
         $orderID = $_GET['id_order'];

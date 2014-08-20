@@ -161,9 +161,8 @@ class NpsMarketplace extends Module
         }
     }
 
-    public function hookProductTabContent($params)
-    {
-$id_seller = (int)Seller::getSellerByProduct(Tools::getValue('id_product'));
+    public function hookProductTabContent($params) {
+        $id_seller = (int)Seller::getSellerByProduct(Tools::getValue('id_product'));
         if(isset($id_seller) && $id_seller > 0) {
             $seller = new Seller(Seller::getSellerByProduct(Tools::getValue('id_product')));
             if($seller->regulations_active) {
