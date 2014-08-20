@@ -38,28 +38,26 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
         }
 
         $amount = number_format($amount, 2, '.', '') * 100;
+        $session_id = $this->generateSessionId($cart);
+        $this->persistSssionId($session_id, $cart->id, $amount);
 
         $order = Order::getOrderByCartId($cart->id);
-        if($order == null){
-            $s_descr = '';
-            $validationRequired = true;
+        if($order == null) {
+            $s_descr = $this->validatePayment($npsprzelewy24, $cart, $customer, $amount);
         } else {
-            $s_descr = 'Zamówienie: '.$order;
-            $validationRequired = false;
+            $s_descr = $this->orderDescription($order);
         }
 
         $url = Configuration::get('NPS_P24_URL');
         if (Configuration::get('NPS_P24_SANDBOX_MODE') == 1) {
             $url = Configuration::get('NPS_P24_SANDBOX_URL');
         }
-        $this->transactionRegister($url, $cart, $amount, $customer, $currency, $address, $s_descr);
-        #Tools::redirect($this->context->link->getModuleLink('npsprzelewy24', 'paymentError', array('main_error' => 'trn_access_error')));
+
+        $this->transactionRegister($session_id, $url, $cart, $amount, $customer, $currency, $address, $s_descr);
 	}
 
-    private function transactionRegister($url, $cart, $amount, $customer, $currency, $address, $s_descr) {
+    private function transactionRegister($session_id, $url, $cart, $amount, $customer, $currency, $address, $s_descr) {
         $p24_id = Configuration::get('NPS_P24_MERCHANT_ID');
-        $session_id = $this->generateSessionId($cart);
-        $this->persistSssionId($session_id, $cart->id, $amount);
         $s_lang = new Country((int)($address->id_country));
         $phone = $address->phone;
         if (empty($phone)) {
@@ -79,6 +77,7 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
             'p24_country' => $s_lang->iso_code,
             'p24_phone' => $phone,
             'p24_language' => strtolower($s_lang->iso_code),
+            'p24_url_cancel' => $this->context->link->getModuleLink('npsprzelewy24', 'paymentCancell'),
             'p24_url_return' => $this->context->link->getModuleLink('npsprzelewy24', 'paymentSuccessful'),
             'p24_url_status' => $this->context->link->getModuleLink('npsprzelewy24', 'paymentStatus'),
             'p24_shipping' => $cart->getTotalShippingCost(),
@@ -95,19 +94,30 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
             $data['p24_number_'.$index] = $product['id_product'];
             $index = $index + 1;
         }
-        d($data);
-        return;
-        $ch = curl_init();
 
-        curl_setopt($ch,CURLOPT_URL,$url);
-        curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-        curl_setopt($ch,CURLOPT_HEADER, false); 
-        curl_setopt($ch, CURLOPT_POST, count($data));
-
+        $ch = curl_init($url.'/trnRegister');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION  ,true);
+        curl_setopt($ch, CURLOPT_HEADER, false); 
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data, '', '&'));
+        curl_setopt($ch, CURLOPT_SSLVERSION, 3);
+        curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'SSLv3');
+        //curl_setopt($ch, CURLOPT_VERBOSE, true);
+        //$verbose = fopen('php://temp', 'rw+');
+        //curl_setopt($ch, CURLOPT_STDERR, $verbose);
         $output=curl_exec($ch);
         curl_close($ch);
-        d($output);
-        return $output;
+        //rewind($verbose);
+        //$verboseLog = stream_get_contents($verbose);
+
+        parse_str($output, $result);
+        
+        if ($result['error'] == 0) {
+            Tools::redirect($url.'/trnRequest/'.$result['token']);
+        } else {
+            Tools::displayError('Unable to register transaction'); // TODO Redirect to page
+        }
     }
 
     private function persistSssionId($session_id, $cart_id, $amount) {
@@ -117,48 +127,34 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
     }
 
     private function generateSessionId($cart) {
-        return md5($cart->id_customer.'|'.$cart->id.'|'.time());
+        return $cart->id_customer.'|'.$cart->id.'|'.md5(time());
     }
 
     private function generateSign($p24_session_id, $p24_merchant_id, $p24_amount, $p24_currency) {
         return md5($p24_session_id.'|'.$p24_merchant_id.'|'.$p24_amount.'|'.$p24_currency.'|'.Configuration::get('NPS_P24_CRC_KEY'));
     }
 
-    //TODO Can be used??
-    private function soapTransactionRegister($soap, $p24_id, $p24_key) {
-        $transaction = array(
-            'sessionId' => $cart->id.'|'.$s_sid,
-            'email' => $customer->email,
-            'amount' => $amount,
-            'methodId' => 0,
-            'client' => $customer->firstname.' '.$customer->lastname,
-            'street' => $address->address1." ".$address->address2,
-            'city' => $address->city,
-            'zip' => $address->postcode,
-            'country' => $s_lang->iso_code,
-            'description' => $s_descr
-        );
-        $res = $soap->TrnRegister(Configuration::get('NPS_P24_MERCHANT_ID'), Configuration::get('NPS_P24_UNIQUE_KEY'), $transaction);
-        // $res->result contains data about transaction, or object with empty field in case of error
-        if ($res->error->errorCode) {
-            Tools::redirect($this->context->link->getModuleLink('npsprzelewy24', 'paymentError', array('main_error' => 'trn_register_error', 'p24_error' => $res->error)));
+    private function validatePayment($npsprzelewy24, $cart, $customer, $amount) {
+        $result = $npsprzelewy24->validateOrder(
+            (int)$cart->id,
+            (int)Configuration::get('NPS_P24_ORDER_STATE_1'),
+            $amount,
+            'przelewy24.pl',
+            NULL,
+            array(),
+            NULL,
+            false,
+            $customer->secure_key);
+
+        $orderID = Order::getOrderByCartId(intval($cart->id));
+        if ($orderID == null) {
+            d('Error');
         } else {
-            # Result
-            # orderId (int)
-            # orderIdFull (int),
-            # sessionId (string),
-            # ban (string),
-            # banOwner (string),
-            # banOwnerAddress (string),
-            # amount (int)
-            $this->transactionRequest($soap, $p24_id, $p24_key);
-            echo 'Transaction data: ';
-            $T = $res->result;
-            $orderId = $T->orderId; // or $T->orderIdFull
-            $IBAN = $T->ban;
-            echo 'You should pay to: ' . $IBAN . ', with title: p24-' . $orderId;
-            Tools::redirect($this->context->link->getModuleLink('npsprzelewy24', 'paymentError', array('main_error' => 'trn_register_error', 'p24_error' => $res->error)));
-            
+            return $this->orderDescription($orderID);
         }
+    }
+
+    private function orderDescription($orderID) {
+        return 'Zamówienie: '.$orderID;
     }
 }
