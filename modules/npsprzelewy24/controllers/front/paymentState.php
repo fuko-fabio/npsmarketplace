@@ -6,10 +6,10 @@
 
 include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24PaymentValidator.php');
 
-class NpsPrzelewy24PaymentSuccessfulModuleFrontController extends ModuleFrontController {
+class NpsPrzelewy24PaymentSstateModuleFrontController extends ModuleFrontController {
 
-    public function initContent(){
-        parent::initContent();
+    public function init(){
+        parent::init();
 
         $validator = new P24PaymentValodator(
             Tools::getValue('p24_merchant_id'),
@@ -24,7 +24,5 @@ class NpsPrzelewy24PaymentSuccessfulModuleFrontController extends ModuleFrontCon
         );
 
         $result = $validator->validate();
-        $this->context->smarty->assign(array('success' => implode("|", $result)));
-        $this->setTemplate('payment_successful.tpl');
     }
 }

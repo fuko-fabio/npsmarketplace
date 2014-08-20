@@ -1,4 +1,9 @@
 <?php
+/*
+*  @author Norbert Pabian <norbert.pabian@gmail.com>
+*  @copyright 2014 npsoftware
+*/
+include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24Payment.php');
 
 class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontController {
 
@@ -38,8 +43,9 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
         }
 
         $amount = number_format($amount, 2, '.', '') * 100;
-        $session_id = $this->generateSessionId($cart);
-        $this->persistSssionId($session_id, $cart->id, $amount);
+        $timestamp = time();
+        $session_id = $this->generateSessionId($cart, $timestamp);
+        $this->persistP24Payment($session_id, $cart->id, $amount, $currency['iso_code'], $timestamp);
 
         $order = Order::getOrderByCartId($cart->id);
         if($order == null) {
@@ -77,9 +83,9 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
             'p24_country' => $s_lang->iso_code,
             'p24_phone' => $phone,
             'p24_language' => strtolower($s_lang->iso_code),
-            'p24_url_cancel' => $this->context->link->getModuleLink('npsprzelewy24', 'paymentCancell'),
+            'p24_url_cancel' => $this->context->link->getModuleLink('npsprzelewy24', 'paymentCancel'),
             'p24_url_return' => $this->context->link->getModuleLink('npsprzelewy24', 'paymentSuccessful'),
-            'p24_url_status' => $this->context->link->getModuleLink('npsprzelewy24', 'paymentStatus'),
+            'p24_url_status' => $this->context->link->getModuleLink('npsprzelewy24', 'paymentState'),
             'p24_shipping' => $cart->getTotalShippingCost(),
             'p24_sign' => $this->generateSign($session_id, $p24_id, $amount, $currency['iso_code']),
             'p24_encoding' => 'UTF-8',
@@ -120,14 +126,18 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
         }
     }
 
-    private function persistSssionId($session_id, $cart_id, $amount) {
-        return Db::getInstance()->Execute(
-          'INSERT INTO `'._DB_PREFIX_.'przelewy24_amount` '.'(`s_sid`,`i_id_order`,`i_amount`)
-          VALUES("'.$session_id.'",'.$cart_id.','.$amount.')');
+    private function persistP24Payment($session_id, $cart_id, $amount, $currency_iso, $timestamp) {
+        $p24_state = new P24Payment();
+        $p24_state->session_id = $session_id;
+        $p24_state->id_cart = $cart_id;
+        $p24_state->amount = $amount;
+        $p24_state->currency_iso = $currency_iso;
+        $p24_state->timestamp = $timestamp;
+        return $p24_state->save();
     }
 
-    private function generateSessionId($cart) {
-        return $cart->id_customer.'|'.$cart->id.'|'.md5(time());
+    private function generateSessionId($cart, $timestamp) {
+        return $cart->id_customer.'|'.$cart->id.'|'.$timestamp;
     }
 
     private function generateSign($p24_session_id, $p24_merchant_id, $p24_amount, $p24_currency) {
@@ -148,7 +158,7 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
 
         $orderID = Order::getOrderByCartId(intval($cart->id));
         if ($orderID == null) {
-            d('Error');
+            d('Error');// TODO Do sth here
         } else {
             return $this->orderDescription($orderID);
         }

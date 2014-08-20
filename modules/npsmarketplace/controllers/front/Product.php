@@ -44,6 +44,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
             && Tools::isSubmit('district')) {
 
             $nps_instance = new NpsMarketplace();
+            $current_id_product = trim(Tools::getValue('id_product'));
 
             $name = $_POST['name'];
             $description_short = $_POST['description_short'];
@@ -80,7 +81,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
             if (empty($categories))
                 $this -> errors[] = $nps_instance->l('At least one category must be selected');
 
-            if($current_id_product != null) {
+            if(empty($current_id_product)) {
                 if (empty($date_time))
                     $this -> errors[] = $nps_instance->l('Product date and time is required');
                 if (!Validate::isInt($quantity))
@@ -109,7 +110,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
                 $this->_product -> link_rewrite = $link_rewrite;
                 $this->_product -> reference = $reference;
                 $this->_product -> id_category_default = $categories[0];
-                if($current_id_product == null) {
+                if(empty($current_id_product)) {
                     $this->_product -> is_virtual = true;
                     $this->_product -> indexed = 1;
                     $this->_product -> id_tax_rules_group = 0;
@@ -118,7 +119,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
                 if (!$this->_product->save()) {
                     $this->errors[] = $nps_instance->l('Unable to save product.');
                 } else {
-                    if($current_id_product == null) {
+                    if(empty($current_id_product)) {
                         $this->saveAttribute($date_time, (int)$quantity);
                         $this->_seller->assignProduct($this->_product->id);
                     }

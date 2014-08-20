@@ -9,6 +9,8 @@ if (!defined('_PS_VERSION_'))
 
 class NpsPrzelewy24 extends PaymentModule {
 
+    const INSTALL_SQL_FILE = 'install.sql';
+
     public function __construct() {
         $this->name = 'npsprzelewy24';
         $this->tab = 'payments_gateways';
@@ -27,7 +29,12 @@ class NpsPrzelewy24 extends PaymentModule {
      * @return bool
      */
     public function install() {
-        parent::install();
+        if (!file_exists(dirname(__FILE__).'/'.self::INSTALL_SQL_FILE))
+            return false;
+        else if (!$sql = file_get_contents(dirname(__FILE__).'/'.self::INSTALL_SQL_FILE))
+            return false;
+        $sql = str_replace(array('PREFIX_', 'ENGINE_TYPE'), array(_DB_PREFIX_, _MYSQL_ENGINE_), $sql);
+        $sql = preg_split("/;\s*[\r\n]+/", trim($sql));
 
         Configuration::updateValue('NPS_P24_ORDER_STATE_1', 0);
         Configuration::updateValue('NPS_P24_ORDER_STATE_2', 0);
@@ -78,21 +85,19 @@ class NpsPrzelewy24 extends PaymentModule {
             Configuration::updateValue('NPS_P24_ORDER_STATE_2', $stateid);
         }
 
-        if (!$this->registerHook('payment')
+        if (!parent::install()
+            || !$this->registerHook('payment')
             || !$this->registerHook('displayOrderDetail')
-            || !$this->createAmountTable())
+            || !$this->createTables($sql))
             return false;
         return true;
     }
 
-    public function uninstall()
-    {
-        if (!parent::uninstall()
-            || !$this->unregisterHook('payment')
-            || !$this->unregisterHook('displayOrderDetail')
-            || !$this->deleteTables());
-            return false;
-        return true;
+    public function uninstall() {
+        return parent::uninstall()
+            && $this->deleteTables()
+            && $this->unregisterHook('payment')
+            && $this->unregisterHook('displayOrderDetail');
     }
 
     public function getContent() {
@@ -114,20 +119,18 @@ class NpsPrzelewy24 extends PaymentModule {
     /**
      * @return bool
      */
-    private function createAmountTable() {
-        Db::getInstance()->Execute('CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'przelewy24_amount` (
-            `i_id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-            `s_sid` char(32) NOT NULL,
-            `i_id_order` INT UNSIGNED NOT NULL ,
-            `i_amount` INT UNSIGNED NOT NULL
-            ) ENGINE=MYISAM;');
-
+    private function createTables($sql) {
+        foreach ($sql as $query)
+            if (!Db::getInstance()->execute(trim($query)))
+                return false;
         return true;
     }
 
-    private function deleteTables()
-    {
-        return Db::getInstance()->execute('DROP TABLE IF EXISTS `'._DB_PREFIX_.'przelewy24_amount`');
+    private function deleteTables() {
+        return Db::getInstance()->Execute('
+            DROP TABLE IF EXISTS
+            `'._DB_PREFIX_.'p24_payment`,
+            `'._DB_PREFIX_.'p24_payment_statement`');
     }
 
     private function displayForm() {
@@ -272,14 +275,6 @@ class NpsPrzelewy24 extends PaymentModule {
         if(count($result) && $result['module'] == 'przelewy24' && $result['current_state'] == Configuration::get('NPS_P24_ORDER_STATE_1')) {
             $smarty->assign('p24_retryPaymentUrl', $this->context->link->getModuleLink('npsprzelewy24', 'paymentConfirmation', array('order_id'=> $orderID)));
             return $this->display(__FILE__, 'renewPaymentOrderDetail.tpl');
-        }
-    }
-
-    public static function getHttpProtocol() {
-        if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') {
-            return 'https://';
-        } else {
-            return 'http://';
         }
     }
 }

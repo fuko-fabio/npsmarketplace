@@ -367,8 +367,7 @@ class NpsMarketplace extends Module
     }
 
     /* Set database */
-    private function _createTables($sql)
-    {
+    private function _createTables($sql) {
         foreach ($sql as $query)
             if (!Db::getInstance()->execute(trim($query)))
                 return false;
@@ -376,8 +375,7 @@ class NpsMarketplace extends Module
         return $this->_alterImageTypeTable();
     }
 
-    private function _deleteTables()
-    {
+    private function _deleteTables() {
         return Db::getInstance()->execute('
             DROP TABLE IF EXISTS
             `'._DB_PREFIX_.'seller`,
