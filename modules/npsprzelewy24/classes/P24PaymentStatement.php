@@ -18,8 +18,7 @@ class P24PaymentStatement extends ObjectModel
                 -> select('`id_payment_statement`')
                 -> from('p24_payment_statement')
                 -> where('`id_payment` = '.$id_payment);
-            if ($result = Db::getInstance() -> getValue($query))
-                $id_payment_statement = $result;
+            $id_payment_statement = Db::getInstance() -> getValue($query);
         }
         parent::__construct($id_payment_statement);
     }

@@ -148,7 +148,7 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
     }
 
     private function persistP24Payment($session_id, $cart_id, $amount, $currency_iso, $timestamp) {
-        $p24_state = new P24Payment();
+        $p24_state = new P24Payment(null, $cart_id);
         $p24_state->session_id = $session_id;
         $p24_state->id_cart = $cart_id;
         $p24_state->amount = $amount;

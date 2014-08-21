@@ -16,6 +16,9 @@ class NpsPrzelewy24PaymentReturnModuleFrontController extends ModuleFrontControl
 
         $m = new NpsPrzelewy24();
         $p24_error_code = Tools::getValue('p24_error_code');
+        $session_id_array = explode('|', Tools::getValue('p24_session_id'));
+        $id_cart = $session_id_array[1];
+        $id_order = Order::getOrderByCartId($id_cart);
         if (empty($p24_error_code)) {
             $validator = new P24PaymentValodator(
                 Tools::getValue('p24_merchant_id'),
@@ -31,9 +34,6 @@ class NpsPrzelewy24PaymentReturnModuleFrontController extends ModuleFrontControl
 
             $result = $validator->validate();
             if ($result['error'] == 0) {
-                $session_id_array = explode('|', Tools::getValue('p24_session_id'));
-                $id_cart = $session_id_array[1];
-                $id_order = Order::getOrderByCartId($id_cart);
                 $order = P24Payment::getSummaryByCartId($id_cart);
                 $price = Tools::displayPrice($order['amount'] / 100, $this->context->currency);
                 $this->context->smarty->assign(array(
@@ -42,11 +42,13 @@ class NpsPrzelewy24PaymentReturnModuleFrontController extends ModuleFrontControl
                     'reference_order' => Order::getUniqReferenceOf($id_order)
                 ));
             } else {
+                $this->persistPaymentError($order_id);
                 $this->context->smarty->assign(array(
                     'error' => array('code' => $result['error'], 'message' => $result['errorMessage']),
                 ));
             }
         } else {
+            $this->persistPaymentError($order_id);
             $m->reportError(array(
                 'Requested URL: '.$this->context->link->getModuleLink('npsprzelewy24', 'paymentReturn'),
                 'GET params: '.implode(' | ', $_GET),
@@ -59,5 +61,12 @@ class NpsPrzelewy24PaymentReturnModuleFrontController extends ModuleFrontControl
             ));
         }
         $this->setTemplate('payment_return.tpl');
+    }
+
+    private function persistPaymentError($order_id) {
+        $history = new OrderHistory();
+        $history->id_order = intval($order_id);
+        $history->changeIdOrderState(8, intval($order_id));
+        $history->addWithemail(true);
     }
 }

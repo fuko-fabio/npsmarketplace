@@ -9,6 +9,9 @@ include(dirname(__FILE__).'/npsprzelewy24.php');
 include(dirname(__FILE__).'/classes/P24PaymentValidator.php');
 
 $p24_error_code = Tools::getValue('p24_error_code');
+$session_id_array = explode('|', Tools::getValue('p24_session_id'));
+$id_cart = $session_id_array[1];
+$id_order = Order::getOrderByCartId($id_cart);
 $m = new NpsPrzelewy24();
 if (empty($p24_error_code)) {
     $validator = new P24PaymentValodator(
@@ -25,8 +28,17 @@ if (empty($p24_error_code)) {
     $result = $validator->validate();
     if ($result['error'] == 0) {
         PrestaShopLogger::addLog('PaymentState: Payment verified. Session ID: '.Tools::getValue('p24_session_id'));
+    } else {
+        $history = new OrderHistory();
+        $history->id_order = intval($order_id);
+        $history->changeIdOrderState(8, intval($order_id));
+        $history->addWithemail(true);
     }
 } else {
+    $history = new OrderHistory();
+    $history->id_order = intval($order_id);
+    $history->changeIdOrderState(8, intval($order_id));
+    $history->addWithemail(true);
     PrestaShopLogger::addLog('PaymentState: Unabe to verify payment. Error code: '.$p24_error_code);
     $m->reportError(array(
         'Requested URL: '.$this->context->link->getModuleLink('npsprzelewy24', 'paymentState'),

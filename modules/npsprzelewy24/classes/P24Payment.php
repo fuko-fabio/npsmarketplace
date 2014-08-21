@@ -13,6 +13,18 @@ class P24Payment extends ObjectModel
     public $currency_iso;
     public $timestamp;
 
+    public function __construct($id_payment = null, $id_cart = null) {
+        if (empty($id_payment) && !empty($id_cart)) {
+            $query = new DbQuery();
+            $query
+                -> select('`id_payment`')
+                -> from('p24_payment')
+                -> where('`id_cart` = '.$id_cart);
+            $id_payment = Db::getInstance() -> getValue($query);
+        }
+        parent::__construct($id_payment);
+    }
+
     /**
      * @see ObjectModel::$definition
      */

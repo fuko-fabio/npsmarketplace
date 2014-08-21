@@ -15,3 +15,13 @@ CREATE TABLE IF NOT EXISTS `PREFIX_p24_payment_statement` (
   `statement` char(40) NOT NULL,
   KEY `id_payment` (`id_payment`)
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `PREFIX_p24_seller_settings` (
+  `id_seller_settings` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `id_seller` INT UNSIGNED NOT NULL,
+  `spid` char(40) NOT NULL,
+  `registration_date` datetime,
+  `active` tinyint(1) NOT NULL,
+  `register_link` text,
+  KEY `id_seller` (`id_seller`)
+) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;

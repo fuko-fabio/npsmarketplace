@@ -90,6 +90,7 @@ class NpsPrzelewy24 extends PaymentModule {
         if (!parent::install()
             || !$this->registerHook('payment')
             || !$this->registerHook('displayOrderDetail')
+            || !$this->registerHook('displayCustomerAccount')
             || !$this->createTables($sql))
             return false;
         return true;
@@ -98,6 +99,7 @@ class NpsPrzelewy24 extends PaymentModule {
     public function uninstall() {
         return parent::uninstall()
             && $this->deleteTables()
+            && $this->unregisterHook('displayCustomerAccount')
             && $this->unregisterHook('payment')
             && $this->unregisterHook('displayOrderDetail');
     }
@@ -134,7 +136,8 @@ class NpsPrzelewy24 extends PaymentModule {
         return Db::getInstance()->Execute('
             DROP TABLE IF EXISTS
             `'._DB_PREFIX_.'p24_payment`,
-            `'._DB_PREFIX_.'p24_payment_statement`');
+            `'._DB_PREFIX_.'p24_payment_statement`
+            `'._DB_PREFIX_.'p24_seller_settings`');
     }
 
     private function displayForm() {
@@ -319,6 +322,17 @@ class NpsPrzelewy24 extends PaymentModule {
             'NPS_P24_SANDBOX_ERROR' => Tools::getValue('NPS_P24_SANDBOX_ERROR', Configuration::get('NPS_P24_SANDBOX_ERROR')),
             'NPS_P24_SANDBOX_WEB_SERVICE_URL' => Tools::getValue('NPS_P24_SANDBOX_WEB_SERVICE_URL', Configuration::get('NPS_P24_SANDBOX_WEB_SERVICE_URL')),
         );
+    }
+
+    public function hookDisplayCustomerAccount() {
+        $seller = new Seller(null, $this->context->customer->id);
+       if ($seller->requested == 1 && $seller->active == 1 && $seller->locked == 0) {
+            $this->context->smarty->assign(array(
+                'payment_settings_link' => $this->context->link->getModuleLink('npsprzelewy24', 'PaymentSettings'),
+            )
+        );
+        return $this->display(__FILE__, 'npsprzelewy24.tpl');
+       }
     }
 
     public function hookPayment() {

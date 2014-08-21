@@ -18,12 +18,10 @@ if ( !defined( '_NPS_MAILS_DIR_' ) )
 
 include_once(dirname(__FILE__).'/classes/Seller.php');
 
-class NpsMarketplace extends Module
-{
+class NpsMarketplace extends Module {
     const INSTALL_SQL_FILE = 'install.sql';
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->name = 'npsmarketplace';
         $this->tab = 'market_place';
         $this->version = 1.0;
@@ -38,8 +36,7 @@ class NpsMarketplace extends Module
         $this->confirmUninstall = $this->l('Are you sure you want to delete module ? This will have serious impact on your products and orders. Think twice before you do that.');
     }
 
-    public function install()
-    {
+    public function install() {
         if (!file_exists(dirname(__FILE__).'/'.self::INSTALL_SQL_FILE))
             return false;
         else if (!$sql = file_get_contents(dirname(__FILE__).'/'.self::INSTALL_SQL_FILE))
@@ -68,8 +65,7 @@ class NpsMarketplace extends Module
         return true;
     }
 
-    public function uninstall()
-    {
+    public function uninstall() {
         if (!parent::uninstall()
             || !$this->unregisterHook('header')
             || !$this->unregisterHook('displayCustomerAccount')
@@ -92,8 +88,7 @@ class NpsMarketplace extends Module
         return true;
     }
 
-    public function hookDisplayCustomerAccount( $params )
-    {
+    public function hookDisplayCustomerAccount( $params ) {
         $seller = new Seller(null, $this->context->customer->id);
         $account_state = 'none';
         if ($seller->requested == 1 && $seller->active == 0 && $seller->locked == 0)
@@ -119,8 +114,7 @@ class NpsMarketplace extends Module
         return $this->display(__FILE__, 'npsmarketplace.tpl');
     }
 
-    public function hookIframe()
-    {
+    public function hookIframe() {
         $seller = new Seller(Tools::getValue('id'));
         $products = $seller->getProducts();
 
