@@ -151,6 +151,14 @@ class P24PaymentValodator {
         curl_close($ch);
 
         parse_str($output, $result);
+        if ($result['error'] != 0) {
+            $module = new NpsPrzelewy24();
+            $module->reportError(array(
+               'Requested URL: '.$url,
+               'Request params: '.implode(' | ', $data),
+               'Response: '.implode(' | ', $result)
+             ));
+        }
         return $result;
     }
 

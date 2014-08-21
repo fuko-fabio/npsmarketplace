@@ -14,6 +14,7 @@ class NpsPrzelewy24PaymentReturnModuleFrontController extends ModuleFrontControl
         $this->display_column_right = false;
         parent::initContent();
 
+        $m = new NpsPrzelewy24();
         $p24_error_code = Tools::getValue('p24_error_code');
         if (empty($p24_error_code)) {
             $validator = new P24PaymentValodator(
@@ -46,6 +47,11 @@ class NpsPrzelewy24PaymentReturnModuleFrontController extends ModuleFrontControl
                 ));
             }
         } else {
+            $m->reportError(array(
+                'Requested URL: '.$this->context->link->getModuleLink('npsprzelewy24', 'paymentReturn'),
+                'GET params: '.implode(' | ', $_GET),
+                'POST params: '.implode(' | ', $_POST),
+            ));
             $this->context->smarty->assign(array(
                 'error' => array(
                     'code' => $p24_error_code,

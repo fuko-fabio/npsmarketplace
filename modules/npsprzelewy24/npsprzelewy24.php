@@ -337,4 +337,25 @@ class NpsPrzelewy24 extends PaymentModule {
             return $this->display(__FILE__, 'renewPaymentOrderDetail.tpl');
         }
     }
+
+    public function reportError($logs = array()) {
+        $id_lang = (int)$this->context->language->id;
+        $iso_lang = Language::getIsoById($id_lang);
+
+        if (!is_dir(dirname(__FILE__).'/mails/'.Tools::strtolower($iso_lang)))
+            $id_lang = Language::getIdByIso('en');
+
+        Mail::Send($id_lang,
+            'error_reporting',
+            Mail::l('Error reporting from your Przelewy24 module',
+            (int)$this->context->language->id),
+            array('{logs}' => implode('<br />', $log)),
+            Configuration::get('PS_SHOP_EMAIL'),
+            null,
+            null,
+            null,
+            null,
+            null,
+            _PS_MODULE_DIR_.$this->name.'/mails/');
+    }
 }

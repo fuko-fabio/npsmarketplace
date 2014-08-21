@@ -1,0 +1,36 @@
+<?php
+/*
+*  @author Norbert Pabian <norbert.pabian@gmail.com>
+*  @copyright 2014 npsoftware
+*/
+include(dirname(__FILE__).'/../../config/config.inc.php');
+include dirname(__FILE__).'/../../init.php';
+include(dirname(__FILE__).'/npsprzelewy24.php');
+include(dirname(__FILE__).'/classes/P24PaymentValidator.php');
+
+$p24_error_code = Tools::getValue('p24_error_code');
+$m = new NpsPrzelewy24();
+if (empty($p24_error_code)) {
+    $validator = new P24PaymentValodator(
+        Tools::getValue('p24_merchant_id'),
+        Tools::getValue('p24_pos_id'),
+        Tools::getValue('p24_session_id'),
+        Tools::getValue('p24_amount'),
+        Tools::getValue('p24_currency'),
+        Tools::getValue('p24_order_id'),
+        Tools::getValue('p24_method'),
+        Tools::getValue('p24_statement'),
+        Tools::getValue('p24_sign')
+    );
+    $result = $validator->validate();
+    if ($result['error'] == 0) {
+        PrestaShopLogger::addLog('PaymentState: Payment verified. Session ID: '.Tools::getValue('p24_session_id'));
+    }
+} else {
+    PrestaShopLogger::addLog('PaymentState: Unabe to verify payment. Error code: '.$p24_error_code);
+    $m->reportError(array(
+        'Requested URL: '.$this->context->link->getModuleLink('npsprzelewy24', 'paymentState'),
+        'GET params: '.implode(' | ', $_GET),
+        'POST params: '.implode(' | ', $_POST),
+    ));
+}
