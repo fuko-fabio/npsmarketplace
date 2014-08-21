@@ -11,6 +11,19 @@ class P24PaymentStatement extends ObjectModel
     public $payment_method;
     public $statement;
 
+    public function __construct($id_payment_statement = null, $id_payment = null) {
+        if (empty($id_payment_statement) && !empty($id_payment)) {
+            $query = new DbQuery();
+            $query
+                -> select('`id_payment_statement`')
+                -> from('p24_payment_statement')
+                -> where('`id_payment` = '.$id_payment);
+            if ($result = Db::getInstance() -> getValue($query))
+                $id_payment_statement = $result;
+        }
+        parent::__construct($id_payment_statement);
+    }
+
     /**
      * @see ObjectModel::$definition
      */

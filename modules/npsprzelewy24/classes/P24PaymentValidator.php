@@ -87,7 +87,7 @@ class P24PaymentValodator {
     * @return boolean true if status has been successful stored
     */
     private function persistPaymentStatement($p_id) {
-        $ps = new P24PaymentStatement();
+        $ps = new P24PaymentStatement(null, $p_id);
         $ps->id_payment = $p_id;
         $ps->order_id = $this->order_id;
         $ps->payment_method = $this->method;

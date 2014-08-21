@@ -40,4 +40,17 @@ class P24Payment extends ObjectModel
             WHERE `session_id` = "'.$session_id.'"');
         return new P24Payment($id);
     }
+
+    /**
+     * getByCartId Gets payment summary by cart ID
+     *
+     * @return 
+     */
+    public static function getSummaryByCartId($id_cart) {
+        $result = Db::getInstance()->executeS(
+            'SELECT * FROM `'._DB_PREFIX_.'p24_payment`, `'._DB_PREFIX_.'p24_payment_statement`
+            WHERE `'._DB_PREFIX_.'p24_payment`.id_payment = `'._DB_PREFIX_.'p24_payment_statement`.id_payment
+            AND `id_cart` = "'.$id_cart.'"');
+       return $result != null ? $result[0] : null;
+    }
 }

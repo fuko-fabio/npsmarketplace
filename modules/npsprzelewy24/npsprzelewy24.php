@@ -43,6 +43,8 @@ class NpsPrzelewy24 extends PaymentModule {
         Configuration::updateValue('NPS_P24_WEB_SERVICE_URL', 'https://secure.przelewy24.pl/external/wsdl/service.php?wsdl');
         Configuration::updateValue('NPS_P24_URL', 'https://secure.przelewy24.pl');
         Configuration::updateValue('NPS_P24_SANDBOX_URL', 'https://sandbox.przelewy24.pl');
+        Configuration::updateValue('NPS_P24_SANDBOX_ERROR', '');
+        Configuration::updateValue('NPS_P24_SANDBOX_WEB_SERVICE_URL', 'https://sandbox.przelewy24.pl/external/wsdl/service.php?wsdl');
 
         $rq = Db::getInstance()->getRow(
             'SELECT `id_order_state`
@@ -53,8 +55,8 @@ class NpsPrzelewy24 extends PaymentModule {
             Configuration::updateValue('NPS_P24_ORDER_STATE_1', $rq['id_order_state']);
         } else {
             Db::getInstance()->Execute(
-                'INSERT INTO `'._DB_PREFIX_.'order_state` (`unremovable`, `module_name`, `color`)
-                VALUES(1, \''.$this->name.'\', \'LightBlue\')');
+                'INSERT INTO `'._DB_PREFIX_.'order_state` (`unremovable`, `invoice`, `module_name`, `color`)
+                VALUES(1, 1, \''.$this->name.'\', \'LightBlue\')');
             $stateid = Db::getInstance()->Insert_ID();
             $result = Db::getInstance()->ExecuteS('SELECT `id_lang` FROM `'._DB_PREFIX_.'lang`');
             foreach ($result as $row) {
@@ -74,8 +76,8 @@ class NpsPrzelewy24 extends PaymentModule {
             Configuration::updateValue('NPS_P24_ORDER_STATE_2', $rq['id_order_state']);
         } else {
             Db::getInstance()->Execute(
-                'INSERT INTO `'._DB_PREFIX_.'order_state` (`unremovable`, `module_name`, `color`)
-                VALUES(1, \''.$this->name.'\', \'RoyalBlue\')');
+                'INSERT INTO `'._DB_PREFIX_.'order_state` (`unremovable`, `invoice`, `module_name`, `color`)
+                VALUES(1, 1,\''.$this->name.'\', \'RoyalBlue\')');
             $stateid = Db::getInstance()->Insert_ID();
             foreach ($result as $row) {
                 Db::getInstance()->Execute(
@@ -111,6 +113,8 @@ class NpsPrzelewy24 extends PaymentModule {
             Configuration::updateValue('NPS_P24_URL', Tools::getValue('NPS_P24_URL'));
             Configuration::updateValue('NPS_P24_SANDBOX_URL', Tools::getValue('NPS_P24_SANDBOX_URL'));
             Configuration::updateValue('NPS_P24_WEB_SERVICE_URL', Tools::getValue('NPS_P24_WEB_SERVICE_URL'));
+            Configuration::updateValue('NPS_P24_SANDBOX_ERROR', Tools::getValue('NPS_P24_SANDBOX_ERROR'));
+            Configuration::updateValue('NPS_P24_SANDBOX_WEB_SERVICE_URL', Tools::getValue('NPS_P24_SANDBOX_WEB_SERVICE_URL'));
             $output .= $this->displayConfirmation($this->l('Settings updated sucessfully'));
         }
         return $output.$this->displayForm();
@@ -139,6 +143,7 @@ class NpsPrzelewy24 extends PaymentModule {
 
         // Init Fields form array
         $fields_form[0] = $this->configurationForm();
+        $fields_form[1] = $this->configurationSandboxForm();
         $helper = new HelperForm();
          
         // Module, token and currentIndex
@@ -210,20 +215,73 @@ class NpsPrzelewy24 extends PaymentModule {
                     ),
                     array(
                         'type' => 'text',
+                        'label' => $this->l('SOAP Web Service URL'),
+                        'hint' => $this->l('Endpoint of the Przelewy24 WebService'),
+                        'name' => 'NPS_P24_WEB_SERVICE_URL',
+                        'required' => true
+                    ),
+                ),
+                'submit' => array(
+                    'title' => $this->l('Save'),
+                    'class' => 'btn btn-default pull-right',
+                    'name' => 'submit',
+                )
+            )
+        );
+    }
+
+    private function configurationSandboxForm() {
+        return array(
+            'form' => array(
+                'legend' => array(
+                    'title' => $this->l('nps Marketplace Sandbox Przelewy24 Settings'),
+                ),
+                'input' => array(
+                    array(
+                        'type' => 'text',
                         'label' => $this->l('Web Service Sandbox URL'),
                         'name' => 'NPS_P24_SANDBOX_URL',
                         'required' => true
                     ),
                     array(
                         'type' => 'text',
-                        'label' => $this->l('SOAP Web Service URL'),
+                        'label' => $this->l('SOAP Web Service Sandbox URL'),
                         'hint' => $this->l('Endpoint of the Przelewy24 WebService'),
-                        'name' => 'NPS_P24_WEB_SERVICE_URL',
+                        'name' => 'NPS_P24_SANDBOX_WEB_SERVICE_URL',
                         'required' => true
                     ),
                     array(
+                        'type' => 'select',
+                        'name' => 'NPS_P24_SANDBOX_ERROR',
+                        'label' => $this->l('Test error code'),
+                        'options' => array(
+                                        'query' => array(
+                                            array(
+                                                'label' => '',
+                                            ),
+                                            array(
+                                                'label' => 'TEST_ERR04',
+                                            ),
+                                            array(
+                                                'label' => 'TEST_ERR54',
+                                            ),
+                                            array(
+                                                'label' => 'TEST_ERR102',
+                                            ),
+                                            array(
+                                                'label' => 'TEST_ERR103',
+                                            ),
+                                            array(
+                                                'label' => 'TEST_ERR110',
+                                            ),
+                                         ),
+                                        'id' => 'label',
+                                        'name' => 'label'
+                                    ),
+                    ),
+                    array(
                         'type' => 'switch',
-                        'is_bool' => true, //retro compat 1.5
+                        'is_bool' => true,
                         'label' => $this->l('Sandbox mode'),
                         'name' => 'NPS_P24_SANDBOX_MODE',
                         'values' => array(
@@ -258,6 +316,8 @@ class NpsPrzelewy24 extends PaymentModule {
             'NPS_P24_URL' => Tools::getValue('NPS_P24_URL', Configuration::get('NPS_P24_URL')),
             'NPS_P24_SANDBOX_URL' => Tools::getValue('NPS_P24_SANDBOX_URL', Configuration::get('NPS_P24_SANDBOX_URL')),
             'NPS_P24_WEB_SERVICE_URL' => Tools::getValue('NPS_P24_WEB_SERVICE_URL', Configuration::get('NPS_P24_WEB_SERVICE_URL')),
+            'NPS_P24_SANDBOX_ERROR' => Tools::getValue('NPS_P24_SANDBOX_ERROR', Configuration::get('NPS_P24_SANDBOX_ERROR')),
+            'NPS_P24_SANDBOX_WEB_SERVICE_URL' => Tools::getValue('NPS_P24_SANDBOX_WEB_SERVICE_URL', Configuration::get('NPS_P24_SANDBOX_WEB_SERVICE_URL')),
         );
     }
 

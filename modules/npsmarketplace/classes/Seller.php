@@ -60,8 +60,7 @@ class Seller extends ObjectModel
     /** @var string Friendly URL */
     public $link_rewrite;
 
-    public function __construct($id_seller = null, $id_customer = null)
-    {
+    public function __construct($id_seller = null, $id_customer = null) {
         if (empty($id_seller) && !empty($id_customer))
         {
             $query = new DbQuery();

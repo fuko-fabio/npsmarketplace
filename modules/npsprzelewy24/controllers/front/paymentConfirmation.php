@@ -7,6 +7,18 @@ include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24Payment.php');
 
 class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontController {
 
+    private $payment_url;
+
+    public function initContent() {
+        $this->display_column_left = false;
+        $this->display_column_right = false;
+        parent::initContent();
+        $this->context->smarty->assign(array(
+            'payment_url' => $this->payment_url
+        ));
+        $this->setTemplate('payment_confirmation.tpl');
+    }
+
     public function init() {
         parent::init();
 
@@ -50,16 +62,24 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
         $order = Order::getOrderByCartId($cart->id);
         if($order == null) {
             $s_descr = $this->validatePayment($npsprzelewy24, $cart, $customer, $amount);
+            if ($s_descr == null) {
+                $m = new NpsPrzelewy24();
+                $this -> errors[] = $m->l('Unable to verify order. Please try to contact the customer support');
+            }
         } else {
-            $s_descr = $this->orderDescription($order);
+            $s_descr = $this->orderDescription($order, $customer);
         }
-
-        $url = Configuration::get('NPS_P24_URL');
-        if (Configuration::get('NPS_P24_SANDBOX_MODE') == 1) {
-            $url = Configuration::get('NPS_P24_SANDBOX_URL');
+        if ($s_descr != null) {
+            $url = Configuration::get('NPS_P24_URL');
+            if (Configuration::get('NPS_P24_SANDBOX_MODE') == 1) {
+                $url = Configuration::get('NPS_P24_SANDBOX_URL');
+                $sandbox_descr = Configuration::get('NPS_P24_SANDBOX_ERROR');
+                if(!empty($sandbox_descr)) {
+                    $s_descr = $sandbox_descr;
+                }
+            }
+            $this->transactionRegister($session_id, $url, $cart, $amount, $customer, $currency, $address, $s_descr);
         }
-
-        $this->transactionRegister($session_id, $url, $cart, $amount, $customer, $currency, $address, $s_descr);
 	}
 
     private function transactionRegister($session_id, $url, $cart, $amount, $customer, $currency, $address, $s_descr) {
@@ -84,12 +104,13 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
             'p24_phone' => $phone,
             'p24_language' => strtolower($s_lang->iso_code),
             'p24_url_cancel' => $this->context->link->getModuleLink('npsprzelewy24', 'paymentCancel'),
-            'p24_url_return' => $this->context->link->getModuleLink('npsprzelewy24', 'paymentSuccessful'),
+            'p24_url_return' => $this->context->link->getModuleLink('npsprzelewy24', 'paymentReturn'),
             'p24_url_status' => $this->context->link->getModuleLink('npsprzelewy24', 'paymentState'),
             'p24_shipping' => $cart->getTotalShippingCost(),
             'p24_sign' => $this->generateSign($session_id, $p24_id, $amount, $currency['iso_code']),
             'p24_encoding' => 'UTF-8',
             'p24_api_version' => '3.2',
+            'p24_wait_for_result' => 1
         );
 
         $index = 1;
@@ -109,20 +130,17 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data, '', '&'));
         curl_setopt($ch, CURLOPT_SSLVERSION, 3);
         curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'SSLv3');
-        //curl_setopt($ch, CURLOPT_VERBOSE, true);
-        //$verbose = fopen('php://temp', 'rw+');
-        //curl_setopt($ch, CURLOPT_STDERR, $verbose);
         $output=curl_exec($ch);
         curl_close($ch);
-        //rewind($verbose);
-        //$verboseLog = stream_get_contents($verbose);
 
         parse_str($output, $result);
         
         if ($result['error'] == 0) {
-            Tools::redirect($url.'/trnRequest/'.$result['token']);
+            $this->payment_url = $url.'/trnRequest/'.$result['token'];
+            Tools::redirect($this->payment_url);
         } else {
-            Tools::displayError('Unable to register transaction'); // TODO Redirect to page
+            PrestaShopLogger::addLog('NpsPrzelewy24PaymentConfirmationModuleFrontController: Unabe register Przelewy24 payment. Error message: '.$result['errorMessage']);
+            Tools::redirect($this->context->link->getModuleLink('npsprzelewy24', 'paymentReturn', array('p24_error_code' => 'err00')));
         }
     }
 
@@ -155,16 +173,14 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
             NULL,
             false,
             $customer->secure_key);
-
-        $orderID = Order::getOrderByCartId(intval($cart->id));
-        if ($orderID == null) {
-            d('Error');// TODO Do sth here
+        if($result) {
+            return $this->orderDescription(Order::getOrderByCartId(intval($cart->id)), $customer);
         } else {
-            return $this->orderDescription($orderID);
+            return null;
         }
     }
 
-    private function orderDescription($orderID) {
-        return 'Zamówienie: '.$orderID;
+    private function orderDescription($orderID, $customer) {
+        return $customer->firstname.' '.$customer->lastname.' Order ID: '.$orderID;
     }
 }
