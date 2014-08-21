@@ -70,7 +70,7 @@
             </div>
         </div>
         <p class="submit">
-            <button type="submit" class="btn btn-default button button-medium"><span>{l s='Register' mod='npsprzelewy24'}<i class="icon-save right"></i></span></button>
+            <button type="submit" class="btn btn-default button button-medium" name="submitCompany"><span>{l s='Register' mod='npsprzelewy24'}<i class="icon-save right"></i></span></button>
         </p>
     </form>
 </div>

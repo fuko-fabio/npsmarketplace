@@ -12,8 +12,6 @@ include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24PaymentStatement.php');
  */
 class P24PaymentValodator {
 
-    public $merchant_id;
-    public $pos_id;
     public $session_id;
     public $amount;
     public $currency;
@@ -25,8 +23,6 @@ class P24PaymentValodator {
     /**
      * Build object
      *
-     * @param int $merchant_id przelewy24 merchant ID
-     * @param int $pos_id przelewy24 pos ID (by default merchant ID)
      * @param String $session_id merchant generated session ID
      * @param String $amount merchant order amount
      * @param String $currency merchant order currency
@@ -35,9 +31,7 @@ class P24PaymentValodator {
      * @param String $statement przelewy24 payment statement
      * @param String $sign ID przelewy24 request sign
      */
-    public function __construct($merchant_id, $pos_id, $session_id, $amount, $currency, $order_id, $method, $statement, $sign) {
-        $this->merchant_id = $merchant_id;
-        $this->pos_id = $pos_id;
+    public function __construct($session_id, $amount, $currency, $order_id, $method, $statement, $sign) {
         $this->session_id = $session_id;
         $this->amount = $amount;
         $this->currency = $currency;
@@ -124,42 +118,16 @@ class P24PaymentValodator {
     * @return Array result from przelewy24
     */
     private function transactionVerify() {
-        $url = Configuration::get('NPS_P24_URL');
-        if (Configuration::get('NPS_P24_SANDBOX_MODE') == 1) {
-            $url = Configuration::get('NPS_P24_SANDBOX_URL');
-        }
-
         $data = array(
-            'p24_merchant_id' => $this->merchant_id,
-            'p24_pos_id' => $this->pos_id,
+            'p24_merchant_id' => P24::merchantId(),
+            'p24_pos_id' => P24::merchantId(),
             'p24_session_id' => $this->session_id,
             'p24_amount' => $this->amount,
             'p24_currency' => $this->currency,
             'p24_order_id' => $this->order_id,
             'p24_sign' => $this->generateSign(),
         );
-
-        $ch = curl_init($url.'/trnVerify');
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION  ,true);
-        curl_setopt($ch, CURLOPT_HEADER, false); 
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data, '', '&'));
-        curl_setopt($ch, CURLOPT_SSLVERSION, 3);
-        curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'SSLv3');
-        $output=curl_exec($ch);
-        curl_close($ch);
-
-        parse_str($output, $result);
-        if ($result['error'] != 0) {
-            $module = new NpsPrzelewy24();
-            $module->reportError(array(
-               'Requested URL: '.$url,
-               'Request params: '.implode(' | ', $data),
-               'Response: '.implode(' | ', $result)
-             ));
-        }
-        return $result;
+        return P24::transactionVerify($data);
     }
 
     /** verifySign Verify incoming sign from przelewy24 with local stored sign

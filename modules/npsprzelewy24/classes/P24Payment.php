@@ -4,8 +4,8 @@
 *  @copyright 2014 npsoftware
 */
 
-class P24Payment extends ObjectModel
-{
+class P24Payment extends ObjectModel {
+
     public $id;
     public $session_id;
     public $id_cart;

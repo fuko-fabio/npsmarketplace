@@ -4,6 +4,8 @@
 *  @copyright 2014 npsoftware
 */
 include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/iban/php-iban.php');
+include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24SellerSettings.php');
+include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24.php');
 
 class NpsPrzelewy24PaymentSettingsModuleFrontController extends ModuleFrontController {
 
@@ -14,18 +16,15 @@ class NpsPrzelewy24PaymentSettingsModuleFrontController extends ModuleFrontContr
     }
 
     public function postProcess() {
-        if (Tools::isSubmit('company_name')
-            && Tools::isSubmit('person')
-            && Tools::isSubmit('street')
-            && Tools::isSubmit('post_code')
-            && Tools::isSubmit('city')
-            && Tools::isSubmit('nip')
-            && Tools::isSubmit('regon')
-            && Tools::isSubmit('iban')
-            && Tools::isSubmit('email')) {
+        if (Tools::isSubmit('submitCompany')) {
 
             $nps_instance = new NpsPrzelewy24();
             $seller = new Seller(null, $this->context->customer->id);
+            $settings = new P24SellerSettings(null, $seller->id);
+            if ($settings->id != null && !empty($settings->spid)) {
+                Tools::redirect($this->context->link->getModuleLink('npsprzelewy24', 'paymentSettings'));
+                return;
+            }
 
             $company_name = trim(Tools::getValue('company_name'));
             $city = trim(Tools::getValue('city'));
@@ -97,20 +96,26 @@ class NpsPrzelewy24PaymentSettingsModuleFrontController extends ModuleFrontContr
                     "IBAN" => $iban,
                     "acceptance" => $acceptance,
                 );
-                d($company);
-                $p24_id = Configuration::get('NPS_P24_MERCHANT_ID');
-                $p24_key = Configuration::get('NPS_P24_UNIQUE_KEY');
-                $url = Configuration::get('NPS_P24_WEB_SERVICE_URL');
-                if (Configuration::get('NPS_P24_SANDBOX_MODE') == 1) {
-                    $url = Configuration::get('NPS_P24_SANDBOX_WEB_SERVICE_URL');
-                }
-                $res = $this->registerCompany($url, $p24_id, $p24_key, $company);
+                $res = P24::companyRegister($company);
                 if ($res->error->errorCode) {
-                    d('Something went wrong: ' . $res->error->errorMessage);
+                    $this -> errors[] = $nps_instance->l('Unable register company in Przelewy24 payment service.')
+                        .' '.P24ErrorMessage::get($res->error->errorCode).' '.$nps_instance->l('Please contact with customer service');
                 } else {
                     $this->persistPaymentSettings($res->result, $seller);
-                    d("Company created: " . $res->result->spid . ", click to finish: ".$res->result->link);
+                    Tools::redirect($this->context->link->getModuleLink('npsprzelewy24', 'paymentSettings'));
                 }
+            }
+        } else if (Tools::isSubmit('submitSpid')) {
+            $nps_instance = new NpsPrzelewy24();
+            $spid = trim(Tools::getValue('spid'));
+            if (empty($spid))
+                $this -> errors[] = $nps_instance->l('Seller Przelewy24 ID is required');
+            else if (!Validate::isUnsignedInt($spid))
+                $this -> errors[] = $nps_instance->l('Invalid seller Przelewy24 ID');
+
+            if(empty($this->errors)) {
+                $seller = new Seller(null, $this->context->customer->id);
+                $this->persistPaymentSettings(array('spid' => $spid, 'link' => ''), $seller);
             }
         }
     }
@@ -120,48 +125,49 @@ class NpsPrzelewy24PaymentSettingsModuleFrontController extends ModuleFrontContr
         if (!$this->context->customer->isLogged() && $this->php_self != 'authentication' && $this->php_self != 'password')
             Tools::redirect('index.php?controller=authentication?back=my-account');
         $seller = new Seller(null, $this->context->customer->id);
-        if (!$seller->active)
+        if ($seller->id == null || !$seller->active) {
             Tools::redirect('index.php?controller=my-account');
-        if ($seller->locked)
+            return;
+        } else if ($seller->locked) {
             Tools::redirect($this->context->link->getModuleLink('npsmarketplace', 'UnlockAccount'));
-
-        $p24_id = Configuration::get('NPS_P24_MERCHANT_ID');
-        $p24_key = Configuration::get('NPS_P24_UNIQUE_KEY');
-        $url = Configuration::get('NPS_P24_WEB_SERVICE_URL');
-        if (Configuration::get('NPS_P24_SANDBOX_MODE') == 1) {
-            $url = Configuration::get('NPS_P24_SANDBOX_WEB_SERVICE_URL');
+            return;
         }
-        //$res = array('error'=> array('errorCode' => 0), 'result' => 0);//$this->checkCompanyNip($url, $p24_id, $p24_key, $seller);
-        //if ($res->error->errorCode) {
-        //    d('Something went wrong: ' . $res->error->errorMessage);
-        //    $this->setTemplate('payment_settings_error.tpl');
-        //} else {
-            //if ($res->result) {
-            //    $this->setTemplate('company_registered.tpl');
-            //} else {
-                //$res = $this->registerCompany($url, $p24_id, $p24_key, $seller, $this->context->customer);
-                //if ($res->error->errorCode) {
-                //    d('Something went wrong: ' . $res->error->errorMessage);
-                //} else {
-                //    d("Company created: " . $res->result->spid . ", click to finish: ".$res->result->link);
-                //}
-                $this->context->smarty->assign(array(
-                    'company' => $this->getRegisterCompanyData(),
-                    'p24_agreement_url' => Configuration::get('NPS_P24_REGULATIONS_URL')
+        $settings = new P24SellerSettings(null, $seller->id);
+        if ($settings->id != null && !empty($settings->spid)) {
+            $this->context->smarty->assign(array(
+                    'date' => $settings->registration_date,
+                    'spid' => $settings->spid,
+                    'link' => $settings->register_link,
                 ));
-                $this->setTemplate('payent_register_company.tpl');
-        //    }
-        //}
+            $this->setTemplate('payent_company_registered.tpl');
+            return;
+        }
+        $nps_instance = new NpsPrzelewy24();
+        $res = P24::checkNIP($seller->nip);
+        if ($res->error->errorCode) {
+            $this -> errors[] = $nps_instance->l('Unable to check company existence in Przelewy24 payment service.')
+                    .' '.P24ErrorMessage::get($res->error->errorCode).' '.$nps_instance->l('Please contact with customer service');
+        } else if ($res->result) {
+            $this->setTemplate('payment_company_registered.tpl');
+        } else {
+            $this->context->smarty->assign(array(
+                'company' => $this->getRegisterCompanyData(),
+                'p24_agreement_url' => Configuration::get('NPS_P24_REGULATIONS_URL')
+            ));
+            $this->setTemplate('payent_register_company.tpl');
+        }
     }
 
     private function persistPaymentSettings($result, $seller){
-        $settings = new P24SellerSettings();
-        $settings->active = true;
-        $settings->id_seller = $seller->id;
-        $settings->register_link = $result->link;
-        $settings->registration_date = date("Y-m-d H:i:s");;
-        $settings->spid = $result->spid;
-        $settings->save();
+        $s = new P24SellerSettings(null, $seller->id);
+        if ($s->id == null) {
+            $s->active = true;
+            $s->id_seller = $seller->id;
+            $s->registration_date = date("Y-m-d H:i:s");
+            $s->register_link = $result['link'];
+        }
+        $s->spid = $result['spid'];
+        $s->save();
     }
 
     private function getRegisterCompanyData() {
@@ -188,16 +194,6 @@ class NpsPrzelewy24PaymentSettingsModuleFrontController extends ModuleFrontContr
             "iban" => '',
             "acceptance" => false,
         );
-    }
-
-    private function checkCompanyNip($url, $p24_id, $p24_key, $seller) {
-        $soap = new SoapClient($url);
-        return $soap->CheckNIP($p24_id, $p24_key, $seller->nip);
-    }
-
-    private function registerCompany($url, $p24_id, $p24_key, $company) {
-        $soap = new SoapClient($url);
-        return $soap->CompanyRegister($p24_id, $p24_key, $company);
     }
 }
 ?>

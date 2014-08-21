@@ -15,8 +15,6 @@ $id_order = Order::getOrderByCartId($id_cart);
 $m = new NpsPrzelewy24();
 if (empty($p24_error_code)) {
     $validator = new P24PaymentValodator(
-        Tools::getValue('p24_merchant_id'),
-        Tools::getValue('p24_pos_id'),
         Tools::getValue('p24_session_id'),
         Tools::getValue('p24_amount'),
         Tools::getValue('p24_currency'),

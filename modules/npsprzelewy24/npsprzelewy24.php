@@ -142,7 +142,7 @@ class NpsPrzelewy24 extends PaymentModule {
         return Db::getInstance()->Execute('
             DROP TABLE IF EXISTS
             `'._DB_PREFIX_.'p24_payment`,
-            `'._DB_PREFIX_.'p24_payment_statement`
+            `'._DB_PREFIX_.'p24_payment_statement`,
             `'._DB_PREFIX_.'p24_seller_settings`');
     }
 

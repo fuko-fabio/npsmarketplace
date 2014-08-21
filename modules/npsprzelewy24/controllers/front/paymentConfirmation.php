@@ -9,23 +9,18 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
 
     private $payment_url;
 
+    //TODO check payment state
     public function initContent() {
         $this->display_column_left = false;
         $this->display_column_right = false;
         parent::initContent();
-        $this->context->smarty->assign(array(
-            'payment_url' => $this->payment_url
-        ));
-        $this->setTemplate('payment_confirmation.tpl');
-    }
 
-    public function init() {
-        parent::init();
-        $m = new NpsPrzelewy24();
+        $npsprzelewy24 = new NpsPrzelewy24();
         if(isset($_GET['order_id'])) {
             $cart = Cart::getCartByOrderId($_GET['order_id']);
             if($cart == null) {
-                $this -> errors[] = sprintf($m->l('Requested order with id %s not exists. Please try to contact the customer support'), $_GET['order_id']);
+                $this -> errors[] = sprintf($npsprzelewy24->l('Requested order with id %s not exists. Please try to contact the customer support'), $_GET['order_id']);
+                $this->setTemplate('payment_confirmation.tpl');
                 return;
             }
         } else {
@@ -35,7 +30,6 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
         $address = new Address((int)$cart->id_address_invoice);
         $customer = new Customer((int)($cart->id_customer));
         $amount = $cart->getOrderTotal(true, Cart::BOTH);
-        $npsprzelewy24 = new NpsPrzelewy24();
         $currencies = $npsprzelewy24->getCurrency(intval($cart->id_currency));
         $currency = $currencies[0];
 
@@ -63,26 +57,23 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
         if($order == null) {
             $s_descr = $this->validatePayment($npsprzelewy24, $cart, $customer, $amount);
             if ($s_descr == null) {
-                $this -> errors[] = $m->l('Unable to verify order. Please try to contact the customer support');
-                return;
+                $this -> errors[] = $npsprzelewy24->l('Unable to verify order. Please try to contact the customer support');
+                $this->setTemplate('payment_confirmation.tpl');
             }
         } else {
             $s_descr = $this->orderDescription($order, $customer);
         }
-        $url = Configuration::get('NPS_P24_URL');
-        if (Configuration::get('NPS_P24_SANDBOX_MODE') == 1) {
-            $url = Configuration::get('NPS_P24_SANDBOX_URL');
-            $sandbox_descr = Configuration::get('NPS_P24_SANDBOX_ERROR');
-            if(!empty($sandbox_descr)) {
-                $s_descr = $sandbox_descr;
-            }
-        }
-        $this->persistP24Payment($session_id, $cart->id, $amount, $currency['iso_code'], $timestamp);
-        $this->transactionRegister($session_id, $url, $cart, $amount, $customer, $currency, $address, $s_descr, $m);
-	}
 
-    private function transactionRegister($session_id, $url, $cart, $amount, $customer, $currency, $address, $s_descr, $module) {
-        $p24_id = Configuration::get('NPS_P24_MERCHANT_ID');
+        $this->persistP24Payment($session_id, $cart->id, $amount, $currency['iso_code'], $timestamp);
+        $this->transactionRegister($session_id, $cart, $amount, $customer, $currency, $address, $s_descr, $npsprzelewy24);
+        $this->context->smarty->assign(array(
+            'payment_url' => $this->payment_url
+        ));
+        $this->setTemplate('payment_confirmation.tpl');
+    }
+
+    private function transactionRegister($session_id, $cart, $amount, $customer, $currency, $address, $s_descr, $module) {
+        $p24_id = P24::merchantId();
         $s_lang = new Country((int)($address->id_country));
         $phone = $address->phone;
         if (empty($phone)) {
@@ -120,20 +111,8 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
             $data['p24_number_'.$index] = $product['id_product'];
             $index = $index + 1;
         }
+        $result = P24::transactionRegister($data);
 
-        $ch = curl_init($url.'/trnRegister');
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION  ,true);
-        curl_setopt($ch, CURLOPT_HEADER, false); 
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data, '', '&'));
-        curl_setopt($ch, CURLOPT_SSLVERSION, 3);
-        curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'SSLv3');
-        $output=curl_exec($ch);
-        curl_close($ch);
-
-        parse_str($output, $result);
-        
         if ($result['error'] == 0) {
             $this->payment_url = $url.'/trnRequest/'.$result['token'];
             Tools::redirect($this->payment_url);
