@@ -6,6 +6,7 @@
 
 include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24Payment.php');
 include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24PaymentStatement.php');
+include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24.php');
 
 /**
  * Class allows to validate przelewy24 payment result
@@ -42,10 +43,11 @@ class P24PaymentValodator {
     }
 
     /** validate Validates przelewy24 payment result and verifies it
+    * @param String $p24_token token generated for Przelewy24 service
     *
     * @return Array result with error code and error message if needed
     */
-    public function validate() {
+    public function validate($p24_token) {
         if (isset($this->session_id) && $this->verifySign()) {
             $session_id_array = explode('|', $this->session_id);
             $id_cart = $session_id_array[1];
@@ -53,7 +55,10 @@ class P24PaymentValodator {
             $p24_payment = P24Payment::getBySessionId($this->session_id);
 
             if($p24_payment->id != null) {
-
+                if($p24_payment->token != $p24_token) {
+                    PrestaShopLogger::addLog('P24PaymentValodator: Unabe to verify payment. Invalid p24 token value');
+                    return array('error' => 1);
+                }
                 $result = $this->transactionVerify();
                 if ($result['error'] == 0) {
                     $this->persistPaymentStatement($p24_payment->id);
@@ -64,10 +69,10 @@ class P24PaymentValodator {
                     return $result;
                 }
 
-             } else {
+            } else {
                 PrestaShopLogger::addLog('P24PaymentValodator: Unabe to verify payment. Invalid Przelewy24 response data'.implode("&", $_POST));
                 return array('error' => -1, 'errorMessage' => 'Invalid response from przelewy24');
-             }
+            }
         } else {
             PrestaShopLogger::addLog('P24PaymentValodator: Unabe to verify payment. Invalid session ID');
             return array('error' => -1, 'errorMessage' => 'Invalid session ID');

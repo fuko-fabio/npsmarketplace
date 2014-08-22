@@ -111,7 +111,6 @@ class NpsPrzelewy24 extends PaymentModule {
             Configuration::updateValue('NPS_P24_MERCHANT_ID', Tools::getValue('NPS_P24_MERCHANT_ID'));
             Configuration::updateValue('NPS_P24_UNIQUE_KEY', Tools::getValue('NPS_P24_UNIQUE_KEY'));
             Configuration::updateValue('NPS_P24_CRC_KEY', Tools::getValue('NPS_P24_CRC_KEY'));
-            Configuration::updateValue('NPS_P24_SANDBOX_MODE', Tools::getValue('NPS_P24_SANDBOX_MODE'));
             Configuration::updateValue('NPS_P24_URL', Tools::getValue('NPS_P24_URL'));
             $output .= $this->displayConfirmation($this->l('Merchant settings updated sucessfully'));
         } else if (Tools::isSubmit('submitSandbox')) {
@@ -119,7 +118,7 @@ class NpsPrzelewy24 extends PaymentModule {
             Configuration::updateValue('NPS_P24_WEB_SERVICE_URL', Tools::getValue('NPS_P24_WEB_SERVICE_URL'));
             Configuration::updateValue('NPS_P24_SANDBOX_ERROR', Tools::getValue('NPS_P24_SANDBOX_ERROR'));
             Configuration::updateValue('NPS_P24_SANDBOX_WEB_SERVICE_URL', Tools::getValue('NPS_P24_SANDBOX_WEB_SERVICE_URL'));
-            Configuration::updateValue('NPS_P24_REGULATIONS_URL', Tools::getValue('NPS_P24_REGULATIONS_URL'));
+            Configuration::updateValue('NPS_P24_SANDBOX_MODE', Tools::getValue('NPS_P24_SANDBOX_MODE'));
             $output .= $this->displayConfirmation($this->l('Sandbox settings updated sucessfully'));
         } else if (Tools::isSubmit('submitUrls')) {
             Configuration::updateValue('NPS_P24_REGULATIONS_URL', Tools::getValue('NPS_P24_REGULATIONS_URL'));
@@ -143,7 +142,7 @@ class NpsPrzelewy24 extends PaymentModule {
             DROP TABLE IF EXISTS
             `'._DB_PREFIX_.'p24_payment`,
             `'._DB_PREFIX_.'p24_payment_statement`,
-            `'._DB_PREFIX_.'p24_seller_settings`');
+            `'._DB_PREFIX_.'p24_seller_company`');
     }
 
     private function displayForm() {

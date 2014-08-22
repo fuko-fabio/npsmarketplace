@@ -84,7 +84,7 @@ class P24 {
         return $url;
     }
 
-    public static function soapUrl() {
+    private static function soapUrl() {
         $url = Configuration::get('NPS_P24_WEB_SERVICE_URL');
         if (Configuration::get('NPS_P24_SANDBOX_MODE') == 1) {
             $url = Configuration::get('NPS_P24_SANDBOX_WEB_SERVICE_URL');

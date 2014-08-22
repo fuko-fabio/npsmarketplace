@@ -22,17 +22,7 @@
         <br />
         <strong>{l s='By clicking "Submit" I accept the' mod='npsmarketplace'} <a href="{$user_agreement_url}">{l s='User Agreement.' mod='npsmarketplace'}</a></strong>
         <br />
-        <p class="submit">
-            <button type="submit" class="btn btn-default button button-medium"><span>{l s='Submit' mod='npsmarketplace'}<i class="icon-share right"></i></span></button>
-        </p>
+        <button type="submit" class="btn btn-primary btn-lg pull-right"><span>{l s='Submit' mod='npsmarketplace'} <i class="icon-share right"></i></span></button>
     </form>
 </div>
 {/if}
-<ul class="footer_links clearfix">
-    <li>
-        <a class="btn btn-default button button-small" href="{$link->getPageLink('my-account', true)|escape:'html':'UTF-8'}"> <span> <i class="icon-chevron-left"></i> {l s='Back to Your Account' mod='npsmarketplace'} </span> </a>
-    </li>
-    <li>
-        <a class="btn btn-default button button-small" href="{$base_dir}"> <span><i class="icon-chevron-left"></i> {l s='Home' mod='npsmarketplace'}</span> </a>
-    </li>
-</ul>

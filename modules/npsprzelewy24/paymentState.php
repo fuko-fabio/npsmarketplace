@@ -9,6 +9,7 @@ include(dirname(__FILE__).'/npsprzelewy24.php');
 include(dirname(__FILE__).'/classes/P24PaymentValidator.php');
 
 $p24_error_code = Tools::getValue('p24_error_code');
+$p24_token = Tools::getValue('p24-token'); 
 $session_id_array = explode('|', Tools::getValue('p24_session_id'));
 $id_cart = $session_id_array[1];
 $id_order = Order::getOrderByCartId($id_cart);
@@ -23,7 +24,7 @@ if (empty($p24_error_code)) {
         Tools::getValue('p24_statement'),
         Tools::getValue('p24_sign')
     );
-    $result = $validator->validate();
+    $result = $validator->validate($p24_token);
     if ($result['error'] == 0) {
         PrestaShopLogger::addLog('PaymentState: Payment verified. Session ID: '.Tools::getValue('p24_session_id'));
     } else {

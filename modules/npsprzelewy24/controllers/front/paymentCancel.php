@@ -8,7 +8,6 @@ class NpsPrzelewy24PaymentCancelModuleFrontController extends ModuleFrontControl
 
     public function init() {
         parent::init();
-        
-        d($_POST);
+        $this->setTemplate('payment_cancel.tpl');
     }
 }

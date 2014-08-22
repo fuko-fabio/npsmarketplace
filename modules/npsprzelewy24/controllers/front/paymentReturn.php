@@ -6,6 +6,7 @@
 
 include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24PaymentValidator.php');
 include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24ErrorMessage.php');
+include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24TransationDispatcher.php');
 
 class NpsPrzelewy24PaymentReturnModuleFrontController extends ModuleFrontController {
 
@@ -30,7 +31,7 @@ class NpsPrzelewy24PaymentReturnModuleFrontController extends ModuleFrontControl
                 Tools::getValue('p24_sign')
             );
 
-            $result = $validator->validate();
+            $result = $validator->validate(Tools::getValue('p24-token'));
             if ($result['error'] == 0) {
                 $order = P24Payment::getSummaryByCartId($id_cart);
                 $price = Tools::displayPrice($order['amount'] / 100, $this->context->currency);
@@ -39,9 +40,9 @@ class NpsPrzelewy24PaymentReturnModuleFrontController extends ModuleFrontControl
                     'price' => $price,
                     'reference_order' => Order::getUniqReferenceOf($id_order)
                 ));
-                P24TransactionDispatcher::dispatchMoney($id_cart);
+                P24TransationDispatcher::dispatchMoney($id_cart);
             } else {
-                $this->persistPaymentError($order_id);
+                $this->persistPaymentError($id_order);
                 $this->context->smarty->assign(array(
                     'error' => array('code' => $result['error'], 'message' => $result['errorMessage']),
                 ));

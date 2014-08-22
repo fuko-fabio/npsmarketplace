@@ -91,6 +91,15 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
             }
 
             foreach (Language::getLanguages() as $key => $lang) {
+                if(empty($name[$lang['id_lang']])) {
+                    $name[$lang['id_lang']] = $name[(int)$this->context->language->id];
+                }
+                if(empty($description_short[$lang['id_lang']])) {
+                    $description_short[$lang['id_lang']] = $description_short[(int)$this->context->language->id];
+                }
+                if(empty($description[$lang['id_lang']])) {
+                    $description[$lang['id_lang']] = $description[(int)$this->context->language->id];
+                }
                 $p_name = $name[$lang['id_lang']];
                 if (!Validate::isGenericName($p_name))
                     $this -> errors[] = $nps_instance->l('Invalid product name');
@@ -251,8 +260,12 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
     private function saveAttribute($date_time, $quantity) {
         if (!Combination::isFeatureActive() || empty($date_time))
             return;
+        $name = array();
+        foreach (Language::getLanguages() as $key => $lang) {
+            $name[$lang['id_lang']] = $date_time;
+        }
         $attr = new Attribute();
-        $attr->name[$this->context->language->id] = $date_time;
+        $attr->name = $name;
         $attr->id_attribute_group = Configuration::get('NPS_ATTRIBUTE_DT_ID');
         $attr->position = -1;
         $attr->save();
