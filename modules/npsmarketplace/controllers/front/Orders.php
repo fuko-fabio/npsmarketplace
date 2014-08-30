@@ -18,10 +18,13 @@ class NpsMarketplaceOrdersModuleFrontController extends ModuleFrontController
     
     public function initContent() {
         parent::initContent();
+        if (!$this->context->customer->isLogged() && $this->php_self != 'authentication' && $this->php_self != 'password')
+            Tools::redirect('index.php?controller=authentication?back=my-account');
+        $seller = new Seller(null, $this->context->customer->id);
+        if ($seller->id == null) 
+            Tools::redirect('index.php?controller=my-account');
 
-        $seller = new Seller(null, $this -> context -> customer -> id);
         $orders = $this -> getOrders($seller);
-
         $this -> context -> smarty -> assign(array(
             'view_order_link' => $this->context->link->getModuleLink('npsmarketplace', 'Order'),
             'orders' => $orders));

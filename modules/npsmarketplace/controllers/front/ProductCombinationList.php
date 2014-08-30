@@ -26,9 +26,14 @@ class NpsMarketplaceProductCombinationListModuleFrontController extends ModuleFr
         }
     }
 
-    public function initContent()
-    {
+    public function initContent() {
         parent::initContent();
+        if (!$this->context->customer->isLogged() && $this->php_self != 'authentication' && $this->php_self != 'password')
+            Tools::redirect('index.php?controller=authentication?back=my-account');
+        $seller = new Seller(null, $this->context->customer->id);
+        if ($seller->id == null) 
+            Tools::redirect('index.php?controller=my-account');
+
         $comb_array = array();
         $id_product = (int)Tools::getValue('id_product', 0);
         $product = new Product($id_product);

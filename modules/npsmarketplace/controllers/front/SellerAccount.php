@@ -11,14 +11,12 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
      */
     protected $_seller;
 
-    public function setMedia()
-    {
+    public function setMedia() {
         parent::setMedia();
         $this -> addJS(array(_PS_JS_DIR_.'validate.js'));
     }
 
-    public function postProcess()
-    {
+    public function postProcess() {
         if (Tools::isSubmit('company_name')
             && Tools::isSubmit('seller_name')
             && Tools::isSubmit('seller_phone')
@@ -107,6 +105,12 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
 
     public function initContent() {
         parent::initContent();
+        if (!$this->context->customer->isLogged() && $this->php_self != 'authentication' && $this->php_self != 'password')
+            Tools::redirect('index.php?controller=authentication?back=my-account');
+        $seller = new Seller(null, $this->context->customer->id);
+        if ($seller->id == null) 
+            Tools::redirect('index.php?controller=my-account');
+
         $tpl_seller = array();
         if (isset($this -> _seller -> id)) {
             $tpl_seller = array(

@@ -138,11 +138,22 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
      */
     public function init() {
         parent::init();
-        $nps_instance = new NpsMarketplace();
+        if (!$this->context->customer->isLogged() && $this->php_self != 'authentication' && $this->php_self != 'password')
+            Tools::redirect('index.php?controller=authentication?back=my-account');
+        $this->_seller = new Seller(null, $this->context->customer->id);
+        if ($this->_seller->id == null) 
+            Tools::redirect('index.php?controller=my-account');
 
         $id_product = (int)Tools::getValue('id_product', 0);
+        if($id_product != 0) {
+            $products = $this->_seller->getSellerProducts($this->_seller->id);
+
+            if (!in_array($id_product, $products))
+                Tools::redirect('index.php?fc=module&module=npsmarketplace&controller=ProductsList');
+        }
+
+        $nps_instance = new NpsMarketplace();
         $this->_product = new Product($id_product);
-        $this->_seller = new Seller(null, $this->context->customer->id);
 
         if ($id_product) {
             if (Validate::isLoadedObject($this->_product) && Validate::isLoadedObject($this->_seller) && Seller::sellerHasProduct($this->_seller->id, $id_product)) {

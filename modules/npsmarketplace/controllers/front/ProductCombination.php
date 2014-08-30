@@ -11,8 +11,7 @@ class NpsMarketplaceProductCombinationModuleFrontController extends ModuleFrontC
      */
     protected $_product;
 
-    public function setMedia()
-    {
+    public function setMedia() {
         parent::setMedia();
         $this -> addJS (_PS_MODULE_DIR_.'npsmarketplace/js/datetime_init.js');
         $this -> addJS (_PS_MODULE_DIR_.'npsmarketplace/js/bootstrap.min.js');
@@ -22,8 +21,7 @@ class NpsMarketplaceProductCombinationModuleFrontController extends ModuleFrontC
         $this -> addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/bootstrap-datetimepicker.min.css');
     }
 
-    public function postProcess()
-    {
+    public function postProcess() {
         if (Tools::isSubmit('date_time') && Tools::isSubmit('quantity'))
         {
             if (!Combination::isFeatureActive())
@@ -57,8 +55,7 @@ class NpsMarketplaceProductCombinationModuleFrontController extends ModuleFrontC
      * Initialize controller
      * @see FrontController::init()
      */
-    public function init()
-    {
+    public function init() {
         parent::init();
 
         $id_product = (int)Tools::getValue('id_product', 0);
@@ -86,9 +83,13 @@ class NpsMarketplaceProductCombinationModuleFrontController extends ModuleFrontC
         }
     }
 
-    public function initContent()
-    {
+    public function initContent() {
         parent::initContent();
+        if (!$this->context->customer->isLogged() && $this->php_self != 'authentication' && $this->php_self != 'password')
+            Tools::redirect('index.php?controller=authentication?back=my-account');
+        $seller = new Seller(null, $this->context->customer->id);
+        if ($seller->id == null) 
+            Tools::redirect('index.php?controller=my-account');
 
         $tpl_product = array();
         if (isset($this->_product->id)) {

@@ -4,7 +4,7 @@
 *  @copyright 2014 npsoftware
 */
 
-class P24Payment extends ObjectModel
+class P24SellerSettings extends ObjectModel
 {
     public $id_seller;
     public $spid;

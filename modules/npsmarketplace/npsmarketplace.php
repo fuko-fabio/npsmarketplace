@@ -106,7 +106,6 @@ class NpsMarketplace extends Module {
                 'add_product_link' => $this->context->link->getModuleLink('npsmarketplace', 'Product'),
                 'products_list_link' => $this->context->link->getModuleLink('npsmarketplace', 'ProductsList'),
                 'orders_link' => $this->context->link->getModuleLink('npsmarketplace', 'Orders'),
-                'payment_settings_link' => $this->context->link->getModuleLink('npsmarketplace', 'PaymentSettings'),
                 'unlock_account_link' => $this->context->link->getModuleLink('npsmarketplace', 'UnlockAccount'),
                 'seller_profile_link' => $this->context->link->getModuleLink('npsmarketplace', 'SellerAccount', array('id_seller' => $seller->id))
             )

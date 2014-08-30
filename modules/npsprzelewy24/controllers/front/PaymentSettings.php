@@ -3,22 +3,29 @@
 *  @author Norbert Pabian <norbert.pabian@gmail.com>
 *  @copyright 2014 npsoftware
 */
-include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/iban/php-iban.php');
+include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/iban/php-iban.php');
 
 class NpsPrzelewy24PaymentSettingsModuleFrontController extends ModuleFrontController {
 
+    public function setMedia() {
+        parent::setMedia();
+        $this -> addJS(_PS_JS_DIR_.'validate.js');
+        $this -> addJS (_PS_MODULE_DIR_.'npsprzelewy24/js/iban.js');
+    }
+
     public function postProcess() {
         if (Tools::isSubmit('company_name')
-            && Tools::isSubmit('city')
+            && Tools::isSubmit('person')
             && Tools::isSubmit('street')
             && Tools::isSubmit('post_code')
-            && Tools::isSubmit('email')
+            && Tools::isSubmit('city')
             && Tools::isSubmit('nip')
-            && Tools::isSubmit('person')
             && Tools::isSubmit('regon')
-            && Tools::isSubmit('iban')) {
+            && Tools::isSubmit('iban')
+            && Tools::isSubmit('email')) {
 
-            $nps_instance = new NpsMarketplace();
+            $nps_instance = new NpsPrzelewy24();
+            $seller = new Seller(null, $this->context->customer->id);
 
             $company_name = trim(Tools::getValue('company_name'));
             $city = trim(Tools::getValue('city'));
@@ -71,8 +78,11 @@ class NpsPrzelewy24PaymentSettingsModuleFrontController extends ModuleFrontContr
             else if (empty($regon) && !Validate::isRegon($regon))
                 $this -> errors[] = $nps_instance->l('Invalid REGON number');
 
-            if(!verify_iban($iban_to_verify))
+            if(!verify_iban($iban))
                 $this -> errors[] = $nps_instance->l('Invalid IBAN number');
+
+            if (!$acceptance)
+                $this -> errors[] = $nps_instance->l('Acceptance of the Przelewy24 regulations is required');
 
             if(empty($this->errors)) {
                 $company = array(
@@ -87,55 +97,102 @@ class NpsPrzelewy24PaymentSettingsModuleFrontController extends ModuleFrontContr
                     "IBAN" => $iban,
                     "acceptance" => $acceptance,
                 );
-                $this->registerCompany($company);
+                d($company);
+                $p24_id = Configuration::get('NPS_P24_MERCHANT_ID');
+                $p24_key = Configuration::get('NPS_P24_UNIQUE_KEY');
+                $url = Configuration::get('NPS_P24_WEB_SERVICE_URL');
+                if (Configuration::get('NPS_P24_SANDBOX_MODE') == 1) {
+                    $url = Configuration::get('NPS_P24_SANDBOX_WEB_SERVICE_URL');
+                }
+                $res = $this->registerCompany($url, $p24_id, $p24_key, $company);
+                if ($res->error->errorCode) {
+                    d('Something went wrong: ' . $res->error->errorMessage);
+                } else {
+                    $this->persistPaymentSettings($res->result, $seller);
+                    d("Company created: " . $res->result->spid . ", click to finish: ".$res->result->link);
+                }
             }
         }
     }
 
     public function initContent() {
         parent::initContent();
+        if (!$this->context->customer->isLogged() && $this->php_self != 'authentication' && $this->php_self != 'password')
+            Tools::redirect('index.php?controller=authentication?back=my-account');
+        $seller = new Seller(null, $this->context->customer->id);
+        if (!$seller->active)
+            Tools::redirect('index.php?controller=my-account');
+        if ($seller->locked)
+            Tools::redirect($this->context->link->getModuleLink('npsmarketplace', 'UnlockAccount'));
+
         $p24_id = Configuration::get('NPS_P24_MERCHANT_ID');
         $p24_key = Configuration::get('NPS_P24_UNIQUE_KEY');
         $url = Configuration::get('NPS_P24_WEB_SERVICE_URL');
         if (Configuration::get('NPS_P24_SANDBOX_MODE') == 1) {
             $url = Configuration::get('NPS_P24_SANDBOX_WEB_SERVICE_URL');
         }
-        $seller = new Seller(null, $this->context->customer->id);
-        $res = $this->checkCompanyNip($url, $p24_id, $p24_key, $seller);
-        if ($res->error->errorCode) {
-            d('Something went wrong: ' . $res->error->errorMessage);
-            $this->setTemplate('payment_settings_error.tpl');
-        } else {
-            if ($res->result) {
-                $this->setTemplate('company_registered.tpl');
-            } else {
-                $res = $this->registerCompany($url, $p24_id, $p24_key, $seller, $this->context->customer);
-                if ($res->error->errorCode) {
-                    d('Something went wrong: ' . $res->error->errorMessage);
-                } else {
-                    d("Company created: " . $res->result->spid . ", click to finish: ".$res->result->link);
-                }
-                $this->getRegisterCompanyFormData();
-                $this->setTemplate('payent_settings.tpl');
-            }
-        }
+        //$res = array('error'=> array('errorCode' => 0), 'result' => 0);//$this->checkCompanyNip($url, $p24_id, $p24_key, $seller);
+        //if ($res->error->errorCode) {
+        //    d('Something went wrong: ' . $res->error->errorMessage);
+        //    $this->setTemplate('payment_settings_error.tpl');
+        //} else {
+            //if ($res->result) {
+            //    $this->setTemplate('company_registered.tpl');
+            //} else {
+                //$res = $this->registerCompany($url, $p24_id, $p24_key, $seller, $this->context->customer);
+                //if ($res->error->errorCode) {
+                //    d('Something went wrong: ' . $res->error->errorMessage);
+                //} else {
+                //    d("Company created: " . $res->result->spid . ", click to finish: ".$res->result->link);
+                //}
+                $this->context->smarty->assign(array(
+                    'company' => $this->getRegisterCompanyData(),
+                    'p24_agreement_url' => Configuration::get('NPS_P24_REGULATIONS_URL')
+                ));
+                $this->setTemplate('payent_register_company.tpl');
+        //    }
+        //}
     }
 
-    private function getRegisterCompanyFormData() {
+    private function persistPaymentSettings($result, $seller){
+        $settings = new P24SellerSettings();
+        $settings->active = true;
+        $settings->id_seller = $seller->id;
+        $settings->register_link = $result->link;
+        $settings->registration_date = date("Y-m-d H:i:s");;
+        $settings->spid = $result->spid;
+        $settings->save();
+    }
+
+    private function getRegisterCompanyData() {
         $city = '';
-        $postcode = '';
+        $post_code = '';
         $address = '';
-        $addresses = $customer->getAddresses();
+        $cust = $this->context->customer;
+        $seller = new Seller(null, $cust->id);
+        $addresses = $cust->getAddresses($this->context->language->id);
         if (!empty($addresses)) {
             $city = $addresses[0]['city'];
-            $postcode = $addresses[0]['postcode'];
+            $post_code = $addresses[0]['postcode'];
             $address = $addresses[0]['address1'].' '.$addresses[0]['address2'];
         }
+        return array(
+            "company_name" => $seller->company_name,
+            "city" => $city,
+            "street" => $address,
+            "post_code" => $post_code,
+            "email" => $seller->email,
+            "nip" => $seller->nip,
+            "person" => $cust->firstname.' '.$cust->lastname,
+            "regon" => $seller->regon,
+            "iban" => '',
+            "acceptance" => false,
+        );
     }
 
     private function checkCompanyNip($url, $p24_id, $p24_key, $seller) {
         $soap = new SoapClient($url);
-        return $soap->CheckNIP($p24_id, $p24_key, $nip);
+        return $soap->CheckNIP($p24_id, $p24_key, $seller->nip);
     }
 
     private function registerCompany($url, $p24_id, $p24_key, $company) {

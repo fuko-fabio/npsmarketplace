@@ -196,6 +196,10 @@ function validate_isPrice (s) {
   return reg.test(s);
 }
 
+function validate_isIban (s) {
+  return IBAN.isValid(s);
+}
+
 $(document).on('focusout', 'input.validate, textarea.validate', function() {
 	if ($(this).hasClass('is_required') || $(this).val().length)
 	{
