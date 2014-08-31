@@ -58,7 +58,6 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
         $amount = number_format($amount, 2, '.', '') * 100;
         $timestamp = time();
         $session_id = $this->generateSessionId($cart, $timestamp);
-        $this->persistP24Payment($session_id, $cart->id, $amount, $currency['iso_code'], $timestamp);
 
         $order = Order::getOrderByCartId($cart->id);
         if($order == null) {
@@ -78,6 +77,7 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
                 $s_descr = $sandbox_descr;
             }
         }
+        $this->persistP24Payment($session_id, $cart->id, $amount, $currency['iso_code'], $timestamp);
         $this->transactionRegister($session_id, $url, $cart, $amount, $customer, $currency, $address, $s_descr, $m);
 	}
 

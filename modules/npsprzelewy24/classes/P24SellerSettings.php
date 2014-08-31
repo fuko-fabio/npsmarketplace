@@ -19,7 +19,10 @@ class P24SellerSettings extends ObjectModel
                 -> select('`id_seller_settings`')
                 -> from('p24_seller_settings')
                 -> where('`id_seller` = '.$id_seller);
-            $id_seller_settings = Db::getInstance() -> getValue($query);
+            $id = Db::getInstance() -> getValue($query);
+            if ($id) {
+                $id_seller_settings = $id;
+            }
         }
         parent::__construct($id_seller_settings);
     }
