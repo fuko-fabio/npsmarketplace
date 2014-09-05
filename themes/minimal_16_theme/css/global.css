@@ -5688,13 +5688,13 @@ span.exclusive {
   text-shadow: 1px 1px rgba(0, 0, 0, 0.2);
   padding: 0;
   border: 1px solid;
-  border-color: #99CA3A; }
+  border-color: #FFCC00; }
   .button.ajax_add_to_cart_button span {
     border: 1px solid;
-    border-color: #99CA3A;
+    border-color: #FFCC00;
     padding: 7px 14px;
     display: block;
-    background: #99CA3A; }
+    background: #FFCC00; }
   .button.ajax_add_to_cart_button:hover { }
     .button.ajax_add_to_cart_button:hover span {
       filter: none; }
@@ -5886,7 +5886,7 @@ table.table_block td {
 .sale-label {
   font: 700 14px/12px Arial, Helvetica, sans-serif;
   color: white;
-  background: #99CA3A;
+  background: #FFCC00;
   text-transform: uppercase;
   padding: 9px 0 7px;
   text-shadow: 1px 1px rgba(0, 0, 0, 0.24);
@@ -5908,7 +5908,7 @@ table.table_block td {
     height: 0px;
     border-style: solid;
     border-width: 4px 4px 0px 4px;
-    border-color: #99CA3A transparent transparent transparent;
+    border-color: #FFCC00 transparent transparent transparent;
     content: ".";
     text-indent: -5000px;
     -webkit-transform: rotate(225deg);
@@ -5922,7 +5922,7 @@ table.table_block td {
     height: 0px;
     border-style: solid;
     border-width: 4px 4px 0px 4px;
-    border-color: #99CA3A transparent transparent transparent;
+    border-color: #FFCC00 transparent transparent transparent;
     content: ".";
     text-indent: -5000px;
     -webkit-transform: rotate(135deg);
@@ -7919,7 +7919,7 @@ div.star.star_hover:after {
     color: white;
     line-height: 60px;
     text-align: center;
-    background: #99CA3A;
+    background: #FFCC00;
     -webkit-border-radius: 100px;
     -moz-border-radius: 100px;
     border-radius: 100px; }

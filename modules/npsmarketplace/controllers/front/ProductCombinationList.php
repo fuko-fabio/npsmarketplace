@@ -26,9 +26,14 @@ class NpsMarketplaceProductCombinationListModuleFrontController extends ModuleFr
         }
     }
 
-    public function initContent()
-    {
+    public function initContent() {
         parent::initContent();
+        if (!$this->context->customer->isLogged() && $this->php_self != 'authentication' && $this->php_self != 'password')
+            Tools::redirect('index.php?controller=authentication?back=my-account');
+        $seller = new Seller(null, $this->context->customer->id);
+        if ($seller->id == null) 
+            Tools::redirect('index.php?controller=my-account');
+
         $comb_array = array();
         $id_product = (int)Tools::getValue('id_product', 0);
         $product = new Product($id_product);
@@ -80,6 +85,7 @@ class NpsMarketplaceProductCombinationListModuleFrontController extends ModuleFr
                     $comb_array[$id_product_attribute]['available_date'] = $product_attribute['available_date'] != 0 ? date('Y-m-d', strtotime($product_attribute['available_date'])) : '0000-00-00';
                     $comb_array[$id_product_attribute]['attributes'] = $list;
                     $comb_array[$id_product_attribute]['name'] = substr(strstr($list,'-'), 2);
+                    $comb_array[$id_product_attribute]['quantity'] = StockAvailable::getQuantityAvailableByProduct($product->id, $id_product_attribute, $this->context->shop->id);
                     $comb_array[$id_product_attribute]['delete_url'] = $this->context->link->getModuleLink('npsmarketplace',
                                                                                                            'ProductCombinationList',
                                                                                                            array(

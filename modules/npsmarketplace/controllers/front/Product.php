@@ -5,16 +5,20 @@
 */
 
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/CategoriesList.php');
-include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/ProductRequestProcessor.php');
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
 
 class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
 {
 
-        /**
+    /**
      * @var _product Current product
      */
     protected $_product;
+
+    /**
+     * @var _seller Current product owner
+     */
+    protected $_seller;
 
     public function setMedia()
     {
@@ -33,22 +37,106 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
 
     public function postProcess()
     {
-        if (Tools::isSubmit('product_name')
-            && Tools::isSubmit('product_price')
-            && Tools::isSubmit('product_amount')
-            && Tools::isSubmit('product_town')
-            && Tools::isSubmit('product_address')
-            && Tools::isSubmit('product_district'))
-        {
-            $seller = new Seller(null, $this->context->customer->id);
-            $pp = new ProductRequestProcessor($this->context);
-            $product = $pp->processSubmit($seller->active);
-            $this->errors = $pp->errors;
-            if(empty($this->errors))
-            {
-                if (!$seller->assignProduct($product->id))
-                    $this->errors[] = Tools::displayError('An error occurred while updating seller information.');
-                Tools::redirect('index.php?fc=module&module=npsmarketplace&controller=ProductsList');
+        if (Tools::isSubmit('name')
+            && Tools::isSubmit('price')
+            && Tools::isSubmit('town')
+            && Tools::isSubmit('address')
+            && Tools::isSubmit('district')) {
+
+            $nps_instance = new NpsMarketplace();
+            $current_id_product = trim(Tools::getValue('id_product'));
+
+            $name = $_POST['name'];
+            $description_short = $_POST['description_short'];
+            $description = $_POST['description'];
+            $price = trim(Tools::getValue('price'));
+            $quantity = trim(Tools::getValue('quantity'));
+            $date_time = trim(Tools::getValue('date_time'));
+            $town = trim(Tools::getValue('town'));
+            $district = trim(Tools::getValue('district'));
+            $address = trim(Tools::getValue('address'));
+            $lat = trim(Tools::getValue('lat'));
+            $lng = trim(Tools::getValue('lng'));
+            $reference = trim(Tools::getValue('reference'));
+            $categories = array();
+            $link_rewrite = array();
+            if (isset($_POST['category'])) {
+                $categories = $_POST['category'];
+            }
+
+            if (empty($name[(int)$this->context->language->id]))
+                $this -> errors[] = $nps_instance->l('Product name is required');
+            if (empty($address))
+                $this -> errors[] = $nps_instance->l('Product address is required');
+            if (empty($district))
+                $this -> errors[] = $nps_instance->l('Product district is required');
+            if (empty($town))
+                $this -> errors[] = $nps_instance->l('Product town is required');
+            if (empty($price))
+                $this -> errors[] = $nps_instance->l('Product price is required');
+            if (!Validate::isFloat($price))
+                $this -> errors[] = $nps_instance->l('Invalid product price');
+            if (!Validate::isMessage($reference))
+                $this -> errors[] = $nps_instance->l('Invalid product reference');
+            if (empty($categories))
+                $this -> errors[] = $nps_instance->l('At least one category must be selected');
+
+            if(empty($current_id_product)) {
+                if (empty($date_time))
+                    $this -> errors[] = $nps_instance->l('Product date and time is required');
+                if (!Validate::isInt($quantity))
+                    $this -> errors[] = $nps_instance->l('Invalid product quantity');
+                if (empty($quantity))
+                    $this -> errors[] = $nps_instance->l('Product quantity is required');
+            }
+
+            foreach (Language::getLanguages() as $key => $lang) {
+                if(empty($name[$lang['id_lang']])) {
+                    $name[$lang['id_lang']] = $name[(int)$this->context->language->id];
+                }
+                if(empty($description_short[$lang['id_lang']])) {
+                    $description_short[$lang['id_lang']] = $description_short[(int)$this->context->language->id];
+                }
+                if(empty($description[$lang['id_lang']])) {
+                    $description[$lang['id_lang']] = $description[(int)$this->context->language->id];
+                }
+                $p_name = $name[$lang['id_lang']];
+                if (!Validate::isGenericName($p_name))
+                    $this -> errors[] = $nps_instance->l('Invalid product name');
+                if (!Validate::isCleanHtml($description_short[$lang['id_lang']]))
+                    $this -> errors[] = $nps_instance->l('Invalid product short description');
+                if (!Validate::isCleanHtml($description[$lang['id_lang']]))
+                    $this -> errors[] = $nps_instance->l('Invalid product description');
+
+                $link_rewrite[$lang['id_lang']] = Tools::link_rewrite($p_name);
+            }
+
+            if (empty($this -> errors)) {
+                $this->_product -> price = $price;
+                $this->_product -> name = $name;
+                $this->_product -> description = $description;
+                $this->_product -> description_short = $description_short;
+                $this->_product -> link_rewrite = $link_rewrite;
+                $this->_product -> reference = $reference;
+                $this->_product -> id_category_default = $categories[0];
+                if(empty($current_id_product)) {
+                    $this->_product -> is_virtual = true;
+                    $this->_product -> indexed = 1;
+                    $this->_product -> id_tax_rules_group = 0;
+                    $this->_product -> active = $this->_seller->active;
+                }
+                if (!$this->_product->save()) {
+                    $this->errors[] = $nps_instance->l('Unable to save product.');
+                } else {
+                    if(empty($current_id_product)) {
+                        $this->saveAttribute($date_time, (int)$quantity);
+                        $this->_seller->assignProduct($this->_product->id);
+                    }
+                    $this->saveFeatures($town, $district, $address);
+                    $this -> _product->updateCategories($categories);
+                    $this->saveProductImages();
+                    Tools::redirect('index.php?fc=module&module=npsmarketplace&controller=ProductsList');
+                }
             }
         }
     }
@@ -57,23 +145,31 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
      * Initialize product controller
      * @see FrontController::init()
      */
-    public function init()
-    {
+    public function init() {
         parent::init();
-        
+        if (!$this->context->customer->isLogged() && $this->php_self != 'authentication' && $this->php_self != 'password')
+            Tools::redirect('index.php?controller=authentication?back=my-account');
+        $this->_seller = new Seller(null, $this->context->customer->id);
+        if ($this->_seller->id == null) 
+            Tools::redirect('index.php?controller=my-account');
+
         $id_product = (int)Tools::getValue('id_product', 0);
-        // Initialize product
-        if ($id_product)
-        {
-            $this->_product = new Product($id_product);
-            $seller = new Seller(null, $this->context->customer->id);
-            if (Validate::isLoadedObject($this->_product) && Validate::isLoadedObject($seller) && Seller::sellerHasProduct($seller->id, $id_product))
-            {
-                if (Tools::isSubmit('delete'))
-                {
+        if($id_product != 0) {
+            $products = $this->_seller->getSellerProducts($this->_seller->id);
+
+            if (!in_array($id_product, $products))
+                Tools::redirect('index.php?fc=module&module=npsmarketplace&controller=ProductsList');
+        }
+
+        $nps_instance = new NpsMarketplace();
+        $this->_product = new Product($id_product);
+
+        if ($id_product) {
+            if (Validate::isLoadedObject($this->_product) && Validate::isLoadedObject($this->_seller) && Seller::sellerHasProduct($this->_seller->id, $id_product)) {
+                if (Tools::isSubmit('delete')) {
                     if ($this->_product->delete())
                         Tools::redirect('index.php?fc=module&module=npsmarketplace&controller=ProductsList');
-                    $this->errors[] = Tools::displayError('This product cannot be deleted.');
+                    $this->errors[] = $nps_instance->l('This product cannot be deleted.');
                 }
             }
             elseif ($this->ajax)
@@ -97,7 +193,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
         parent::initContent();
 
         $tpl_product = array('categories' => array(), 'town' => null);
-        if (isset($this->_product->id)) {
+        if ($this->_product->id != 0) {
             $features = $this->_product->getFeatures();
             $tpl_product = array(
                 'id' => $this->_product->id,
@@ -113,8 +209,8 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
                 'categories' => $this->_product->getCategories(),
             );
         }
-        // TODO Read towns
-        $towns = array('Kraków', 'Warszawa');
+        $towns = $this->getActiveTowns((int)$this->context->language->id);
+        $districts = $this->getDistricts();
         $categoriesList = new CategoriesList($this->context);
         $this -> context -> smarty -> assign(array(
             'user_agreement_url' =>'#',
@@ -126,9 +222,158 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
             'current_id_lang' => (int)$this->context->language->id,
             'languages' => Language::getLanguages(),
             'towns' => $towns,
+            'districts' => $districts,
         ));
 
         $this->setTemplate('product.tpl');
+    }
+
+    private function getActiveTowns($lang_id) {
+        $sql = 'SELECT `name` from `'._DB_PREFIX_.'town` t
+                LEFT JOIN `'._DB_PREFIX_.'town_lang` tl ON (tl.`id_town` = t.`id_town`)
+                WHERE tl.`id_lang` = '.(int)$lang_id;
+        return Db::getInstance()->ExecuteS($sql);
+    }
+
+    private function getDistricts() {
+        return Db::getInstance()->ExecuteS('SELECT `name` from '._DB_PREFIX_.'district');
+    }
+
+    private function saveFeatures($town, $district, $address) {
+        if (!Feature::isFeatureActive())
+            return;
+        $feature_id = Configuration::get('NPS_FEATURE_TOWN_ID');
+        $feature_value_id = FeatureValue::addFeatureValueImport($feature_id, $town, $this->_product->id);
+        Product::addFeatureProductImport($this->_product->id, $feature_id, $feature_value_id);
+
+        $feature_id = Configuration::get('NPS_FEATURE_DISTRICT_ID');
+        $feature_value_id = FeatureValue::addFeatureValueImport($feature_id, $district, $this->_product->id);
+        Product::addFeatureProductImport($this->_product->id, $feature_id, $feature_value_id);
+
+        $feature_id = Configuration::get('NPS_FEATURE_ADDRESS_ID');
+        $feature_value_id = FeatureValue::addFeatureValueImport($feature_id, $address, $this->_product->id);
+        Product::addFeatureProductImport($this->_product->id, $feature_id, $feature_value_id);
+
+        return true;
+    }
+
+    private function saveAttribute($date_time, $quantity) {
+        if (!Combination::isFeatureActive() || empty($date_time))
+            return;
+        $name = array();
+        foreach (Language::getLanguages() as $key => $lang) {
+            $name[$lang['id_lang']] = $date_time;
+        }
+        $attr = new Attribute();
+        $attr->name = $name;
+        $attr->id_attribute_group = Configuration::get('NPS_ATTRIBUTE_DT_ID');
+        $attr->position = -1;
+        $attr->save();
+
+        $id_combination = $this->_product->addAttribute(
+            0,//$price,
+            null,//$weight,
+            null,//$unit_impact,
+            null,//$ecotax,
+            null,//$id_images,
+            null,//$reference,
+            null,//$ean13,
+            true);
+       $combination = new Combination($id_combination);
+       $combination->setAttributes(array($attr->id));
+       StockAvailable::setQuantity($this->_product->id, $attr->id, $quantity, $this->context->shop->id);
+    }
+
+    private function saveProductImages() {
+        $image_uploader = new HelperImageUploader('product');
+        $image_uploader -> setAcceptTypes(array('jpeg', 'gif', 'png', 'jpg')) -> setMaxSize((int)Configuration::get('PS_PRODUCT_PICTURE_MAX_SIZE'));
+        $files = $image_uploader -> process();
+
+        foreach ($files as &$file) {
+            $image = new Image();
+            $image -> id_product = (int)($this -> _product -> id);
+            $image -> position = Image::getHighestPosition($this -> _product -> id) + 1;
+
+            if (!Image::getCover($image -> id_product))
+                $image -> cover = 1;
+            else
+                $image -> cover = 0;
+
+            if (($validate = $image -> validateFieldsLang(false, true)) !== true)
+                $this -> errors[] = Tools::displayError($validate);
+
+            if (isset($file['error']) && (!is_numeric($file['error']) || $file['error'] != 0))
+                continue;
+
+            if (!$image -> add())
+                $this -> errors[] = Tools::displayError('Error while creating additional image');
+            else {
+                if (!$new_path = $image -> getPathForCreation()) {
+                    $this -> errors[] = Tools::displayError('An error occurred during new folder creation');
+                    continue;
+                }
+
+                $error = 0;
+
+                if (!ImageManager::resize($file['save_path'], $new_path . '.' . $image -> image_format, null, null, 'jpg', false, $error)) {
+                    switch ($error) {
+                        case ImageManager::ERROR_FILE_NOT_EXIST :
+                            $this -> errors[] = Tools::displayError('An error occurred while copying image, the file does not exist anymore.');
+                            break;
+
+                        case ImageManager::ERROR_FILE_WIDTH :
+                            $this -> errors[] = Tools::displayError('An error occurred while copying image, the file width is 0px.');
+                            break;
+
+                        case ImageManager::ERROR_MEMORY_LIMIT :
+                            $this -> errors[] = Tools::displayError('An error occurred while copying image, check your memory limit.');
+                            break;
+
+                        default :
+                            $this -> errors[] = Tools::displayError('An error occurred while copying image.');
+                            break;
+                    }
+                    continue;
+                } else {
+                    $imagesTypes = ImageType::getImagesTypes('products');
+                    foreach ($imagesTypes as $imageType) {
+                        if (!ImageManager::resize($file['save_path'], $new_path . '-' . stripslashes($imageType['name']) . '.' . $image -> image_format, $imageType['width'], $imageType['height'], $image -> image_format)) {
+                            $this -> errors[] = Tools::displayError('An error occurred while copying image:') . ' ' . stripslashes($imageType['name']);
+                            continue;
+                        }
+                    }
+                }
+
+                unlink($file['save_path']);
+                //Necesary to prevent hacking
+                unset($file['save_path']);
+                Hook::exec('actionWatermark', array('id_image' => $image -> id, 'id_product' => $this -> _product -> id));
+
+                if (!$image -> update()) {
+                    $this -> errors[] = Tools::displayError('Error while updating status');
+                    continue;
+                }
+
+                // Associate image to shop from context
+                $shops = Shop::getContextListShopID();
+                $image -> associateTo($shops);
+                $json_shops = array();
+
+                foreach ($shops as $id_shop)
+                    $json_shops[$id_shop] = true;
+
+                $file['status'] = 'ok';
+                $file['id'] = $image -> id;
+                $file['position'] = $image -> position;
+                $file['cover'] = $image -> cover;
+                $file['legend'] = $image -> legend;
+                $file['path'] = $image -> getExistingImgPath();
+                $file['shops'] = $json_shops;
+
+                @unlink(_PS_TMP_IMG_DIR_ . 'product_' . (int)$this -> _product -> id . '.jpg');
+                @unlink(_PS_TMP_IMG_DIR_ . 'product_mini_' . (int)$this -> _product -> id . '_' . $this -> context -> shop -> id . '.jpg');
+            }
+        }
     }
 }
 ?>

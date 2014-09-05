@@ -4,23 +4,24 @@
 *  @copyright 2014 npsoftware
 */
 
-class NpsMarketplaceOrderViewModuleFrontController extends ModuleFrontController
-{
-    public function setMedia()
-    {
+class NpsMarketplaceOrderViewModuleFrontController extends ModuleFrontController {
+
+    public function setMedia() {
         parent::setMedia();
         $this -> addJS ("https://maps.googleapis.com/maps/api/js");
         $this -> addJS (_PS_MODULE_DIR_.'npsmarketplace/js/order_map.js');
         
     }
 
-    public function initContent()
-    {
+    public function initContent() {
         parent::initContent();
+        if (!$this->context->customer->isLogged() && $this->php_self != 'authentication' && $this->php_self != 'password')
+            Tools::redirect('index.php?controller=authentication?back=my-account');
+        $seller = new Seller(null, $this->context->customer->id);
+        if ($seller->id == null) 
+            Tools::redirect('index.php?controller=my-account');
 
-        $seller = new Seller(Tools::getValue('id_seller'));
         $order = new Order(Tools::getValue('id_order'));
-
         $this -> context -> smarty -> assign(array(
             'order' => $this->orderForView($order),
             'address' => $this->deliveryAddressForView($order->id_address_delivery),

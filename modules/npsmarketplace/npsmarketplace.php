@@ -18,12 +18,10 @@ if ( !defined( '_NPS_MAILS_DIR_' ) )
 
 include_once(dirname(__FILE__).'/classes/Seller.php');
 
-class NpsMarketplace extends Module
-{
+class NpsMarketplace extends Module {
     const INSTALL_SQL_FILE = 'install.sql';
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->name = 'npsmarketplace';
         $this->tab = 'market_place';
         $this->version = 1.0;
@@ -38,8 +36,7 @@ class NpsMarketplace extends Module
         $this->confirmUninstall = $this->l('Are you sure you want to delete module ? This will have serious impact on your products and orders. Think twice before you do that.');
     }
 
-    public function install()
-    {
+    public function install() {
         if (!file_exists(dirname(__FILE__).'/'.self::INSTALL_SQL_FILE))
             return false;
         else if (!$sql = file_get_contents(dirname(__FILE__).'/'.self::INSTALL_SQL_FILE))
@@ -57,17 +54,18 @@ class NpsMarketplace extends Module
             || !Configuration::updateValue('NPS_PRODUCT_GUIDE_URL', $shop_url)
             || !Configuration::updateValue('NPS_SELLER_GUIDE_URL', $shop_url)
             || !Configuration::updateValue('NPS_PAYMENT_SETTINGS_GUIDE_URL', $shop_url)
+            || !Configuration::updateValue('NPS_SELLER_AGREEMENT_URL', $shop_url)
             || !Configuration::updateValue('NPS_MERCHANT_EMAILS', Configuration::get('PS_SHOP_EMAIL'))
             || !$this->_createTables($sql)
             || !$this->_createTab()
             || !$this->_createFeatures()
-            || !$this->_createAttributes())
+            || !$this->_createAttributes()
+            || !mkdir(_NPS_SEL_IMG_DIR_))
             return false;
         return true;
     }
 
-    public function uninstall()
-    {
+    public function uninstall() {
         if (!parent::uninstall()
             || !$this->unregisterHook('header')
             || !$this->unregisterHook('displayCustomerAccount')
@@ -76,6 +74,7 @@ class NpsMarketplace extends Module
             || !Configuration::deleteByName('NPS_GLOBAL_COMMISION')
             || !Configuration::deleteByName('NPS_PRODUCT_GUIDE_URL')
             || !Configuration::deleteByName('NPS_SELLER_GUIDE_URL')
+            || !Configuration::deleteByName('NPS_SELLER_AGREEMENT_URL')
             || !Configuration::deleteByName('NPS_PAYMENT_SETTINGS_GUIDE_URL')
             || !Configuration::deleteByName('NPS_MERCHANT_EMAILS')
             || !Configuration::deleteByName('NPS_FEATURE_TOWN_ID')
@@ -83,13 +82,13 @@ class NpsMarketplace extends Module
             || !Configuration::deleteByName('NPS_FEATURE_ADDRESS_ID')
             || !Configuration::deleteByName('NPS_ATTRIBUTE_DT_ID')
             || !$this->_deleteTab()
-            || !$this->_deleteTables())
+            || !$this->_deleteTables()
+            || !Tools::deleteDirectory(_NPS_SEL_IMG_DIR_))
             return false;
         return true;
     }
 
-    public function hookDisplayCustomerAccount( $params )
-    {
+    public function hookDisplayCustomerAccount( $params ) {
         $seller = new Seller(null, $this->context->customer->id);
         $account_state = 'none';
         if ($seller->requested == 1 && $seller->active == 0 && $seller->locked == 0)
@@ -107,7 +106,6 @@ class NpsMarketplace extends Module
                 'add_product_link' => $this->context->link->getModuleLink('npsmarketplace', 'Product'),
                 'products_list_link' => $this->context->link->getModuleLink('npsmarketplace', 'ProductsList'),
                 'orders_link' => $this->context->link->getModuleLink('npsmarketplace', 'Orders'),
-                'payment_settings_link' => $this->context->link->getModuleLink('npsmarketplace', 'PaymentSettings'),
                 'unlock_account_link' => $this->context->link->getModuleLink('npsmarketplace', 'UnlockAccount'),
                 'seller_profile_link' => $this->context->link->getModuleLink('npsmarketplace', 'SellerAccount', array('id_seller' => $seller->id))
             )
@@ -115,8 +113,7 @@ class NpsMarketplace extends Module
         return $this->display(__FILE__, 'npsmarketplace.tpl');
     }
 
-    public function hookIframe()
-    {
+    public function hookIframe() {
         $seller = new Seller(Tools::getValue('id'));
         $products = $seller->getProducts();
 
@@ -137,6 +134,7 @@ class NpsMarketplace extends Module
             Configuration::updateValue('NPS_MERCHANT_EMAILS', Tools::getValue('NPS_MERCHANT_EMAILS'));
             $output .= $this->displayConfirmation($this->l('General settings updated'));
         } elseif (Tools::isSubmit('submitUrls')) {
+            Configuration::updateValue('NPS_SELLER_AGREEMENT_URL', Tools::getValue('NPS_SELLER_AGREEMENT_URL'));
             Configuration::updateValue('NPS_PRODUCT_GUIDE_URL', Tools::getValue('NPS_PRODUCT_GUIDE_URL'));
             Configuration::updateValue('NPS_SELLER_GUIDE_URL', Tools::getValue('NPS_SELLER_GUIDE_URL'));
             Configuration::updateValue('NPS_PAYMENT_SETTINGS_GUIDE_URL', Tools::getValue('NPS_PAYMENT_SETTINGS_GUIDE_URL'));
@@ -156,9 +154,8 @@ class NpsMarketplace extends Module
         }
     }
 
-    public function hookProductTabContent($params)
-    {
-$id_seller = (int)Seller::getSellerByProduct(Tools::getValue('id_product'));
+    public function hookProductTabContent($params) {
+        $id_seller = (int)Seller::getSellerByProduct(Tools::getValue('id_product'));
         if(isset($id_seller) && $id_seller > 0) {
             $seller = new Seller(Seller::getSellerByProduct(Tools::getValue('id_product')));
             if($seller->regulations_active) {
@@ -256,6 +253,12 @@ $id_seller = (int)Seller::getSellerByProduct(Tools::getValue('id_product'));
                 'input' => array(
                      array(
                         'type' => 'text',
+                        'label' => $this->l('Seller Agreement  URL'),
+                        'name' => 'NPS_SELLER_AGREEMENT_URL',
+                        'required' => true
+                    ),
+                    array(
+                        'type' => 'text',
                         'label' => $this->l('Seller Guide  URL'),
                         'name' => 'NPS_SELLER_GUIDE_URL',
                         'required' => true
@@ -288,6 +291,7 @@ $id_seller = (int)Seller::getSellerByProduct(Tools::getValue('id_product'));
             'NPS_GLOBAL_COMMISION' => Tools::getValue('NPS_GLOBAL_COMMISION', Configuration::get('NPS_GLOBAL_COMMISION')),
             'NPS_PRODUCT_GUIDE_URL' => Tools::getValue('NPS_PRODUCT_GUIDE_URL', Configuration::get('NPS_PRODUCT_GUIDE_URL')),
             'NPS_SELLER_GUIDE_URL' => Tools::getValue('NPS_SELLER_GUIDE_URL', Configuration::get('NPS_SELLER_GUIDE_URL')),
+            'NPS_SELLER_AGREEMENT_URL' => Tools::getValue('NPS_SELLER_AGREEMENT_URL', Configuration::get('NPS_SELLER_AGREEMENT_URL')),
             'NPS_MERCHANT_EMAILS' => Tools::getValue('NPS_MERCHANT_EMAILS', Configuration::get('NPS_MERCHANT_EMAILS')),
             'NPS_PAYMENT_SETTINGS_GUIDE_URL' => Tools::getValue('NPS_PAYMENT_SETTINGS_GUIDE_URL', Configuration::get('NPS_PAYMENT_SETTINGS_GUIDE_URL')),
 
@@ -305,7 +309,7 @@ $id_seller = (int)Seller::getSellerByProduct(Tools::getValue('id_product'));
         foreach ($languages AS $language)
             $tab->{'name'}[intval($language['id_lang'])] = $this->l('Marketplace');
         $success = $tab->add();
-        
+
         $sellers_tab = new Tab();
         $sellers_tab->id_parent = $tab->id;
         $sellers_tab->position = 0;
@@ -314,6 +318,28 @@ $id_seller = (int)Seller::getSellerByProduct(Tools::getValue('id_product'));
         foreach ($languages AS $language)
         {
             $sellers_tab->{'name'}[intval($language['id_lang'])] = $this->l('Sellers');
+        }
+        $success = $success && $sellers_tab->add();
+
+        $sellers_tab = new Tab();
+        $sellers_tab->id_parent = $tab->id;
+        $sellers_tab->position = 0;
+        $sellers_tab->module = $this->name;
+        $sellers_tab->class_name = 'AdminTowns';
+        foreach ($languages AS $language)
+        {
+            $sellers_tab->{'name'}[intval($language['id_lang'])] = $this->l('Towns');
+        }
+        $success = $success && $sellers_tab->add();
+
+        $sellers_tab = new Tab();
+        $sellers_tab->id_parent = $tab->id;
+        $sellers_tab->position = 0;
+        $sellers_tab->module = $this->name;
+        $sellers_tab->class_name = 'AdminDistricts';
+        foreach ($languages AS $language)
+        {
+            $sellers_tab->{'name'}[intval($language['id_lang'])] = $this->l('Districts');
         }
         $success = $success && $sellers_tab->add();
         return $success;
@@ -334,8 +360,7 @@ $id_seller = (int)Seller::getSellerByProduct(Tools::getValue('id_product'));
     }
 
     /* Set database */
-    private function _createTables($sql)
-    {
+    private function _createTables($sql) {
         foreach ($sql as $query)
             if (!Db::getInstance()->execute(trim($query)))
                 return false;
@@ -343,32 +368,30 @@ $id_seller = (int)Seller::getSellerByProduct(Tools::getValue('id_product'));
         return $this->_alterImageTypeTable();
     }
 
-    private function _deleteTables()
-    {
+    private function _deleteTables() {
         return Db::getInstance()->execute('
             DROP TABLE IF EXISTS
             `'._DB_PREFIX_.'seller`,
             `'._DB_PREFIX_.'seller_lang`,
-            `'._DB_PREFIX_.'seller_product`');
+            `'._DB_PREFIX_.'seller_product`,
+            `'._DB_PREFIX_.'town`,
+            `'._DB_PREFIX_.'town_lang`,
+            `'._DB_PREFIX_.'district`')
+            && Db::getInstance()->execute('ALTER TABLE `'._DB_PREFIX_.'image_type` DROP `sellers`');
     }
 
     private function _alterImageTypeTable() {
         $alterImageType = 'ALTER TABLE  `'._DB_PREFIX_.'image_type` ADD  `sellers` TINYINT(1) NOT NULL AFTER  `stores`';
 
-        $updateImageType = "UPDATE `"._DB_PREFIX_."_image_type` SET  `sellers` =  1 WHERE
-            `"._DB_PREFIX_."_image_type`.`name` IN (
+        $updateImageType = "UPDATE `"._DB_PREFIX_."image_type` SET  `sellers` =  1 WHERE
+            `"._DB_PREFIX_."image_type`.`name` IN (
                 'cart_default',
                 'small_default',
                 'medium_default',
                 'home_default',
-                 'large_default')";
+                'large_default')";
 
-        $sql = 'SELECT * FROM '._DB_PREFIX_.'image_type';
-        $result = Db::getInstance()->ExecuteS($sql);
-        if (!isset($result[0]['sellers']))
-            return Db::getInstance()->Execute($alterImageType) && Db::getInstance()->Execute($updateImageType);
-        else 
-          return true;
+        return Db::getInstance()->Execute($alterImageType) && Db::getInstance()->Execute($updateImageType);
     }
     
     private function _createFeatures() {

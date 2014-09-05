@@ -21,7 +21,4 @@
     {if $account_state == 'active' || $account_state == 'locked'}
         <li><a href="{$orders_link}"><i class="icon-gift"></i><span>{l s='Orders' mod='npsmarketplace'}</span></a></li>
     {/if}
-    {if $account_state == 'active'}
-        <li><a href="{$payment_settings_link}"><i class="icon-money"></i><span>{l s='Payment Settings' mod='npsmarketplace'}</span></a></li>
-    {/if}
 </ul>

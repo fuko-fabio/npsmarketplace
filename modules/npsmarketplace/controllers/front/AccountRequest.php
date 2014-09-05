@@ -5,14 +5,12 @@
 */
 
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/CategoriesList.php');
-include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/SellerRequestProcessor.php');
 
 class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontController {
 
     const __MA_MAIL_DELIMITOR__ = ',';
 
-    public function setMedia()
-    {
+    public function setMedia() {
         parent::setMedia();
         $this -> addJS(array(
                 _PS_JS_DIR_.'validate.js',
@@ -21,19 +19,81 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
             ));
     }
 
-    public function postProcess()
-    {
+    public function postProcess() {
         if (Tools::isSubmit('company_name')
             && Tools::isSubmit('seller_name')
             && Tools::isSubmit('seller_phone')
-            && Tools::isSubmit('seller_email'))
-        {
-            $sp = new SellerRequestProcessor($this->context);
-            $seller = $sp->processSubmit();
-            $this->errors = $sp->errors;
-            if(empty($this->errors))
-            {
-                $this->postImage();
+            && Tools::isSubmit('seller_email')) {
+
+            $nps_instance = new NpsMarketplace();
+
+            $company_name = trim(Tools::getValue('company_name'));
+            $name = trim(Tools::getValue('seller_name'));
+            $phone = trim(Tools::getValue('seller_phone'));
+            $email = trim(Tools::getValue('seller_email'));
+            $nip = Tools::getValue('seller_nip');
+            $regon = Tools::getValue('seller_regon');
+            $company_description = $_POST['company_description'];
+            $companyLogo = trim(Tools::getValue('company_logo'));
+            $regulations_active = Tools::getIsset('regulations_active');
+            $regulations = Tools::getValue('regulations');
+            $link_rewrite = array();
+
+            if (empty($name))
+                $this -> errors[] = $nps_instance->l('Seller name is required');
+            if (!Validate::isGenericName($name))
+                $this -> errors[] = $nps_instance->l('Invalid seller name');
+
+            if (empty($phone))
+                $this -> errors[] = $nps_instance->l('Phone number is required');
+            if (!Validate::isPhoneNumber($phone))
+                $this -> errors[] = $nps_instance->l('Invalid phone number');
+
+            if (empty($email))
+                $this -> errors[] = $nps_instance->l('Buisness email is required');
+            if (!Validate::isEmail($email))
+                $this -> errors[] = $nps_instance->l('Invalid email addres');
+
+            if (empty($company_name))
+                $this -> errors[] = $nps_instance->l('Company name is required');
+            if (!Validate::isGenericName($company_name))
+                $this -> errors[] = $nps_instance->l('Invalid company name');
+
+            if (!empty($nip) && !Validate::isNip($nip))
+                $this -> errors[] = $nps_instance->l('Invalid NIP number');
+
+            if (!empty($regon) && !Validate::isRegon($regon))
+                $this -> errors[] = $nps_instance->l('Invalid REGON number');
+
+            foreach (Language::getLanguages() as $key => $lang) {
+                if (!Validate::isCleanHtml($company_description[$lang['id_lang']]))
+                    $this -> errors[] = $nps_instance->l('Invalid company description');
+                if (!Validate::isCleanHtml($regulations[$lang['id_lang']]))
+                    $this -> errors[] = $nps_instance->l('Invalid regulations content');
+
+                $link_rewrite[$lang['id_lang']] = Tools::link_rewrite($name);
+            }
+    
+            if(empty($this->errors)) {
+                $seller = new Seller((int)Tools::getValue('id_seller', null));
+                $seller -> company_name = $company_name;
+                $seller -> company_description = $company_description;
+                $seller -> name = $name;
+                $seller -> phone = $phone;
+                $seller -> email = $email;
+                $seller -> nip = $nip;
+                $seller -> regon = $regon;
+                $seller -> link_rewrite = $link_rewrite;
+                $seller -> regulations = $regulations;
+                $seller -> regulations_active = $regulations_active;
+                if($seller->id == null) {
+                    $seller -> id_customer = $this -> context -> customer -> id;
+                    $seller -> commision = Configuration::get('NPS_GLOBAL_COMMISION');
+                    $seller -> request_date = date("Y-m-d H:i:s");
+                    $seller -> requested = true;
+                }
+                $seller->save();
+                $this->postImage($seller);
                 $this->mailToSeller($seller);
                 $this->mailToAdmin($seller);
                 Tools::redirect('index.php?controller=my-account' );
@@ -139,7 +199,7 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
                 'account_request_date' => $date,
                 'current_id_lang' => (int)$this->context->language->id,
                 'languages' => Language::getLanguages(),
-                'user_agreement_url' => '#', #TODO Set real url's
+                'user_agreement_url' =>  Configuration::get('NPS_SELLER_AGREEMENT_URL'),
                 'processing_data_url' => '#',
                 'seller_fieldset_tpl_path' => _PS_MODULE_DIR_.'npsmarketplace/views/templates/front/seller_fieldset.tpl',
             )
@@ -148,19 +208,19 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
         $this -> setTemplate('account_request.tpl');
     }
 
-    protected function postImage()
+    protected function postImage($seller)
     {
-        $ret = $this->uploadImage();
+        $ret = $this->uploadImage($seller);
 
         if (isset($_FILES) && count($_FILES) && $_FILES['image']['name'] != null &&
-            file_exists(_NPS_SEL_IMG_DIR_.$this->_seller->id.'.'.$this->_seller->getImgFormat()))
+            file_exists(_NPS_SEL_IMG_DIR_.$seller->id.'.'.$seller->getImgFormat()))
         {
             $images_types = ImageType::getImagesTypes('sellers');
             foreach ($images_types as $k => $image_type)
             {
                 ImageManager::resize(
-                    _NPS_SEL_IMG_DIR_.$this->_seller->id.'.'.$this->_seller->getImgFormat(),
-                    _NPS_SEL_IMG_DIR_.$this->_seller->id.'-'.stripslashes($image_type['name']).'.'.$this->_seller->getImgFormat(),
+                    _NPS_SEL_IMG_DIR_.$seller->id.'.'.$seller->getImgFormat(),
+                    _NPS_SEL_IMG_DIR_.$seller->id.'-'.stripslashes($image_type['name']).'.'.$seller->getImgFormat(),
                     (int)$image_type['width'], (int)$image_type['height']
                 );
             }
@@ -168,14 +228,14 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
         return $ret;
     }
 
-    protected function uploadImage()
+    protected function uploadImage($seller)
     {
         $name = 'image';
         $dir = 'seller/';
         if (isset($_FILES[$name]['tmp_name']) && !empty($_FILES[$name]['tmp_name']))
         {
             // Delete old image
-            $this->_seller->deleteImage();
+            $seller->deleteImage();
 
             // Check image validity
             $max_size = (int)Configuration::get('PS_PRODUCT_PICTURE_MAX_SIZE');
@@ -194,7 +254,7 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
                 $this->errors[] = Tools::displayError('Due to memory limit restrictions, this image cannot be loaded. Please increase your memory_limit value via your server\'s configuration settings. ');
 
             // Copy new image
-            if (empty($this->errors) && !ImageManager::resize($tmp_name, _PS_IMG_DIR_.$dir.$this->_seller->id.'.'.$this->_seller->getImgFormat()))
+            if (empty($this->errors) && !ImageManager::resize($tmp_name, _PS_IMG_DIR_.$dir.$seller->id.'.'.$seller->getImgFormat()))
                 $this->errors[] = Tools::displayError('An error occurred while uploading the image.');
 
             if (count($this->errors))

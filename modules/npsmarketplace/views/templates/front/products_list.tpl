@@ -75,11 +75,3 @@
         {l s='Click' mod='npsmarketplace'} <a href="{$add_product_link}">{l s='here'}</a> {l s='to add your first product.' mod='npsmarketplace'}
     {/if}
 </div>
-<ul class="footer_links clearfix">
-    <li>
-        <a class="btn btn-default button button-small" href="{$link->getPageLink('my-account', true)|escape:'html':'UTF-8'}"> <span> <i class="icon-chevron-left"></i> {l s='Back to Your Account'} </span> </a>
-    </li>
-    <li>
-        <a class="btn btn-default button button-small" href="{$base_dir}"> <span><i class="icon-chevron-left"></i> {l s='Home'}</span> </a>
-    </li>
-</ul>

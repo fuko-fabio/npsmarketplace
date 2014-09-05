@@ -60,8 +60,7 @@ class Seller extends ObjectModel
     /** @var string Friendly URL */
     public $link_rewrite;
 
-    public function __construct($id_seller = null, $id_customer = null)
-    {
+    public function __construct($id_seller = null, $id_customer = null) {
         if (empty($id_seller) && !empty($id_customer))
         {
             $query = new DbQuery();
@@ -95,11 +94,11 @@ class Seller extends ObjectModel
             'regon' =>               array('type' => self::TYPE_STRING, 'validate' => 'isRegon',       ),
             'commision' =>           array('type' => self::TYPE_INT,    'validate' => 'isUnsignedInt', 'required' => true),
             'regulations_active' =>  array('type' => self::TYPE_BOOL,   'validate' => 'isBool',        ),
+            'name' =>                array('type' => self::TYPE_STRING, 'validate' => 'isGenericName', 'required' => true, 'size' => 128),
+            'company_name' =>        array('type' => self::TYPE_STRING, 'validate' => 'isGenericName', 'required' => true,),
              // Lang fields
             'link_rewrite' =>        array('type' => self::TYPE_STRING, 'validate' => 'isLinkRewrite', 'required' => true, 'lang' => true, 'size' => 128),
-            'name' =>                array('type' => self::TYPE_STRING, 'validate' => 'isGenericName', 'required' => true, 'lang' => true, 'size' => 128),
             'company_description' => array('type' => self::TYPE_STRING, 'validate' => 'isCleanHtml',   'required' => false,'lang' => true),
-            'company_name' =>        array('type' => self::TYPE_STRING, 'validate' => 'isGenericName', 'required' => true, 'lang' => true),
             'regulations' =>         array('type' => self::TYPE_STRING, 'validate' => 'isCleanHtml',   'required' => false,'lang' => true),
         ),
         'associations' => array(
