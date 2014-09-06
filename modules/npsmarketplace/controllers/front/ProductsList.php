@@ -7,13 +7,6 @@
 include_once (_PS_MODULE_DIR_ . 'npsmarketplace/classes/Seller.php');
 
 class NpsMarketplaceProductsListModuleFrontController extends ModuleFrontController {
-    
-    public function setMedia()
-    {
-        parent::setMedia();
-        $this -> addJS (_PS_MODULE_DIR_.'npsmarketplace/js/bootstrap.min.js');
-        $this -> addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/bootstrap.css');
-    }
 
     public function postProcess()
     {
@@ -36,7 +29,7 @@ class NpsMarketplaceProductsListModuleFrontController extends ModuleFrontControl
 
         $products = $this -> getProducts($seller);
         $this -> context -> smarty -> assign(array(
-            'add_product_link' => $this -> context -> link -> getModuleLink('npsmarketplace', 'AddProduct'),
+            'add_product_link' => $this -> context -> link -> getModuleLink('npsmarketplace', 'Product'),
             'products' => $products));
 
         $this -> setTemplate('products_list.tpl');

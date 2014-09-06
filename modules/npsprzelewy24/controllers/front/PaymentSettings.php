@@ -150,7 +150,10 @@ class NpsPrzelewy24PaymentSettingsModuleFrontController extends ModuleFrontContr
         if ($res->error->errorCode) {
             $this->errors[] = $nps_instance->l('Unable to check company existence in Przelewy24 payment service.')
                     .' '.P24ErrorMessage::get($res->error->errorCode).' '.$nps_instance->l('Please contact with customer service');
-            $this->context->smarty->assign(array('company' => array()));
+            $this->context->smarty->assign(array(
+                'company' => array(),
+                'p24_agreement_url' => Configuration::get('NPS_P24_REGULATIONS_URL'))
+            );
             $this->setTemplate('payment_company_registered.tpl');
         } else if ($res->result) {
             $this->errors[] = sprintf($nps_instance->l('Your company with NIP "%s" has been already registered in Przelewy24 service. Please contact with customer service.'), $seller->nip);

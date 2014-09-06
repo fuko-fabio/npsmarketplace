@@ -14,10 +14,8 @@ class NpsMarketplaceProductCombinationModuleFrontController extends ModuleFrontC
     public function setMedia() {
         parent::setMedia();
         $this -> addJS (_PS_MODULE_DIR_.'npsmarketplace/js/datetime_init.js');
-        $this -> addJS (_PS_MODULE_DIR_.'npsmarketplace/js/bootstrap.min.js');
         $this -> addJS (_PS_MODULE_DIR_.'npsmarketplace/js/bootstrap-datetimepicker.min.js');
 
-        $this -> addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/bootstrap.css');
         $this -> addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/bootstrap-datetimepicker.min.css');
     }
 

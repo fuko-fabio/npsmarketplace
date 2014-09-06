@@ -6,22 +6,16 @@
 
 class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontController {
 
-    /**
-     * @var _product Current product
-     */
-    protected $_seller;
-
     public function setMedia() {
         parent::setMedia();
         $this -> addJS(array(_PS_JS_DIR_.'validate.js'));
     }
 
     public function postProcess() {
-        if (Tools::isSubmit('company_name')
-            && Tools::isSubmit('seller_name')
-            && Tools::isSubmit('seller_phone')
-            && Tools::isSubmit('seller_email')) {
-
+            if (Tools::isSubmit('submitSeller')) {
+            $seller = new Seller(null, $this->context->customer->id);
+            if ($seller->id == null) 
+                Tools::redirect($this->context->link->getModuleLink('npsmarketplace', 'AccountRequest'));
             $nps_instance = new NpsMarketplace();
 
             $company_name = trim(Tools::getValue('company_name'));
@@ -38,22 +32,22 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
 
             if (empty($name))
                 $this -> errors[] = $nps_instance->l('Seller name is required');
-            if (!Validate::isGenericName($name))
+            else if (!Validate::isGenericName($name))
                 $this -> errors[] = $nps_instance->l('Invalid seller name');
 
             if (empty($phone))
                 $this -> errors[] = $nps_instance->l('Phone number is required');
-            if (!Validate::isPhoneNumber($phone))
+            else if (!Validate::isPhoneNumber($phone))
                 $this -> errors[] = $nps_instance->l('Invalid phone number');
 
             if (empty($email))
                 $this -> errors[] = $nps_instance->l('Buisness email is required');
-            if (!Validate::isEmail($email))
+            else if (!Validate::isEmail($email))
                 $this -> errors[] = $nps_instance->l('Invalid email addres');
 
             if (empty($company_name))
                 $this -> errors[] = $nps_instance->l('Company name is required');
-            if (!Validate::isGenericName($company_name))
+            else if (!Validate::isGenericName($company_name))
                 $this -> errors[] = $nps_instance->l('Invalid company name');
 
             if (!empty($nip) && !Validate::isNip($nip))
@@ -72,35 +66,21 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
             }
 
             if(empty($this->errors)) {
-                $this->_seller -> company_name = $company_name;
-                $this->_seller -> company_description = $company_description;
-                $this->_seller -> name = $name;
-                $this->_seller -> phone = $phone;
-                $this->_seller -> email = $email;
-                $this->_seller -> nip = $nip;
-                $this->_seller -> regon = $regon;
-                $this->_seller -> link_rewrite = $link_rewrite;
-                $this->_seller -> regulations = $regulations;
-                $this->_seller -> regulations_active = $regulations_active;
-                $this->_seller->save();
+                $seller -> company_name = $company_name;
+                $seller -> company_description = $company_description;
+                $seller -> name = $name;
+                $seller -> phone = $phone;
+                $seller -> email = $email;
+                $seller -> nip = $nip;
+                $seller -> regon = $regon;
+                $seller -> link_rewrite = $link_rewrite;
+                $seller -> regulations = $regulations;
+                $seller -> regulations_active = $regulations_active;
+                $seller->save();
                 $this->postImage();
                 Tools::redirect('index.php?controller=my-account' );
             }
         }
-    }
-
-    /**
-     * Initialize seller controller
-     * @see FrontController::init()
-     */
-    public function init()
-    {
-        parent::init();
-        
-        $id_seller = (int)Tools::getValue('id_seller', 0);
-        // Initialize seller
-        if ($id_seller)
-            $this->_seller = new Seller($id_seller);
     }
 
     public function initContent() {
@@ -112,23 +92,23 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
             Tools::redirect('index.php?controller=my-account');
 
         $tpl_seller = array();
-        if (isset($this -> _seller -> id)) {
+        if (isset($seller-> id)) {
             $tpl_seller = array(
-                'id' => $this -> _seller -> id,
-                'image' => $this->getSellerImgLink('medium_default'),
-                'name' => $this -> _seller -> name,
-                'company_name' => $this -> _seller -> company_name,
-                'company_description' => $this -> _seller -> company_description,
-                'phone' => $this -> _seller -> phone,
-                'email' => $this -> _seller -> email,
-                'nip' => $this -> _seller -> nip,
-                'regon' => $this -> _seller -> regon,
-                'active' => $this -> _seller -> active,
-                'request_date' => $this -> _seller -> request_date,
-                'commision' => $this -> _seller -> commision,
-                'account_state' => $this -> _seller->getAccountState(),
-                'regulations' => $this -> _seller -> regulations,
-                'regulations_active' => $this -> _seller -> regulations_active,
+                'id' => $seller-> id,
+                'image' => $this->getSellerImgLink($seller, 'medium_default'),
+                'name' => $seller-> name,
+                'company_name' => $seller-> company_name,
+                'company_description' => $seller-> company_description,
+                'phone' => $seller-> phone,
+                'email' => $seller-> email,
+                'nip' => $seller-> nip,
+                'regon' => $seller-> regon,
+                'active' => $seller-> active,
+                'request_date' => $seller-> request_date,
+                'commision' => $seller-> commision,
+                'account_state' => $seller->getAccountState(),
+                'regulations' => $seller-> regulations,
+                'regulations_active' => $seller-> regulations_active,
             );
         }
 
@@ -142,32 +122,30 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
         $this -> setTemplate('seller_account.tpl');
     }
 
-    public function getSellerImgLink($type = null)
-    {
-        if (file_exists(_NPS_SEL_IMG_DIR_.$this->_seller->id.'.'.$this->_seller->getImgFormat())) {
-            if ($this->_seller->id) {
+    public function getSellerImgLink($seller, $type = null) {
+        if (file_exists(_NPS_SEL_IMG_DIR_.$seller->id.'.'.$seller->getImgFormat())) {
+            if ($seller->id) {
                 if($type)
-                    $uri_path = _THEME_SEL_DIR_.$this->_seller->id.'-'.$type.'.jpg';
+                    $uri_path = _THEME_SEL_DIR_.$seller->id.'-'.$type.'.jpg';
                 else
-                    $uri_path = _THEME_SEL_DIR_.$this->_seller->id.($type ? '-'.$type : '').'.jpg';
+                    $uri_path = _THEME_SEL_DIR_.$seller->id.($type ? '-'.$type : '').'.jpg';
                 return $this->context->link->protocol_content.Tools::getMediaServer($uri_path).$uri_path;
             }
         }
     }
 
-    protected function postImage()
-    {
-        $ret = $this->uploadImage();
+    protected function postImage($seller) {
+        $ret = $this->uploadImage($seller);
 
         if (isset($_FILES) && count($_FILES) && $_FILES['image']['name'] != null &&
-            file_exists(_NPS_SEL_IMG_DIR_.$this->_seller->id.'.'.$this->_seller->getImgFormat()))
+            file_exists(_NPS_SEL_IMG_DIR_.$seller->id.'.'.$seller->getImgFormat()))
         {
             $images_types = ImageType::getImagesTypes('sellers');
             foreach ($images_types as $k => $image_type)
             {
                 ImageManager::resize(
-                    _NPS_SEL_IMG_DIR_.$this->_seller->id.'.'.$this->_seller->getImgFormat(),
-                    _NPS_SEL_IMG_DIR_.$this->_seller->id.'-'.stripslashes($image_type['name']).'.'.$this->_seller->getImgFormat(),
+                    _NPS_SEL_IMG_DIR_.$seller->id.'.'.$seller->getImgFormat(),
+                    _NPS_SEL_IMG_DIR_.$seller->id.'-'.stripslashes($image_type['name']).'.'.$seller->getImgFormat(),
                     (int)$image_type['width'], (int)$image_type['height']
                 );
             }
@@ -175,14 +153,13 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
         return $ret;
     }
 
-    protected function uploadImage()
-    {
+    protected function uploadImage($seller) {
         $name = 'image';
         $dir = 'seller/';
         if (isset($_FILES[$name]['tmp_name']) && !empty($_FILES[$name]['tmp_name']))
         {
             // Delete old image
-            $this->_seller->deleteImage();
+            $seller->deleteImage();
 
             // Check image validity
             $max_size = (int)Configuration::get('PS_PRODUCT_PICTURE_MAX_SIZE');
@@ -201,7 +178,7 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
                 $this->errors[] = Tools::displayError('Due to memory limit restrictions, this image cannot be loaded. Please increase your memory_limit value via your server\'s configuration settings. ');
 
             // Copy new image
-            if (empty($this->errors) && !ImageManager::resize($tmp_name, _PS_IMG_DIR_.$dir.$this->_seller->id.'.'.$this->_seller->getImgFormat()))
+            if (empty($this->errors) && !ImageManager::resize($tmp_name, _PS_IMG_DIR_.$dir.$seller->id.'.'.$seller->getImgFormat()))
                 $this->errors[] = Tools::displayError('An error occurred while uploading the image.');
 
             if (count($this->errors))

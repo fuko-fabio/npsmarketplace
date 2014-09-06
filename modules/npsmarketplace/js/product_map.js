@@ -89,3 +89,15 @@ function initialize() {
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);
+
+Dropzone.options.dropzoneContainer = {
+
+    url: 'empty',
+    addRemoveLinks: true,
+    autoProcessQueue: false,
+    uploadMultiple: true,
+    parallelUploads: 8,
+    maxFiles: 8,
+    previewsContainer: ".dropzone-previews",
+    acceptedFiles: ".jpeg,.gif,.png,.jpg"
+};

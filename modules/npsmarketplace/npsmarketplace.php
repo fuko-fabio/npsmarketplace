@@ -16,7 +16,8 @@ if ( !defined( '_THEME_SEL_DIR_' ) )
 if ( !defined( '_NPS_MAILS_DIR_' ) )
     define('_NPS_MAILS_DIR_', dirname(__FILE__).'/mails/');
 
-include_once(dirname(__FILE__).'/classes/Seller.php');
+include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
+include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24SellerCompany.php');
 
 class NpsMarketplace extends Module {
     const INSTALL_SQL_FILE = 'install.sql';
@@ -98,9 +99,16 @@ class NpsMarketplace extends Module {
         else if ($seller->requested == 1 && $seller->locked == 1)
             $account_state = 'locked';
 
+        $payment_configured = false;
+        if ($account_state == 'active') {
+            $payment_config = new P24SellerCompany(null, $seller->id);
+            if ($payment_config->id != null)
+                $payment_configured = true;
+        }
         $this->context->smarty->assign(
             array(
                 'account_state' => $account_state,
+                'payment_configured' => $payment_configured,
                 'products_count' => count($seller->getSellerProducts($seller->id)),
                 'seller_request_link' => $this->context->link->getModuleLink('npsmarketplace', 'AccountRequest'),
                 'add_product_link' => $this->context->link->getModuleLink('npsmarketplace', 'Product'),

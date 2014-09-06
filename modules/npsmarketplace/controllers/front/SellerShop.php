@@ -12,9 +12,10 @@ class NpsMarketplaceSellerShopModuleFrontController extends ModuleFrontControlle
         $tpl_seller = array();
         if ($id_seller) {
             $seller = new Seller($id_seller);
+            $image = $seller->getImageLink('medium_default', $this->context);
             $tpl_seller = array(
                 'id' => $seller->id,
-                'image' => $seller->getImageLink('medium_default', $this->context),
+                'image' => $image,
                 'name' => $seller->name,
                 'company_name' => $seller->company_name,
                 'company_description' => $seller->company_description,
@@ -35,6 +36,8 @@ class NpsMarketplaceSellerShopModuleFrontController extends ModuleFrontControlle
             'seller' => $tpl_seller,
             'current_id_lang' => (int)$this->context->language->id,
             'languages' => Language::getLanguages(),
+            'have_image' => $image != null,
+            'largeSize' => Image::getSize(ImageType::getFormatedName('large')),
         ));
 
         $this->setTemplate('seller_shop.tpl');

@@ -73,7 +73,11 @@ class P24 {
     }
 
     public static function uniqueKey() {
-        return Configuration::get('NPS_P24_MERCHANT_ID');
+        return Configuration::get('NPS_P24_UNIQUE_KEY');
+    }
+
+    public static function crcKey() {
+        return Configuration::get('NPS_P24_CRC_KEY');
     }
 
     public static function url() {

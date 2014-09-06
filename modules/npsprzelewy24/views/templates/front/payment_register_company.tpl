@@ -1,7 +1,7 @@
 {capture name=path}
 <a href="{$link->getPageLink('my-account', true)|escape:'html':'UTF-8'}"> {l s='My account'} </a>
 <span class="navigation-pipe">{$navigationPipe}</span>
-<span class="navigation_page">{l s='Payment Settings' mod='npsprzelewy24'}</span>
+<span class="navigation_page">{l s='Configure Payment' mod='npsprzelewy24'}</span>
 {/capture}
 <h1 class="page-heading bottom-indent">{l s='Payment Settings' mod='npsprzelewy24'}</h1>
 <div class="block-center" id="block-seller-payment-settings">

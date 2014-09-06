@@ -1,8 +1,4 @@
 <fieldset>
-    <div class="form-group">
-        <label>{l s='Images' mod='npsmarketplace'}</label>
-        <input id="product_images" type="file" multiple="true" name="product[]">
-    </div>
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
       {foreach from=$languages item=lang}
@@ -82,13 +78,22 @@
     </div>
     <div class="form-group">
         <label class="required" for="map-address-input">{l s='Address' mod='npsmarketplace'}</label>
-        <input id="map-address-input" class="is_required validate form-control" data-validate="isMessage" name="address" type="text" required=""
+        <input id="map-address-input" class="is_required validate form-control" data-validate="isMessage" name="address" type="text" required="" placeholder="{l s='Search adress...' mod='npsmarketplace'}"
             value="{if isset($smarty.post.address)}{$smarty.post.address}{else}{if isset($product['address'])}{$product['address']|escape:'html':'UTF-8'}{/if}{/if}"/>
         <input id="map-lat-input" class="hide" name="product_lat" type="text">
         <input id="map-lng-input" class="hide" name="product_lng" type="text">
     </div>
     <div class="form-group">
         <div id="map-canvas"></div>
+    </div>
+    <div class="form-group">
+        <label>{l s='Pictures' mod='npsmarketplace'}</label>
+        <div class="dropzone" id="dropzone-container">
+            <div class="dropzone-previews"></div>
+            <div class="fallback">
+                <input name="file[]" type="file" multiple />
+            </div>
+        </div>
     </div>
     <div class="form-group">
         <label class="required" for="product_category">{l s='Category' mod='npsmarketplace'}</label>

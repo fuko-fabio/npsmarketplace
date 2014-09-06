@@ -152,8 +152,7 @@ class Seller extends ObjectModel
         return Db::getInstance()->insert('seller_product', $seller_products);
     }
 
-    public function getImageLink($type = null, $context)
-    {
+    public function getImageLink($type = null, $context) {
         if (file_exists(_NPS_SEL_IMG_DIR_.$this->id.'.'.$this->getImgFormat())) {
             if ($this->id) {
                 if($type)
@@ -163,6 +162,7 @@ class Seller extends ObjectModel
                 return $context->link->protocol_content.Tools::getMediaServer($uri_path).$uri_path;
             }
         }
+        return null;
     }
 
     /**
@@ -243,6 +243,17 @@ class Seller extends ObjectModel
         else if ($this->requested == 1 && $this->locked == 1)
             return 'locked';
         return 'none';
+    }
+
+    public static function sellerExists($name, $return_id = false) {
+        $sql = 'SELECT `id_seller`
+                FROM `'._DB_PREFIX_.'seller`
+                WHERE `name` = \''.pSQL($name).'\'';
+        $result = Db::getInstance()->getRow($sql);
+
+        if ($return_id)
+            return $result['id_seller'];
+        return isset($result['id_seller']);
     }
 }
 

@@ -9,8 +9,6 @@ class NpsMarketplaceOrdersModuleFrontController extends ModuleFrontController
     
     public function setMedia() {
         parent::setMedia();
-        $this -> addJS (_PS_MODULE_DIR_.'npsmarketplace/js/bootstrap.min.js');
-        $this -> addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/bootstrap.css');
         $this->addJqueryPlugin('footable');
         $this->addJqueryPlugin('footable-sort');
         $this->addJqueryPlugin('scrollTo');

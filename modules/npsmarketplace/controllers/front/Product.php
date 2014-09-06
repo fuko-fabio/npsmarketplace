@@ -20,29 +20,23 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
      */
     protected $_seller;
 
-    public function setMedia()
-    {
+    public function setMedia() {
         parent::setMedia();
+        $this -> addJS (_PS_MODULE_DIR_.'npsmarketplace/js/dropzone.js');
         $this -> addJS ("https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places");
         $this -> addJS(_PS_JS_DIR_.'validate.js');
         $this -> addJS (_PS_MODULE_DIR_.'npsmarketplace/js/product_map.js');
         $this -> addJS (_PS_MODULE_DIR_.'npsmarketplace/js/datetime_init.js');
-        $this -> addJS (_PS_MODULE_DIR_.'npsmarketplace/js/bootstrap.min.js');
         $this -> addJS (_PS_MODULE_DIR_.'npsmarketplace/js/bootstrap-datetimepicker.min.js');
 
-        $this -> addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/bootstrap.css');
+        $this -> addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/dropzone.css');
         $this -> addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/bootstrap-datetimepicker.min.css');
         $this -> addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/map.css');
     }
 
     public function postProcess()
     {
-        if (Tools::isSubmit('name')
-            && Tools::isSubmit('price')
-            && Tools::isSubmit('town')
-            && Tools::isSubmit('address')
-            && Tools::isSubmit('district')) {
-
+        if (Tools::isSubmit('saveProduct')) {
             $nps_instance = new NpsMarketplace();
             $current_id_product = trim(Tools::getValue('id_product'));
 
@@ -62,6 +56,11 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
             $link_rewrite = array();
             if (isset($_POST['category'])) {
                 $categories = $_POST['category'];
+            }
+
+            if(Tools::getValue('form_token') != $this->context->cookie->__get('form_token')) {
+                $this -> errors[] = $nps_instance->l('This form has been already saved. Go to your profile page and check saved products.');
+                return;
             }
 
             if (empty($name[(int)$this->context->language->id]))
@@ -128,6 +127,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
                 if (!$this->_product->save()) {
                     $this->errors[] = $nps_instance->l('Unable to save product.');
                 } else {
+                    $this->context->cookie->__unset('form_token');
                     if(empty($current_id_product)) {
                         $this->saveAttribute($date_time, (int)$quantity);
                         $this->_seller->assignProduct($this->_product->id);
@@ -135,7 +135,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
                     $this->saveFeatures($town, $district, $address);
                     $this -> _product->updateCategories($categories);
                     $this->saveProductImages();
-                    Tools::redirect('index.php?fc=module&module=npsmarketplace&controller=ProductsList');
+                    Tools::redirect($this->context->link->getModuleLink('npsmarketplace', 'ProductsList'));
                 }
             }
         }
@@ -158,7 +158,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
             $products = $this->_seller->getSellerProducts($this->_seller->id);
 
             if (!in_array($id_product, $products))
-                Tools::redirect('index.php?fc=module&module=npsmarketplace&controller=ProductsList');
+                Tools::redirect($this->context->link->getModuleLink('npsmarketplace', 'productsList'));
         }
 
         $nps_instance = new NpsMarketplace();
@@ -168,14 +168,14 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
             if (Validate::isLoadedObject($this->_product) && Validate::isLoadedObject($this->_seller) && Seller::sellerHasProduct($this->_seller->id, $id_product)) {
                 if (Tools::isSubmit('delete')) {
                     if ($this->_product->delete())
-                        Tools::redirect('index.php?fc=module&module=npsmarketplace&controller=ProductsList');
+                        Tools::redirect($this->context->link->getModuleLink('npsmarketplace', 'productsList'));
                     $this->errors[] = $nps_instance->l('This product cannot be deleted.');
                 }
             }
             elseif ($this->ajax)
                 exit;
             else
-                Tools::redirect('index.php?fc=module&module=npsmarketplace&controller=ProductsList');
+                Tools::redirect($this->context->link->getModuleLink('npsmarketplace', 'productsList'));
         }
     }
 
@@ -212,6 +212,8 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
         $towns = $this->getActiveTowns((int)$this->context->language->id);
         $districts = $this->getDistricts();
         $categoriesList = new CategoriesList($this->context);
+        $form_token = uniqid();
+        $this->context->cookie->__set('form_token', $form_token);
         $this -> context -> smarty -> assign(array(
             'user_agreement_url' =>'#',
             'categories_tree' => $categoriesList -> getTree(),
@@ -223,6 +225,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
             'languages' => Language::getLanguages(),
             'towns' => $towns,
             'districts' => $districts,
+            'form_token' => $form_token,
         ));
 
         $this->setTemplate('product.tpl');
@@ -285,7 +288,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
     }
 
     private function saveProductImages() {
-        $image_uploader = new HelperImageUploader('product');
+        $image_uploader = new HelperImageUploader('file');
         $image_uploader -> setAcceptTypes(array('jpeg', 'gif', 'png', 'jpg')) -> setMaxSize((int)Configuration::get('PS_PRODUCT_PICTURE_MAX_SIZE'));
         $files = $image_uploader -> process();
 

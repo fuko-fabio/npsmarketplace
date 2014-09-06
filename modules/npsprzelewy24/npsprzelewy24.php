@@ -44,7 +44,7 @@ class NpsPrzelewy24 extends PaymentModule {
         Configuration::updateValue('NPS_P24_URL', 'https://secure.przelewy24.pl');
         Configuration::updateValue('NPS_P24_SANDBOX_URL', 'https://sandbox.przelewy24.pl');
         Configuration::updateValue('NPS_P24_SANDBOX_ERROR', '');
-        Configuration::updateValue('NPS_P24_SANDBOX_WEB_SERVICE_URL', 'https://sandbox.przelewy24.pl/external/wsdl/service.php?wsdl');
+        Configuration::updateValue('NPS_P24_SANDBOX_WEB_SERVICE_URL', 'https://sandbox.przelewy24.pl/external/__wsdl/service.php?wsdl');
 
         $rq = Db::getInstance()->getRow(
             'SELECT `id_order_state`

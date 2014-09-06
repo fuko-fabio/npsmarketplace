@@ -20,11 +20,11 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
     }
 
     public function postProcess() {
-        if (Tools::isSubmit('company_name')
-            && Tools::isSubmit('seller_name')
-            && Tools::isSubmit('seller_phone')
-            && Tools::isSubmit('seller_email')) {
+        if (Tools::isSubmit('submitSeller')) {
 
+            $seller = new Seller(null, $this->context->customer->id);
+            if ($this->_seller->id != null) 
+                Tools::redirect('index.php?controller=my-account');
             $nps_instance = new NpsMarketplace();
 
             $company_name = trim(Tools::getValue('company_name'));
@@ -41,22 +41,24 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
 
             if (empty($name))
                 $this -> errors[] = $nps_instance->l('Seller name is required');
-            if (!Validate::isGenericName($name))
+            else if (!Validate::isGenericName($name))
                 $this -> errors[] = $nps_instance->l('Invalid seller name');
+            else if (Seller::sellerExists($name))
+                $this -> errors[] = $nps_instance->l('Seller name is not unique');
 
             if (empty($phone))
                 $this -> errors[] = $nps_instance->l('Phone number is required');
-            if (!Validate::isPhoneNumber($phone))
+            else if (!Validate::isPhoneNumber($phone))
                 $this -> errors[] = $nps_instance->l('Invalid phone number');
 
             if (empty($email))
                 $this -> errors[] = $nps_instance->l('Buisness email is required');
-            if (!Validate::isEmail($email))
+            else if (!Validate::isEmail($email))
                 $this -> errors[] = $nps_instance->l('Invalid email addres');
 
             if (empty($company_name))
                 $this -> errors[] = $nps_instance->l('Company name is required');
-            if (!Validate::isGenericName($company_name))
+            else if (!Validate::isGenericName($company_name))
                 $this -> errors[] = $nps_instance->l('Invalid company name');
 
             if (!empty($nip) && !Validate::isNip($nip))
@@ -75,7 +77,6 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
             }
     
             if(empty($this->errors)) {
-                $seller = new Seller((int)Tools::getValue('id_seller', null));
                 $seller -> company_name = $company_name;
                 $seller -> company_description = $company_description;
                 $seller -> name = $name;
@@ -86,12 +87,10 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
                 $seller -> link_rewrite = $link_rewrite;
                 $seller -> regulations = $regulations;
                 $seller -> regulations_active = $regulations_active;
-                if($seller->id == null) {
-                    $seller -> id_customer = $this -> context -> customer -> id;
-                    $seller -> commision = Configuration::get('NPS_GLOBAL_COMMISION');
-                    $seller -> request_date = date("Y-m-d H:i:s");
-                    $seller -> requested = true;
-                }
+                $seller -> id_customer = $this -> context -> customer -> id;
+                $seller -> commision = Configuration::get('NPS_GLOBAL_COMMISION');
+                $seller -> request_date = date("Y-m-d H:i:s");
+                $seller -> requested = true;
                 $seller->save();
                 $this->postImage($seller);
                 $this->mailToSeller($seller);
@@ -130,8 +129,8 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
         $name = strval(Configuration::get('PS_SHOP_NAME'));
         $email = strval(Configuration::get('PS_SHOP_EMAIL'));
         $mail_params = array(
-            '{name}' => $seller->name[$lang_id],
-            '{company_name}' => $seller->company_name[$lang_id],
+            '{name}' => $seller->name,
+            '{company_name}' => $seller->company_name,
             '{company_description}' => $seller->company_description[$lang_id],
             '{email}' => $seller->email,
             '{phone}' => $seller->phone,
