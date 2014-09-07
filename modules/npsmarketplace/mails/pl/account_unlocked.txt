@@ -5,7 +5,7 @@ Witaj {firstname}!
 
 Twoje konto zostało odblokowane.
 
-Zapraszamy ponownie do twojego butiku to: {seller_shop_url}
+Zapraszamy ponownie do twojego butiku: [{seller_shop_url}]
 
 Pozdrawiamy i życzymy dobrej zabawy,
 zespół {shop_name}.

@@ -5,7 +5,7 @@ Witaj {firstname}!
 
 Właśnie otrzymaliśmy twoją prośbę otwarcia butiku w {shop_name}. 
 
-Adres Twojego butiku to: {seller_shop_url
+Adres Twojego butiku to: [{seller_shop_url}]
 
 Dodaj swój pierwszy produkt, a następnie czekaj na aktywację konta sprzedawcy.
 

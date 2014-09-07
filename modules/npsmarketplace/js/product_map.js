@@ -89,15 +89,28 @@ function initialize() {
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);
-
-Dropzone.options.dropzoneContainer = {
-
-    url: 'empty',
-    addRemoveLinks: true,
-    autoProcessQueue: false,
-    uploadMultiple: true,
-    parallelUploads: 8,
-    maxFiles: 8,
-    previewsContainer: ".dropzone-previews",
-    acceptedFiles: ".jpeg,.gif,.png,.jpg"
-};
+$(document).ready(function(){
+    Dropzone.options.dropzoneContainer = {
+    
+        url: 'empty',
+        addRemoveLinks: true,
+        autoProcessQueue: false,
+        uploadMultiple: true,
+        parallelUploads: 8,
+        maxFiles: 8,
+        previewsContainer: ".dropzone-previews",
+        acceptedFiles: ".jpeg,.gif,.png,.jpg",
+        maxFilesize: 8,
+        dictDefaultMessage: dictDefaultMessage,
+        dictFallbackMessage: dictFallbackMessage,
+        dictFallbackText: dictFallbackText,
+        dictFileTooBig: dictFileTooBig,
+        dictInvalidFileType: dictInvalidFileType,
+        dictResponseError: dictResponseError,
+        dictCancelUpload: dictCancelUpload,
+        dictCancelUploadConfirmation: dictCancelUploadConfirmation,
+        dictRemoveFile: dictRemoveFile,
+        dictRemoveFileConfirmation: null,
+        dictMaxFilesExceeded: dictMaxFilesExceeded,
+    };
+});

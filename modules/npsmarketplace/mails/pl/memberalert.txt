@@ -11,7 +11,7 @@ Telefon: {phone}
 NIP: {nip}
 REGON: {regon}
 
-Przejdź do panelu administracyjnego i aktywuj konto: {admin_link}
+Przejdź do panelu administracyjnego i aktywuj konto: [{admin_link}]
 
 --
 {shop_name}

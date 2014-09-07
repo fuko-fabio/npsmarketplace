@@ -1,9 +1,12 @@
 <?php
 /*
- *  @author Norbert Pabian
- *  @copyright
- *  @license
- */
+*  @author Norbert Pabian <norbert.pabian@gmail.com>
+*  @copyright 2014 npsoftware
+*/
+
+include_once(_PS_MODULE_DIR_.'npsmarketplace//npsmarketplace.php');
+include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
+include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24SellerCompany.php');
 
 class AdminProductsController extends AdminProductsControllerCore {
 
@@ -59,6 +62,37 @@ class AdminProductsController extends AdminProductsControllerCore {
         }
 
         $this -> tpl_form_vars['custom_form'] = $data -> fetch();
+    }
+
+    public function processStatus() {
+        $this->loadObject(true);
+        if (!Validate::isLoadedObject($this->object))
+            return false;
+        if (($error = $this->object->validateFields(false, true)) !== true)
+            $this->errors[] = $error;
+        if (($error = $this->object->validateFieldsLang(false, true)) !== true)
+            $this->errors[] = $error;
+
+        if (!$this->object->active) {
+            $nps_instance = new NpsMarketplace();
+            $seller = new Seller(Seller::getSellerByProduct($this->object->id));
+            if(!$seller->active)
+                $this->errors[] = $nps_instance->l('Seller of this product has not activated account');
+            if($seller->locked)
+                $this->errors[] = $nps_instance->l('Seller of this product has locked account');
+
+            $payment_config = new P24SellerCompany(null, $seller->id);
+            if ($payment_config->id == null)
+                $this->errors[] = $nps_instance->l('Seller of this product has not configured payment account');
+        }
+
+        if (count($this->errors))
+            return false;
+
+        $res = parent::processStatus();
+        Hook::exec('actionProductUpdate', array('product' => $this->object));
+        
+        return $res;
     }
 
 }

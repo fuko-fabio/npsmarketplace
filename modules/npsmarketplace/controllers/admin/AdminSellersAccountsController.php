@@ -7,6 +7,7 @@
 if ( !defined( '_NPS_MAILS_DIR_' ) )
     define('_NPS_MAILS_DIR_', _PS_MODULE_DIR_.'npsmarketplace/mails/');
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
+include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24SellerCompany.php');
 
 class AdminSellersAccountsController extends AdminController
 {
@@ -109,11 +110,12 @@ class AdminSellersAccountsController extends AdminController
         $seller->locked = $seller->locked ? 0 : 1;
         if (!$seller->update())
             $this->errors[] = Tools::displayError('An error occurred while updating seller information.');
-        foreach ($seller->getProducts() as $product) {
-            $product->setFieldsToUpdate(array('active' => true));
-            $product->active = $seller->locked ? 0 : 1;
-            $product->update(false);
-        }
+        $seller_products = $seller->getProducts();
+        $payment_config = new P24SellerCompany(null, $seller->id);
+        if ($payment_config->id != null && !$seller->locked)
+            $this->changeProductsState($seller_products, true);
+        else
+            $this->changeProductsState($seller_products, false);
 
         $customer = new Customer($seller->id_customer);
         $mail_params = array(
@@ -153,7 +155,12 @@ class AdminSellersAccountsController extends AdminController
         if (!Validate::isLoadedObject($seller))
             $this->errors[] = Tools::displayError('An error occurred while updating seller information.');
 
+        $seller_products = $seller->getProducts();
         if ($seller->active) {
+            $payment_config = new P24SellerCompany(null, $seller->id);
+            if ($payment_config->id != null)
+                $this->changeProductsState($seller_products, true);
+
             $customer = new Customer($seller->id_customer);
             $mail_params = array(
                 '{lastname}' => $customer->lastname,
@@ -164,6 +171,7 @@ class AdminSellersAccountsController extends AdminController
                 '{product_guide_url}' => Configuration::get('NPS_PRODUCT_GUIDE_URL'),
                 '{seller_guide_url}' => Configuration::get('NPS_SELLER_GUIDE_URL'),
                 '{payment_settings_guide_url}' => Configuration::get('NPS_PAYMENT_SETTINGS_GUIDE_URL'),
+                '{seller_payment_configuration_url}' => $this->context->link->getModuleLink('npsprzelewy24', 'PaymentSettings'),
             );
             Mail::Send($this->context->language->id,
                 'account_active',
@@ -177,11 +185,15 @@ class AdminSellersAccountsController extends AdminController
                 null,
                 _NPS_MAILS_DIR_);
         } else {
-            foreach ($seller->getProducts() as $product) {
-                $product->setFieldsToUpdate(array('active' => true));
-                $product->active = 0;
-                $product->update(false);
-            }
+            $this->changeProductsState($seller_products, false);
+        }
+    }
+
+    private function changeProductsState($products, $state) {
+        foreach ($products as $product) {
+            $product->setFieldsToUpdate(array('active' => true));
+            $product->active = $state;
+            $product->update(false);
         }
     }
 

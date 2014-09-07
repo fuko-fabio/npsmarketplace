@@ -10,6 +10,7 @@ class P24TransationDispatcher {
     public static function dispatchMoney($id_cart) {
         $npsprzelewy24 = new NpsPrzelewy24();
         $cart = new Cart($id_cart);
+        $total_amount = $cart->getOrderTotal() * 100;
         $currencies = $npsprzelewy24->getCurrency(intval($cart->id_currency));
         $currency = $currencies[0];
         $result = array();
@@ -22,18 +23,30 @@ class P24TransationDispatcher {
             $seller = new Seller($id_seller);
             $s_p_s = new P24SellerCompany(null, $id_seller);
 
-            if (array_key_exists($s_p_s->spid)) {
+            if (array_key_exists($s_p_s->spid, $result)) {
                 $current_amount = $result[$s_p_s->spid];
-                $result[$s_p_s->spid] = $current_amount + $this->amountForSeller($seller, $product['price']);
+                $a_f_s = P24TransationDispatcher::amountForSeller($seller, $product['price']);
+                $total_amount = $total_amount - $a_f_s;
+                $result[$s_p_s->spid] = $current_amount + $a_f_s;
             } else {
-                $result[$s_p_s->spid] = $this->amountForSeller($seller, $product['price']);
+                $a_f_s = P24TransationDispatcher::amountForSeller($seller, $product['price']);
+                $total_amount = $total_amount - $a_f_s;
+                $result[$s_p_s->spid] = $a_f_s;
             }
         }
+        $result['merchant_amount'] = $total_amount;
+        
+        $sum = 0;
+        foreach ($result as $key => $value) {
+            $sum = $sum + $value;
+        }
+        $result['total'] = $cart->getOrderTotal() * 100;
+        $result['sum'] = $sum; 
         d($result);
     }
 
     private static function amountForSeller($seller, $amount) {
-        $p24_commision = 2.5; //TODO 
+        $p24_commision = Configuration::get('NPS_P24_COMMISION');
         $result = $amount - ($amount * (($seller->commision + $p24_commision)/ 100));
         if (isset($currency['decimals']) && $currency['decimals'] == '0') {
             if (Configuration::get('PS_PRICE_ROUND_MODE') != null) {
@@ -50,7 +63,7 @@ class P24TransationDispatcher {
                 }
             }
         }
-        return $result;
+        return ceil($result * 100);
     }
 
     private static function transactionDispatch() {

@@ -38,6 +38,7 @@ class NpsPrzelewy24 extends PaymentModule {
 
         Configuration::updateValue('NPS_P24_ORDER_STATE_1', 0);
         Configuration::updateValue('NPS_P24_ORDER_STATE_2', 0);
+        Configuration::updateValue('NPS_P24_COMMISION', 2.5);
         Configuration::updateValue('NPS_P24_UNIQUE_KEY', '');
         Configuration::updateValue('NPS_P24_CRC_KEY', '');
         Configuration::updateValue('NPS_P24_WEB_SERVICE_URL', 'https://secure.przelewy24.pl/external/wsdl/service.php?wsdl');
@@ -112,6 +113,7 @@ class NpsPrzelewy24 extends PaymentModule {
             Configuration::updateValue('NPS_P24_UNIQUE_KEY', Tools::getValue('NPS_P24_UNIQUE_KEY'));
             Configuration::updateValue('NPS_P24_CRC_KEY', Tools::getValue('NPS_P24_CRC_KEY'));
             Configuration::updateValue('NPS_P24_URL', Tools::getValue('NPS_P24_URL'));
+            Configuration::updateValue('NPS_P24_COMMISION', Tools::getValue('NPS_P24_COMMISION'));
             $output .= $this->displayConfirmation($this->l('Merchant settings updated sucessfully'));
         } else if (Tools::isSubmit('submitSandbox')) {
             Configuration::updateValue('NPS_P24_SANDBOX_URL', Tools::getValue('NPS_P24_SANDBOX_URL'));
@@ -227,6 +229,14 @@ class NpsPrzelewy24 extends PaymentModule {
                         'label' => $this->l('SOAP Web Service URL'),
                         'hint' => $this->l('Endpoint of the Przelewy24 WebService'),
                         'name' => 'NPS_P24_WEB_SERVICE_URL',
+                        'required' => true
+                    ),
+                    array(
+                        'type' => 'text',
+                        'label' => $this->l('Przelewy24 Commision'),
+                        'name' => 'NPS_P24_COMMISION',
+                        'class' => 'fixed-width-xs',
+                        'suffix' => '%',
                         'required' => true
                     ),
                 ),
@@ -351,6 +361,7 @@ class NpsPrzelewy24 extends PaymentModule {
             'NPS_P24_SANDBOX_ERROR' => Tools::getValue('NPS_P24_SANDBOX_ERROR', Configuration::get('NPS_P24_SANDBOX_ERROR')),
             'NPS_P24_SANDBOX_WEB_SERVICE_URL' => Tools::getValue('NPS_P24_SANDBOX_WEB_SERVICE_URL', Configuration::get('NPS_P24_SANDBOX_WEB_SERVICE_URL')),
             'NPS_P24_REGULATIONS_URL' => Tools::getValue('NPS_P24_REGULATIONS_URL', Configuration::get('NPS_P24_REGULATIONS_URL')),
+            'NPS_P24_COMMISION' => Tools::getValue('NPS_P24_COMMISION', Configuration::get('NPS_P24_COMMISION')),
         );
     }
 
