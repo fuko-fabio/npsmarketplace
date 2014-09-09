@@ -35,3 +35,17 @@ CREATE TABLE IF NOT EXISTS `PREFIX_p24_seller_company` (
   `iban` char(64) NOT NULL,
   KEY `id_seller` (`id_seller`)
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `PREFIX_p24_dispatch_history` (
+  `id_dispatch_history` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `order_id` INT UNSIGNED NOT NULL,
+  `id_payment` INT UNSIGNED NOT NULL,
+  `session_id` char(100) NOT NULL, 
+  `spid` char(64) NOT NULL,
+  `amount` INT UNSIGNED NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  `merchant` tinyint(1) NOT NULL,
+  `date` datetime,
+  `error` text,
+  KEY `id_payment` (`id_payment`)
+) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;

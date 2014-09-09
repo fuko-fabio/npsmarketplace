@@ -36,4 +36,13 @@ class P24PaymentStatement extends ObjectModel
             'statement' =>      array('type' => self::TYPE_STRING, 'required' => true, 'size' => 40),
         ),
     );
+
+    public static function getSummary($id_cart) {
+        return Db::getInstance()->getRow('
+            SELECT *
+            FROM `'._DB_PREFIX_.'p24_payment` p
+            LEFT JOIN `'._DB_PREFIX_.'p24_payment_statement` ps
+            ON (p.`id_payment` = ps.`id_payment`)
+            WHERE p.`id_cart` = '.$id_cart);
+    }
 }

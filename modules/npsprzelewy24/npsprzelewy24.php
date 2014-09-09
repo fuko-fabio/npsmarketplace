@@ -93,7 +93,8 @@ class NpsPrzelewy24 extends PaymentModule {
             || !$this->registerHook('payment')
             || !$this->registerHook('displayOrderDetail')
             || !$this->registerHook('displayCustomerAccount')
-            || !$this->createTables($sql))
+            || !$this->createTables($sql)
+            || !$this->createTab())
             return false;
         return true;
     }
@@ -109,24 +110,27 @@ class NpsPrzelewy24 extends PaymentModule {
     public function getContent() {
         $output = null;
 
-        if (Tools::isSubmit('submit')) {
+        if (Tools::isSubmit('submitKeys')) {
             Configuration::updateValue('NPS_P24_MERCHANT_ID', Tools::getValue('NPS_P24_MERCHANT_ID'));
             Configuration::updateValue('NPS_P24_UNIQUE_KEY', Tools::getValue('NPS_P24_UNIQUE_KEY'));
             Configuration::updateValue('NPS_P24_CRC_KEY', Tools::getValue('NPS_P24_CRC_KEY'));
-            Configuration::updateValue('NPS_P24_URL', Tools::getValue('NPS_P24_URL'));
-            Configuration::updateValue('NPS_P24_COMMISION', Tools::getValue('NPS_P24_COMMISION'));
             Configuration::updateValue('NPS_P24_API_KEY', Tools::getValue('NPS_P24_API_KEY'));
-            $output .= $this->displayConfirmation($this->l('Merchant settings updated sucessfully'));
-        } else if (Tools::isSubmit('submitSandbox')) {
-            Configuration::updateValue('NPS_P24_SANDBOX_URL', Tools::getValue('NPS_P24_SANDBOX_URL'));
+            $output .= $this->displayConfirmation($this->l('Przelewy24 access keys settings updated sucessfully'));
+        } else if (Tools::isSubmit('submit')) {
+            Configuration::updateValue('NPS_P24_MERCHANT_SPID', Tools::getValue('NPS_P24_MERCHANT_SPID'));
+            Configuration::updateValue('NPS_P24_COMMISION', Tools::getValue('NPS_P24_COMMISION'));
+            $output .= $this->displayConfirmation($this->l('Przelewy24 settings updated sucessfully'));
+        } else if (Tools::isSubmit('submitAccessUrls')) {
+            Configuration::updateValue('NPS_P24_URL', Tools::getValue('NPS_P24_URL'));
             Configuration::updateValue('NPS_P24_WEB_SERVICE_URL', Tools::getValue('NPS_P24_WEB_SERVICE_URL'));
+            Configuration::updateValue('NPS_P24_REGULATIONS_URL', Tools::getValue('NPS_P24_REGULATIONS_URL'));
+            $output .= $this->displayConfirmation($this->l('Przelewy24 URL\'s updated sucessfully'));
+        }else if (Tools::isSubmit('submitSandbox')) {
+            Configuration::updateValue('NPS_P24_SANDBOX_URL', Tools::getValue('NPS_P24_SANDBOX_URL'));
             Configuration::updateValue('NPS_P24_SANDBOX_ERROR', Tools::getValue('NPS_P24_SANDBOX_ERROR'));
             Configuration::updateValue('NPS_P24_SANDBOX_WEB_SERVICE_URL', Tools::getValue('NPS_P24_SANDBOX_WEB_SERVICE_URL'));
             Configuration::updateValue('NPS_P24_SANDBOX_MODE', Tools::getValue('NPS_P24_SANDBOX_MODE'));
             $output .= $this->displayConfirmation($this->l('Sandbox settings updated sucessfully'));
-        } else if (Tools::isSubmit('submitUrls')) {
-            Configuration::updateValue('NPS_P24_REGULATIONS_URL', Tools::getValue('NPS_P24_REGULATIONS_URL'));
-            $output .= $this->displayConfirmation($this->l('URL\'s settings updated sucessfully'));
         }
         return $output.$this->displayForm();
     }
@@ -146,7 +150,8 @@ class NpsPrzelewy24 extends PaymentModule {
             DROP TABLE IF EXISTS
             `'._DB_PREFIX_.'p24_payment`,
             `'._DB_PREFIX_.'p24_payment_statement`,
-            `'._DB_PREFIX_.'p24_seller_company`');
+            `'._DB_PREFIX_.'p24_seller_company`,
+            `'._DB_PREFIX_.'p24_dispatch_history');
     }
 
     private function displayForm() {
@@ -154,9 +159,10 @@ class NpsPrzelewy24 extends PaymentModule {
         $default_lang = (int)Configuration::get('PS_LANG_DEFAULT');
 
         // Init Fields form array
-        $fields_form[0] = $this->configurationForm();
-        $fields_form[1] = $this->configurationUrlsForm();
-        $fields_form[2] = $this->configurationSandboxForm();
+        $fields_form[0] = $this->configurationKeysForm();
+        $fields_form[1] = $this->configurationForm();
+        $fields_form[2] = $this->configurationAccessUrlsForm();
+        $fields_form[3] = $this->configurationSandboxForm();
         $helper = new HelperForm();
          
         // Module, token and currentIndex
@@ -192,11 +198,11 @@ class NpsPrzelewy24 extends PaymentModule {
         return $helper->generateForm($fields_form);
     }
 
-    private function configurationForm() {
+    private function configurationKeysForm() {
         return array(
             'form' => array(
                 'legend' => array(
-                    'title' => $this->l('nps Marketplace Przelewy24 Settings'),
+                    'title' => $this->l('nps Przelewy24 Access Keys'),
                 ),
                 'input' => array(
                      array(
@@ -222,23 +228,34 @@ class NpsPrzelewy24 extends PaymentModule {
                     ),
                     array(
                         'type' => 'text',
-                        'label' => $this->l('SOAP Web Service API Key'),
-                        'hint' => $this->l('SOPA Web Service API key retrieved from Przelewy24'),
+                        'label' => $this->l('WSDL Web Service API Key'),
+                        'hint' => $this->l('WSDL Web Service API key retrieved from Przelewy24'),
                         'name' => 'NPS_P24_API_KEY',
                         'required' => true
                     ),
+                ),
+                'submit' => array(
+                    'title' => $this->l('Save'),
+                    'class' => 'btn btn-default pull-right',
+                    'name' => 'submitKeys',
+                )
+            )
+        );
+    }
+
+    private function configurationForm() {
+        return array(
+            'form' => array(
+                'legend' => array(
+                    'title' => $this->l('nps Marketplace Przelewy24 Settings'),
+                ),
+                'input' => array(
                     array(
                         'type' => 'text',
-                        'label' => $this->l('Web Service URL'),
-                        'name' => 'NPS_P24_URL',
-                        'required' => true
-                    ),
-                    array(
-                        'type' => 'text',
-                        'label' => $this->l('SOAP Web Service URL'),
-                        'hint' => $this->l('Endpoint of the Przelewy24 WebService'),
-                        'name' => 'NPS_P24_WEB_SERVICE_URL',
-                        'required' => true
+                        'label' => $this->l('Merchant SPID'),
+                        'hint' => $this->l('Merchant account SPID generated by Przelewy24 Partner Account'),
+                        'name' => 'NPS_P24_MERCHANT_SPID',
+                        'required' => false
                     ),
                     array(
                         'type' => 'text',
@@ -258,24 +275,38 @@ class NpsPrzelewy24 extends PaymentModule {
         );
     }
 
-    private function configurationUrlsForm() {
+    private function configurationAccessUrlsForm() {
         return array(
             'form' => array(
                 'legend' => array(
-                    'title' => $this->l('nps Marketplace Przelewy24 URL\'s Settings'),
+                    'title' => $this->l('nps Przelewy Access URL\'s'),
                 ),
                 'input' => array(
-                     array(
+                    array(
                         'type' => 'text',
                         'label' => $this->l('Regulations of Przelewy24 URL'),
                         'name' => 'NPS_P24_REGULATIONS_URL',
+                        'required' => true
+                    ),
+                     array(
+                        'type' => 'text',
+                        'label' => $this->l('Web Service URL'),
+                        'hint' => $this->l('Endpoint of the Przelewy24 standard service'),
+                        'name' => 'NPS_P24_URL',
+                        'required' => true
+                    ),
+                    array(
+                        'type' => 'text',
+                        'label' => $this->l('WSDL Web Service URL'),
+                        'hint' => $this->l('Endpoint of the Przelewy24 WSDL WebService'),
+                        'name' => 'NPS_P24_WEB_SERVICE_URL',
                         'required' => true
                     ),
                 ),
                 'submit' => array(
                     'title' => $this->l('Save'),
                     'class' => 'btn btn-default pull-right',
-                    'name' => 'submitUrls',
+                    'name' => 'submitAccessUrls',
                 )
             )
         );
@@ -285,7 +316,7 @@ class NpsPrzelewy24 extends PaymentModule {
         return array(
             'form' => array(
                 'legend' => array(
-                    'title' => $this->l('nps Marketplace Sandbox Przelewy24 Settings'),
+                    'title' => $this->l('nps Przelewy24 Sandbox Settings'),
                 ),
                 'input' => array(
                     array(
@@ -296,8 +327,8 @@ class NpsPrzelewy24 extends PaymentModule {
                     ),
                     array(
                         'type' => 'text',
-                        'label' => $this->l('SOAP Web Service Sandbox URL'),
-                        'hint' => $this->l('Endpoint of the Przelewy24 WebService'),
+                        'label' => $this->l('WSDL Web Service Sandbox URL'),
+                        'hint' => $this->l('Endpoint of the Przelewy24 WSDL WebService'),
                         'name' => 'NPS_P24_SANDBOX_WEB_SERVICE_URL',
                         'required' => true
                     ),
@@ -372,6 +403,7 @@ class NpsPrzelewy24 extends PaymentModule {
             'NPS_P24_REGULATIONS_URL' => Tools::getValue('NPS_P24_REGULATIONS_URL', Configuration::get('NPS_P24_REGULATIONS_URL')),
             'NPS_P24_COMMISION' => Tools::getValue('NPS_P24_COMMISION', Configuration::get('NPS_P24_COMMISION')),
             'NPS_P24_API_KEY' => Tools::getValue('NPS_P24_API_KEY', Configuration::get('NPS_P24_API_KEY')),
+            'NPS_P24_MERCHANT_SPID' => Tools::getValue('NPS_P24_MERCHANT_SPID', Configuration::get('NPS_P24_MERCHANT_SPID')),
         );
     }
 
@@ -404,6 +436,8 @@ class NpsPrzelewy24 extends PaymentModule {
     }
 
     public function reportError($logs = array()) {
+        PrestaShopLogger::addLog(implode(' | ', $logs), 3);
+
         $id_lang = (int)$this->context->language->id;
         $iso_lang = Language::getIsoById($id_lang);
 
@@ -414,7 +448,7 @@ class NpsPrzelewy24 extends PaymentModule {
             'error_reporting',
             Mail::l('Error reporting from your Przelewy24 module',
             (int)$this->context->language->id),
-            array('{logs}' => implode('<br />', $log)),
+            array('{logs}' => implode('<br />', $logs)),
             Configuration::get('PS_SHOP_EMAIL'),
             null,
             null,
@@ -422,5 +456,21 @@ class NpsPrzelewy24 extends PaymentModule {
             null,
             null,
             _PS_MODULE_DIR_.$this->name.'/mails/');
+    }
+
+    private function createTab() {
+        $tabs = Tab::getCollectionFromModule('npsmarketplace');
+
+        $sellers_tab = new Tab();
+        $sellers_tab->id_parent = $tabs[0]->id;
+        $sellers_tab->position = 1;
+        $sellers_tab->module = $this->name;
+        $sellers_tab->class_name = 'AdminDispatchHistory';
+        $languages = Language::getLanguages();
+        foreach ($languages AS $language)
+        {
+            $sellers_tab->{'name'}[intval($language['id_lang'])] = 'Dispatch History';
+        }
+        return $sellers_tab->add();
     }
 }

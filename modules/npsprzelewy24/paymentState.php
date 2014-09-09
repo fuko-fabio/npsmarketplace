@@ -5,8 +5,9 @@
 */
 include(dirname(__FILE__).'/../../config/config.inc.php');
 include dirname(__FILE__).'/../../init.php';
-include(dirname(__FILE__).'/npsprzelewy24.php');
-include(dirname(__FILE__).'/classes/P24PaymentValidator.php');
+include(_PS_MODULE_DIR_.'npsprzelewy24/npsprzelewy24.php');
+include(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24PaymentValidator.php');
+include(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24TransationDispatcher.php');
 
 $p24_error_code = Tools::getValue('p24_error_code');
 $p24_token = Tools::getValue('p24-token'); 
@@ -26,7 +27,8 @@ if (empty($p24_error_code)) {
     );
     $result = $validator->validate($p24_token);
     if ($result['error'] == 0) {
-        PrestaShopLogger::addLog('PaymentState: Payment verified. Session ID: '.Tools::getValue('p24_session_id'));
+        PrestaShopLogger::addLog('Background payment. Verification success. Session ID: '.Tools::getValue('p24_session_id'));
+        P24TransationDispatcher::dispatchMoney($id_cart);
     } else {
         $history = new OrderHistory();
         $history->id_order = intval($order_id);
@@ -38,8 +40,8 @@ if (empty($p24_error_code)) {
     $history->id_order = intval($order_id);
     $history->changeIdOrderState(8, intval($order_id));
     $history->addWithemail(true);
-    PrestaShopLogger::addLog('PaymentState: Unabe to verify payment. Error code: '.$p24_error_code);
     $m->reportError(array(
+        'Background payment. Unabe to verify payment. Error code: '.$p24_error_code,
         'Requested URL: '.$this->context->link->getModuleLink('npsprzelewy24', 'paymentState'),
         'GET params: '.implode(' | ', $_GET),
         'POST params: '.implode(' | ', $_POST),

@@ -48,6 +48,7 @@ class P24PaymentValodator {
     * @return Array result with error code and error message if needed
     */
     public function validate($p24_token) {
+        $npsprzelewy24 = new NpsPrzelewy24();
         if (isset($this->session_id) && $this->verifySign()) {
             $session_id_array = explode('|', $this->session_id);
             $id_cart = $session_id_array[1];
@@ -56,7 +57,7 @@ class P24PaymentValodator {
 
             if($p24_payment->id != null) {
                 if($p24_payment->token != $p24_token) {
-                    PrestaShopLogger::addLog('P24PaymentValodator: Unabe to verify payment. Invalid p24 token value');
+                    $npsprzelewy24->reportError(array('P24PaymentValodator: Unabe to verify payment. Invalid p24 token value'));
                     return array('error' => 1);
                 }
                 $result = $this->transactionVerify();
@@ -65,16 +66,16 @@ class P24PaymentValodator {
                     $this->updateOrdetState($id_cart);
                     return array('error' => 0);
                 } else {
-                    PrestaShopLogger::addLog('P24PaymentValodator: Unabe to verify payment. Error code: '.$result['error'].' Received message: '.$result['errorMessage']);
+                    $npsprzelewy24->reportError(array('P24PaymentValodator: Unabe to verify payment. Error code: '.$result['error'].' Received message: '.$result['errorMessage']));
                     return $result;
                 }
 
             } else {
-                PrestaShopLogger::addLog('P24PaymentValodator: Unabe to verify payment. Invalid Przelewy24 response data'.implode("&", $_POST));
+                $npsprzelewy24->reportError(array('P24PaymentValodator: Unabe to verify payment. Invalid Przelewy24 response data'.implode("&", $_POST)));
                 return array('error' => -1, 'errorMessage' => 'Invalid response from przelewy24');
             }
         } else {
-            PrestaShopLogger::addLog('P24PaymentValodator: Unabe to verify payment. Invalid session ID');
+            $npsprzelewy24->reportError(array('P24PaymentValodator: Unabe to verify payment. Invalid session ID'));
             return array('error' => -1, 'errorMessage' => 'Invalid session ID');
         }
     }

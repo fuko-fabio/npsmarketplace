@@ -53,7 +53,7 @@ class P24 {
     }
 
     public static function checkNIP($nip) {
-        $soap = new SoapClient(P24::soapUrl());
+        $soap = new SoapClient(P24::soapProductionUrl());
         return $soap->CheckNIP(
             P24::merchantId(),
             P24::apiKey(),
@@ -66,6 +66,15 @@ class P24 {
             P24::merchantId(),
             P24::apiKey(),
             $company);
+    }
+
+    public static function dispatchMoney($batch_id, $dispatch_req) {
+        $soap = new SoapClient(P24::soapUrl());
+        return $soap->TrnDispatch(
+            P24::merchantId(),
+            P24::apiKey(),
+            $batch_id,
+            $dispatch_req);
     }
 
     public static function merchantId() {
@@ -93,11 +102,16 @@ class P24 {
     }
 
     private static function soapUrl() {
-        $url = Configuration::get('NPS_P24_WEB_SERVICE_URL');
-        if (Configuration::get('NPS_P24_SANDBOX_MODE') == 1) {
-            $url = Configuration::get('NPS_P24_SANDBOX_WEB_SERVICE_URL');
-        }
-        return $url;
+        if (Configuration::get('NPS_P24_SANDBOX_MODE') == 1)
+            return P24::soapSandboxUrl();
+        return P24::soapProductionUrl();
     }
 
+    private static function soapProductionUrl() {
+        return Configuration::get('NPS_P24_WEB_SERVICE_URL');
+    }
+
+    private static function soapSandboxUrl() {
+        return Configuration::get('NPS_P24_SANDBOX_WEB_SERVICE_URL');
+    }
 }
