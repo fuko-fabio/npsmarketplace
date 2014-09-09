@@ -41,6 +41,7 @@ class NpsPrzelewy24 extends PaymentModule {
         Configuration::updateValue('NPS_P24_COMMISION', 2.5);
         Configuration::updateValue('NPS_P24_UNIQUE_KEY', '');
         Configuration::updateValue('NPS_P24_CRC_KEY', '');
+        Configuration::updateValue('NPS_P24_API_KEY', '');
         Configuration::updateValue('NPS_P24_WEB_SERVICE_URL', 'https://secure.przelewy24.pl/external/wsdl/service.php?wsdl');
         Configuration::updateValue('NPS_P24_URL', 'https://secure.przelewy24.pl');
         Configuration::updateValue('NPS_P24_SANDBOX_URL', 'https://sandbox.przelewy24.pl');
@@ -114,6 +115,7 @@ class NpsPrzelewy24 extends PaymentModule {
             Configuration::updateValue('NPS_P24_CRC_KEY', Tools::getValue('NPS_P24_CRC_KEY'));
             Configuration::updateValue('NPS_P24_URL', Tools::getValue('NPS_P24_URL'));
             Configuration::updateValue('NPS_P24_COMMISION', Tools::getValue('NPS_P24_COMMISION'));
+            Configuration::updateValue('NPS_P24_API_KEY', Tools::getValue('NPS_P24_API_KEY'));
             $output .= $this->displayConfirmation($this->l('Merchant settings updated sucessfully'));
         } else if (Tools::isSubmit('submitSandbox')) {
             Configuration::updateValue('NPS_P24_SANDBOX_URL', Tools::getValue('NPS_P24_SANDBOX_URL'));
@@ -216,6 +218,13 @@ class NpsPrzelewy24 extends PaymentModule {
                         'label' => $this->l('Merchant CRC Key'),
                         'hint' => $this->l('CRC key retrieved from Przelewy24'),
                         'name' => 'NPS_P24_CRC_KEY',
+                        'required' => true
+                    ),
+                    array(
+                        'type' => 'text',
+                        'label' => $this->l('SOAP Web Service API Key'),
+                        'hint' => $this->l('SOPA Web Service API key retrieved from Przelewy24'),
+                        'name' => 'NPS_P24_API_KEY',
                         'required' => true
                     ),
                     array(
@@ -362,6 +371,7 @@ class NpsPrzelewy24 extends PaymentModule {
             'NPS_P24_SANDBOX_WEB_SERVICE_URL' => Tools::getValue('NPS_P24_SANDBOX_WEB_SERVICE_URL', Configuration::get('NPS_P24_SANDBOX_WEB_SERVICE_URL')),
             'NPS_P24_REGULATIONS_URL' => Tools::getValue('NPS_P24_REGULATIONS_URL', Configuration::get('NPS_P24_REGULATIONS_URL')),
             'NPS_P24_COMMISION' => Tools::getValue('NPS_P24_COMMISION', Configuration::get('NPS_P24_COMMISION')),
+            'NPS_P24_API_KEY' => Tools::getValue('NPS_P24_API_KEY', Configuration::get('NPS_P24_API_KEY')),
         );
     }
 

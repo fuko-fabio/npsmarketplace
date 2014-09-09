@@ -56,7 +56,7 @@ class P24 {
         $soap = new SoapClient(P24::soapUrl());
         return $soap->CheckNIP(
             P24::merchantId(),
-            P24::uniqueKey(),
+            P24::apiKey(),
             $nip);
     }
 
@@ -64,7 +64,7 @@ class P24 {
         $soap = new SoapClient(P24::soapUrl());
         return $soap->CompanyRegister(
             P24::merchantId(),
-            P24::uniqueKey(),
+            P24::apiKey(),
             $company);
     }
 
@@ -78,6 +78,10 @@ class P24 {
 
     public static function crcKey() {
         return Configuration::get('NPS_P24_CRC_KEY');
+    }
+
+    public static function apiKey() {
+        return Configuration::get('NPS_P24_API_KEY');
     }
 
     public static function url() {
