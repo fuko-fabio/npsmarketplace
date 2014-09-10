@@ -24,6 +24,7 @@ class NpsMarketplaceOrdersModuleFrontController extends ModuleFrontController
 
         $orders = $this -> getOrders($seller);
         $this -> context -> smarty -> assign(array(
+            'HOOK_MY_ACCOUNT_COLUMN' => Hook::exec('displayMyAccountColumn'),
             'view_order_link' => $this->context->link->getModuleLink('npsmarketplace', 'Order'),
             'orders' => $orders));
 

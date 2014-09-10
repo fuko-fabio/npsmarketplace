@@ -8,6 +8,13 @@ include_once (_PS_MODULE_DIR_ . 'npsmarketplace/classes/Seller.php');
 
 class NpsMarketplaceProductsListModuleFrontController extends ModuleFrontController {
 
+    public function setMedia() {
+        parent::setMedia();
+        $this->addJqueryPlugin('footable');
+        $this->addJqueryPlugin('footable-sort');
+        $this->addJqueryPlugin('scrollTo');
+    }
+
     public function postProcess()
     {
         if (Tools::isSubmit('action') && Tools::isSubmit('id_product')) {
@@ -29,6 +36,7 @@ class NpsMarketplaceProductsListModuleFrontController extends ModuleFrontControl
 
         $products = $this -> getProducts($seller);
         $this -> context -> smarty -> assign(array(
+            'HOOK_MY_ACCOUNT_COLUMN' => Hook::exec('displayMyAccountColumn'),
             'add_product_link' => $this -> context -> link -> getModuleLink('npsmarketplace', 'Product'),
             'products' => $products));
 
@@ -42,6 +50,7 @@ class NpsMarketplaceProductsListModuleFrontController extends ModuleFrontControl
             $link = new Link();
             $cover = Product::getCover($product->id);
             $result[] = array(
+                'haveImage' => !empty($cover),
                 'cover' => $link->getImageLink($product->link_rewrite, $cover['id_image'], 'cart_default'),
                 'name' => Product::getProductName($product->id),
                 'description' => $product->description_short[$this->context->language->id],

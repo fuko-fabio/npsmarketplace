@@ -100,6 +100,7 @@ class NpsMarketplaceProductCombinationListModuleFrontController extends ModuleFr
             }
         }
         $this -> context -> smarty -> assign(array(
+            'HOOK_MY_ACCOUNT_COLUMN' => Hook::exec('displayMyAccountColumn'),
             'comb_array' => $comb_array,
         ));
         $this->setTemplate('product_combinations_list.tpl');

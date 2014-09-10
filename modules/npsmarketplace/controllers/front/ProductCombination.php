@@ -105,6 +105,7 @@ class NpsMarketplaceProductCombinationModuleFrontController extends ModuleFrontC
             );
         }
         $this -> context -> smarty -> assign(array(
+            'HOOK_MY_ACCOUNT_COLUMN' => Hook::exec('displayMyAccountColumn'),
             'user_agreement_url' =>'#',
             'product' => $tpl_product,
             'current_id_lang' => (int)$this->context->language->id,

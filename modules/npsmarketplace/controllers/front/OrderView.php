@@ -22,11 +22,14 @@ class NpsMarketplaceOrderViewModuleFrontController extends ModuleFrontController
             Tools::redirect('index.php?controller=my-account');
 
         $order = new Order(Tools::getValue('id_order'));
+        $currency = new Currency($order->id_currency);
         $this -> context -> smarty -> assign(array(
+            'HOOK_MY_ACCOUNT_COLUMN' => Hook::exec('displayMyAccountColumn'),
+            'currency' => $currency,
             'order' => $this->orderForView($order),
             'address' => $this->deliveryAddressForView($order->id_address_delivery),
             'customer' => $this->customerForView($order->id_customer),
-            'products' => $this->productsForView($seller, $order)
+            'products' => $this->productsForView($seller, $order),
             )
         );
 

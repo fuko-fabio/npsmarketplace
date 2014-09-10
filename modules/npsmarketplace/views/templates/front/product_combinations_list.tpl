@@ -11,7 +11,7 @@
     <div class="table-responsive">
         <table class="table">
             <thead>
-                <tr class="active">
+                <tr>
                     <td>{l s='Date & Time' mod='npsmarketplace'}</td>
                     <td>{l s='Quantity' mod='npsmarketplace'}</td>
                     <td>{l s='Action' mod='npsmarketplace'}</td>
@@ -19,7 +19,7 @@
             </thead>
             <tbody>
                 {foreach from=$comb_array item=comb}
-                <tr class="active">
+                <tr>
                     <td>{$comb['name']}</td>
                     <td>{$comb['quantity']}</td>
                     <td>

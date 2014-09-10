@@ -6,6 +6,7 @@
 
 if (!defined('_PS_VERSION_'))
     exit;
+include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
 
 class NpsPrzelewy24 extends PaymentModule {
 

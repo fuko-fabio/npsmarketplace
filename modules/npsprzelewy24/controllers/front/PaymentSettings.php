@@ -25,7 +25,6 @@ class NpsPrzelewy24PaymentSettingsModuleFrontController extends ModuleFrontContr
             $settings = new P24SellerCompany(null, $seller->id);
             if ($settings->id != null && !empty($settings->spid)) {
                 Tools::redirect($this->context->link->getModuleLink('npsprzelewy24', 'paymentSettings'));
-                return;
             }
 
             $company_name = trim(Tools::getValue('company_name'));
@@ -129,42 +128,46 @@ class NpsPrzelewy24PaymentSettingsModuleFrontController extends ModuleFrontContr
         $seller = new Seller(null, $this->context->customer->id);
         if ($seller->id == null || !$seller->active) {
             Tools::redirect('index.php?controller=my-account');
-            return;
         } else if ($seller->locked) {
             Tools::redirect($this->context->link->getModuleLink('npsmarketplace', 'UnlockAccount'));
-            return;
         }
+        $this->context->smarty->assign(array(
+            'HOOK_MY_ACCOUNT_COLUMN' => Hook::exec('displayMyAccountColumn')
+        ));
         $settings = new P24SellerCompany(null, $seller->id);
         if ($settings->id != null && !empty($settings->spid)) {
-            $this->context->smarty->assign(array('company' => $settings));
-            $this->setTemplate('payment_company_registered.tpl');
-            return;
-        }
-        $nps_instance = new NpsPrzelewy24();
-
-        if (!empty($seller->nip)) {
-            $res = P24::checkNIP($seller->nip);
-        } else {
-            $res = (object) array('error' => (object) array('errorCode' => 0), 'result' => 0);
-        }
-        if ($res->error->errorCode) {
-            $this->errors[] = $nps_instance->l('Unable to check company existence in Przelewy24 payment service.')
-                    .' '.P24ErrorMessage::get($res->error->errorCode).' '.$nps_instance->l('Please contact with customer service');
             $this->context->smarty->assign(array(
-                'company' => array(),
-                'p24_agreement_url' => Configuration::get('NPS_P24_REGULATIONS_URL'))
-            );
-            $this->setTemplate('payment_company_registered.tpl');
-        } else if ($res->result) {
-            $this->errors[] = sprintf($nps_instance->l('Your company with NIP "%s" has been already registered in Przelewy24 service. Please contact with customer service.'), $seller->nip);
-            $this->context->smarty->assign(array('company' => array()));
-            $this->setTemplate('payment_company_registered.tpl');
-        } else {
-            $this->context->smarty->assign(array(
-                'company' => $this->getRegisterCompanyData(),
+                'company' => $settings,
                 'p24_agreement_url' => Configuration::get('NPS_P24_REGULATIONS_URL')
             ));
-            $this->setTemplate('payment_register_company.tpl');
+            $this->setTemplate('payment_company_registered.tpl');
+        } else {
+            $nps_instance = new NpsPrzelewy24();
+    
+            if (!empty($seller->nip)) {
+                $res = P24::checkNIP($seller->nip);
+            } else {
+                $res = (object) array('error' => (object) array('errorCode' => 0), 'result' => 0);
+            }
+            if ($res->error->errorCode) {
+                $this->errors[] = $nps_instance->l('Unable to check company existence in Przelewy24 payment service.')
+                        .' '.P24ErrorMessage::get($res->error->errorCode).' '.$nps_instance->l('Please contact with customer service');
+                $this->context->smarty->assign(array(
+                    'company' => array(),
+                    'p24_agreement_url' => Configuration::get('NPS_P24_REGULATIONS_URL'))
+                );
+                $this->setTemplate('payment_company_registered.tpl');
+            } else if ($res->result) {
+                $this->errors[] = sprintf($nps_instance->l('Your company with NIP "%s" has been already registered in Przelewy24 service. Please contact with customer service.'), $seller->nip);
+                $this->context->smarty->assign(array('company' => array()));
+                $this->setTemplate('payment_company_registered.tpl');
+            } else {
+                $this->context->smarty->assign(array(
+                    'company' => $this->getRegisterCompanyData(),
+                    'p24_agreement_url' => Configuration::get('NPS_P24_REGULATIONS_URL')
+                ));
+                $this->setTemplate('payment_register_company.tpl');
+            }
         }
     }
 

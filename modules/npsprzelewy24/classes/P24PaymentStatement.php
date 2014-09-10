@@ -45,4 +45,13 @@ class P24PaymentStatement extends ObjectModel
             ON (p.`id_payment` = ps.`id_payment`)
             WHERE p.`id_cart` = '.$id_cart);
     }
+
+    public static function byOrderId($order_id) {
+        $query = new DbQuery();
+        $query
+            -> select('`id_payment_statement`')
+            -> from('p24_payment_statement')
+            -> where('`order_id` = '.$order_id);
+        return new P24PaymentStatement(Db::getInstance() -> getValue($query));
+    }
 }

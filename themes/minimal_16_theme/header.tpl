@@ -112,5 +112,8 @@
 						{if isset($left_column_size) && !empty($left_column_size)}
 						<div id="left_column" class="column col-xs-12 col-sm-{$left_column_size|intval}">{$HOOK_LEFT_COLUMN}</div>
 						{/if}
-						<div id="center_column" class="center_column col-xs-12 col-sm-{12 - $left_column_size - $right_column_size}">
+						{if isset($my_account_column_size) && !empty($my_account_column_size)}
+                        <div id="left_column" class="column col-xs-12 col-sm-{$my_account_column_size|intval}">{$HOOK_MY_ACCOUNT_COLUMN}</div>
+                        {/if}
+						<div id="center_column" class="center_column col-xs-12 col-sm-{12 - $left_column_size - $right_column_size - $my_account_column_size}">
 	{/if}

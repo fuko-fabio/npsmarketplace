@@ -74,7 +74,7 @@
             <div class="table-responsive">
                 <table class="table table-bordered">
                     <thead>
-                        <tr class="active">
+                        <tr>
                             <td>{l s='Image' mod='npsmarketplace'}</td>
                             <td>{l s='Name' mod='npsmarketplace'}</td>
                             <td>{l s='Unit Price' mod='npsmarketplace'}</td>
@@ -84,12 +84,12 @@
                     </thead>
                     <tbody>
                         {foreach from=$products item=product}
-                        <tr class="active">
+                        <tr>
                             <td><img src="{$product['cover']}" class="imgm img-thumbnail" width="52"/></td>
                             <td>{$product['product_name']}</td>
-                            <td>{$product['unit_price_tax_incl']}</td>
+                            <td>{displayPrice price=$product['unit_price_tax_incl'] currency=$currency->id}</td>
                             <td>{$product['product_quantity']}</td>
-                            <td>{$product['total_price_tax_incl']}</td>
+                            <td>{displayPrice price=$product['total_price_tax_incl'] currency=$currency->id}</td>
                         </tr>
                         {/foreach}
                     </tbody>

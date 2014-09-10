@@ -215,6 +215,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
         $form_token = uniqid();
         $this->context->cookie->__set('form_token', $form_token);
         $this -> context -> smarty -> assign(array(
+            'HOOK_MY_ACCOUNT_COLUMN' => Hook::exec('displayMyAccountColumn'),
             'user_agreement_url' =>'#',
             'categories_tree' => $categoriesList -> getTree(),
             'category_partial_tpl_path' =>_PS_MODULE_DIR_.'npsmarketplace/views/templates/front/category_tree_partial.tpl',
@@ -243,8 +244,6 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
     }
 
     private function saveFeatures($town, $district, $address) {
-        if (!Feature::isFeatureActive())
-            return;
         $feature_id = Configuration::get('NPS_FEATURE_TOWN_ID');
         $feature_value_id = FeatureValue::addFeatureValueImport($feature_id, $town, $this->_product->id);
         Product::addFeatureProductImport($this->_product->id, $feature_id, $feature_value_id);
@@ -261,8 +260,6 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
     }
 
     private function saveAttribute($date_time, $quantity) {
-        if (!Combination::isFeatureActive() || empty($date_time))
-            return;
         $name = array();
         foreach (Language::getLanguages() as $key => $lang) {
             $name[$lang['id_lang']] = $date_time;

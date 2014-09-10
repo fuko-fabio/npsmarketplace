@@ -4,27 +4,33 @@
 <span class="navigation_page">{l s='My products'}</span>
 {/capture}
 {include file="$tpl_dir./errors.tpl"}
-<h1 class="page-heading bottom-indent">{l s='My products'}</h1>
-
 <div class="block-center" id="block-seller-products-list">
+    <h1 class="page-heading bottom-indent">{l s='My products'}</h1>
+
     {if $products}
     <div class="table-responsive">
-        <table class="table">
+        <table class="table table-bordered footab">
             <thead>
-                <tr class="active">
-                    <td>{l s='Image' mod='npsmarketplace'}</td>
-                    <td width="120px" >{l s='Name' mod='npsmarketplace'}</td>
-                    <td>{l s='Description' mod='npsmarketplace'}</td>
-                    <td width="60px">{l s='Price' mod='npsmarketplace'}</td>
-                    <td width="60px">{l s='Quantity' mod='npsmarketplace'}</td>
-                    <td width="60px">{l s='State' mod='npsmarketplace'}</td>
-                    <td width="120px">{l s='Action' mod='npsmarketplace'}</td>
+                <tr>
+                    <th class="first_item" data-sort-ignore="true">{l s='Image' mod='npsmarketplace'}</th>
+                    <th class="item">{l s='Name' mod='npsmarketplace'}</th>
+                    <th class="item" data-hide="phone,tablet">{l s='Description' mod='npsmarketplace'}</th>
+                    <th class="item">{l s='Price' mod='npsmarketplace'}</th>
+                    <th class="item">{l s='Quantity' mod='npsmarketplace'}</th>
+                    <th class="item" data-hide="phone,tablet">{l s='State' mod='npsmarketplace'}</th>
+                    <th class="last_item" data-sort-ignore="true" width="150px">{l s='Action' mod='npsmarketplace'}</th>
                 </tr>
             </thead>
             <tbody>
                 {foreach from=$products item=product}
-                <tr class="active">
-                    <td><img src="{$product['cover']}" class="imgm img-thumbnail" width="52"/></td>
+                <tr>
+                    <td>
+                    {if $product['haveImage']}
+                        <img src="{$product['cover']}" class="imgm img-thumbnail" width="52"/>
+                    {else}
+                        <img src="{$img_prod_dir}{$lang_iso}-default-cart_default.jpg" class="imgm img-thumbnail" width="52"/>
+                    {/if}
+                    </td>
                     <td>{$product['name']}</td>
                     <td>{$product['description']}</td>
                     <td>{$product['price']}</td>

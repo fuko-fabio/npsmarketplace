@@ -113,6 +113,7 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
         }
 
         $this -> context -> smarty -> assign(array(
+            'HOOK_MY_ACCOUNT_COLUMN' => Hook::exec('displayMyAccountColumn'),
             'seller' => $tpl_seller,
             'current_id_lang' => (int)$this -> context -> language -> id,
             'languages' => Language::getLanguages(),

@@ -51,6 +51,7 @@ class NpsMarketplace extends Module {
             || !$this->registerHook('displayCustomerAccount')
             || !$this->registerHook('productTab')
             || !$this->registerHook('productTabContent')
+            || !$this->registerHook('displayMyAccountColumn')
             || !Configuration::updateValue('NPS_GLOBAL_COMMISION', 3)
             || !Configuration::updateValue('NPS_PRODUCT_GUIDE_URL', $shop_url)
             || !Configuration::updateValue('NPS_SELLER_GUIDE_URL', $shop_url)
@@ -72,6 +73,7 @@ class NpsMarketplace extends Module {
             || !$this->unregisterHook('displayCustomerAccount')
             || !$this->unregisterHook('productTab')
             || !$this->unregisterHook('productTabContent')
+            || !$this->unregisterHook('productTabContent')
             || !Configuration::deleteByName('NPS_GLOBAL_COMMISION')
             || !Configuration::deleteByName('NPS_PRODUCT_GUIDE_URL')
             || !Configuration::deleteByName('NPS_SELLER_GUIDE_URL')
@@ -89,7 +91,11 @@ class NpsMarketplace extends Module {
         return true;
     }
 
-    public function hookDisplayCustomerAccount( $params ) {
+    public function hookDisplayMyAccountColumn() {
+        return $this->hookDisplayCustomerAccount();
+    }
+
+    public function hookDisplayCustomerAccount() {
         $seller = new Seller(null, $this->context->customer->id);
         $account_state = 'none';
         if ($seller->requested == 1 && $seller->active == 0 && $seller->locked == 0)
@@ -151,7 +157,7 @@ class NpsMarketplace extends Module {
         return $output.$this->displayForm();
     }
 
-    public function hookProductTab($params)
+    public function hookProductTab()
     {
         $id_seller = (int)Seller::getSellerByProduct(Tools::getValue('id_product'));
         if(isset($id_seller) && $id_seller > 0) {
@@ -162,7 +168,7 @@ class NpsMarketplace extends Module {
         }
     }
 
-    public function hookProductTabContent($params) {
+    public function hookProductTabContent() {
         $id_seller = (int)Seller::getSellerByProduct(Tools::getValue('id_product'));
         if(isset($id_seller) && $id_seller > 0) {
             $seller = new Seller(Seller::getSellerByProduct(Tools::getValue('id_product')));

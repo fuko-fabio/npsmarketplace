@@ -193,6 +193,7 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
 
         $this -> context -> smarty -> assign(
             array(
+                'HOOK_MY_ACCOUNT_COLUMN' => Hook::exec('displayMyAccountColumn'),
                 'seller' => array('image' => '', 'regulations_active' => false),
                 'account_state' => $account_state,
                 'account_request_date' => $date,

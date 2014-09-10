@@ -20,7 +20,7 @@ class P24DispatchHistory extends ObjectModel {
         if (empty($id_dispatch_history) && !empty($order_id)) {
             $query = new DbQuery();
             $query
-                -> select('`id_dispatch_history`')
+                -> select('`id_p24_dispatch_history`')
                 -> from('p24_dispatch_history')
                 -> where('`order_id` = '.$order_id);
             $id_dispatch_history = Db::getInstance() -> getValue($query);
@@ -33,7 +33,7 @@ class P24DispatchHistory extends ObjectModel {
      */
     public static $definition = array(
         'table' => 'p24_dispatch_history',
-        'primary' => 'id_dispatch_history',
+        'primary' => 'id_p24_dispatch_history',
         'fields' => array(
             'id_payment' =>   array('type' => self::TYPE_INT,    'required' => true, 'validate' => 'isUnsignedId'),
             'order_id' =>   array('type' => self::TYPE_INT,    'required' => true, 'validate' => 'isUnsignedId'),

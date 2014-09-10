@@ -13,6 +13,9 @@ class NpsMarketplaceUnlockAccountModuleFrontController extends ModuleFrontContro
         $seller = new Seller(null, $this->context->customer->id);
         if ($seller->id == null) 
             Tools::redirect('index.php?controller=my-account');
+        $this -> context -> smarty -> assign(array(
+            'HOOK_MY_ACCOUNT_COLUMN' => Hook::exec('displayMyAccountColumn')
+        ));
         $this->setTemplate('unlock_account.tpl');
     }
 }

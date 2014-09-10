@@ -12,13 +12,13 @@
         <table class="table table-bordered footab">
             <thead>
                 <tr>
-                    <th class="first_item" data-sort-ignore="true">{l s='Reference' mod='npsmarketplace'}</td>
-                    <th class="item" data-hide="phone,tablet">{l s='Customer' mod='npsmarketplace'}</td>
-                    <th class="item">{l s='Date' mod='npsmarketplace'}</td>
-                    <th class="item">{l s='Total' mod='npsmarketplace'}</td>
-                    <th class="item" data-hide="phone,tablet">{l s='Payment' mod='npsmarketplace'}</td>
-                    <th class="item">{l s='State' mod='npsmarketplace'}</td>
-                    <th class="last_item" data-sort-ignore="true" width="100px" >{l s='Action' mod='npsmarketplace'}</td>
+                    <th class="first_item" data-sort-ignore="true">{l s='Reference' mod='npsmarketplace'}</th>
+                    <th class="item" data-hide="phone,tablet">{l s='Customer' mod='npsmarketplace'}</th>
+                    <th class="item">{l s='Date' mod='npsmarketplace'}</th>
+                    <th class="item">{l s='Total' mod='npsmarketplace'}</th>
+                    <th class="item" data-hide="phone,tablet">{l s='Payment' mod='npsmarketplace'}</th>
+                    <th class="item">{l s='State' mod='npsmarketplace'}</th>
+                    <th class="last_item" data-sort-ignore="true" width="100px" >{l s='Action' mod='npsmarketplace'}</th>
                 </tr>
             </thead>
             <tbody>
