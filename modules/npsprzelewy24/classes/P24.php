@@ -14,13 +14,8 @@ class P24 {
             }
         }
         $ch = curl_init(P24::url().'/trnRegister');
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION  ,true);
-        curl_setopt($ch, CURLOPT_HEADER, false); 
-        curl_setopt($ch, CURLOPT_POST, true);
+        P24::setCurlOpts($ch);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data, '', '&'));
-        curl_setopt($ch, CURLOPT_SSLVERSION, 3);
-        curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'SSLv3');
         $output=curl_exec($ch);
         curl_close($ch);
 
@@ -30,13 +25,8 @@ class P24 {
 
     public static function transactionVerify($data) {
         $ch = curl_init(P24::url().'/trnVerify');
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION  ,true);
-        curl_setopt($ch, CURLOPT_HEADER, false); 
-        curl_setopt($ch, CURLOPT_POST, true);
+        P24::setCurlOpts($ch);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data, '', '&'));
-        curl_setopt($ch, CURLOPT_SSLVERSION, 3);
-        curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'SSLv3');
         $output=curl_exec($ch);
         curl_close($ch);
 
@@ -50,6 +40,16 @@ class P24 {
              ));
         }
         return $result;
+    }
+
+    private static function setCurlOpts($ch) {
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION  ,true);
+        curl_setopt($ch, CURLOPT_HEADER, false); 
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_SSLVERSION, 3);
+        curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'SSLv3');
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     }
 
     public static function checkNIP($nip) {
