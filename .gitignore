@@ -1,6 +1,7 @@
 # Ignore all
 /*
 
+.htaccess
 # Exclude
 !/mails/en/seller_account_request.html
 !/mails/en/seller_account_request.txt
@@ -16,7 +17,7 @@
 !/themes
 /themes/*
 !/themes/minimal_16_theme
-/themes/minimal_16_theme/cache/*
+/themes/minimal_16_theme/cache/
 
 !/js
 /js/*

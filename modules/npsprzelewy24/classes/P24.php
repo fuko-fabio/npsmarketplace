@@ -13,6 +13,11 @@ class P24 {
                 $data['p24_description'] = $sandbox_descr;
             }
         }
+        d(array(
+            'data' => $data,
+            'url' => P24::url(),
+            'sandbox' => Configuration::get('NPS_P24_SANDBOX_MODE')
+        ));
         $ch = curl_init(P24::url().'/trnRegister');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION  ,true);
