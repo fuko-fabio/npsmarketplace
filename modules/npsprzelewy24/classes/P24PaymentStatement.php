@@ -37,7 +37,20 @@ class P24PaymentStatement extends ObjectModel
         ),
     );
 
-    public static function getSummary($id_cart) {
+    public static function getSummary($id_payment) {
+        if(empty($id_payment))
+            return null;
+        return Db::getInstance()->getRow('
+            SELECT *
+            FROM `'._DB_PREFIX_.'p24_payment` p
+            LEFT JOIN `'._DB_PREFIX_.'p24_payment_statement` ps
+            ON (p.`id_payment` = ps.`id_payment`)
+            WHERE p.`id_payment` = '.$id_payment);
+    }
+
+    public static function getSummaryByCartId($id_cart) {
+        if(empty($id_cart))
+            return null;
         return Db::getInstance()->getRow('
             SELECT *
             FROM `'._DB_PREFIX_.'p24_payment` p

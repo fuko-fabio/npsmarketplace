@@ -90,14 +90,12 @@ class NpsPrzelewy24 extends PaymentModule {
             Configuration::updateValue('NPS_P24_ORDER_STATE_2', $stateid);
         }
 
-        if (!parent::install()
-            || !$this->registerHook('payment')
-            || !$this->registerHook('displayOrderDetail')
-            || !$this->registerHook('displayCustomerAccount')
-            || !$this->createTables($sql)
-            || !$this->createTab())
-            return false;
-        return true;
+        return parent::install()
+            && $this->registerHook('payment')
+            && $this->registerHook('displayOrderDetail')
+            && $this->registerHook('displayCustomerAccount')
+            && $this->createTables($sql)
+            && $this->createTab();
     }
 
     public function uninstall() {
@@ -105,7 +103,8 @@ class NpsPrzelewy24 extends PaymentModule {
             && $this->deleteTables()
             && $this->unregisterHook('displayCustomerAccount')
             && $this->unregisterHook('payment')
-            && $this->unregisterHook('displayOrderDetail');
+            && $this->unregisterHook('displayOrderDetail')
+            && $this->deleteTab();
     }
 
     public function getContent() {
@@ -152,7 +151,8 @@ class NpsPrzelewy24 extends PaymentModule {
             `'._DB_PREFIX_.'p24_payment`,
             `'._DB_PREFIX_.'p24_payment_statement`,
             `'._DB_PREFIX_.'p24_seller_company`,
-            `'._DB_PREFIX_.'p24_dispatch_history');
+            `'._DB_PREFIX_.'p24_dispatch_history`,
+            `'._DB_PREFIX_.'p24_dispatch_history_detail');
     }
 
     private function displayForm() {
@@ -473,5 +473,15 @@ class NpsPrzelewy24 extends PaymentModule {
             $sellers_tab->{'name'}[intval($language['id_lang'])] = 'Dispatch History';
         }
         return $sellers_tab->add();
+    }
+    
+    private function deleteTab() {
+        $tabs = Tab::getCollectionFromModule($this->name);
+        if (!empty($tabs)) {
+            foreach ($tabs as $tab)
+                $tab->delete();
+            return true;
+        }
+        return false;
     }
 }

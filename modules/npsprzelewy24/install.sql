@@ -38,14 +38,28 @@ CREATE TABLE IF NOT EXISTS `PREFIX_p24_seller_company` (
 
 CREATE TABLE IF NOT EXISTS `PREFIX_p24_dispatch_history` (
   `id_p24_dispatch_history` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `order_id` INT UNSIGNED NOT NULL,
   `id_payment` INT UNSIGNED NOT NULL,
+  `sellers_number` INT UNSIGNED NOT NULL,
+  `sellers_amount` INT UNSIGNED NOT NULL,
+  `merchant_amount` INT UNSIGNED NOT NULL,
+  `p24_amount` INT UNSIGNED NOT NULL,
+  `total_amount` INT UNSIGNED NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  `date` datetime,
+  KEY `id_payment` (`id_payment`)
+) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE IF NOT EXISTS `PREFIX_p24_dispatch_history_detail` (
+  `id_p24_dispatch_history_detail` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `id_p24_dispatch_history` INT UNSIGNED NOT NULL,
+  `id_seller` INT UNSIGNED,
   `session_id` char(100) NOT NULL, 
   `spid` char(64) NOT NULL,
   `amount` INT UNSIGNED NOT NULL,
   `status` tinyint(1) NOT NULL,
   `merchant` tinyint(1) NOT NULL,
-  `date` datetime,
   `error` text,
-  KEY `id_payment` (`id_payment`)
+  KEY `id_p24_dispatch_history` (`id_p24_dispatch_history`),
+  KEY `id_seller` (`id_seller`)
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;

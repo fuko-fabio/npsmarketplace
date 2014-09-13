@@ -59,4 +59,24 @@ class P24SellerCompany extends ObjectModel {
             'iban' =>              array('type' => self::TYPE_STRING, 'required' => true),
         ),
     );
+
+    public static function getSpidByIdSeller($id_seller) {
+        $query = new DbQuery();
+        $query
+            -> select('`spid`')
+            -> from('p24_seller_company')
+            -> where('`id_seller` = '.$id_seller);
+        $spid = Db::getInstance() -> getValue($query);
+        return $spid ? $spid : null;
+    }
+
+    public static function getIdSellerBySpid($spid) {
+        $query = new DbQuery();
+        $query
+            -> select('`id_seller`')
+            -> from('p24_seller_company')
+            -> where('`spid` = '.$spid);
+        $id_seller = Db::getInstance() -> getValue($query);
+        return $id_seller ? $id_seller : null;
+    }
 }

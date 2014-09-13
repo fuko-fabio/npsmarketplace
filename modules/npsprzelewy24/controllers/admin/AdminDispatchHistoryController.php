@@ -6,6 +6,7 @@
 include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24DispatchHistory.php');
 include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24Payment.php');
 include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24PaymentStatement.php');
+include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24.php');
 
 class AdminDispatchHistoryController extends AdminController {
     protected $delete_mode;
@@ -37,15 +38,35 @@ class AdminDispatchHistoryController extends AdminController {
                 'title' => $this->l('Payment ID'),
                 'align' => 'text-center',
             ),
-            'order_id' => array(
-                'title' => $this->l('P24 Order ID'),
+            'sellers_amount' => array(
+                'title' => $this->l('Sellers Amount'),
+                'align' => 'text-right',
+                'type' => 'price',
+                'currency' => true,
+                'callback' => 'setCurrency',
+                'badge_success' => true
+            ),
+            'sellers_number' => array(
+                'title' => $this->l('Sellers Number'),
                 'align' => 'text-center',
             ),
-            'spid' => array(
-                'title' => $this->l('P24 Seller ID'),
-                'align' => 'text-center',
+            'p24_amount' => array(
+                'title' => $this->l('Przelewy24 Amount'),
+                'align' => 'text-right',
+                'type' => 'price',
+                'currency' => true,
+                'callback' => 'setCurrency',
+                'badge_success' => true
             ),
-            'amount' => array(
+            'merchant_amount' => array(
+                'title' => $this->l('Merchant Amount'),
+                'align' => 'text-right',
+                'type' => 'price',
+                'currency' => true,
+                'callback' => 'setCurrency',
+                'badge_success' => true
+            ),
+            'total_amount' => array(
                 'title' => $this->l('Total Amount'),
                 'align' => 'text-right',
                 'type' => 'price',
@@ -53,19 +74,8 @@ class AdminDispatchHistoryController extends AdminController {
                 'callback' => 'setCurrency',
                 'badge_success' => true
             ),
-            'error' => array(
-                'title' => $this->l('Error'),
-                'align' => 'text-center',
-            ),
             'status' => array(
                 'title' => $this->l('Status'),
-                'align' => 'text-center',
-                'type' => 'bool',
-                'callback' => 'printIcon',
-                'orderby' => false
-            ),
-            'merchant' => array(
-                'title' => $this->l('Is Merchant'),
                 'align' => 'text-center',
                 'type' => 'bool',
                 'callback' => 'printIcon',
@@ -105,25 +115,26 @@ class AdminDispatchHistoryController extends AdminController {
 
     public function renderView() {
         $obj = $this->loadObject(true);
-        $payment_statement = P24PaymentStatement::byOrderId($obj->order_id);
-        $payment = new P24Payment($payment_statement->id_payment);
-        $order = new Order(Order::getOrderByCartId($payment->id_cart));
+        $payment_summary = P24PaymentStatement::getSummary($obj->id_payment);
+
+        $order = new Order(Order::getOrderByCartId($payment_summary['id_cart']));
         if (!Validate::isLoadedObject($order))
             $this->errors[] = Tools::displayError('The order cannot be found within your database.');
 
         $customer = new Customer($order->id_customer);
-        $carrier = new Carrier($order->id_carrier);
         $products = $this->getProducts($order);
-
+        $res = P24::checkFunds($payment_summary['order_id'], $payment_summary['session_id']);
         $this->tpl_view_vars = array(
-            'payment_statement' => $payment_statement,
+            'available_funds' => $res->result,
             'order' => $order,
             'cart' => new Cart($order->id_cart),
             'customer' => $customer,
             'products' => $products,
             'currency' => new Currency($order->id_currency),
             'customer_addresses' => $customer->getAddresses($this->context->language->id),
-            'display_warehouse' => (int)Configuration::get('PS_ADVANCED_STOCK_MANAGEMENT')
+            'display_warehouse' => (int)Configuration::get('PS_ADVANCED_STOCK_MANAGEMENT'),
+            'dispatch_history' => $obj->getDetails(),
+            'history' => $obj,
         );
 
         $helper = new HelperView($this);
@@ -154,4 +165,5 @@ class AdminDispatchHistoryController extends AdminController {
         }
         return $products;
     }
+
 }

@@ -77,6 +77,15 @@ class P24 {
             $dispatch_req);
     }
 
+    public static function checkFunds($order_id, $session_id) {
+        $soap = new SoapClient(P24::soapUrl());
+        return $soap->TrnCheckFunds(
+            P24::merchantId(),
+            P24::apiKey(),
+            $order_id,
+            $session_id);
+    }
+
     public static function merchantId() {
         return Configuration::get('NPS_P24_MERCHANT_ID');
     }

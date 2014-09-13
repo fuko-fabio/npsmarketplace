@@ -6,7 +6,6 @@
 
 class P24Payment extends ObjectModel {
 
-    public $id;
     public $session_id;
     public $id_cart;
     public $amount;
@@ -48,6 +47,8 @@ class P24Payment extends ObjectModel {
      * @return P24Payment object
      */
     public static function getBySessionId($session_id) {
+        if(empty($session_id))
+            return null;
         $result = Db::getInstance()->getValue('
             SELECT `id_payment`
             FROM `'._DB_PREFIX_.'p24_payment`
@@ -61,6 +62,8 @@ class P24Payment extends ObjectModel {
      * @return P24Payment object
      */
     public static function getByCartId($id_cart) {
+        if(empty($id_cart))
+            return null;
         $result = Db::getInstance()->getValue('
             SELECT `id_payment`
             FROM `'._DB_PREFIX_.'p24_payment`
@@ -74,6 +77,8 @@ class P24Payment extends ObjectModel {
      * @return 
      */
     public static function getSummaryByCartId($id_cart) {
+        if(empty($id_cart))
+            return null;
         $result = Db::getInstance()->executeS(
             'SELECT * FROM `'._DB_PREFIX_.'p24_payment`, `'._DB_PREFIX_.'p24_payment_statement`
             WHERE `'._DB_PREFIX_.'p24_payment`.id_payment = `'._DB_PREFIX_.'p24_payment_statement`.id_payment
