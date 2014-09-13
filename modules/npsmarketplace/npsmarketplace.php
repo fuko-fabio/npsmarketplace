@@ -96,7 +96,8 @@ class NpsMarketplace extends Module {
         $this->context->smarty->assign(array(
             'has_customer_an_address' => empty($has_address),
             'voucherAllowed' => (int)CartRule::isFeatureActive(),
-            'returnAllowed' => (int)Configuration::get('PS_ORDER_RETURN')
+            'returnAllowed' => (int)Configuration::get('PS_ORDER_RETURN'),
+            'HOOK_CUSTOMER_ACCOUNT' => Hook::exec('displayCustomerAccount'),
         ));
         return $this->display(__FILE__, 'views/templates/hook/my_account_column.tpl');
     }
