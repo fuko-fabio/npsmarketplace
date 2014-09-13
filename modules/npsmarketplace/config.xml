@@ -2,7 +2,7 @@
 <module>
 	<name>npsmarketplace</name>
 	<displayName><![CDATA[nps Marketplace]]></displayName>
-	<version><![CDATA[1]]></version>
+	<version><![CDATA[1.0]]></version>
 	<description><![CDATA[Allow customers to add and sell products in your store.]]></description>
 	<author><![CDATA[Norbert Pabian]]></author>
 	<tab><![CDATA[market_place]]></tab>
