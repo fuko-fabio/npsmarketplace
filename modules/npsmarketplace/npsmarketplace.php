@@ -92,6 +92,12 @@ class NpsMarketplace extends Module {
     }
 
     public function hookDisplayMyAccountColumn() {
+        $has_address = $this->context->customer->getAddresses($this->context->language->id);
+        $this->context->smarty->assign(array(
+            'has_customer_an_address' => empty($has_address),
+            'voucherAllowed' => (int)CartRule::isFeatureActive(),
+            'returnAllowed' => (int)Configuration::get('PS_ORDER_RETURN')
+        ));
         return $this->display(__FILE__, 'views/templates/hook/my_account_column.tpl');
     }
 

@@ -14,4 +14,5 @@
     <li><a href="{$link->getPageLink('discount', true)|escape:'html':'UTF-8'}" title="{l s='Vouchers'}"><i class="icon-barcode"></i><span>{l s='My vouchers'}</span></a></li>
     {/if}
     {$HOOK_CUSTOMER_ACCOUNT}
+    {/if}
 </ul>
