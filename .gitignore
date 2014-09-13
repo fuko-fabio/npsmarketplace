@@ -16,6 +16,7 @@
 !/themes
 /themes/*
 !/themes/minimal_16_theme
+/themes/minimal_16_theme/cache/*
 
 !/js
 /js/*
