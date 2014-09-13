@@ -11,17 +11,17 @@
         {foreach from=$languages item=lang}
             <div class="tab-pane {if $lang.id_lang == $current_id_lang}active{/if}" id="lang{$lang.id_lang}">
                 <div class="form-group">
-                    <label class="required" for="product_name">{l s='Name' mod='npsmarketplace'}</label>
-                    <input class="validate form-control" data-validate="isGenericName" type="text" id="product_name" name="name[{$lang.id_lang}]"
+                    <label class="required" for="product_name_{$lang.id_lang}">{l s='Name' mod='npsmarketplace'}</label>
+                    <input class="validate form-control" data-validate="isGenericName" type="text" id="product_name_{$lang.id_lang}" name="name[{$lang.id_lang}]"
                     value="{if isset($smarty.post.name[{$lang.id_lang}])}{$smarty.post.name[{$lang.id_lang}]}{else}{if isset($product['name'][{$lang.id_lang}])}{$product['name'][{$lang.id_lang}]|escape:'html':'UTF-8'}{/if}{/if}"/>
                 </div>
                 <div class="form-group">
-                    <label for="product_short_description">{l s='Short Description' mod='npsmarketplace'}</label>
-                    <textarea class="validate form-control" data-validate="isMessage" id="product_short_description" name="description_short[{$lang.id_lang}]" rows="2">{if isset($smarty.post.description_short[{$lang.id_lang}])}{$smarty.post.description_short[{$lang.id_lang}]}{else}{if isset($product['description_short'][{$lang.id_lang}])}{$product['description_short'][{$lang.id_lang}]|escape:'html':'UTF-8'}{/if}{/if}</textarea>
+                    <label for="product_short_description_{$lang.id_lang}">{l s='Short Description' mod='npsmarketplace'}</label>
+                    <textarea class="validate form-control textarea-autosize" data-validate="isMessage" id="product_short_description_{$lang.id_lang}" name="description_short[{$lang.id_lang}]">{if isset($smarty.post.description_short[{$lang.id_lang}])}{$smarty.post.description_short[{$lang.id_lang}]}{else}{if isset($product['description_short'][{$lang.id_lang}])}{$product['description_short'][{$lang.id_lang}]|escape:'html':'UTF-8'}{/if}{/if}</textarea>
                 </div>
                 <div class="form-group">
-                    <label for="product_description">{l s='Description' mod='npsmarketplace'}</label>
-                    <textarea class="validate form-control" data-validate="isMessage" id="product_description" name="description[{$lang.id_lang}]" rows="10">{if isset($smarty.post.description[{$lang.id_lang}])}{$smarty.post.description[{$lang.id_lang}]}{else}{if isset($product['description'][{$lang.id_lang}])}{$product['description'][{$lang.id_lang}]|escape:'html':'UTF-8'}{/if}{/if}</textarea>
+                    <label for="product_description_{$lang.id_lang}">{l s='Description' mod='npsmarketplace'}</label>
+                    <textarea class="validate form-control textarea-autosize" data-validate="isMessage" id="product_description_{$lang.id_lang}" name="description[{$lang.id_lang}]">{if isset($smarty.post.description[{$lang.id_lang}])}{$smarty.post.description[{$lang.id_lang}]}{else}{if isset($product['description'][{$lang.id_lang}])}{$product['description'][{$lang.id_lang}]|escape:'html':'UTF-8'}{/if}{/if}</textarea>
                 </div>
             </div>
         {/foreach}
@@ -108,3 +108,6 @@
         </ul>
     </div>
 </fieldset>
+<script type="text/javascript">
+    $(".textarea-autosize").autosize();
+</script>

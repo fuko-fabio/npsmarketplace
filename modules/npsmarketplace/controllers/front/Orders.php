@@ -26,7 +26,8 @@ class NpsMarketplaceOrdersModuleFrontController extends ModuleFrontController
         $this -> context -> smarty -> assign(array(
             'HOOK_MY_ACCOUNT_COLUMN' => Hook::exec('displayMyAccountColumn'),
             'view_order_link' => $this->context->link->getModuleLink('npsmarketplace', 'Order'),
-            'orders' => $orders));
+            'orders' => $orders
+        ));
 
         $this -> setTemplate('orders.tpl');
     }
@@ -58,9 +59,22 @@ class NpsMarketplaceOrdersModuleFrontController extends ModuleFrontController
                 if ($res2)
                     $res[0] = array_merge($res[0], $res2[0]);
                 $customer = new Customer($res[0]['id_customer']);
+
+                $seller_total = 0;
+                $order = new Order($id_order);
+                $pd = $order->getProductsDetail();
+                foreach ($products as $product) {
+                    foreach ($pd as $product_detail) {
+                        if($product_detail['id_product'] == $product->id) {
+                            $seller_total = $seller_total + $product_detail['total_price_tax_incl'];
+                        }
+                    }
+                }
                 $result[] = array_merge($res[0], array(
                     'customer' => $customer->firstname.' '.$customer->lastname,
-                    'link' => $this->context->link->getModuleLink('npsmarketplace', 'OrderView', array('id_order' => $id_order, 'id_seller' => $seller->id))
+                    'link' => $this->context->link->getModuleLink('npsmarketplace', 'OrderView', array('id_order' => $id_order, 'id_seller' => $seller->id)),
+                    'order_id_currency' => $order->id_currency,
+                    'total_seller_tax_incl' => $seller_total
                 ));
             }
         }

@@ -59,13 +59,7 @@
             </div>
         </fieldset>
         </br>
-        
-        <label class="required">{l s='Required field' mod='npsmarketplace'}</label>
-        </br>
-        <strong>{l s='By clicking "Add" I agree that:' mod='npsmarketplace'}</strong>
-        <ul>
-            <li>{l s='I accept the' mod='npsmarketplace'} <a href="{$user_agreement_url}">{l s='User Agreement.'}</a></li>
-        </ul>
+        <strong>{l s='By clicking "Add" I accept the' mod='npsmarketplace'} <a href="{$user_agreement_url}">{l s='User Agreement.' mod='npsmarketplace'}</a></strong>
         </br>
         <button type="submit" class="btn btn-primary btn-lg pull-right"><span>{l s='Add' mod='npsmarketplace'} <i class="icon-plus right"></i></span></button>
     </form>

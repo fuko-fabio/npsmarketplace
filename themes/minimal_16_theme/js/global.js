@@ -95,7 +95,6 @@ $(document).ready(function(){
 			prev     : '<a title="' + FancyboxI18nPrev + '" class="fancybox-nav fancybox-prev" href="javascript:;"><span></span></a>'
 		});
 		
-    $('textarea').autosize();
 });
 
 function highdpiInit()

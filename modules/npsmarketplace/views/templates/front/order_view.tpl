@@ -25,7 +25,7 @@
                     </tr>
                     <tr>
                         <th scope="row">{l s='Price' mod='npsmarketplace'}</th>
-                        <td>{$order['price']}</td>
+                        <td>{displayPrice price=$order['price'] currency=$currency->id}</td>
                     </tr>
                 </table>
             </div>
@@ -85,7 +85,13 @@
                     <tbody>
                         {foreach from=$products item=product}
                         <tr>
-                            <td><img src="{$product['cover']}" class="imgm img-thumbnail" width="52"/></td>
+                            <td>
+                            {if $product['has_image']}
+                                <img src="{$product['cover']}" class="imgm img-thumbnail" width="52"/>
+                            {else}
+                                <img src="{$img_prod_dir}{$lang_iso}-default-cart_default.jpg" class="imgm img-thumbnail" width="52"/>
+                            {/if}
+                            </td>
                             <td>{$product['product_name']}</td>
                             <td>{displayPrice price=$product['unit_price_tax_incl'] currency=$currency->id}</td>
                             <td>{$product['product_quantity']}</td>

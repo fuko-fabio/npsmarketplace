@@ -8,7 +8,8 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
 
     public function setMedia() {
         parent::setMedia();
-        $this -> addJS(array(_PS_JS_DIR_.'validate.js'));
+        $this->addjQueryPlugin('autosize');
+        $this->addJS(array(_PS_JS_DIR_.'validate.js'));
     }
 
     public function postProcess() {

@@ -27,7 +27,7 @@
                     <td>{$order['reference']}</td>
                     <td>{$order['customer']}</td>
                     <td>{$order['date_add']}</td>
-                    <td>{$order['total_paid_tax_incl']}</td>
+                    <td>{displayPrice price=$order['total_seller_tax_incl'] currency=$order['order_id_currency']}</td>
                     <td>{$order['payment']}</td>
                     <td{if isset($order.order_state)} data-value="{$order.id_order_state}"{/if}>
                         {if isset($order.order_state)}

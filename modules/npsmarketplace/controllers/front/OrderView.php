@@ -8,8 +8,8 @@ class NpsMarketplaceOrderViewModuleFrontController extends ModuleFrontController
 
     public function setMedia() {
         parent::setMedia();
-        $this -> addJS ("https://maps.googleapis.com/maps/api/js");
-        $this -> addJS (_PS_MODULE_DIR_.'npsmarketplace/js/order_map.js');
+        $this->addJS ("https://maps.googleapis.com/maps/api/js");
+        $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/order_map.js');
         
     }
 
@@ -23,23 +23,32 @@ class NpsMarketplaceOrderViewModuleFrontController extends ModuleFrontController
 
         $order = new Order(Tools::getValue('id_order'));
         $currency = new Currency($order->id_currency);
+        $products = $this->productsForView($seller, $order);
         $this -> context -> smarty -> assign(array(
             'HOOK_MY_ACCOUNT_COLUMN' => Hook::exec('displayMyAccountColumn'),
             'currency' => $currency,
-            'order' => $this->orderForView($order),
+            'order' => $this->orderForView($order, $products),
             'address' => $this->deliveryAddressForView($order->id_address_delivery),
             'customer' => $this->customerForView($order->id_customer),
-            'products' => $this->productsForView($seller, $order),
+            'products' => $products,
             )
         );
 
         $this->setTemplate('order_view.tpl');
     }
 
-    private function orderForView($order) {
+    private function getTotalPriceForSeller($products) {
+        $result = 0;
+        foreach($products as $product) {
+            $result = $result + $product['total_price_tax_incl'];
+        }
+        return $result;
+    }
+
+    private function orderForView($order, $products) {
         return array(
             'customer' => $order->getCustomer()->firstname.' '.$order->getCustomer()->lastname,
-            'price' => $order->total_paid_tax_incl,
+            'price' => $this->getTotalPriceForSeller($products),
             'payment' => $order->payment,
             'state' => $order-> getCurrentOrderState()->name[$this->context->language->id],
             'date_add' => $order->date_add,
@@ -80,6 +89,7 @@ class NpsMarketplaceOrderViewModuleFrontController extends ModuleFrontController
                     $cover = Product::getCover($product_id);
                     $product_detail['current_stock'] = StockAvailable::getQuantityAvailableByProduct($product_id);
                     $product_detail['cover'] = $this->context->link->getImageLink(Tools::link_rewrite($product_detail['product_name']), $cover['id_image'], 'cart_default');
+                    $product_detail['has_image'] = !empty($cover);
                     $result[] = $product_detail;
                 }
             }

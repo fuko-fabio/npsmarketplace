@@ -162,23 +162,38 @@ class NpsMarketplace extends Module {
         $id_seller = (int)Seller::getSellerByProduct(Tools::getValue('id_product'));
         if(isset($id_seller) && $id_seller > 0) {
             $seller = new Seller(Seller::getSellerByProduct(Tools::getValue('id_product')));
-            if($seller->regulations_active) {
-                return ($this->display(__FILE__, '/tab.tpl'));
-            }
+            $this->context->smarty->assign(array(
+                'show_regulations' => $seller->regulations_active,
+            ));
+            return ($this->display(__FILE__, '/tab.tpl'));
         }
     }
 
     public function hookProductTabContent() {
-        $id_seller = (int)Seller::getSellerByProduct(Tools::getValue('id_product'));
+        $lang_id = (int)$this->context->language->id;
+        $id_product = Tools::getValue('id_product');
+        $id_seller = (int)Seller::getSellerByProduct($id_product);
         if(isset($id_seller) && $id_seller > 0) {
-            $seller = new Seller(Seller::getSellerByProduct(Tools::getValue('id_product')));
-            if($seller->regulations_active) {
-                $this->context->smarty->assign(array(
-                    'current_id_lang' => (int)$this->context->language->id,
-                    'regulations' => $seller->regulations
-                 ));
-                return ($this->display(__FILE__, '/regulations.tpl'));
+            $this->context->controller->addJS (array(
+                "https://maps.googleapis.com/maps/api/js",
+                _PS_MODULE_DIR_.'npsmarketplace/js/product_map.js'
+            ));
+            $this->context->controller->addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/map.css');
+            $features = Product::getFeaturesStatic((int)$id_product);
+            foreach($features as $feature) {
+                if ($feature['id_feature'] == Configuration::get('NPS_FEATURE_ADDRESS_ID')) {
+                    $address = new FeatureValue($feature['id_feature_value']);
+                    break;
+                }
             }
+            $seller = new Seller(Seller::getSellerByProduct(Tools::getValue('id_product')));
+            $this->context->smarty->assign(array(
+                'current_id_lang' => $lang_id,
+                'regulations' => $seller->regulations,
+                'show_regulations' => $seller->regulations_active,
+                'product_address' => isset($address) ? $address->value[$lang_id] : '',
+            ));
+            return ($this->display(__FILE__, '/tab_content.tpl'));
         }
     }
 

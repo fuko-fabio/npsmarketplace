@@ -22,16 +22,17 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
 
     public function setMedia() {
         parent::setMedia();
-        $this -> addJS (_PS_MODULE_DIR_.'npsmarketplace/js/dropzone.js');
-        $this -> addJS ("https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places");
-        $this -> addJS(_PS_JS_DIR_.'validate.js');
-        $this -> addJS (_PS_MODULE_DIR_.'npsmarketplace/js/product_map.js');
-        $this -> addJS (_PS_MODULE_DIR_.'npsmarketplace/js/datetime_init.js');
-        $this -> addJS (_PS_MODULE_DIR_.'npsmarketplace/js/bootstrap-datetimepicker.min.js');
+        $this->addjQueryPlugin('autosize');
+        $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/dropzone.js');
+        $this->addJS ("https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places");
+        $this->addJS(_PS_JS_DIR_.'validate.js');
+        $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/add_product_map.js');
+        $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/datetime_init.js');
+        $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/bootstrap-datetimepicker.min.js');
 
-        $this -> addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/dropzone.css');
-        $this -> addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/bootstrap-datetimepicker.min.css');
-        $this -> addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/map.css');
+        $this->addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/dropzone.css');
+        $this->addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/bootstrap-datetimepicker.min.css');
+        $this->addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/map.css');
     }
 
     public function postProcess()
