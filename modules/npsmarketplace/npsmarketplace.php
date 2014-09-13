@@ -92,7 +92,6 @@ class NpsMarketplace extends Module {
     }
 
     public function hookDisplayMyAccountColumn() {
-        d('dupa');
         return $this->display(__FILE__, 'views/templates/hook/my_account_column.tpl');
     }
 
