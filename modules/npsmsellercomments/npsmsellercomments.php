@@ -51,6 +51,7 @@ class npsmsellercomments extends Module
         $sql = preg_split("/;\s*[\r\n]+/", trim($sql));
 
         if (!parent::install()
+            || !$this->registerHook('displayCustomerAccount')
             || !$this->registerHook('productTab')
             || !$this->registerHook('productTabContent')
             || !Configuration::updateValue('NPS_SELLER_COMMENTS_MODERATE', 1)
@@ -65,6 +66,7 @@ class npsmsellercomments extends Module
     public function uninstall()
     {
         if (!parent::uninstall()
+            || !$this->unregisterHook('displayCustomerAccount')
             || !$this->unregisterHook('productTab')
             || !$this->unregisterHook('productTabContent')
             || !Configuration::deleteByName('NPS_SELLER_COMMENTS_MODERATE')
@@ -89,6 +91,17 @@ class npsmsellercomments extends Module
         return $output.$this->displayForm();
     }
 
+    public function hookDisplayCustomerAccount() {
+        $seller = new Seller(null, $this->context->customer->id);
+       if ($seller->requested == 1 && $seller->active == 1 && $seller->locked == 0) {
+            $this->context->smarty->assign(array(
+                'seller_comments_link' => $this->context->link->getModuleLink('npsmsellercomments', 'List'),
+            )
+        );
+        return $this->display(__FILE__, 'views/templates/hook/npsmsellercomments.tpl');
+       }
+    }
+
     public function hookProductTab($params)
     {
         $id_seller = (int)Seller::getSellerByProduct(Tools::getValue('id_product'));
@@ -105,7 +118,7 @@ class npsmsellercomments extends Module
                                             'nbComments' => (int)(SellerComment::getCommentNumber($id_seller))
                                        ));
 
-            return ($this->display(__FILE__, '/tab.tpl'));
+            return $this->display(__FILE__, 'views/templates/hook/tab.tpl');
         }
     }
 
@@ -154,7 +167,7 @@ class npsmsellercomments extends Module
     
             $this->context->controller->pagination((int)SellerComment::getCommentNumber($seller->id));
 
-            return ($this->display(__FILE__, '/sellercomments.tpl'));
+            return $this->display(__FILE__, 'views/templates/hook/product_seller_comments.tpl');
         }
     }
 

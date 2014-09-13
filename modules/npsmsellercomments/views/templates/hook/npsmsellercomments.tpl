@@ -1,0 +1,1 @@
+<li><a href="{$seller_comments_link}"><i class="icon-comment"></i><span>{l s='Comments' mod='npsmsellercomments'}</span></a></li>
