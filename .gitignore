@@ -14,6 +14,7 @@
 !/modules/npsmarketplace
 !/modules/npsmsellercomments
 !/modules/npsprzelewy24
+!/modules/npscalendar
 !/themes
 /themes/*
 !/themes/minimal_16_theme
