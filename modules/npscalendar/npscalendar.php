@@ -24,13 +24,15 @@ class NpsCalendar extends Module {
     }
 
     public function install() {
-        return parent::install() &&
-            $this->registerHook('displayHome');
+        return parent::install()
+            && $this->registerHook('displayHome')
+            && $this->registerHook('header');
     }
 
     public function uninstall() {
-        return parent::uninstall() &&
-            $this->unregisterHook('displayHome');
+        return parent::uninstall()
+            && $this->unregisterHook('displayHome')
+            && $this->unregisterHook('header');
     }
 
     public function getContent() {
@@ -44,9 +46,27 @@ class NpsCalendar extends Module {
     }
 
     public function hookDisplayHome() {
-        $this->context->controller->addCSS(__FILE__.'css/npscalendar.css');
-        $this->context->controller->addJS(__FILE__.'js/npscalendar.js');
         return $this->display(__FILE__, 'calendar.tpl');
+    }
+
+    public function hookHeader() {
+        $this->page_name = Dispatcher::getInstance()->getController();
+        if ($this->page_name == 'index') {
+            $this->context->controller->addCss(($this->_path).'css/npscalendar.css');
+            $this->context->controller->addJS(array(
+                ($this->_path).'js/underscore-min.js',
+                ($this->_path).'js/backbone-min.js',
+                ($this->_path).'js/backbone-associations-min.js',
+                ($this->_path).'js/calendar/template/calendar.js',
+                ($this->_path).'js/calendar/model/event.js',
+                ($this->_path).'js/calendar/collection/events.js',
+                ($this->_path).'js/calendar/model/day.js',
+                ($this->_path).'js/calendar/collection/days.js',
+                ($this->_path).'js/calendar/model/calendar.js',
+                ($this->_path).'js/calendar/view/calendar.js',
+                ($this->_path).'js/calendar/router.js',
+            ));
+        }
     }
 
     private function displayForm() {

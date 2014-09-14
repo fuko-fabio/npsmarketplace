@@ -1,0 +1,62 @@
+@media (min-width: 768px){
+  .seven-col .col-md-1,
+  .seven-col .col-sm-1,
+  .seven-col .col-lg-1  {
+    width: 100%;
+    *width: 100%;
+  }
+}
+
+@media (min-width: 992px) {
+  .seven-col .col-md-1,
+  .seven-col .col-sm-1,
+  .seven-col .col-lg-1 {
+    width: 14.285714285714285714285714285714%;
+    *width: 14.285714285714285714285714285714%;
+  }
+}
+
+
+@media (min-width: 1200px) {
+  .seven-col .col-md-1,
+  .seven-col .col-sm-1,
+  .seven-col .col-lg-1 {
+    width: 14.285714285714285714285714285714%;
+    *width: 14.285714285714285714285714285714%;
+  }
+}
+
+.nps-calendar .header {
+    text-transform: uppercase;
+    font-size: 24px;
+}
+
+.nps-calendar .right {
+    font-weight: bold;
+    text-align: right;
+}
+
+.nps-calendar .right .year {
+    color: #FFCC00;
+}
+
+.nps-calendar .content .day {
+    border: solid 1px;
+    text-align: center;
+}
+
+.nps-calendar .content .day .top {
+    border: solid 1px;
+    margin: 2px;
+    padding-top: 25%;
+}
+
+.nps-calendar .content .day .top .number {
+    font-size: 32px;
+    color: #FFCC00;
+}
+
+.nps-calendar .content .day .top .name {
+    font-size: 18px;
+    font-weight: bold;
+}
