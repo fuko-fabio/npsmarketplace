@@ -56,7 +56,7 @@ class P24SellerCompany extends ObjectModel {
             'nip' =>               array('type' => self::TYPE_STRING, 'required' => true),
             'person' =>            array('type' => self::TYPE_STRING, 'required' => true),
             'regon' =>             array('type' => self::TYPE_STRING),
-            'iban' =>              array('type' => self::TYPE_STRING, 'required' => true),
+            'iban' =>              array('type' => self::TYPE_STRING),
         ),
     );
 

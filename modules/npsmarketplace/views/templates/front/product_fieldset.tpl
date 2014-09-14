@@ -87,13 +87,14 @@
         <div id="map-canvas"></div>
     </div>
     <div class="form-group">
-        <label>{l s='Pictures' mod='npsmarketplace'}</label>
+        <label class="required" >{l s='Pictures' mod='npsmarketplace'}</label>
         <div class="dropzone" id="dropzone-container">
             <div class="dropzone-previews"></div>
             <div class="fallback">
                 <input name="file[]" type="file" multiple />
             </div>
         </div>
+        <span class="form_info">{l s='At least one picture is required. Max allowed size 8MB. Recommended min size 512px x 512px' mod='npsprzelewy24'}</span>
     </div>
     <div class="form-group">
         <label class="required" for="product_category">{l s='Category' mod='npsmarketplace'}</label>

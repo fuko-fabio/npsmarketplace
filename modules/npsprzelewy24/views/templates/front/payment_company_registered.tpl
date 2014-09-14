@@ -11,6 +11,11 @@
         <p>{l s='Company has been registered in Przelewy24 service on %s' sprintf=$company->registration_date mod='npsprzelewy24'}</p>
     </div>
     {/if}
+    {if !empty($register_link)}
+        {l s='Registration require confirmation' mod='npsprzelewy24'} <a href="{$register_link}">{l s='Click here' mod='npsprzelewy24'}</a> {l s='to finalize registration' mod='npsprzelewy24'}
+    {/if}
+    
+    
     <form>
         <div class="row">
             <div class="form-group col-md-6">
@@ -55,7 +60,7 @@
         </div>
         <div class="row">
             <div class="form-group col-md-6">
-                <label class="required" for="nip">{l s='NIP' mod='npsprzelewy24'}</label>
+                <label for="nip">{l s='NIP' mod='npsprzelewy24'}</label>
                 <input class="form-control" type="number" id="nip" name="nip" readonly=""
                 value="{if isset($company->nip)}{$company->nip|escape:'html':'UTF-8'}{/if}"/>
             </div>

@@ -60,13 +60,13 @@
         </div>
         <div class="form-group">
             <label class="required" for="iban">{l s='Bank account number' mod='npsprzelewy24'}</label>
-            <input class="validate form-control" data-validate="isIban" type="text" id="iban" name="iban" required=""
+            <input class="validate form-control" data-validate="isIban" type="text" id="iban" name="iban" 
             value="{if isset($smarty.post.iban)}{$smarty.post.iban}{else}{if isset($company['iban'])}{$company['iban']|escape:'html':'UTF-8'}{/if}{/if}"/>
             <span class="form_info">{l s='IBAN format. Example: PL 74 3535 1100...' mod='npsprzelewy24'}</span>
         </div>
         <div class="required form-group">
             <div class="checkbox">
-                <label for="acceptance">
+                <label class="required" for="acceptance">
                 <input type="checkbox" name="acceptance" id="acceptance" readonly="" {if isset($smarty.post.acceptance) && $smarty.post.acceptance == '1'}checked="checked"{/if} />
                 {l s='Accept the' mod='npsprzelewy24'} <a href="{$p24_agreement_url}">{l s='“Regulations of Przelewy24”' mod='npsprzelewy24'}</a></label>
             </div>

@@ -141,13 +141,11 @@ class NpsMarketplace extends Module {
         return $products;
     }
 
-    public function hookHeader()
-    {
-        $this->context->controller->addCSS($this->_path.'npsmarketplace.css', 'all');
+    public function hookHeader() {
+        $this->context->controller->addCss(($this->_path).'npsmarketplace.css');
     }
 
-    public function getContent()
-    {
+    public function getContent() {
         $output = null;
 
         if (Tools::isSubmit('submitConfiguration')) {
@@ -164,8 +162,7 @@ class NpsMarketplace extends Module {
         return $output.$this->displayForm();
     }
 
-    public function hookProductTab()
-    {
+    public function hookProductTab() {
         $id_seller = (int)Seller::getSellerByProduct(Tools::getValue('id_product'));
         if(isset($id_seller) && $id_seller > 0) {
             $seller = new Seller(Seller::getSellerByProduct(Tools::getValue('id_product')));

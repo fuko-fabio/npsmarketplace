@@ -88,6 +88,8 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
                     $this -> errors[] = $nps_instance->l('Invalid product quantity');
                 if (empty($quantity))
                     $this -> errors[] = $nps_instance->l('Product quantity is required');
+                if (empty($_FILES['file']['tmp_name'][0]))
+                    $this -> errors[] = $nps_instance->l('At least one picture is required');
             }
 
             foreach (Language::getLanguages() as $key => $lang) {

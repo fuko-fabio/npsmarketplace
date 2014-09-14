@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `PREFIX_p24_seller_company` (
   `nip` char(12) NOT NULL,
   `person` char(64) NOT NULL,
   `regon` char(12) NOT NULL,
-  `iban` char(64) NOT NULL,
+  `iban` char(64),
   KEY `id_seller` (`id_seller`)
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;
 

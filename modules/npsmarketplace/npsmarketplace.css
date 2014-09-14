@@ -1,0 +1,27 @@
+.nps-myaccount-block li {
+    margin-bottom: 8px;
+}
+
+.nps-myaccount-block .section {
+    border-bottom: 3px solid #FFCC00;
+}
+
+.nps-myaccount-block p {
+    margin: 5px 5px;
+    font-weight: bold;
+}
+
+.nps-myaccount-block a i {
+    margin-right: 2px;
+    color: #FFCC00;
+}
+
+.nps-myaccount-block a span {
+    position: absolute;
+    left: 35px;
+    text-transform: uppercase;
+}
+
+.nps-myaccount-block a:hover {
+    color: #FFCC00;
+}

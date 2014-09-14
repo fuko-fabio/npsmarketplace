@@ -2904,7 +2904,7 @@ a.thumbnail:focus {
   padding: 15px;
   margin-bottom: 18px;
   border: 1px solid transparent;
-  border-radius: 0px; }
+  border-radius: 5px; }
   .alert h4 {
     margin-top: 0;
     color: inherit; }
@@ -2925,36 +2925,32 @@ a.thumbnail:focus {
     color: inherit; }
 
 .alert-success {
-  background-color: #55c65e;
   border-color: #48b151;
-  color: white; }
+  color: #48b151; }
   .alert-success hr {
     border-top-color: #419f49; }
   .alert-success .alert-link {
     color: #e6e6e6; }
 
 .alert-info {
-  background-color: #5192f3;
-  border-color: #4b80c3;
-  color: white; }
+  border-color: #1A63FF;
+  color: #1A63FF; }
   .alert-info hr {
     border-top-color: #3d73b7; }
   .alert-info .alert-link {
     color: #e6e6e6; }
 
 .alert-warning {
-  background-color: #fe9126;
   border-color: #e4752b;
-  color: white; }
+  color: #e4752b; }
   .alert-warning hr {
     border-top-color: #da681c; }
   .alert-warning .alert-link {
     color: #e6e6e6; }
 
 .alert-danger {
-  background-color: #f3515c;
   border-color: #d4323d;
-  color: white; }
+  color: #d4323d; }
   .alert-danger hr {
     border-top-color: #c32933; }
   .alert-danger .alert-link {
@@ -5351,6 +5347,24 @@ p.info-account {
     .alert.alert-danger:before {
       font-family: "FontAwesome";
       content: "\f057";
+      font-size: 20px;
+      vertical-align: -2px;
+      padding-right: 7px;
+      float: left; }
+  .alert.alert-info {
+    text-shadow: 1px 1px rgba(0, 0, 0, 0.1); }
+    .alert.alert-info:before {
+      font-family: "FontAwesome";
+      content: "\f129";
+      font-size: 20px;
+      vertical-align: -2px;
+      padding-right: 7px;
+      float: left; }
+  .alert.alert-warning {
+    text-shadow: 1px 1px rgba(0, 0, 0, 0.1); }
+    .alert.alert-warning:before {
+      font-family: "FontAwesome";
+      content: "\f071";
       font-size: 20px;
       vertical-align: -2px;
       padding-right: 7px;

@@ -61,7 +61,7 @@ class P24 {
     }
 
     public static function companyRegister($company) {
-        $soap = new SoapClient(P24::soapUrl());
+        $soap = new SoapClient(P24::soapProductionUrl());
         return $soap->CompanyRegister(
             P24::merchantId(),
             P24::apiKey(),

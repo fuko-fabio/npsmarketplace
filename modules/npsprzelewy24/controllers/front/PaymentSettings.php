@@ -76,11 +76,12 @@ class NpsPrzelewy24PaymentSettingsModuleFrontController extends ModuleFrontContr
             if (!empty($regon) && !Validate::isRegon($regon))
                 $this -> errors[] = $nps_instance->l('Invalid REGON number');
 
-            if(!verify_iban($iban))
-                $this -> errors[] = $nps_instance->l('Invalid IBAN number');
+            if ($acceptance)
+                if(empty($iban) || !verify_iban($iban))
+                    $this -> errors[] = $nps_instance->l('Invalid IBAN number');
 
-            if (!$acceptance)
-                $this -> errors[] = $nps_instance->l('Acceptance of the Przelewy24 regulations is required');
+            #if (!$acceptance)
+            #    $this -> errors[] = $nps_instance->l('Acceptance of the Przelewy24 regulations is required');
 
             if(empty($this->errors)) {
                 $company = array(
@@ -95,6 +96,7 @@ class NpsPrzelewy24PaymentSettingsModuleFrontController extends ModuleFrontContr
                     "IBAN" => $iban,
                     "acceptance" => $acceptance,
                 );
+
                 $res = P24::companyRegister($company);
                 if ($res->error->errorCode) {
                     $this -> errors[] = $nps_instance->l('Unable register company in Przelewy24 payment service.')
@@ -102,8 +104,8 @@ class NpsPrzelewy24PaymentSettingsModuleFrontController extends ModuleFrontContr
                 } else {
                     $settings->id_seller = $seller->id;
                     $settings->registration_date = date("Y-m-d H:i:s");
-                    $settings->register_link = $res['link'];
-                    $settings->spid = $res['spid'];
+                    $settings->register_link = $res->result->link;
+                    $settings->spid = $res->result->spid;
                     $settings->company_name = $company_name;
                     $settings->city = $city;
                     $settings->street = $street;
@@ -115,7 +117,7 @@ class NpsPrzelewy24PaymentSettingsModuleFrontController extends ModuleFrontContr
                     $settings->iban = $iban;
                     $settings->acceptance = $acceptance;
                     $settings->save();
-                    Tools::redirect($this->context->link->getModuleLink('npsprzelewy24', 'paymentSettings'));
+                    Tools::redirect($this->context->link->getModuleLink('npsprzelewy24', 'PaymentSettings', array('register_link' => $res->result->link)));
                 }
             }
         }
@@ -137,6 +139,7 @@ class NpsPrzelewy24PaymentSettingsModuleFrontController extends ModuleFrontContr
         $settings = new P24SellerCompany(null, $seller->id);
         if ($settings->id != null && !empty($settings->spid)) {
             $this->context->smarty->assign(array(
+                'register_link' => Tools::getValue('register_link'),
                 'company' => $settings,
                 'p24_agreement_url' => Configuration::get('NPS_P24_REGULATIONS_URL')
             ));

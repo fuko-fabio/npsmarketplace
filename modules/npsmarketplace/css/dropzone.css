@@ -9,9 +9,9 @@
 }
 .dropzone {
   position: relative;
-  border: 1px solid rgba(0,0,0,0.08);
-  background: rgba(0,0,0,0.02);
-  padding: 1em;
+  border: 4px dashed #CCC;
+  min-height: 210px;
+  margin-bottom: 5px;
 }
 .dropzone.dz-clickable {
   cursor: pointer;
@@ -153,14 +153,7 @@
 .dropzone-previews .dz-preview:hover.dz-error .dz-error-message {
   display: block;
 }
-.dropzone {
-  border: 1px solid rgba(0,0,0,0.03);
-  min-height: 360px;
-  -webkit-border-radius: 3px;
-  border-radius: 3px;
-  background: rgba(0,0,0,0.03);
-  padding: 23px;
-}
+
 .dropzone .dz-default.dz-message {
   opacity: 1;
   -ms-filter: none;
@@ -364,7 +357,7 @@
   color: #666;
 }
 .dropzone .uploader {
-    visibility: hidden;
+    display: none;
 }
 @-moz-keyframes loading {
   from {
