@@ -3,6 +3,7 @@
 *  @author Norbert Pabian <norbert.pabian@gmail.com>
 *  @copyright 2014 npsoftware
 */
+
 include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24SellerCompany.php');
 include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24.php');
 include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24PaymentStatement.php');
@@ -11,37 +12,32 @@ include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24DispatchHistoryDetail.php
 
 class P24TransationDispatcher {
 
-    public static function dispatchMoney($id_cart) {
-        $npsprzelewy24 = new NpsPrzelewy24();
-        $merchant_spid = Configuration::get('NPS_P24_MERCHANT_SPID');
-        if (empty($merchant_spid)) {
-            $npsprzelewy24->reportError(array(
-                'Unable to dispatch money',
-                'Unable to find merchant Przelewy24 Seller ID. Chec your Przelewy24 module configuration',
-                'Transaction must by verified manualy'
-            ));
+    private $cart;
+    private $module;
+    private $merchant_spid;
+    private $payment_summary;
+
+    public function __construct($id_cart) {
+        $this->cart = new Cart($id_cart);
+        $this->module = new NpsPrzelewy24();
+        $this->merchant_spid = Configuration::get('NPS_P24_MERCHANT_SPID');
+        $this->payment_summary = P24PaymentStatement::getSummaryByCartId($id_cart);
+    }
+
+    public function dispatchMoney() {
+        if (!$this->isMerchanSpidValid() || !$this->isPaymentSummaryValid())
             return;
-        }
-        $cart = new Cart($id_cart);
-        $total = $cart->getOrderTotal() * 100;
+
+        $total = $this->cart->getOrderTotal() * 100;
         $merchant_amount = $total;
-        $currencies = $npsprzelewy24->getCurrency(intval($cart->id_currency));
+        $currencies = $this->module->getCurrency(intval($this->cart->id_currency));
         $currency = $currencies[0];
         $result = array();
 
-        $payment_summary = P24PaymentStatement::getSummaryByCartId($id_cart);
-        if(!$payment_summary) {
-            $npsprzelewy24->reportError(array(
-                'Unable to dispatch money',
-                'Unable to find payment and payment statement entry in database',
-                'Transaction must by verified manualy'
-            ));
-            return;
-        }
-        foreach ($cart->getProducts() as $product) {
+        foreach ($this->cart->getProducts() as $product) {
             $id_seller = Seller::getSellerByProduct($product['id_product']);
             if (!$id_seller) {
-                $npsprzelewy24->reportError(array(
+                $this->module->reportError(array(
                     'Unable to dispatch money',
                     'Unable to find owner of product '.$product['name'].'with ID: '.$product['id_product'],
                     'Transaction must by verified manualy'
@@ -51,7 +47,7 @@ class P24TransationDispatcher {
             $seller = new Seller($id_seller);
             $spid = P24SellerCompany::getSpidByIdSeller($id_seller);
             if ($spid == null) {
-                $npsprzelewy24->reportError(array(
+                $this->module->reportError(array(
                     'Unable to dispatch money',
                     'Unable to find seller payment settings. Seller ID: '.$id_seller,
                     'Transaction must by verified manualy'
@@ -60,16 +56,16 @@ class P24TransationDispatcher {
             }
             if (array_key_exists($spid, $result)) {
                 $current_amount = $result[$spid];
-                $a_f_s = P24TransationDispatcher::amountForSeller($seller, $product['price']);
+                $a_f_s = $this->amountForSeller($seller, ($product['price'] * $product['cart_quantity']));
                 $merchant_amount = $merchant_amount - $a_f_s;
                 $result[$spid] = $current_amount + $a_f_s;
             } else {
-                $a_f_s = P24TransationDispatcher::amountForSeller($seller, $product['price']);
+                $a_f_s = $this->amountForSeller($seller, ($product['price'] * $product['cart_quantity']));
                 $merchant_amount = $merchant_amount - $a_f_s;
                 $result[$spid] = $a_f_s;
             }
         }
-        $message = 'Payment summary for cart with ID: '.$cart->id.' | ';
+        $message = 'Payment summary for cart with ID: '.$this->cart->id.' | ';
         foreach($result as $key => $value)
             $message = $message.'Seller ID: '.$key.' amount: '.$value.' | ';
 
@@ -78,31 +74,34 @@ class P24TransationDispatcher {
         foreach($result as $key => $value)
             $sellers_amount = $sellers_amount + $value;
 
-        $p24_amount = ceil(($total * Configuration::get('NPS_P24_COMMISION')) / 100);
-        $merchant_amount = $merchant_amount - $p24_amount;
-        if (array_key_exists($merchant_spid, $result)) {
-            $ma = $result[$merchant_spid] + $merchant_amount;
-            $result[$merchant_spid] = $ma;
-            PrestaShopLogger::addLog('Seller ID equal to Merchant Seller ID: '.$merchant_spid.' Merging commision with products amount');
-        } else
-            $result[$merchant_spid] = $merchant_amount;
+        $p24_amount = $this->getPrzelewy24Amount($total);
+        if ($p24_amount == null)
+            return;
 
-        $message = $message.'Merchant amount: '.$merchant_amount.' | '.'Total amount: '.($cart->getOrderTotal() * 100).' | Przelewy24 amount: '.$p24_amount;
+        $merchant_amount = $merchant_amount - $p24_amount;
+        if (array_key_exists($this->merchant_spid, $result)) {
+            $ma = $result[$this->merchant_spid] + $merchant_amount;
+            $result[$this->merchant_spid] = $ma;
+            PrestaShopLogger::addLog('Seller ID equal to Merchant Seller ID: '.$this->merchant_spid.' Merging commision with products amount');
+        } else
+            $result[$this->merchant_spid] = $merchant_amount;
+
+        $message = $message.'Merchant amount: '.$merchant_amount.' | '.'Total amount: '.($this->cart->getOrderTotal() * 100).' | Przelewy24 amount: '.$p24_amount;
         PrestaShopLogger::addLog($message);
 
         $dispatch_req = array();
         foreach ($result as $key => $value) {
             $dispatch_req[] = array(
-                'orderId' => $payment_summary['order_id'],
-                'sessionId' => $payment_summary['session_id'],
+                'orderId' => $this->payment_summary['order_id'],
+                'sessionId' => $this->payment_summary['session_id'],
                 'sellerId' => $key,
                 'amount' => $value
             );
         }
 
-        $res = P24::dispatchMoney((int)$cart->id, $dispatch_req);
+        $res = P24::dispatchMoney((int)$this->cart->id, $dispatch_req);
         if ($res->error->errorCode) {
-            $npsprzelewy24->reportError(array(
+            $this->module->reportError(array(
                     'Unable to dispatch money',
                     'Przelewy24 service response error code: '.$res->error->errorCode,
                     'Message: '.$res->error->errorMessage
@@ -116,7 +115,7 @@ class P24TransationDispatcher {
         $history->merchant_amount = $merchant_amount;
         $history->total_amount = $total;
         $history->date = date("Y-m-d H:i:s");
-        $history->id_payment = $payment_summary['id_payment'];
+        $history->id_payment = $this->payment_summary['id_payment'];
         $history->status = $res->result[0]->status;
         $history->save();
 
@@ -129,12 +128,12 @@ class P24TransationDispatcher {
             $h->amount = $r->amount;
             $h->status = $r->status;
             $h->error = $r->error;
-            $h->merchant = $r->sellerId == $merchant_spid;
+            $h->merchant = $r->sellerId == $this->merchant_spid;
             $h->save();
         }
     }
 
-    private static function amountForSeller($seller, $amount) {
+    private function amountForSeller($seller, $amount) {
         $p24_commision = Configuration::get('NPS_P24_COMMISION');
         $result = $amount - ($amount * (($seller->commision + $p24_commision)/ 100));
         if (isset($currency['decimals']) && $currency['decimals'] == '0') {
@@ -153,5 +152,51 @@ class P24TransationDispatcher {
             }
         }
         return floor($result * 100);
+    }
+
+    private function getPrzelewy24Amount($total) {
+        $res = P24::checkFunds($this->payment_summary['order_id'], $this->payment_summary['session_id']);
+        if ($res->error->errorCode) {
+            $this->module->reportError(array(
+                    'Unable to dispatch money',
+                    'Cannot check available funds',
+                    'Przelewy24 service response error code: '.$res->error->errorCode,
+                    'Message: '.$res->error->errorMessage
+            ));
+            return null;
+        }
+        if ($res->result > $total) {
+            $this->module->reportError(array(
+                    'Unable to dispatch money',
+                    'Account balance is greater than total amount to dispatch',
+                    'Total: '.($total/100).' Account balance: '.($res->result/100)
+            ));
+            return null;
+        }
+        return $total - $res->result;
+    }
+
+    private function isMerchanSpidValid() {
+        if (empty($this->merchant_spid)) {
+            $this->module->reportError(array(
+                'Unable to dispatch money',
+                'Unable to find merchant Przelewy24 Seller ID. Chec your Przelewy24 module configuration',
+                'Transaction must by verified manualy'
+            ));
+            return false;
+        }
+        return true;
+    }
+
+    private function isPaymentSummaryValid() {
+        if (!$this->payment_summary) {
+            $this->module->reportError(array(
+                'Unable to dispatch money',
+                'Unable to find payment and payment statement entry in database',
+                'Transaction must by verified manualy'
+            ));
+            return false;
+        }
+        return true;
     }
 }

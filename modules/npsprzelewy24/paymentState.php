@@ -28,7 +28,8 @@ if (empty($p24_error_code)) {
     $result = $validator->validate($p24_token);
     if ($result['error'] == 0) {
         PrestaShopLogger::addLog('Background payment. Verification success. Session ID: '.Tools::getValue('p24_session_id'));
-        P24TransationDispatcher::dispatchMoney($id_cart);
+        $dispatcher = new P24TransationDispatcher($id_cart);
+        $dispatcher->dispatchMoney();
     } else {
         $history = new OrderHistory();
         $history->id_order = intval($order_id);

@@ -205,8 +205,9 @@ class Seller extends ObjectModel
      *
      * @return seller id
      */
-    public static function getSellerByProduct($id_product = '')
-    {
+    public static function getSellerByProduct($id_product) {
+        if (empty($id_product))
+            return null;
         return Db::getInstance(_PS_USE_SQL_SLAVE_)->getValue('
             SELECT `id_seller`
             FROM `'._DB_PREFIX_.'seller_product`

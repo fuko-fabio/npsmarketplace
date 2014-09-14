@@ -39,7 +39,12 @@
                 <div class="panel panel-total">
                     <div class="table-responsive">
                         {assign var=dh_total_calculated value=($history->sellers_amount + $history->merchant_amount + $history->p24_amount)}
+                        {assign var=dh_to_dispatch value=($history->sellers_amount + $history->merchant_amount)}
                         <table class="table">
+                            <tr id="dh_total_order">
+                                <td class="text-right">{l s='Original total amount based on products price' mod=npsprzelewy24}:</td>
+                                <td class="amount text-right">{displayPrice price=$history->total_amount/100 currency=$currency->id}</td>
+                            </tr>
                             <tr id="dh_total_sellers">
                                 <td class="text-right">{l s='Sellers' mod=npsprzelewy24}:</td>
                                 <td class="amount text-right">{displayPrice price=$history->sellers_amount/100 currency=$currency->id} </td>
@@ -56,9 +61,13 @@
                                 <td class="text-right"><strong>{l s='Total after system calculations' mod=npsprzelewy24}:</strong></td>
                                 <td class="amount text-right"><strong>{displayPrice price=$dh_total_calculated/100 currency=$currency->id}</strong></td>
                             </tr>
-                            <tr id="dh_total_order">
-                                <td class="text-right"><strong>{l s='Original total amount based on products price' mod=npsprzelewy24}:</strong></td>
-                                <td class="amount text-right"><strong>{displayPrice price=$history->total_amount/100 currency=$currency->id}</strong></td>
+                            <tr id="dh_total_to_dispatch">
+                                <td class="text-right">{l s='To dispatch without Przelewy24 commision' mod=npsprzelewy24}:</td>
+                                <td class="amount text-right">{displayPrice price=$dh_to_dispatch/100 currency=$currency->id} </td>
+                            </tr>
+                            <tr id="dh_total_not_dispatched" class="{if $available_funds != 0}danger{/if}">
+                                <td class="text-right"><strong>{l s='Bank account balance' mod=npsprzelewy24}:</strong></td>
+                                <td class="amount text-right"><strong>{displayPrice price=$available_funds/100 currency=$currency->id}</strong></td>
                             </tr>
                         </table>
                     </div>

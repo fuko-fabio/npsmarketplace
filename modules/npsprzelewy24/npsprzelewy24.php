@@ -470,7 +470,7 @@ class NpsPrzelewy24 extends PaymentModule {
         $languages = Language::getLanguages();
         foreach ($languages AS $language)
         {
-            $sellers_tab->{'name'}[intval($language['id_lang'])] = 'Dispatch History';
+            $sellers_tab->{'name'}[intval($language['id_lang'])] = 'Payment History';
         }
         return $sellers_tab->add();
     }

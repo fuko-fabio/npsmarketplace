@@ -22,6 +22,7 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
         } else {
             global $cart;
         }
+
         $payment = P24Payment::getByCartId($cart->id);
         if ($payment != null && $payment->id != null) {
             $this -> errors[] = $npsprzelewy24->l('Payment already finalized. Go to your account and check orders history.');
@@ -93,7 +94,7 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
             'p24_language' => strtolower($s_lang->iso_code),
             'p24_url_cancel' => $this->context->link->getModuleLink('npsprzelewy24', 'paymentCancel', array('p24-token' => $p24_token)),
             'p24_url_return' => $this->context->link->getModuleLink('npsprzelewy24', 'paymentReturn', array('p24-token' => $p24_token)),
-            'p24_url_status' =>  $shop_url = Tools::getHttpHost(true).__PS_BASE_URI__.'modules/npsprzelewy24/paymentState.php?p24-token='.$p24_token,
+            'p24_url_status' => Tools::getHttpHost(true).__PS_BASE_URI__.'modules/npsprzelewy24/paymentState.php?p24-token='.$p24_token,
             'p24_shipping' => $cart->getTotalShippingCost(),
             'p24_sign' => $this->generateSign($session_id, $p24_id, $amount, $currency['iso_code']),
             'p24_encoding' => 'UTF-8',
@@ -101,12 +102,14 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
             'p24_wait_for_result' => 1
         );
 
+        $shop_name = Configuration::get('PS_SHOP_NAME');
         $index = 1;
         foreach ($cart->getProducts() as $product) {
             $data['p24_name_'.$index] = $product['name'];
             $data['p24_quantity_'.$index] = $product['cart_quantity'];
             $data['p24_price_'.$index] = $product['price'];
             $data['p24_number_'.$index] = $product['id_product'];
+            $data['p24_description_'.$index] = $shop_name.' Seller ID: '.Seller::getSellerByProduct($product['id_product']);
             $index = $index + 1;
         }
         $result = P24::transactionRegister($data);

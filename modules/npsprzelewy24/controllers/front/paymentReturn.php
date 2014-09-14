@@ -40,7 +40,8 @@ class NpsPrzelewy24PaymentReturnModuleFrontController extends ModuleFrontControl
                     'price' => $price,
                     'reference_order' => Order::getUniqReferenceOf($id_order)
                 ));
-                P24TransationDispatcher::dispatchMoney($id_cart);
+                $dispatcher = new P24TransationDispatcher($id_cart);
+                $dispatcher->dispatchMoney();
             } else {
                 $this->persistPaymentError($id_order);
                 $this->context->smarty->assign(array(
