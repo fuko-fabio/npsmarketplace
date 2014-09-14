@@ -46,7 +46,9 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
             $description = $_POST['description'];
             $price = trim(Tools::getValue('price'));
             $quantity = trim(Tools::getValue('quantity'));
-            $date_time = trim(Tools::getValue('date_time'));
+            $date = trim(Tools::getValue('date'));
+            $time = trim(Tools::getValue('time'));
+            $available_date = trim(Tools::getValue('available_date'));
             $town = trim(Tools::getValue('town'));
             $district = trim(Tools::getValue('district'));
             $address = trim(Tools::getValue('address'));
@@ -80,16 +82,20 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
                 $this -> errors[] = $nps_instance->l('Invalid product reference');
             if (empty($categories))
                 $this -> errors[] = $nps_instance->l('At least one category must be selected');
+            if (empty($available_date))
+                $this -> errors[] = $nps_instance->l('Product available date is required');
 
             if(empty($current_id_product)) {
-                if (empty($date_time))
-                    $this -> errors[] = $nps_instance->l('Product date and time is required');
+                if (empty($date))
+                    $this -> errors[] = $nps_instance->l('Product date is required');
+                if (empty($time))
+                    $this -> errors[] = $nps_instance->l('Product time is required');
                 if (!Validate::isInt($quantity))
                     $this -> errors[] = $nps_instance->l('Invalid product quantity');
                 if (empty($quantity))
                     $this -> errors[] = $nps_instance->l('Product quantity is required');
-                if (empty($_FILES['file']['tmp_name'][0]))
-                    $this -> errors[] = $nps_instance->l('At least one picture is required');
+                //if (empty($_FILES['file']['tmp_name'][0]))
+                //    $this -> errors[] = $nps_instance->l('At least one picture is required');
             }
 
             foreach (Language::getLanguages() as $key => $lang) {
@@ -132,7 +138,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
                 } else {
                     $this->context->cookie->__unset('form_token');
                     if(empty($current_id_product)) {
-                        $this->saveAttribute($date_time, (int)$quantity);
+                        $this->saveAttribute($date, $time, (int)$quantity, $available_date);
                         $this->_seller->assignProduct($this->_product->id);
                     }
                     $this->saveFeatures($town, $district, $address);
@@ -230,6 +236,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
             'towns' => $towns,
             'districts' => $districts,
             'form_token' => $form_token,
+            'new_tem_link' => $this->context->link->getModuleLink('npsmarketplace', 'ProductCombination', array('id_product' => $this->_product->id)),
         ));
 
         $this->setTemplate('product.tpl');
@@ -262,29 +269,47 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
         return true;
     }
 
-    private function saveAttribute($date_time, $quantity) {
-        $name = array();
+    private function saveAttribute($date, $time, $quantity, $available_date) {
+        $d = array();
+        $t = array();
         foreach (Language::getLanguages() as $key => $lang) {
-            $name[$lang['id_lang']] = $date_time;
+            $d[$lang['id_lang']] = $date;
+            $t[$lang['id_lang']] = $time;
         }
-        $attr = new Attribute();
-        $attr->name = $name;
-        $attr->id_attribute_group = Configuration::get('NPS_ATTRIBUTE_DT_ID');
-        $attr->position = -1;
-        $attr->save();
 
-        $id_combination = $this->_product->addAttribute(
-            0,//$price,
-            null,//$weight,
-            null,//$unit_impact,
-            null,//$ecotax,
-            null,//$id_images,
-            null,//$reference,
-            null,//$ean13,
-            true);
-       $combination = new Combination($id_combination);
-       $combination->setAttributes(array($attr->id));
-       StockAvailable::setQuantity($this->_product->id, $attr->id, $quantity, $this->context->shop->id);
+        $date_attr = new Attribute();
+        $date_attr->name = $d;
+        $date_attr->id_attribute_group = Configuration::get('NPS_ATTRIBUTE_DATE_ID');
+        $date_attr->position = -1;
+        $date_attr->save();
+
+        $time_attr = new Attribute();
+        $time_attr->name = $t;
+        $time_attr->id_attribute_group = Configuration::get('NPS_ATTRIBUTE_TIME_ID');
+        $time_attr->position = -1;
+        $time_attr->save();
+
+        $id_product_attribute = $this->_product->addCombinationEntity(
+                0,//$wholesale_price
+                0,//$price
+                0,//$weight
+                0,//$unit_impact
+                0,//$ecotax
+                $quantity,
+                0,//$id_images
+                0,//$reference,
+                null,//$id_supplier
+                0,//$ean13
+                false,//$default
+                null,//$location = null
+                null,//$upc = null
+                1,//$minimal_quantity = 1
+                array(),//$id_shop_list = array()
+                $available_date);
+
+        $combination = new Combination((int)$id_product_attribute);
+        $combination->setAttributes(array($date_attr->id, $time_attr->id));
+        StockAvailable::setQuantity((int)$this->_product->id, (int)$id_product_attribute, $quantity, $this->context->shop->id);
     }
 
     private function saveProductImages() {

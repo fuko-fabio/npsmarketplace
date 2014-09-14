@@ -2,18 +2,13 @@
     margin-bottom: 8px;
 }
 
-.nps-myaccount-block .section {
-    border-bottom: 3px solid #FFCC00;
-}
-
 .nps-myaccount-block p {
-    margin: 5px 5px;
+    color: #FFAA00;
     font-weight: bold;
 }
 
 .nps-myaccount-block a i {
     margin-right: 2px;
-    color: #FFCC00;
 }
 
 .nps-myaccount-block a span {
@@ -23,5 +18,5 @@
 }
 
 .nps-myaccount-block a:hover {
-    color: #FFCC00;
+    color: #FFAA00;
 }

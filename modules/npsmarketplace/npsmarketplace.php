@@ -83,7 +83,8 @@ class NpsMarketplace extends Module {
             || !Configuration::deleteByName('NPS_FEATURE_TOWN_ID')
             || !Configuration::deleteByName('NPS_FEATURE_DISTRICT_ID')
             || !Configuration::deleteByName('NPS_FEATURE_ADDRESS_ID')
-            || !Configuration::deleteByName('NPS_ATTRIBUTE_DT_ID')
+            || !Configuration::deleteByName('NPS_ATTRIBUTE_DATE_ID')
+            || !Configuration::deleteByName('NPS_ATTRIBUTE_TIME_ID')
             || !$this->_deleteTab()
             || !$this->_deleteTables()
             || !Tools::deleteDirectory(_NPS_SEL_IMG_DIR_))
@@ -437,14 +438,28 @@ class NpsMarketplace extends Module {
     }
 
     private function _createAttributes() {
-        $name = 'Date & Time';
-        $attributeGroup = new AttributeGroup();
-        $attributeGroup->name[$this->context->language->id] = $name;
-        $attributeGroup->public_name[$this->context->language->id] = $name;
-        $attributeGroup->group_type = 'select';
-        $attributeGroup->position = -1;
-        $attributeGroup->save();
-        Configuration::updateValue('NPS_ATTRIBUTE_DT_ID', $attributeGroup->id);
+        $d = array();
+        $t = array();
+        foreach (Language::getLanguages() as $key => $lang) {
+            $d[$lang['id_lang']] = 'Date';
+            $t[$lang['id_lang']] = 'Time';
+        }
+
+        $ag = new AttributeGroup();
+        $ag->name = $d;
+        $ag->public_name = $d;
+        $ag->group_type = 'select';
+        $ag->position = -1;
+        $ag->save();
+        Configuration::updateValue('NPS_ATTRIBUTE_DATE_ID', $ag->id);
+
+        $ag = new AttributeGroup();
+        $ag->name = $t;
+        $ag->public_name = $t;
+        $ag->group_type = 'select';
+        $ag->position = -1;
+        $ag->save();
+        Configuration::updateValue('NPS_ATTRIBUTE_TIME_ID', $ag->id);
         return true;
     }
 }

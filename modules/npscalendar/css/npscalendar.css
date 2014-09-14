@@ -44,6 +44,7 @@
 }
 
 .nps-calendar .left {
+    font-family: 'Open Sans', sans-serif;
     padding-top: 15px;
 }
 
@@ -62,11 +63,13 @@
 }
 
 .nps-calendar .right .month {
+    font-family: 'Hammersmith One', sans-serif;
     font-size: 32px;
 }
 
 .nps-calendar .right .year {
-    color: #FFCC00;
+    font-family: 'Montserrat', sans-serif;
+    color: #FFAA00;
     font-size: 32px;
     font-weight: bold;
 }
@@ -91,14 +94,17 @@
 }
 
 .nps-calendar .content .day .top .number {
+    font-family: 'Montserrat', sans-serif;
     font-weight: bold;
     font-size: 42px;
-    color: #FFCC00;
+    color: #FFAA00;
+    padding-bottom: 5px
 }
 
 .nps-calendar .content .day .top .name {
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 20px;
+    font-family: 'Hammersmith One', sans-serif;
+    text-transform: uppercase;
 }
 
 .nps-calendar .events {
@@ -112,7 +118,7 @@
 }
 
 .nps-calendar .event .name {
-    color: #FFCC00;
+    color: #FFAA00;
     font-weight: bold;
 }
 .nps-calendar .event p {
@@ -120,5 +126,6 @@
 }
 
 .nps-calendar .event .time {
+    font-family: 'Montserrat', sans-serif;
     font-weight: bold;
 }

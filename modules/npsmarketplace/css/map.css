@@ -2,8 +2,8 @@ html, body, #map-canvas {
     height: 100%;
     margin: 0px;
     padding: 0px;
-    margin-bottom: 20px;
-    min-height: 400px;
+    margin-bottom: 10px;
+    min-height: 300px;
 }
 
 .pac-container {

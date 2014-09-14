@@ -4,13 +4,68 @@
 *  @copyright 2014 npsoftware
 */
 
+include_once(_PS_MODULE_DIR_.'npscalendar/npscalendar.php');
+include_once(_PS_MODULE_DIR_.'npscalendar/classes/MonthName.php');
+
 class EventsCollector {
 
-    public static function getEvents() {
-        return EventsCollector::mocked();
+    public function getEvents($start_date, $end_date = null) {
+        $module = new NpsCalendar();
+        $begin = new DateTime($start_date);
+        if ($end_date == null) {
+            $end = new DateTime();
+            $timestamp =  strtotime("+1 week", strtotime($start_date));
+            $end->setTimestamp($timestamp);
+        } else
+            $end = new DateTime($end_date);
+        $interval = DateInterval::createFromDateString('1 day');
+        $days = new DatePeriod($begin, $interval, $end);
+
+        $result =array(
+            'title' => $module->l('Check calendar'),
+            'no_events' => $module->l('No events'),
+            'month' => MonthName::t(date("m", $begin->getTimestamp())),
+            'year' => date("Y", $begin->getTimestamp()),
+            'days' => array()
+        );
+        foreach ( $days as $day ) {
+            $date = $day->format('Y-m-d');
+            $events = $this->searchForDay($date);
+            $day_name = date('l', strtotime($date));
+            $day_number = date('j', strtotime($date));
+            $result['days'][] = array(
+                'day' => $day_number,
+                'name' => $day_name,
+                'events' => $events
+            );
+        }
+        return $result;
     }
 
-    public static function mocked() {
+    public function searchForDay($day) {
+        $events = array();
+        $res = Search::find(Configuration::get('PS_LANG_DEFAULT'), $day);
+        if (empty($res))
+            return $events;
+        if ($res['total'] > Configuration::get('NPS_EVENTS_PER_DAY')) {
+            
+        } else {
+            foreach ($res['result'] as $product) {
+                $events[] = $this->buildCalendarEvent($product);
+            }
+        }
+        return $events;
+    }
+
+    public function buildCalendarEvent($product) {
+        return array(
+            'name' => $product['name'],
+            'time' => '18:00',// TODO
+            'link' => $product['link']
+        );
+    }
+
+    public function mocked() {
         return array(
             'title' => 'Sprawdź kalendarz',
             'no_events' => 'Brak wydarzeń',
