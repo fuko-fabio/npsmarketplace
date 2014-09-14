@@ -6,16 +6,19 @@
 <h1 class="page-heading bottom-indent">{l s='Payment Settings' mod='npsprzelewy24'}</h1>
 <div class="block-center" id="block-seller-payment-settings">
     {include file="$tpl_dir./errors.tpl"}
-    {if !isset($errors) || empty($errors)}
-    <div class="alert alert-info">
-        <p>{l s='Company has been registered in Przelewy24 service on %s' sprintf=$company->registration_date mod='npsprzelewy24'}</p>
-    </div>
-    {/if}
+
     {if !empty($register_link)}
-        {l s='Registration require confirmation' mod='npsprzelewy24'} <a href="{$register_link}">{l s='Click here' mod='npsprzelewy24'}</a> {l s='to finalize registration' mod='npsprzelewy24'}
+        <div class="alert alert-success">
+            <p>{l s='Registration require confirmation' mod='npsprzelewy24'} <a class="alert-link" target="_blank" href="{$register_link}">{l s='Click here' mod='npsprzelewy24'}</a> {l s='to finalize registration' mod='npsprzelewy24'}</p>
+        </div>
+    {else}
+        {if !isset($errors) || empty($errors)}
+        <div class="alert alert-info">
+            <p>{l s='Company has been registered in Przelewy24 service on %s' sprintf=$company->registration_date mod='npsprzelewy24'}</p>
+        </div>
+        {/if}
     {/if}
-    
-    
+
     <form>
         <div class="row">
             <div class="form-group col-md-6">
