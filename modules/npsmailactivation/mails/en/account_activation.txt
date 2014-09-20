@@ -1,6 +1,27 @@
-﻿Witaj {firstname},
-Twoje konto wymaga aktywacji.
-Poniżej znajduje się link aktywacyjny do twojego konta:
+﻿[{shop_url}] 
+
+Witaj {firstname} {lastname},
+
+Dziękujemy za utworzenie konta klienta na stronie {shop_name}.
+
+Twoje konto wymaga aktywacji. Kliknij w poniższy link aby aktywować konto
 {link}
 
-{shop_name}
+Oto twoje dane logowania:
+
+ADRES E-MAIL: {email}
+
+HASŁO: {passwd}
+
+Ważne wskazówki bezpieczeństwa:
+
+* Zawsze trzymaj dane konta w bezpiecznym miejscu.
+
+* Nigdy nie ujawniaj hasła nikomu.
+
+* Regularnie zmieniać hasło.
+
+* Jeśli podejrzewasz, że ktoś jest przy użyciu konta
+nielegalnie, prosimy o poinformowanie nas o tym natychmiast.
+
+{shop_name} [{shop_url}]

@@ -11,8 +11,6 @@ var CalendarView = Backbone.View.extend({
  
     render: function () {
         $(this.el).html(this.template(this.model.toJSON()));
-        var width = this.$('.top').width();
-        this.$('.top').height(width);
         return this;
     }
 });

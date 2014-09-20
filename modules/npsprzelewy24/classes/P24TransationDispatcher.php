@@ -37,12 +37,8 @@ class P24TransationDispatcher {
         foreach ($this->cart->getProducts() as $product) {
             $id_seller = Seller::getSellerByProduct($product['id_product']);
             if (!$id_seller) {
-                $this->module->reportError(array(
-                    'Unable to dispatch money',
-                    'Unable to find owner of product '.$product['name'].'with ID: '.$product['id_product'],
-                    'Transaction must by verified manualy'
-                ));
-                return;
+                PrestaShopLogger::addLog('Unable to find owner of product '.$product['name'].'with ID: '.$product['id_product'].' The product will be treated as a store property');
+                continue;
             }
             $seller = new Seller($id_seller);
             $spid = P24SellerCompany::getSpidByIdSeller($id_seller);

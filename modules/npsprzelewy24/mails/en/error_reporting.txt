@@ -2,8 +2,8 @@
 
 	Error reporting from your PayPalAPI module
 
-	A client has encountered a problem with the module PayPalAPI, see the report:
+	A client has encountered a problem with the module nps Przelewy24, see the report:
 
 	{logs}
 
-	{shop_url}
+	{shop_url} powered by PrestaShop™

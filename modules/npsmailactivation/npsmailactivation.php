@@ -87,12 +87,13 @@ class NpsMailActivation extends Module {
                 '{passwd}' => Tools::getValue('passwd'),
                 '{link}' => $link
             );
+
             Mail::Send($id_lang,
                 'account_activation',
-                $this->l('Account activation'),
+                $this->l('Welcome!'),
                 $data,
                 $customer->email,
-                NULL,
+                $customer->firstname.' '.$customer->lastname,
                 NULL,
                 NULL,
                 NULL,

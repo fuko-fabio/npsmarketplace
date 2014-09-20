@@ -32,6 +32,7 @@
             <label class="required" for="product_price">{l s='Price' mod='npsmarketplace'}</label>
             <input class="is_required validate form-control" data-validate="isPrice" type="text" id="product_price" name="price" required=""
                 value="{if isset($smarty.post.price)}{$smarty.post.price}{else}{if isset($product['price'])}{$product['price']|escape:'html':'UTF-8'}{/if}{/if}"/>
+            <span class="form_info">{l s='Example: 120.50' mod='npsmarketplace'}</span>
         </div>
         <div class="form-group col-md-6">
             <label for="product_code">{l s='Reference' mod='npsmarketplace'}</label>
@@ -51,6 +52,7 @@
             <div id="datePicker" class="input-append">
                 <input class="is_required form-control" id="date_time_input" name="date_time" data-format="yyyy-MM-dd hh:mm" type="text" readonly="" required=""
                     value="{if isset($smarty.post.date_time)}{$smarty.post.date_time}{else}{if isset($product['date_time'])}{$product['date_time']|escape:'html':'UTF-8'}{/if}{/if}"/>
+                <span class="form_info">{l s='Format: YYYY-MM-DD hh:mm' mod='npsmarketplace'}</span>
                 <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
             </div>
         </div>
@@ -85,6 +87,7 @@
     </div>
     <div class="form-group">
         <div id="map-canvas"></div>
+        <span class="form_info">{l s='Drag move and drop marker on your even location' mod='npsmarketplace'}</span>
     </div>
     <div class="form-group">
         <label class="required" >{l s='Pictures' mod='npsmarketplace'}</label>

@@ -77,7 +77,6 @@
             <label for="iban">{l s='Bank account number' mod='npsprzelewy24'}</label>
             <input class="form-control" type="text" id="iban" name="iban" readonly=""
             value="{if isset($company->iban)}{$company->iban|escape:'html':'UTF-8'}{/if}"/>
-            <span class="form_info">{l s='IBAN format. Example: PL 74 3535 1100...' mod='npsprzelewy24'}</span>
         </div>
         <div class="required form-group">
             <label>

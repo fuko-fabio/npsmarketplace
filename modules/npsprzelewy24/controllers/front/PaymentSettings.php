@@ -36,7 +36,7 @@ class NpsPrzelewy24PaymentSettingsModuleFrontController extends ModuleFrontContr
             $person = trim(Tools::getValue('person'));
             $regon = trim(Tools::getValue('regon'));
             $acceptance = Tools::getIsset('acceptance');
-            $iban = trim(Tools::getValue('iban'));
+            $iban = preg_replace('/\s+/', '', trim(Tools::getValue('iban')));
 
             if (empty($company_name))
                 $this -> errors[] = $nps_instance->l('Company name is required');
@@ -76,12 +76,13 @@ class NpsPrzelewy24PaymentSettingsModuleFrontController extends ModuleFrontContr
             if (!empty($regon) && !Validate::isRegon($regon))
                 $this -> errors[] = $nps_instance->l('Invalid REGON number');
 
-            if ($acceptance)
-                if(empty($iban) || !verify_iban($iban))
-                    $this -> errors[] = $nps_instance->l('Invalid IBAN number');
+            if(empty($iban))
+                 $this -> errors[] = $nps_instance->l('Bank account number is required');
+            elseif(!Validate::isNrb($iban))
+                 $this -> errors[] = $nps_instance->l('Invalid bank account number');
 
-            #if (!$acceptance)
-            #    $this -> errors[] = $nps_instance->l('Acceptance of the Przelewy24 regulations is required');
+            if (!$acceptance)
+                $this -> errors[] = $nps_instance->l('Acceptance of the Przelewy24 regulations is required');
 
             if(empty($this->errors)) {
                 $company = array(

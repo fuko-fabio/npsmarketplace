@@ -49,9 +49,10 @@ class NpsMarketplaceProductsListModuleFrontController extends ModuleFrontControl
         foreach ($products as $product) {
             $link = new Link();
             $cover = Product::getCover($product->id);
+            $have_image = !empty($cover);
             $result[] = array(
-                'haveImage' => !empty($cover),
-                'cover' => $link->getImageLink($product->link_rewrite, $cover['id_image'], 'cart_default'),
+                'haveImage' => $have_image,
+                'cover' => $have_image ? $link->getImageLink($product->link_rewrite, $cover['id_image'], 'cart_default') : null,
                 'name' => Product::getProductName($product->id),
                 'description' => $product->description_short[$this->context->language->id],
                 'price' => $product->getPrice(),

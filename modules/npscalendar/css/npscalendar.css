@@ -41,7 +41,7 @@
 }
 
 .nps-calendar .content .day {
-    border: solid 1px;
+    border: solid 2px;
     text-align: center;
 }
 
@@ -49,14 +49,38 @@
     border: solid 1px;
     margin: 2px;
     padding-top: 25%;
+    padding-bottom: 25%;
 }
 
 .nps-calendar .content .day .top .number {
-    font-size: 32px;
+    font-weight: bold;
+    font-size: 42px;
     color: #FFCC00;
 }
 
 .nps-calendar .content .day .top .name {
     font-size: 18px;
+    font-weight: bold;
+}
+
+.nps-calendar .events {
+    border: solid 1px;
+    margin: 2px;
+}
+
+.nps-calendar .event {
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
+.nps-calendar .event .name {
+    color: #FFCC00;
+    font-weight: bold;
+}
+.nps-calendar .event p {
+    margin: 0;
+}
+
+.nps-calendar .event .time {
     font-weight: bold;
 }

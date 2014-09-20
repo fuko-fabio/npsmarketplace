@@ -60,9 +60,8 @@
         </div>
         <div class="form-group">
             <label class="required" for="iban">{l s='Bank account number' mod='npsprzelewy24'}</label>
-            <input class="validate form-control" data-validate="isIban" type="text" id="iban" name="iban" 
+            <input class="validate form-control" data-validate="isNrb" type="text" id="iban" name="iban" 
             value="{if isset($smarty.post.iban)}{$smarty.post.iban}{else}{if isset($company['iban'])}{$company['iban']|escape:'html':'UTF-8'}{/if}{/if}"/>
-            <span class="form_info">{l s='IBAN format. Example: PL 74 3535 1100...' mod='npsprzelewy24'}</span>
         </div>
         <div class="required form-group">
             <div class="checkbox">

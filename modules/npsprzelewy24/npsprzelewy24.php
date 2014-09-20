@@ -424,18 +424,6 @@ class NpsPrzelewy24 extends PaymentModule {
         return $this->display(__FILE__, 'payment.tpl');
     }
 
-    public function hookDisplayOrderDetail() {
-        global $smarty;
-
-        $orderID = $_GET['id_order'];
-        $result = Db::getInstance()->getRow('SELECT module, current_state FROM `'._DB_PREFIX_.'orders` WHERE `id_order`="'.$orderID.'"');
-
-        if(count($result) && $result['module'] == 'przelewy24' && $result['current_state'] == Configuration::get('NPS_P24_ORDER_STATE_1')) {
-            $smarty->assign('p24_retryPaymentUrl', $this->context->link->getModuleLink('npsprzelewy24', 'paymentConfirmation', array('order_id'=> $orderID)));
-            return $this->display(__FILE__, 'renewPaymentOrderDetail.tpl');
-        }
-    }
-
     public function reportError($logs = array()) {
         PrestaShopLogger::addLog(implode(' | ', $logs), 3);
 

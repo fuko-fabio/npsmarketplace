@@ -16,7 +16,7 @@
                                     <th><span class="title_box ">{l s='SPID' mod=npsprzelewy24}</span></th>
                                     <th><span class="title_box ">{l s='Amount' mod=npsprzelewy24}</span></th>
                                     <th><span class="title_box ">{l s='Status' mod=npsprzelewy24}</span></th>
-                                    <th><span class="title_box ">{l s='Status' mod=npsprzelewy24}</span></th>
+                                    <th><span class="title_box ">{l s='Error' mod=npsprzelewy24}</span></th>
                                 </tr>
                             </thead>
                             <tbody>
