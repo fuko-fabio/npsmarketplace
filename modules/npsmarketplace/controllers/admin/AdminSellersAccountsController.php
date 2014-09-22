@@ -28,19 +28,10 @@ class AdminSellersAccountsController extends AdminController
             'name' => 'image',
             'dir' => 'seller' );
         $this->addRowAction('edit');
-        $this->addRowAction('delete');
-        $this->bulk_actions = array(
-            'delete' => array(
-            'text' => $this->l('Delete selected'),
-            'confirm' => $this->l('Delete selected items?'),
-            'icon' => 'icon-trash'
-        )
-        );
 
-            $this->context = Context::getContext();
-            $this->default_form_language = $this->context->language->id;
-
-            $this->fields_list = array(
+        $this->context = Context::getContext();
+        $this->default_form_language = $this->context->language->id;
+        $this->fields_list = array(
                 'id_seller' => array(
                 'title' => $this->l('ID'),
                 'align' => 'text-center',
@@ -236,13 +227,6 @@ class AdminSellersAccountsController extends AdminController
             else
                 $this->errors[] = Tools::displayError('You do not have permission to edit this.');
         }
-
-        // When deleting, first display a form to select the type of deletion
-        if ($this->action == 'delete' || $this->action == 'bulkdelete')
-            if (Tools::getValue('deleteMode') == 'real' || Tools::getValue('deleteMode') == 'deleted')
-                $this->delete_mode = Tools::getValue('deleteMode');
-            else
-                $this->action = 'select_delete';
     }
 
     public function renderList() {

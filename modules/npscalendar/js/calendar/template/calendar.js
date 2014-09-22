@@ -9,10 +9,14 @@ var CalendarTemplate = '\
             <p class="title"><%= title %></p>\
         </div>\
         <div class="right col-md-6">\
-            <span class="month"><%= month %></span>\
-            <span class="year"><%= year %></span>\
-            <button class="previous"><%= previous %></button>\
-            <button class="next"><%= next %></button>\
+            <div class="nav">\
+                <button class="previous"><i class="icon-chevron-left"></i></button>\
+                <button class="next"><i class="icon-chevron-right"></i></button>\
+            </div>\
+            <div class="info">\
+                <span class="month"><%= month %></span>\
+                <span class="year"><%= year %></span>\
+            </div>\
         </div>\
     </div>\
     <div class="content row seven-col">\
@@ -24,12 +28,18 @@ var CalendarTemplate = '\
                         <p class="name"><%= day.name %></p>\
                     </div>\
                     <div class="events">\
-                        <% _.each(day.events, function(event) { %>\
+                        <% if (_.isEmpty(day.events)) { %>\
                             <div class="event">\
-                                <p class="name"><%= event.name %></p>\
-                                <p class="time"><%= event.time %></p>\
+                                <p class="name"><%= no_events %></p>\
                             </div>\
-                        <% }); %>\
+                        <% } else { %>\
+                            <% _.each(day.events, function(event) { %>\
+                                <div class="event">\
+                                    <p class="name"><%= event.name %></p>\
+                                    <p class="time"><%= event.time %></p>\
+                                </div>\
+                            <% }); %>\
+                        <% } %>\
                     </div>\
                 </div>\
             </div>\

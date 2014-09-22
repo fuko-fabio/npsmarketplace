@@ -17,11 +17,6 @@ var Calendar = Backbone.AssociatedModel.extend({
     ],
 
     defaults: {
-        title   : 'Check calendar',
-        next    : 'Next',
-        previous: 'Next',
-        month   : null,
-        year    : null,
         days    : []
     }
 });

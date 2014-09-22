@@ -4,6 +4,8 @@
   .seven-col .col-lg-1  {
     width: 100%;
     *width: 100%;
+    padding-left: 5px;
+    padding-right: 5px;
   }
 }
 
@@ -13,6 +15,8 @@
   .seven-col .col-lg-1 {
     width: 14.285714285714285714285714285714%;
     *width: 14.285714285714285714285714285714%;
+    padding-left: 5px;
+    padding-right: 5px;
   }
 }
 
@@ -23,21 +27,55 @@
   .seven-col .col-lg-1 {
     width: 14.285714285714285714285714285714%;
     *width: 14.285714285714285714285714285714%;
+    padding-left: 5px;
+    padding-right: 5px;
   }
 }
 
 .nps-calendar .header {
     text-transform: uppercase;
     font-size: 24px;
+    padding-bottom: 5px;
+}
+
+.nps-calendar {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.nps-calendar .left {
+    padding-top: 15px;
 }
 
 .nps-calendar .right {
-    font-weight: bold;
     text-align: right;
+}
+
+.nps-calendar .right .info{
+    float: right;
+    padding-top: 10px;
+    padding-right: 10px;
+}
+
+.nps-calendar .right .nav{
+    float: right;
+}
+
+.nps-calendar .right .month {
+    font-size: 32px;
 }
 
 .nps-calendar .right .year {
     color: #FFCC00;
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.nps-calendar button  {
+    background: white;
+    border: 4px solid;
+    width: 40px;
+    height: 40px;
 }
 
 .nps-calendar .content .day {
