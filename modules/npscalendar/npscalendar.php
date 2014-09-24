@@ -40,6 +40,7 @@ class NpsCalendar extends Module {
 
         if (Tools::isSubmit('submit')) {
             Configuration::updateValue('NPS_EVENTS_PER_DAY', (int)Tools::getValue('NPS_EVENTS_PER_DAY'));
+            Configuration::updateValue('NPS_EVENTS_SEARCH', (int)Tools::getValue('NPS_EVENTS_SEARCH'));
             $output .= $this->displayConfirmation($this->l('Settings updated successfully'));
         }
         return $output.$this->displayForm();
@@ -90,6 +91,7 @@ class NpsCalendar extends Module {
     public function getConfigFieldsValues() {
         return array(
             'NPS_EVENTS_PER_DAY' => Tools::getValue('NPS_EVENTS_PER_DAY', Configuration::get('NPS_EVENTS_PER_DAY')),
+            'NPS_EVENTS_SEARCH' => Tools::getValue('NPS_EVENTS_SEARCH', Configuration::get('NPS_EVENTS_SEARCH')),
         );
     }
 
@@ -105,6 +107,11 @@ class NpsCalendar extends Module {
                         'type' => 'text',
                         'label' => $this->l('Events number per day'),
                         'name' => 'NPS_EVENTS_PER_DAY',
+                    ),
+                    array(
+                        'type' => 'text',
+                        'label' => $this->l('Max search events'),
+                        'name' => 'NPS_EVENTS_SEARCH',
                     ),
                 ),
             'submit' => array(

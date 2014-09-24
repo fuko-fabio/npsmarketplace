@@ -5,16 +5,25 @@
 */
 
 include_once(_PS_MODULE_DIR_.'npscalendar/npscalendar.php');
-include_once(_PS_MODULE_DIR_.'npscalendar/classes/MonthName.php');
+include_once(_PS_MODULE_DIR_.'npscalendar/classes/CalendarItem.php');
 
 class EventsCollector {
 
-    public function getEvents($start_date, $end_date = null) {
+    public function getEvents($start_date = null, $end_date = null) {
         $module = new NpsCalendar();
-        $begin = new DateTime($start_date);
+        if ($start_date == null && $end_date == null) {
+            $begin = new DateTime();
+            $begin->setTimestamp(time());
+        } else if ($start_date == null && $end_date != null) {
+            $begin = new DateTime($end_date);
+            $begin->modify('-1 week');
+        } else {
+            $begin = new DateTime($start_date);
+        }
+
         if ($end_date == null) {
             $end = new DateTime();
-            $timestamp =  strtotime("+1 week", strtotime($start_date));
+            $timestamp =  strtotime("+1 week", $begin->getTimestamp());
             $end->setTimestamp($timestamp);
         } else
             $end = new DateTime($end_date);
@@ -24,14 +33,17 @@ class EventsCollector {
         $result =array(
             'title' => $module->l('Check calendar'),
             'no_events' => $module->l('No events'),
-            'month' => MonthName::t(date("m", $begin->getTimestamp())),
-            'year' => date("Y", $begin->getTimestamp()),
+            'month' => $this->getDisplayMonth($begin, $end),
+            'year' => $this->getDisplayYear($begin, $end),
+            'start_date' => date('Y-m-d', $begin->getTimestamp()),
+            'end_date' => date('Y-m-d', $end->getTimestamp()),
             'days' => array()
         );
+        $link = new Link();
         foreach ( $days as $day ) {
             $date = $day->format('Y-m-d');
-            $events = $this->searchForDay($date);
-            $day_name = date('l', strtotime($date));
+            $events = $this->searchForDay($date, $link);
+            $day_name = CalendarItem::day(date('w', strtotime($date)));
             $day_number = date('j', strtotime($date));
             $result['days'][] = array(
                 'day' => $day_number,
@@ -42,138 +54,71 @@ class EventsCollector {
         return $result;
     }
 
-    public function searchForDay($day) {
+    private function getDisplayYear($begin, $end) {
+        $by = date("Y", $begin->getTimestamp());
+        $ey = date("Y", strtotime("-1 day", $end->getTimestamp()));
+        return $by == $ey ? $by : $by.'/'.$ey;
+    }
+
+    private function getDisplayMonth($begin, $end) {
+        $bm = CalendarItem::month(date("m", $begin->getTimestamp()));
+        $em = CalendarItem::month(date("m", strtotime("-1 day", $end->getTimestamp())));
+        return $bm == $em ? $bm : $bm.'/'.$em;
+    }
+
+    private function searchForDay($day, $link) {
         $events = array();
-        $res = Search::find(Configuration::get('PS_LANG_DEFAULT'), $day);
+        $max_search_events = Configuration::get('NPS_EVENTS_SEARCH');
+        $res = Search::find(Configuration::get('PS_LANG_DEFAULT'), $day, 1, $max_search_events);
         if (empty($res))
             return $events;
-        if ($res['total'] > Configuration::get('NPS_EVENTS_PER_DAY')) {
-            
+        $max_events = Configuration::get('NPS_EVENTS_PER_DAY');
+        if ($res['total'] > $max_events) {
+            $indexes = array_rand($res['result'], $max_events);
+            foreach ($indexes as $index) {
+                $events[] = $this->buildCalendarEvent($res['result'][$index], $link);
+            }
         } else {
             foreach ($res['result'] as $product) {
-                $events[] = $this->buildCalendarEvent($product);
+                $events[] = $this->buildCalendarEvent($product, $link);
             }
         }
-        return $events;
+        return $this->sortByTime($events);
     }
 
-    public function buildCalendarEvent($product) {
+    private function buildCalendarEvent($product, $link) {
+        $image = '';
+        if (!empty($product['id_image']))
+            $image = $link->getImageLink($product['link_rewrite'], $product['id_image'], 'cart_default');
         return array(
             'name' => $product['name'],
-            'time' => '18:00',// TODO
-            'link' => $product['link']
+            'time' => $this->getTime($product),
+            'link' => $product['link'],
+            'image' => $image,
+            'all' => $product,
         );
     }
 
-    public function mocked() {
-        return array(
-            'title' => 'Sprawdź kalendarz',
-            'no_events' => 'Brak wydarzeń',
-            'month' => 'Wrzesień',
-            'year' => 2014,
-            'days' => array(
-                array(
-                    'day' => 1,
-                    'name' => 'Poniedziałek',
-                    'events' => array(
-                        array(
-                            'name' => 'Joga',
-                            'time' => '18:00'
-                        ),
-                        array(
-                            'name' => 'Workshop',
-                            'time' => '19:00'
-                        )
-                    )
-                ),
-                array(
-                    'day' => 2,
-                    'name' => 'Wtorek',
-                    'events' => array(
-                        array(
-                            'name' => 'Workshop',
-                            'time' => '15:00'
-                        )
-                    )
-                ),
-                array(
-                    'day' => 3,
-                    'name' => 'Środa',
-                    'events' => array(
-                        array(
-                            'name' => 'Pool Dance',
-                            'time' => '20:00'
-                        ),
-                        array(
-                            'name' => 'Gym',
-                            'time' => '21:00'
-                        ),
-                        array(
-                            'name' => 'Night run',
-                            'time' => '23:00'
-                        )
-                    )
-                ),
-                array(
-                    'day' => 4,
-                    'name' => 'Czwartek',
-                    'events' => array()
-                ),
-                array(
-                    'day' => 5,
-                    'name' => 'Piątek',
-                    'events' => array(
-                        array(
-                            'name' => 'Workshop',
-                            'time' => '12:00'
-                        ),
-                        array(
-                            'name' => 'Gym',
-                            'time' => '16:00'
-                        ),
-                        array(
-                            'name' => 'Pool Dance',
-                            'time' => '23:00'
-                        )
-                    )
-                ),
-                array(
-                    'day' => 6,
-                    'name' => 'Sobota',
-                    'events' => array(
-                        array(
-                            'name' => 'Workshop',
-                            'time' => '11:00'
-                        )
-                    )
-                ),
-                array(
-                    'day' => 7,
-                    'name' => 'Niedziela',
-                    'events' => array(
-                        array(
-                            'name' => 'Workshop',
-                            'time' => '12:00'
-                        ),
-                        array(
-                            'name' => 'Joga',
-                            'time' => '16:00'
-                        ),
-                        array(
-                            'name' => 'Gym',
-                            'time' => '19:00'
-                        ),
-                        array(
-                            'name' => 'Pool Dance',
-                            'time' => '23:00'
-                        ),
-                        array(
-                            'name' => 'Night run',
-                            'time' => '23:00'
-                        )
-                    )
-                )
-            )
-        );
+    private function getTime($product) {
+        $combination = new Combination($product['id_product_attribute']);
+        $attrs = $combination->getAttributesName(Configuration::get('PS_LANG_DEFAULT'));
+        foreach($attrs as $attr)
+            if (preg_match('/^[0-9]{1,2}:[0-9]{2,2}$/', $attr['name']))
+                return $attr['name'];
+        return '';
+    }
+
+    private function sortByTime($events) {
+        usort($events, function($a, $b) {
+          $ad = strtotime($a['time']);
+          $bd = strtotime($b['time']);
+
+          if ($ad == $bd) {
+            return 0;
+          }
+
+          return $ad > $bd ? 1 : -1;
+        });
+        return $events;
     }
 }

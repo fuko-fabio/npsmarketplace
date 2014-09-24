@@ -121,6 +121,7 @@
     color: #FFAA00;
     font-weight: bold;
 }
+
 .nps-calendar .event p {
     margin: 0;
 }
@@ -128,4 +129,17 @@
 .nps-calendar .event .time {
     font-family: 'Montserrat', sans-serif;
     font-weight: bold;
+}
+
+.nps-calendar a .image {
+    display: none;
+}
+
+.nps-calendar a .event:hover {
+    background: #FFAA00;
+    color: black;
+}
+
+.nps-calendar a .event:hover .name{
+    color: black;
 }

@@ -5,7 +5,18 @@
 
 var Calendar = Backbone.AssociatedModel.extend({
 
-    url: '/modules/npscalendar/api/calendar.php',
+    url: function () {
+        var params = '?';
+        if (this.get('start_date') != null) {
+            params += 'start_date=' + this.get('start_date');
+            if (this.get('end_date') != null) {
+                params += '&end_date=' + this.get('end_date');
+            }
+        } else if (this.get('end_date') != null) {
+            params += 'end_date=' + this.get('end_date');
+        }
+        return '/modules/npscalendar/api/calendar.php' + params;
+    },
 
     relations: [
         {
@@ -17,6 +28,24 @@ var Calendar = Backbone.AssociatedModel.extend({
     ],
 
     defaults: {
-        days    : []
+        days       : [],
+        start_date : null,
+        end_date   : null,
+    },
+
+    fetchPrevious: function() {
+        this.set({
+            'end_date'   : this.get('start_date'),
+            'start_date' : null
+        });
+        return this.fetch();
+    },
+
+    fetchNext: function() {
+        this.set({
+            'start_date': this.get('end_date'),
+            'end_date'  : null
+        });
+        return this.fetch();
     }
 });

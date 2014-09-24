@@ -34,10 +34,13 @@ var CalendarTemplate = '\
                             </div>\
                         <% } else { %>\
                             <% _.each(day.events, function(event) { %>\
-                                <div class="event">\
-                                    <p class="name"><%= event.name %></p>\
-                                    <p class="time"><%= event.time %></p>\
-                                </div>\
+                                <a href="<%= event.link %>">\
+                                    <img class="image" src="<%= event.image %>" />\
+                                    <div class="event">\
+                                        <p class="name"><%= event.name %></p>\
+                                        <p class="time"><%= event.time %></p>\
+                                    </div>\
+                                </a>\
                             <% }); %>\
                         <% } %>\
                     </div>\

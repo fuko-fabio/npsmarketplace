@@ -10,6 +10,6 @@ include(_PS_MODULE_DIR_.'npscalendar/classes/EventsCollector.php');
 
 $collector = new EventsCollector();
 
-$events = $collector->getEvents('2014-09-25');
+$events = $collector->getEvents(Tools::getValue('start_date'), Tools::getValue('end_date'));
 header('Content-Type: application/json');
 echo json_encode($events);
