@@ -78,7 +78,7 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
                 $seller -> regulations = $regulations;
                 $seller -> regulations_active = $regulations_active;
                 $seller->save();
-                $this->postImage();
+                $this->postImage($seller);
                 Tools::redirect('index.php?controller=my-account' );
             }
         }

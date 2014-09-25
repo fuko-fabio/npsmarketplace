@@ -108,7 +108,7 @@ class P24PaymentValodator {
         $history = new OrderHistory();
         $history->id_order = intval($order_id);
 
-        $order_state = Configuration::get('NPS_P24_ORDER_STATE_2');
+        $order_state = Configuration::get('NPS_P24_ORDER_STATE_ACCEPTED');
         $history->changeIdOrderState($order_state, intval($order_id));
         $history->addWithemail(true);
 

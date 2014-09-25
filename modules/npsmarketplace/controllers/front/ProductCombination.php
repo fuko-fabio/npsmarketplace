@@ -20,8 +20,7 @@ class NpsMarketplaceProductCombinationModuleFrontController extends ModuleFrontC
     }
 
     public function postProcess() {
-        if (Tools::isSubmit('date_time') && Tools::isSubmit('quantity'))
-        {
+        if (Tools::isSubmit('submitCombination')) {
             if (!Combination::isFeatureActive())
                 return;
             $date = trim(Tools::getValue('date'));

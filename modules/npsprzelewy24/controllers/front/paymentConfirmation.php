@@ -117,6 +117,12 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
         if ($result['error'] == 0) {
             Tools::redirect(P24::url().'/trnRequest/'.$result['token']);
         } else {
+            $order = Order::getOrderByCartId($cart->id);
+            if($order) {
+                $history = new OrderHistory();
+                $history->id_order = intval($order_id);
+                $history->changeIdOrderState(8, intval($order['id_order']));
+            }
             $module->reportError(array(
                 'Requested URL: '.P24::url().'/trnRegister',
                 'Request params: '.implode(' | ', $data),
@@ -152,7 +158,7 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
     private function validatePayment($npsprzelewy24, $cart, $customer, $amount) {
         $result = $npsprzelewy24->validateOrder(
             (int)$cart->id,
-            (int)Configuration::get('NPS_P24_ORDER_STATE_1'),
+            (int)Configuration::get('NPS_P24_ORDER_STATE_AWAITING'),
             $amount,
             'przelewy24.pl',
             NULL,

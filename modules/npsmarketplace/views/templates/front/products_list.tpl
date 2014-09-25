@@ -1,11 +1,15 @@
+<!--
+    @author Norbert Pabian <norbert.pabian@gmail.com>
+    @copyright 2014 npsoftware
+-->
 {capture name=path}
 <a href="{$link->getPageLink('my-account', true)|escape:'html':'UTF-8'}"> {l s='My account'} </a>
 <span class="navigation-pipe">{$navigationPipe}</span>
-<span class="navigation_page">{l s='My products'}</span>
+<span class="navigation_page">{l s='My events' mod='npsmarketplace'}</span>
 {/capture}
 {include file="$tpl_dir./errors.tpl"}
 <div class="block-center" id="block-seller-products-list">
-    <h1 class="page-heading bottom-indent">{l s='My products'}</h1>
+    <h1 class="page-heading bottom-indent">{l s='My events' mod='npsmarketplace'}</h1>
 
     {if $products}
     <div class="table-responsive">
@@ -76,8 +80,8 @@
         </script>
     </div>
     {else}
-        <p class="alert alert-info">{l s='You have not added any product yet.' mod='npsmarketplace'}</p>
+        <p class="alert alert-info">{l s='You have not added any event yet.' mod='npsmarketplace'}</p>
         </br>
-        {l s='Click' mod='npsmarketplace'} <a href="{$add_product_link}">{l s='here'}</a> {l s='to add your first product.' mod='npsmarketplace'}
+        {l s='Click' mod='npsmarketplace'} <a href="{$add_product_link}">{l s='here'}</a> {l s='to add your first event.' mod='npsmarketplace'}
     {/if}
 </div>

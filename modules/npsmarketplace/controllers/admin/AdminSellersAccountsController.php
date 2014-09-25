@@ -27,7 +27,9 @@ class AdminSellersAccountsController extends AdminController
         $this->fieldImageSettings = array(
             'name' => 'image',
             'dir' => 'seller' );
+        $this->addRowAction('view');
         $this->addRowAction('edit');
+        $this->base_tpl_view = 'seller_view.tpl';
 
         $this->context = Context::getContext();
         $this->default_form_language = $this->context->language->id;
@@ -85,16 +87,14 @@ class AdminSellersAccountsController extends AdminController
         parent::__construct();
     }
 
-	public function printLockedIcon($value, $seller)
-    {
+	public function printLockedIcon($value, $seller) {
         return '<a class="list-action-enable '.($value ? 'action-enabled' : 'action-disabled').'" href="index.php?tab=AdminSellersAccounts&id_seller='
             .(int)$seller['id_seller'].'&changeLockedVal&token='.Tools::getAdminTokenLite('AdminSellersAccounts').'">
                 '.($value ? '<i class="icon-check"></i>' : '<i class="icon-remove"></i>').
             '</a>';
     }
 
-    public function processChangeLockedVal()
-    {
+    public function processChangeLockedVal() {
         $seller = new Seller($this->id_object);
         if (!Validate::isLoadedObject($seller))
             $this->errors[] = Tools::displayError('An error occurred while updating seller information.');
@@ -139,8 +139,7 @@ class AdminSellersAccountsController extends AdminController
         Tools::redirectAdmin(self::$currentIndex.'&token='.$this->token);
     }
 
-    public function processStatus()
-    {
+    public function processStatus() {
         parent::processStatus();
         $seller = new Seller($this->id_object);
         if (!Validate::isLoadedObject($seller))
@@ -188,8 +187,7 @@ class AdminSellersAccountsController extends AdminController
         }
     }
 
-    public function initContent()
-    {
+    public function initContent() {
         if ($this->action == 'select_delete')
             $this->context->smarty->assign(array(
                 'delete_form' => true,
@@ -200,12 +198,10 @@ class AdminSellersAccountsController extends AdminController
         parent::initContent();
     }
 
-    public function initToolbarTitle()
-    {
+    public function initToolbarTitle() {
         parent::initToolbarTitle();
 
-        switch ($this->display)
-        {
+        switch ($this->display) {
             case '':
             case 'list':
                 $this->toolbar_title[] = $this->l('Manage your Sellers');
@@ -214,19 +210,52 @@ class AdminSellersAccountsController extends AdminController
                 if (($seller = $this->loadObject(true)) && Validate::isLoadedObject($seller))
                     $this->toolbar_title[] = sprintf($this->l('Editing Seller: %s'), Tools::substr($seller->name, 0, 1));
                 break;
+            case 'view':
+                if (($seller = $this->loadObject(true)) && Validate::isLoadedObject($seller))
+                    $this->toolbar_title[] = sprintf($this->l('Seller Details: %s'), Tools::substr($seller->name, 0, 1));
+                break;
         }
     }
 
     public function initProcess() {
         parent::initProcess();
 
-        if (Tools::isSubmit('changeLockedVal') && $this->id_object)
-        {
+        if (Tools::isSubmit('changeLockedVal') && $this->id_object) {
             if ($this->tabAccess['edit'] === '1')
                 $this->action = 'change_locked_val';
             else
                 $this->errors[] = Tools::displayError('You do not have permission to edit this.');
+        } else if (Tools::isSubmit('changeActiveProduct') && $this->id_object) {
+            if ($this->tabAccess['edit'] === '1')
+                $this->action = 'change_active_product';
+            else
+                $this->errors[] = Tools::displayError('You do not have permission to edit this.');
         }
+    }
+
+    public function processChangeActiveProduct() {
+        $obj = $this->loadObject(true);
+
+        $p_id = trim(Tools::getValue('id_product'));
+        $product = new Product($p_id);
+        $is_active = $product->active;
+        if ($product->id = null)
+            $this->errors[] = sprintf($this->l('Invalid product ID: %s'), $p_id);
+
+        if(!$is_active) {
+            if (!$obj->active)
+                $this->errors[] = $this->l('Seller of this product has not activated account');
+            else if($obj->locked)
+                $this->errors[] = $this->l('Seller of this product has locked account');
+    
+            $payment_config = new P24SellerCompany(null, $obj->id);
+            if ($payment_config->id == null)
+                $this->errors[] = $this->l('Seller of this product has not configured payment account');
+        }
+        if (count($this->errors))
+            return;
+        //TODO Sth is wrong here Duplicate entry '0-1' for key 'PRIMARY' WHY? :(
+        $product->toggleStatus();
     }
 
     public function renderList() {
@@ -413,6 +442,52 @@ class AdminSellersAccountsController extends AdminController
         }
 
         return $ret;
+    }
+
+    public function renderView() {
+        $obj = $this->loadObject(true);
+
+        $this->tpl_view_vars = array(
+            'seller' => $obj,
+            'products' => $this->getProducts($obj),
+            'currency' => $this->context->currency,
+            'lang_id' =>  $this->context->language->id,
+            'payment' => new P24SellerCompany(null, $obj->id),
+            'token' => $this->token,
+            'payment_token' => Tools::getAdminTokenLite('AdminSellerCompany')
+         );
+
+        $helper = new HelperView($this);
+        $this->setHelperDisplay($helper);
+        $helper->tpl_vars = $this->tpl_view_vars;
+        $helper->base_folder = _PS_MODULE_DIR_.'npsmarketplace/views/templates/admin/';
+        if (!is_null($this->base_tpl_view))
+            $helper->base_tpl = $this->base_tpl_view;
+        $view = $helper->generateView();
+
+        return $view;
+    }
+
+    private function getProducts($seller) {
+        $result = array();
+        $products = $seller -> getProducts();
+        foreach ($products as $product) {
+            $link = new Link();
+            $cover = Product::getCover($product->id);
+            $have_image = !empty($cover);
+            $result[] = array(
+                'id' => $product->id,
+                'haveImage' => $have_image,
+                'cover' => $have_image ? $link->getImageLink($product->link_rewrite, $cover['id_image'], 'cart_default') : null,
+                'name' => Product::getProductName($product->id),
+                'description' => $product->description_short[$this->context->language->id],
+                'price' => $product->getPrice(),
+                'quantity' => Product::getQuantity($product->id),
+                'active' => $product->active,
+                'active_url' => 'index.php?tab=AdminSellersAccounts&id_seller='.$seller->id.'&id_product='.(int)$product->id.'&changeActiveProduct&viewseller&token='.Tools::getAdminTokenLite('AdminSellersAccounts'),
+            );
+        }
+        return $result;
     }
 
     public function renderKpis() {

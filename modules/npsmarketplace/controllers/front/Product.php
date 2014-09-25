@@ -7,8 +7,7 @@
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/CategoriesList.php');
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
 
-class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
-{
+class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
 
     /**
      * @var _product Current product
@@ -35,8 +34,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
         $this->addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/map.css');
     }
 
-    public function postProcess()
-    {
+    public function postProcess() {
         if (Tools::isSubmit('saveProduct')) {
             $nps_instance = new NpsMarketplace();
             $current_id_product = trim(Tools::getValue('id_product'));
@@ -60,6 +58,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
             if (isset($_POST['category'])) {
                 $categories = $_POST['category'];
             }
+            $images = $this->getImages();
 
             if(Tools::getValue('form_token') != $this->context->cookie->__get('form_token')) {
                 $this -> errors[] = $nps_instance->l('This form has been already saved. Go to your profile page and check saved products.');
@@ -94,8 +93,8 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
                     $this -> errors[] = $nps_instance->l('Invalid product quantity');
                 if (empty($quantity))
                     $this -> errors[] = $nps_instance->l('Product quantity is required');
-                //if (empty($_FILES['file']['tmp_name'][0]))
-                //    $this -> errors[] = $nps_instance->l('At least one picture is required');
+                if (empty($images))
+                    $this -> errors[] = $nps_instance->l('At least one picture is required');
             }
 
             foreach (Language::getLanguages() as $key => $lang) {
@@ -138,12 +137,12 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
                 } else {
                     $this->context->cookie->__unset('form_token');
                     if(empty($current_id_product)) {
-                        $this->saveAttribute($date, $time, (int)$quantity, $available_date);
+                        $this->saveAttributes($date, $time, (int)$quantity, $available_date);
                         $this->_seller->assignProduct($this->_product->id);
                     }
                     $this->saveFeatures($town, $district, $address);
                     $this -> _product->updateCategories($categories);
-                    $this->saveProductImages();
+                    $this->saveProductImages($images);
                     Tools::redirect($this->context->link->getModuleLink('npsmarketplace', 'ProductsList'));
                 }
             }
@@ -204,6 +203,10 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
         $tpl_product = array('categories' => array(), 'town' => null);
         if ($this->_product->id != 0) {
             $features = $this->_product->getFeatures();
+            $images = Image::getImages($this->context->language->id, $this->_product->id);
+            foreach ($images as $k => $image)
+                $images[$k] = str_replace('http://', Tools::getShopProtocol(), Context::getContext()->link->getImageLink(null, $image['id_image'], 'medium_default'));
+
             $tpl_product = array(
                 'id' => $this->_product->id,
                 'name' => $this->_product->name,
@@ -216,6 +219,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
                 'address' => $this->getFeatureValue($features, 'address'),
                 'district' => $this->getFeatureValue($features, 'district'),
                 'categories' => $this->_product->getCategories(),
+                'images' => $images
             );
         }
         $towns = $this->getActiveTowns((int)$this->context->language->id);
@@ -269,54 +273,81 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController
         return true;
     }
 
-    private function saveAttribute($date, $time, $quantity, $available_date) {
+    private function saveAttributes($date, $time, $quantity, $available_date) {
         $d = array();
         $t = array();
         foreach (Language::getLanguages() as $key => $lang) {
             $d[$lang['id_lang']] = $date;
             $t[$lang['id_lang']] = $time;
         }
+        $lang_id = (int)Configuration::get('PS_LANG_DEFAULT');
+        $date_attr_group_id = Configuration::get('NPS_ATTRIBUTE_DATE_ID');
+        $time_attr_group_id = Configuration::get('NPS_ATTRIBUTE_TIME_ID');
 
-        $date_attr = new Attribute();
-        $date_attr->name = $d;
-        $date_attr->id_attribute_group = Configuration::get('NPS_ATTRIBUTE_DATE_ID');
-        $date_attr->position = -1;
-        $date_attr->save();
+        $date_attr_id = $this->getAttributeId($date_attr_group_id, $date, $lang_id);
+        $date_attr = new Attribute($date_attr_id);
+        if ($date_attr_id == null) {
+            $date_attr->name = $d;
+            $date_attr->id_attribute_group = $date_attr_group_id;
+            $date_attr->position = -1;
+            $date_attr->save();
+        }
 
-        $time_attr = new Attribute();
-        $time_attr->name = $t;
-        $time_attr->id_attribute_group = Configuration::get('NPS_ATTRIBUTE_TIME_ID');
-        $time_attr->position = -1;
-        $time_attr->save();
+        $time_attr_id = $this->getAttributeId($time_attr_group_id, $time, $lang_id);
+        $time_attr = new Attribute($time_attr_id);
+        if ($date_attr_id == null) {
+            $time_attr->name = $t;
+            $time_attr->id_attribute_group = $time_attr_group_id;
+            $time_attr->position = -1;
+            $time_attr->save();
+        }
 
-        $id_product_attribute = $this->_product->addCombinationEntity(
-                0,//$wholesale_price
-                0,//$price
-                0,//$weight
-                0,//$unit_impact
-                0,//$ecotax
-                $quantity,
-                0,//$id_images
-                0,//$reference,
-                null,//$id_supplier
-                0,//$ean13
-                false,//$default
-                null,//$location = null
-                null,//$upc = null
-                1,//$minimal_quantity = 1
-                array(),//$id_shop_list = array()
-                $available_date);
+        $id_product_attribute = $this->_product->addAttribute(
+            0,//$price,
+            null,//$weight,
+            null,//$unit_impact,
+            null,//$ecotax,
+            null,//$id_images,
+            null,//$reference,
+            null,//$ean13,
+            true,//$default
+            null,//$location
+            null,//$upc 
+            1,//$minimal_quantity
+            array(),//$id_shop_list
+            $available_date);
 
         $combination = new Combination((int)$id_product_attribute);
         $combination->setAttributes(array($date_attr->id, $time_attr->id));
         StockAvailable::setQuantity((int)$this->_product->id, (int)$id_product_attribute, $quantity, $this->context->shop->id);
     }
 
-    private function saveProductImages() {
+    public static function getAttributeId($id_attribute_group, $name, $id_lang) {
+        $result = Db::getInstance()->getValue('
+            SELECT `id_attribute`
+            FROM `'._DB_PREFIX_.'attribute_group` ag
+            LEFT JOIN `'._DB_PREFIX_.'attribute_group_lang` agl
+                ON (ag.`id_attribute_group` = agl.`id_attribute_group` AND agl.`id_lang` = '.(int)$id_lang.')
+            LEFT JOIN `'._DB_PREFIX_.'attribute` a
+                ON a.`id_attribute_group` = ag.`id_attribute_group`
+            LEFT JOIN `'._DB_PREFIX_.'attribute_lang` al
+                ON (a.`id_attribute` = al.`id_attribute` AND al.`id_lang` = '.(int)$id_lang.')
+            '.Shop::addSqlAssociation('attribute_group', 'ag').'
+            '.Shop::addSqlAssociation('attribute', 'a').'
+            WHERE al.`name` = \''.pSQL($name).'\' AND ag.`id_attribute_group` = '.(int)$id_attribute_group.'
+            ORDER BY agl.`name` ASC, a.`position` ASC
+        ');
+
+        return $result ? $result : null;
+    }
+
+    private function getImages() {
         $image_uploader = new HelperImageUploader('file');
         $image_uploader -> setAcceptTypes(array('jpeg', 'gif', 'png', 'jpg')) -> setMaxSize((int)Configuration::get('PS_PRODUCT_PICTURE_MAX_SIZE'));
-        $files = $image_uploader -> process();
+        return $image_uploader -> process();
+    }
 
+    private function saveProductImages($files) {
         foreach ($files as &$file) {
             $image = new Image();
             $image -> id_product = (int)($this -> _product -> id);

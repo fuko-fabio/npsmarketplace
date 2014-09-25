@@ -112,7 +112,11 @@ class P24TransationDispatcher {
         $history->total_amount = $total;
         $history->date = date("Y-m-d H:i:s");
         $history->id_payment = $this->payment_summary['id_payment'];
-        $history->status = $res->result[0]->status;
+        $h_s = true;
+        foreach ($res->result as $r) {
+            $h_s = $h_s && $r->status;
+        }
+        $history->status = $h_s;
         $history->save();
 
         foreach ($res->result as $r) {

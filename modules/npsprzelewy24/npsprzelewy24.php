@@ -30,15 +30,8 @@ class NpsPrzelewy24 extends PaymentModule {
      * @return bool
      */
     public function install() {
-        if (!file_exists(dirname(__FILE__).'/'.self::INSTALL_SQL_FILE))
-            return false;
-        else if (!$sql = file_get_contents(dirname(__FILE__).'/'.self::INSTALL_SQL_FILE))
-            return false;
-        $sql = str_replace(array('PREFIX_', 'ENGINE_TYPE'), array(_DB_PREFIX_, _MYSQL_ENGINE_), $sql);
-        $sql = preg_split("/;\s*[\r\n]+/", trim($sql));
-
-        Configuration::updateValue('NPS_P24_ORDER_STATE_1', 0);
-        Configuration::updateValue('NPS_P24_ORDER_STATE_2', 0);
+        Configuration::updateValue('NPS_P24_ORDER_STATE_AWAITING', 0);
+        Configuration::updateValue('NPS_P24_ORDER_STATE_ACCEPTED', 0);
         Configuration::updateValue('NPS_P24_COMMISION', 2.5);
         Configuration::updateValue('NPS_P24_UNIQUE_KEY', '');
         Configuration::updateValue('NPS_P24_CRC_KEY', '');
@@ -49,62 +42,23 @@ class NpsPrzelewy24 extends PaymentModule {
         Configuration::updateValue('NPS_P24_SANDBOX_ERROR', '');
         Configuration::updateValue('NPS_P24_SANDBOX_WEB_SERVICE_URL', 'https://sandbox.przelewy24.pl/external/__wsdl/service.php?wsdl');
 
-        $rq = Db::getInstance()->getRow(
-            'SELECT `id_order_state`
-            FROM `'._DB_PREFIX_.'order_state_lang`
-            WHERE id_lang = \''.pSQL('1').'\'
-            AND  name = \''.pSQL('Oczekiwanie na płatność Przelewy24').'\'');
-        if ($rq && isset($rq['id_order_state']) && intval($rq['id_order_state']) > 0) {
-            Configuration::updateValue('NPS_P24_ORDER_STATE_1', $rq['id_order_state']);
-        } else {
-            Db::getInstance()->Execute(
-                'INSERT INTO `'._DB_PREFIX_.'order_state` (`unremovable`, `invoice`, `module_name`, `color`)
-                VALUES(1, 1, \''.$this->name.'\', \'LightBlue\')');
-            $stateid = Db::getInstance()->Insert_ID();
-            $result = Db::getInstance()->ExecuteS('SELECT `id_lang` FROM `'._DB_PREFIX_.'lang`');
-            foreach ($result as $row) {
-                Db::getInstance()->Execute(
-                    'INSERT INTO `'._DB_PREFIX_.'order_state_lang` (`id_order_state`, `id_lang`, `name`)
-                    VALUES('.intval($stateid).', '.intval($row['id_lang']).', \'Oczekiwanie na płatność Przelewy24\')');
-            }
-            Configuration::updateValue('NPS_P24_ORDER_STATE_1', $stateid);
-        }
-
-        $rq = Db::getInstance()->getRow(
-            'SELECT `id_order_state`
-            FROM `'._DB_PREFIX_.'order_state_lang`
-            WHERE id_lang = \''.pSQL('1').'\'
-            AND  name = \''.pSQL('Płatność Przelewy24 zatwierdzona').'\'');
-        if ($rq && isset($rq['id_order_state']) && intval($rq['id_order_state']) > 0) {
-            Configuration::updateValue('NPS_P24_ORDER_STATE_2', $rq['id_order_state']);
-        } else {
-            Db::getInstance()->Execute(
-                'INSERT INTO `'._DB_PREFIX_.'order_state` (`unremovable`, `invoice`, `module_name`, `color`)
-                VALUES(1, 1,\''.$this->name.'\', \'RoyalBlue\')');
-            $stateid = Db::getInstance()->Insert_ID();
-            foreach ($result as $row) {
-                Db::getInstance()->Execute(
-                    'INSERT INTO `'._DB_PREFIX_.'order_state_lang` (`id_order_state`, `id_lang`, `name`)
-                    VALUES('.intval($stateid).', '.intval($row['id_lang']).', \'Płatność Przelewy24 przyjęta\')');
-            }
-            Configuration::updateValue('NPS_P24_ORDER_STATE_2', $stateid);
-        }
-
         return parent::install()
+            && $this->createTables()
+            && $this->createOrderStates()
+            && $this->createTab()
             && $this->registerHook('payment')
             && $this->registerHook('displayOrderDetail')
-            && $this->registerHook('displayCustomerAccount')
-            && $this->createTables($sql)
-            && $this->createTab();
+            && $this->registerHook('displayCustomerAccount');
     }
 
     public function uninstall() {
         return parent::uninstall()
-            && $this->deleteTables()
             && $this->unregisterHook('displayCustomerAccount')
             && $this->unregisterHook('payment')
             && $this->unregisterHook('displayOrderDetail')
-            && $this->deleteTab();
+            && $this->deleteTab()
+            && $this->deleteOrderStates()
+            && $this->deleteTables();
     }
 
     public function getContent() {
@@ -138,7 +92,14 @@ class NpsPrzelewy24 extends PaymentModule {
     /**
      * @return bool
      */
-    private function createTables($sql) {
+    private function createTables() {
+        if (!file_exists(dirname(__FILE__).'/'.self::INSTALL_SQL_FILE))
+            return false;
+        else if (!$sql = file_get_contents(dirname(__FILE__).'/'.self::INSTALL_SQL_FILE))
+            return false;
+        $sql = str_replace(array('PREFIX_', 'ENGINE_TYPE'), array(_DB_PREFIX_, _MYSQL_ENGINE_), $sql);
+        $sql = preg_split("/;\s*[\r\n]+/", trim($sql));
+
         foreach ($sql as $query)
             if (!Db::getInstance()->execute(trim($query)))
                 return false;
@@ -450,19 +411,28 @@ class NpsPrzelewy24 extends PaymentModule {
     private function createTab() {
         $tabs = Tab::getCollectionFromModule('npsmarketplace');
 
-        $sellers_tab = new Tab();
-        $sellers_tab->id_parent = $tabs[0]->id;
-        $sellers_tab->position = 1;
-        $sellers_tab->module = $this->name;
-        $sellers_tab->class_name = 'AdminDispatchHistory';
+        $t = new Tab();
+        $t->id_parent = $tabs[0]->id;
+        $t->position = 1;
+        $t->module = $this->name;
+        $t->class_name = 'AdminDispatchHistory';
         $languages = Language::getLanguages();
         foreach ($languages AS $language)
-        {
-            $sellers_tab->{'name'}[intval($language['id_lang'])] = 'Payment History';
-        }
-        return $sellers_tab->add();
+            $t->name[intval($language['id_lang'])] = 'Payment History';
+
+        $resutl = $t->add();
+        $t = new Tab();
+        $t->id_parent = $tabs[0]->id;
+        $t->position = 2;
+        $t->module = $this->name;
+        $t->class_name = 'AdminSellerCompany';
+        $languages = Language::getLanguages();
+        foreach ($languages AS $language)
+            $t->name[intval($language['id_lang'])] = 'Przelewy24 Accounts';
+
+        return $resutl && $t->add();
     }
-    
+
     private function deleteTab() {
         $tabs = Tab::getCollectionFromModule($this->name);
         if (!empty($tabs)) {
@@ -471,5 +441,61 @@ class NpsPrzelewy24 extends PaymentModule {
             return true;
         }
         return false;
+    }
+
+    public function createOrderStates() {
+         $avaiting_names = array();
+         foreach (Language::getLanguages() as $language) {
+            if (Tools::strtolower($language['iso_code']) == 'pl')
+                $avaiting_names[$language['id_lang']] = 'Oczekiwanie na płatność Przelewy24';
+            else
+                $avaiting_names[$language['id_lang']] = 'Waiting for payment Przelewy24';
+         }
+         $done_names = array();
+         foreach (Language::getLanguages() as $language) {
+            if (Tools::strtolower($language['iso_code']) == 'pl')
+                $done_names[$language['id_lang']] = 'Płatność Przelewy24 przyjęta';
+            else
+                $done_names[$language['id_lang']] = 'Payment accepted by Przelewy24';
+        }
+        $states = array(
+            'awaiting' => array(
+                'name' => $avaiting_names,
+                'color' => 'LightBlue',
+                'invoice' => false,
+                'paid' => false,
+                'config' => 'NPS_P24_ORDER_STATE_AWAITING'
+            ),
+            'done' => array(
+                'name' => $done_names,
+                'color' => 'RoyalBlue',
+                'invoice' => true,
+                'paid' => true,
+                'config' => 'NPS_P24_ORDER_STATE_ACCEPTED'
+            )
+        );
+        $result = true;
+        foreach($states as $s) {
+            $os = new OrderState();
+            $os->name = $s['name'];
+            $os->color = $s['color'];
+            $os->invoice = $s['invoice'];
+            $os->logable = true;
+            $os->hidden = false;
+            $os->send_email = false;
+            $os->delivery = false;
+            $os->paid = $s['paid'];
+            $os->module_name =$this->name;
+            $result = $result && $os->add();
+            Configuration::updateValue($s['config'], $os->id);
+        }
+        return $result;
+    }
+
+    private function deleteOrderStates() {
+        $os = new OrderState(Configuration::get('NPS_P24_ORDER_STATE_AWAITING'));
+        $os->delete();
+        $os = new OrderState(Configuration::get('NPS_P24_ORDER_STATE_ACCEPTED'));
+        $os->delete();
     }
 }

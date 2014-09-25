@@ -67,7 +67,8 @@
             <div class="row">
                 <div class="form-group col-md-6">
                     <label class="required" for="product_amount">{l s='Quantity' mod='npsmarketplace'}</label>
-                    <input class="is_required validate form-control" data-validate="isNumber" type="number" id="product_amount" name="quantity" required=""/>
+                    <input class="is_required validate form-control" data-validate="isNumber" type="number" id="product_amount" name="quantity" required=""
+                        value="{if isset($smarty.post.quantity)}{$smarty.post.quantity}{else}{if isset($product['quantity'])}{$product['quantity']|escape:'html':'UTF-8'}{/if}{/if}"/>
                 </div>
                 <div class="form-group col-md-6">
                     <label class="required" for="date_input">{l s='Available Date' mod='npsmarketplace'}</label>
@@ -83,6 +84,6 @@
         </br>
         <strong>{l s='By clicking "Add" I accept the' mod='npsmarketplace'} <a href="{$user_agreement_url}">{l s='User Agreement.' mod='npsmarketplace'}</a></strong>
         </br>
-        <button type="submit" class="btn btn-primary btn-lg pull-right"><span>{l s='Add' mod='npsmarketplace'} <i class="icon-plus right"></i></span></button>
+        <button type="submit" name="submitCombination" class="btn btn-primary btn-lg pull-right"><span>{l s='Add' mod='npsmarketplace'} <i class="icon-plus right"></i></span></button>
     </form>
 </div>

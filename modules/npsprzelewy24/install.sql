@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS `PREFIX_p24_payment_statement` (
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `PREFIX_p24_seller_company` (
-  `id_seller_company` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `id_p24_seller_company` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `id_seller` INT UNSIGNED NOT NULL,
   `spid` char(64) NOT NULL,
   `registration_date` datetime,

@@ -146,7 +146,6 @@ class AdminDispatchHistoryController extends AdminController {
         $view = $helper->generateView();
 
         return $view;
-        return parent::renderView();
     }
 
     protected function getProducts($order) {

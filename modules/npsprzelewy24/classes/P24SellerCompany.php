@@ -25,7 +25,7 @@ class P24SellerCompany extends ObjectModel {
         if (empty($id_seller_settings) && !empty($id_seller)) {
             $query = new DbQuery();
             $query
-                -> select('`id_seller_company`')
+                -> select('`id_p24_seller_company`')
                 -> from('p24_seller_company')
                 -> where('`id_seller` = '.$id_seller);
             $id = Db::getInstance() -> getValue($query);
@@ -41,13 +41,13 @@ class P24SellerCompany extends ObjectModel {
      */
     public static $definition = array(
         'table' => 'p24_seller_company',
-        'primary' => 'id_seller_company',
+        'primary' => 'id_p24_seller_company',
         'fields' => array(
             'id_seller' =>         array('type' => self::TYPE_INT,    'required' => true),
             'spid' =>              array('type' => self::TYPE_STRING, 'required' => true),
             'registration_date' => array('type' => self::TYPE_DATE,   'required' => true),
             'acceptance' =>        array('type' => self::TYPE_BOOL,   'required' => true),
-            'register_link' =>     array('type' => self::TYPE_STRING, 'required' => true),
+            'register_link' =>     array('type' => self::TYPE_STRING),
             'company_name' =>      array('type' => self::TYPE_STRING, 'required' => true),
             'city' =>              array('type' => self::TYPE_STRING, 'required' => true),
             'street' =>            array('type' => self::TYPE_STRING, 'required' => true),

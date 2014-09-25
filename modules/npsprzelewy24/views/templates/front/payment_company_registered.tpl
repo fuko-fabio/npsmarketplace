@@ -9,7 +9,7 @@
 
     {if !empty($register_link)}
         <div class="alert alert-success">
-            <p>{l s='Registration require confirmation' mod='npsprzelewy24'} <a class="alert-link" target="_blank" href="{$register_link}">{l s='Click here' mod='npsprzelewy24'}</a> {l s='to finalize registration' mod='npsprzelewy24'}</p>
+            {l s='Registration require confirmation' mod='npsprzelewy24'} <a class="alert-link" target="_blank" href="{$register_link}">{l s='Click here' mod='npsprzelewy24'}</a> {l s='to finalize registration' mod='npsprzelewy24'}
         </div>
     {else}
         {if !isset($errors) || empty($errors)}

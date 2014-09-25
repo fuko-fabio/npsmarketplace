@@ -139,6 +139,15 @@
         </div>
         <span class="form_info">{l s='At least one picture is required. Max allowed size 8MB. Recommended min size 512px X 512px' mod='npsprzelewy24'}</span>
     </div>
+    {else}
+    <div class="form-group">
+        <label class="required" >{l s='Pictures' mod='npsmarketplace'}</label>
+        <div>
+        {foreach from=$product['images'] item=image}
+            <img src="{$image}" />
+        {/foreach}
+        </div>
+    </div>
     {/if}
     <div class="form-group">
         <label class="required" for="product_category">{l s='Category' mod='npsmarketplace'}</label>

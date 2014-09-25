@@ -1,3 +1,7 @@
+<!--
+    @author Norbert Pabian <norbert.pabian@gmail.com>
+    @copyright 2014 npsoftware
+-->
 <div class="panel">
     <div class="row">
         <div class="col-lg-12">

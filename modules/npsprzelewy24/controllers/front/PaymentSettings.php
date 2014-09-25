@@ -118,7 +118,11 @@ class NpsPrzelewy24PaymentSettingsModuleFrontController extends ModuleFrontContr
                     $settings->iban = $iban;
                     $settings->acceptance = $acceptance;
                     $settings->save();
-                    Tools::redirect($this->context->link->getModuleLink('npsprzelewy24', 'PaymentSettings', array('register_link' => $res->result->link)));
+                    
+                    $params = array();
+                    if (!$acceptance)
+                        $params = array('register_link' => $res->result->link);
+                    Tools::redirect($this->context->link->getModuleLink('npsprzelewy24', 'PaymentSettings', $params));
                 }
             }
         }

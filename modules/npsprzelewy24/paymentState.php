@@ -40,7 +40,7 @@ if (empty($p24_error_code)) {
     $history = new OrderHistory();
     $history->id_order = intval($order_id);
     $history->changeIdOrderState(8, intval($order_id));
-    $history->addWithemail(true);
+    $history->addWithemail(false);
     $m->reportError(array(
         'Background payment. Unabe to verify payment. Error code: '.$p24_error_code,
         'Requested URL: '.$this->context->link->getModuleLink('npsprzelewy24', 'paymentState'),
