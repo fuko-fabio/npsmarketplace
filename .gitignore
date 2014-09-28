@@ -2,11 +2,8 @@
 /*
 
 .htaccess
+.project
 # Exclude
-!/mails/en/seller_account_request.html
-!/mails/en/seller_account_request.txt
-!/mails/pl/seller_account_request.html
-!/mails/pl/seller_account_request.txt
 
 !/modules
 /modules/*
@@ -18,21 +15,18 @@
 !/themes
 /themes/*
 !/themes/minimal_16_theme
-/themes/minimal_16_theme/cache/
+/themes/minimal_16_theme/cache/*
 
 !/js
 /js/*
 !/js/validate.js
-
-!/classes
-/classes/*
-!/classes/Validate.php
 
 !/override
 /override/*
 !/override/classes
 /override/classes/*
 !/override/classes/Product.php
+!/override/classes/Validate.php
 
 !/override/controllers
 /override/controllers/*
