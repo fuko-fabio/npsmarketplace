@@ -51,7 +51,6 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
             }
         }
 
-        $amount = number_format($amount, 2, '.', '') * 100;
         $timestamp = time();
         $session_id = $this->generateSessionId($cart, $timestamp);
 
@@ -65,6 +64,7 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
         } else {
             $s_descr = $this->orderDescription($order, $customer);
         }
+        $amount = number_format($amount, 2, '.', '') * 100;
 
         $this->persistP24Payment($session_id, $cart->id, $amount, $currency['iso_code'], $timestamp);
         $this->transactionRegister($session_id, $cart, $amount, $customer, $currency, $address, $s_descr, $npsprzelewy24);

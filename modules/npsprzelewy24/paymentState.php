@@ -34,7 +34,7 @@ if (empty($p24_error_code)) {
         $history = new OrderHistory();
         $history->id_order = intval($order_id);
         $history->changeIdOrderState(8, intval($order_id));
-        $history->addWithemail(true);
+        $history->addWithemail(false);
     }
 } else {
     $history = new OrderHistory();
