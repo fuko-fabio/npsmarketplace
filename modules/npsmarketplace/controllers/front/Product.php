@@ -6,6 +6,7 @@
 
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/CategoriesList.php');
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
+include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24SellerCompany.php');
 
 class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
 
@@ -130,7 +131,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                     $this->_product -> is_virtual = true;
                     $this->_product -> indexed = 1;
                     $this->_product -> id_tax_rules_group = 0;
-                    $this->_product -> active = $this->_seller->active;
+                    $this->_product -> active = $this->isSellerAllowedToPublish();
                 }
                 if (!$this->_product->save()) {
                     $this->errors[] = $nps_instance->l('Unable to save product.');
@@ -149,6 +150,13 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
         }
     }
 
+    public function isSellerAllowedToPublish() {
+        if ($this->_seller->active) {
+            $settings = new P24SellerCompany(null, $this->_seller->id);
+            return $settings->id != null ? true : false;
+        }
+        return false;
+    }
     /**
      * Initialize product controller
      * @see FrontController::init()

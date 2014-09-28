@@ -17,10 +17,6 @@
 !/themes/minimal_16_theme
 /themes/minimal_16_theme/cache/*
 
-!/js
-/js/*
-!/js/validate.js
-
 !/override
 /override/*
 !/override/classes

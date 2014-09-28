@@ -139,7 +139,7 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
             '{regon}' => $seller->regon,
             '{shop_name}' => Configuration::get('PS_SHOP_NAME'),
             '{shop_url}' => Tools::getHttpHost(true).__PS_BASE_URI__,
-            '{admin_link}' => Tools::getHttpHost(true).__PS_BASE_URI__.'/backoffice/'.$this->context->link->getAdminLink('AdminSellers'),
+            '{admin_link}' => Tools::getHttpHost(true).__PS_BASE_URI__.'backoffice/'.$this->context->link->getAdminLink('AdminSellers'),
         );
         $merchant_emails = Configuration::get('NPS_MERCHANT_EMAILS');
         if (!is_null($merchant_emails) && !empty($merchant_emails)) 
