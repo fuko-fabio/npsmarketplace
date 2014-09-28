@@ -1,13 +1,8 @@
-/*********************************************************************
-					Maintenance Page Styles
-**********************************************************************/
+
 #maintenance {
   margin: 50px 0 0 0; }
   @media (min-width: 1200px) {
-    #maintenance {
-      margin: 126px 0 0 0;
-      padding: 91px 48px 365px 297px;
-      background: url(../img/bg_maintenance.png) no-repeat; } }
+    #maintenance { }
   #maintenance .logo {
     margin: 0 0 31px 0; }
   #maintenance h1 {
@@ -27,3 +22,23 @@
   .container {
     padding-left: 0;
     padding-right: 0; } }
+
+.head-message {
+    font-size: 32px;
+    font-family: 'Hammersmith One', sans-serif;
+}
+
+.message {
+    font-size: 18px;
+}
+
+.list-message {
+    font-size: 14px;
+}
+
+.footer-message {
+    font-size: 34px;
+    text-align: center;
+    color: #FFAA00;
+    font-family: 'Hammersmith One', sans-serif;
+}

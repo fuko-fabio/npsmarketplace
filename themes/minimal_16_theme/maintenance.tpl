@@ -39,18 +39,51 @@
         <link href="{$css_dir}/bootstrap_lib/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
         <link href="{$css_dir}maintenance.css" rel="stylesheet" type="text/css" />
         <link href='//fonts.googleapis.com/css?family=Open+Sans:600' rel='stylesheet' type='text/css' />
-	</head>
-	<body>
-    	<div class="container">
-			<div id="maintenance">
-			 <div class="logo"><img src="{$logo_url}" {if $logo_image_width}width="{$logo_image_width}"{/if} {if $logo_image_height}height="{$logo_image_height}"{/if} alt="logo" /></div>
-             {$HOOK_MAINTENANCE}
-             <div id="message">
-             	<h1 class="maintenance-heading">{l s='Maintenance mode'}</h1>
-				{l s='In order to perform website maintenance, our online store will be temporarily offline.'}
-				{l s='We apologize for the inconvenience and ask that you please try again later.'}
-			 </div>
-		</div>
+        <link href='//fonts.googleapis.com/css?family=Hammersmith+One' rel='stylesheet' type='text/css'>
+    </head>
+    <body>
+        <div class="container">
+            <div id="maintenance">
+                <div class="logo">
+                    <img src="{$logo_url}" {if $logo_image_width}width="{$logo_image_width}"{/if} {if $logo_image_height}height="{$logo_image_height}"{/if} al
+                    {$HOOK_MAINTENANCE}
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-md-6 head-message">
+                        Warsztaty w Twoim mieście!
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row message">
+                            Labs in Town to wirtualna platforma zakupowa marketplace, gdzie
+                            kupisz bilety na warsztaty, kursy i zajęcia kreatywne dla dorosłych i
+                            dla dzieci.
+                        </div>
+                        <br />
+                        <div class="row list-message">
+                            <ul>
+                                <li>warsztaty kulinarne</li>
+                                <li>warsztaty plastyczne</li>
+                                <li>warsztaty rękodzieła</li>
+                                <li>warsztaty dotyczące wnętrza i ogrodu</li>
+                                <li>warsztaty z majsterkowania</li>
+                                <li>warsztaty fotograficzne</li>
+                                <li>joga</li>
+                                <li>warsztaty artystyczne i teatralne</li>
+                                <li>warsztaty mody i szycia</li>
+                                <li>rozwój osobisty i coaching</li>
+                                <li>kursy tańca</li>
+                                <li>zajęcia dla dzieci</li>
+                                <li>... i wiele innych!</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="row footer-message">
+                    Zapraszamy wkrótce!
+                </div>
+            </div>
         </div>
-	</body>
+    </body>
 </html>
