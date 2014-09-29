@@ -46,7 +46,7 @@ class NpsPrzelewy24PaymentReturnModuleFrontController extends ModuleFrontControl
                 $dispatcher = new P24TransationDispatcher($id_cart);
                 $dispatcher->dispatchMoney();
             } else {
-                $this->persistPaymentError($id_order);
+                $this->persistPaymentError($p24_session_id);
                 $this->context->smarty->assign(array(
                     'error' => array('code' => $result['error'], 'message' => $result['errorMessage']),
                 ));
