@@ -76,7 +76,7 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
 
                 $link_rewrite[$lang['id_lang']] = Tools::link_rewrite($name);
             }
-    
+
             if(empty($this->errors)) {
                 $seller -> company_name = $company_name;
                 $seller -> company_description = $company_description;

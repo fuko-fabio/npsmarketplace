@@ -144,6 +144,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                     $this->saveFeatures($town, $district, $address);
                     $this -> _product->updateCategories($categories);
                     $this->saveProductImages($images);
+                    Search::indexation(false, $this -> _product->id);
                     Tools::redirect($this->context->link->getModuleLink('npsmarketplace', 'ProductsList'));
                 }
             }
