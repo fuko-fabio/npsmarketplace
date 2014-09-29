@@ -23,55 +23,36 @@ class NpsMarketplaceProductCombinationModuleFrontController extends ModuleFrontC
         if (Tools::isSubmit('submitCombination')) {
             if (!Combination::isFeatureActive())
                 return;
+            $module = new NpsMarketplace();
             $date = trim(Tools::getValue('date'));
             $time = trim(Tools::getValue('time'));
             $quantity = trim(Tools::getValue('quantity'));
-            $available_date = trim(Tools::getValue('available_date'));
+            $expiry_date = trim(Tools::getValue('expiry_date'));
 
-            $d = array();
-            $t = array();
-            foreach (Language::getLanguages() as $key => $lang) {
-                $d[$lang['id_lang']] = $date;
-                $t[$lang['id_lang']] = $time;
+            if (empty($expiry_date))
+                $this -> errors[] = $module->l('Product expiry date is required');
+            else if (!Validate::isDateFormat($expiry_date))
+                $this -> errors[] = $module->l('Invalid expiry date format');
+
+            if (empty($date))
+                $this -> errors[] = $module->l('Product date is required');
+            else if (!Validate::isDateFormat($date))
+                $this -> errors[] = $module->l('Invalid date format');
+
+            if (empty($time))
+                $this -> errors[] = $module->l('Product time is required');
+            else if (!Validate::isTime($time))
+                $this -> errors[] = $module->l('Invalid date format');
+
+            if (empty($quantity))
+                $this -> errors[] = $module->l('Product quantity is required');
+            else if (!Validate::isInt($quantity))
+                $this -> errors[] = $module->l('Invalid product quantity format');
+
+            if (empty($this->errors)) {
+                $this ->_product->newEventCombination($date, $time, (int)$quantity, $expiry_date, $this->context->shop->id);
+                Tools::redirect('index.php?fc=module&module=npsmarketplace&controller=ProductsList');
             }
-
-            $date_attr = new Attribute();
-            $date_attr->name = $d;
-            $date_attr->id_attribute_group = Configuration::get('NPS_ATTRIBUTE_DATE_ID');
-            $date_attr->position = -1;
-            $date_attr->save();
-
-            $time_attr = new Attribute();
-            $time_attr->name = $t;
-            $time_attr->id_attribute_group = Configuration::get('NPS_ATTRIBUTE_TIME_ID');
-            $time_attr->position = -1;
-            $time_attr->save();
-
-            $id_product_attribute = $this->_product->addCombinationEntity(
-                0,//$wholesale_price
-                0,//$price
-                0,//$weight
-                0,//$unit_impact
-                0,//$ecotax
-                $quantity,
-                0,//$id_images
-                0,//$reference,
-                null,//$id_supplier
-                0,//$ean13
-                false,//$default
-                null,//$location = null
-                null,//$upc = null
-                1,//$minimal_quantity = 1
-                array(),//$id_shop_list = array()
-                $available_date);
-            StockAvailable::setProductDependsOnStock((int)$this->_product->id, $this->_product->depends_on_stock, null, (int)$id_product_attribute);
-            StockAvailable::setProductOutOfStock((int)$this->_product->id, $this->_product->out_of_stock, null, (int)$id_product_attribute);
-
-            $combination = new Combination((int)$id_product_attribute);
-            $combination->setAttributes(array($date_attr->id, $time_attr->id));
-
-            StockAvailable::setQuantity((int)$this->_product->id, (int)$id_product_attribute, $quantity, $this->context->shop->id);
-            Tools::redirect('index.php?fc=module&module=npsmarketplace&controller=ProductsList');
         }
     }
 

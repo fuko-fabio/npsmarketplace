@@ -73,8 +73,8 @@
                 <div class="form-group col-md-6">
                     <label class="required" for="date_input">{l s='Available Date' mod='npsmarketplace'}</label>
                     <div id="availableDatePicker" class="input-append">
-                        <input class="is_required form-control" id="available_date_input" name="available_date" data-format="yyyy-MM-dd" type="text" readonly="" required=""
-                            value="{if isset($smarty.post.available_date)}{$smarty.post.available_date}{else}{if isset($product['available_date'])}{$product['available_date']|escape:'html':'UTF-8'}{/if}{/if}"/>
+                        <input class="is_required form-control" id="expiry_date_input" name="expiry_date" data-format="yyyy-MM-dd" type="text" readonly="" required=""
+                            value="{if isset($smarty.post.expiry_date)}{$smarty.post.expiry_date}{else}{if isset($product['expiry_date'])}{$product['expiry_date']|escape:'html':'UTF-8'}{/if}{/if}"/>
                         <span class="form_info">{l s='Format: YYYY-MM-DD' mod='npsmarketplace'}</span>
                         <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
                     </div>

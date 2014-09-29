@@ -21,7 +21,7 @@
                     <th class="item" data-hide="phone,tablet">{l s='Description' mod='npsmarketplace'}</th>
                     <th class="item">{l s='Price' mod='npsmarketplace'}</th>
                     <th class="item">{l s='Quantity' mod='npsmarketplace'}</th>
-                    <th class="item" data-hide="phone,tablet">{l s='State' mod='npsmarketplace'}</th>
+                    <th class="item">{l s='State' mod='npsmarketplace'}</th>
                     <th class="last_item" data-sort-ignore="true" width="150px">{l s='Action' mod='npsmarketplace'}</th>
                 </tr>
             </thead>
@@ -61,7 +61,7 @@
                                     <a href="{$product.new_combination_url}"> <i class="icon-calendar"></i> {l s='New Term' mod='npsmarketplace'} </a>
                                 </li>
                                 <li>
-                                    <a href="{$product.edit_combination_url}"> <i class="icon-calendar"></i> {l s='Edit Terms' mod='npsmarketplace'} </a>
+                                    <a href="{$product.edit_combination_url}"> <i class="icon-calendar"></i> {l s='List of Terms' mod='npsmarketplace'} </a>
                                 </li>
                                 <li class="divider"></li>
                                 {/if}

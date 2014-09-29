@@ -47,7 +47,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             $quantity = trim(Tools::getValue('quantity'));
             $date = trim(Tools::getValue('date'));
             $time = trim(Tools::getValue('time'));
-            $available_date = trim(Tools::getValue('available_date'));
+            $expiry_date = trim(Tools::getValue('expiry_date'));
             $town = trim(Tools::getValue('town'));
             $district = trim(Tools::getValue('district'));
             $address = trim(Tools::getValue('address'));
@@ -82,18 +82,27 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                 $this -> errors[] = $nps_instance->l('Invalid product reference');
             if (empty($categories))
                 $this -> errors[] = $nps_instance->l('At least one category must be selected');
-            if (empty($available_date))
-                $this -> errors[] = $nps_instance->l('Product available date is required');
 
             if(empty($current_id_product)) {
+                if (empty($expiry_date))
+                    $this -> errors[] = $nps_instance->l('Product expiry date is required');
+                else if (!Validate::isDateFormat($expiry_date))
+                    $this -> errors[] = $nps_instance->l('Invalid expiry date format');
+    
                 if (empty($date))
                     $this -> errors[] = $nps_instance->l('Product date is required');
+                else if (!Validate::isDateFormat($date))
+                    $this -> errors[] = $nps_instance->l('Invalid date format');
+    
                 if (empty($time))
                     $this -> errors[] = $nps_instance->l('Product time is required');
-                if (!Validate::isInt($quantity))
-                    $this -> errors[] = $nps_instance->l('Invalid product quantity');
+                else if (!Validate::isTime($time))
+                    $this -> errors[] = $nps_instance->l('Invalid date format');
+    
                 if (empty($quantity))
                     $this -> errors[] = $nps_instance->l('Product quantity is required');
+                else if (!Validate::isInt($quantity))
+                    $this -> errors[] = $nps_instance->l('Invalid product quantity format');
                 if (empty($images))
                     $this -> errors[] = $nps_instance->l('At least one picture is required');
             }
@@ -137,14 +146,14 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                     $this->errors[] = $nps_instance->l('Unable to save product.');
                 } else {
                     $this->context->cookie->__unset('form_token');
-                    if(empty($current_id_product)) {
-                        $this->saveAttributes($date, $time, (int)$quantity, $available_date);
-                        $this->_seller->assignProduct($this->_product->id);
-                    }
+                    StockAvailable::setProductOutOfStock($this->_product->id, 0);
                     $this->saveFeatures($town, $district, $address);
                     $this -> _product->updateCategories($categories);
+                    if(empty($current_id_product)) {
+                        $this -> _product->newEventCombination($date, $time, (int)$quantity, $expiry_date, $this->context->shop->id);
+                        $this->_seller->assignProduct($this->_product->id);
+                    }
                     $this->saveProductImages($images);
-                    Search::indexation(false, $this -> _product->id);
                     Tools::redirect($this->context->link->getModuleLink('npsmarketplace', 'ProductsList'));
                 }
             }
@@ -280,82 +289,6 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
         Product::addFeatureProductImport($this->_product->id, $feature_id, $feature_value_id);
 
         return true;
-    }
-
-    private function saveAttributes($date, $time, $quantity, $available_date) {
-        $d = array();
-        $t = array();
-        foreach (Language::getLanguages() as $key => $lang) {
-            $d[$lang['id_lang']] = $date;
-            $t[$lang['id_lang']] = $time;
-        }
-        $lang_id = (int)Configuration::get('PS_LANG_DEFAULT');
-        $date_attr_group_id = Configuration::get('NPS_ATTRIBUTE_DATE_ID');
-        $time_attr_group_id = Configuration::get('NPS_ATTRIBUTE_TIME_ID');
-
-        $res = $this->getAttributeId($date_attr_group_id, $date, $lang_id);
-        if(!$res)
-	    $date_attr_id = null;
-	else
-	    $date_attr_id = $res['id_attribute'];
-	$date_attr = new Attribute($date_attr_id);
-        if ($date_attr_id == null) {
-            $date_attr->name = $d;
-            $date_attr->id_attribute_group = $date_attr_group_id;
-            $date_attr->position = -1;
-            $date_attr->save();
-        }
-
-        $res = $this->getAttributeId($time_attr_group_id, $time, $lang_id);
-	if(!$res)
-	    $time_attr_id = null;
-	else        
-	    $time_attr_id = $res['id_attribute'];
-	$time_attr = new Attribute($time_attr_id);
-        if ($time_attr_id == null) {
-            $time_attr->name = $t;
-            $time_attr->id_attribute_group = $time_attr_group_id;
-            $time_attr->position = -1;
-            $time_attr->save();
-        }
-
-        $id_product_attribute = $this->_product->addAttribute(
-            0,//$price,
-            null,//$weight,
-            null,//$unit_impact,
-            null,//$ecotax,
-            null,//$id_images,
-            null,//$reference,
-            null,//$ean13,
-            true,//$default
-            null,//$location
-            null,//$upc 
-            1,//$minimal_quantity
-            array(),//$id_shop_list
-            $available_date);
-
-        $combination = new Combination((int)$id_product_attribute);
-        $combination->setAttributes(array($date_attr->id, $time_attr->id));
-        StockAvailable::setQuantity((int)$this->_product->id, (int)$id_product_attribute, $quantity, $this->context->shop->id);
-    }
-
-    public static function getAttributeId($id_attribute_group, $name, $id_lang) {
-        $result = Db::getInstance()->getRow('
-            SELECT *
-            FROM `'._DB_PREFIX_.'attribute_group` ag
-            LEFT JOIN `'._DB_PREFIX_.'attribute_group_lang` agl
-                ON (ag.`id_attribute_group` = agl.`id_attribute_group` AND agl.`id_lang` = '.(int)$id_lang.')
-            LEFT JOIN `'._DB_PREFIX_.'attribute` a
-                ON a.`id_attribute_group` = ag.`id_attribute_group`
-            LEFT JOIN `'._DB_PREFIX_.'attribute_lang` al
-                ON (a.`id_attribute` = al.`id_attribute` AND al.`id_lang` = '.(int)$id_lang.')
-            '.Shop::addSqlAssociation('attribute_group', 'ag').'
-            '.Shop::addSqlAssociation('attribute', 'a').'
-            WHERE al.`name` = \''.pSQL($name).'\' AND ag.`id_attribute_group` = '.(int)$id_attribute_group.'
-            ORDER BY agl.`name` ASC, a.`position` ASC
-        ');
-
-        return $result ? $result : null;
     }
 
     private function getImages() {

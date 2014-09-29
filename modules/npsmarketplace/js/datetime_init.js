@@ -14,10 +14,12 @@ $(document).ready(function(){
 
     $('#timePicker').datetimepicker({
         pickDate: false,
-        pickSeconds: false
+        pickSeconds: false,
+        minuteStepping: 15
     });
 
     $('#time_input').on('click', function(e) {
+        $('#timePicker').data("datetimepicker").setValue(getDateTime());
         $('#timePicker').datetimepicker('show');
     });
     
@@ -33,3 +35,10 @@ $(document).ready(function(){
         $('#availableDatePicker').datetimepicker('show');
     });
 });
+
+function getDateTime() {
+    var now = new Date(); 
+    now.setMinutes(0);
+    now.setSeconds(0);
+    return now;
+}
