@@ -292,8 +292,12 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
         $date_attr_group_id = Configuration::get('NPS_ATTRIBUTE_DATE_ID');
         $time_attr_group_id = Configuration::get('NPS_ATTRIBUTE_TIME_ID');
 
-        $date_attr_id = $this->getAttributeId($date_attr_group_id, $date, $lang_id);
-        $date_attr = new Attribute($date_attr_id);
+        $res = $this->getAttributeId($date_attr_group_id, $date, $lang_id);
+        if(!$res)
+	    $date_attr_id = null;
+	else
+	    $date_attr_id = $res['id_attribute'];
+	$date_attr = new Attribute($date_attr_id);
         if ($date_attr_id == null) {
             $date_attr->name = $d;
             $date_attr->id_attribute_group = $date_attr_group_id;
@@ -301,9 +305,13 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             $date_attr->save();
         }
 
-        $time_attr_id = $this->getAttributeId($time_attr_group_id, $time, $lang_id);
-        $time_attr = new Attribute($time_attr_id);
-        if ($date_attr_id == null) {
+        $res = $this->getAttributeId($time_attr_group_id, $time, $lang_id);
+	if(!$res)
+	    $time_attr_id = null;
+	else        
+	    $time_attr_id = $res['id_attribute'];
+	$time_attr = new Attribute($time_attr_id);
+        if ($time_attr_id == null) {
             $time_attr->name = $t;
             $time_attr->id_attribute_group = $time_attr_group_id;
             $time_attr->position = -1;
@@ -331,8 +339,8 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
     }
 
     public static function getAttributeId($id_attribute_group, $name, $id_lang) {
-        $result = Db::getInstance()->getValue('
-            SELECT `id_attribute`
+        $result = Db::getInstance()->getRow('
+            SELECT *
             FROM `'._DB_PREFIX_.'attribute_group` ag
             LEFT JOIN `'._DB_PREFIX_.'attribute_group_lang` agl
                 ON (ag.`id_attribute_group` = agl.`id_attribute_group` AND agl.`id_lang` = '.(int)$id_lang.')
