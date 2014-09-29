@@ -82,7 +82,7 @@ class P24PaymentValodator {
                 
                 $result = $this->transactionVerify();
                 if ($result['error'] == 0) {
-                    $this->persistPaymentStatement();
+                    $this->persistPaymentStatement($p24_payment->id);
                     $this->updateOrdetState($id_cart);
                     return array('error' => 0);
                 } else {
@@ -116,7 +116,7 @@ class P24PaymentValodator {
     * 
     * @return boolean true if status has been successful stored
     */
-    private function persistPaymentStatement() {
+    private function persistPaymentStatement($p_id) {
         $ps = new P24PaymentStatement();
         $ps->id_payment = $p_id;
         $ps->order_id = $this->order_id;
