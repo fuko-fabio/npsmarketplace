@@ -62,7 +62,7 @@ class P24PaymentValodator {
                     $prefix.'P24PaymentValodator:',
                     ' Unabe to verify payment. Could not find database payment entry for session ID: '.$this->session_id
                 ));
-                return array('error' => 1, 'errorMessage' => $npsprzelewy24l('Unable to verifi payment'));
+                return array('error' => 1, 'errorMessage' => $npsprzelewy24->l('Unable to verifi payment'));
             }
 
             if($p24_payment->id != null) {
@@ -73,11 +73,11 @@ class P24PaymentValodator {
                         'Expected: '.$p24_payment->token,
                         'Current: '.$p24_token
                     ));
-                    return array('error' => 1, 'errorMessage' => $npsprzelewy24l('Inalid verification token'));
+                    return array('error' => 1, 'errorMessage' => $npsprzelewy24->l('Inalid verification token'));
                 }
                 $ps = new P24PaymentStatement(null, $p24_payment->id);
                 if($ps->id != null) {
-                    return array('error' => 1, 'errorMessage' => $npsprzelewy24l('Payment has been already finalized and verified'));
+                    return array('error' => 1, 'errorMessage' => $npsprzelewy24->l('Payment has been already finalized and verified'));
                 }
                 
                 $result = $this->transactionVerify();
@@ -99,7 +99,7 @@ class P24PaymentValodator {
                     ' Unabe to verify payment. Invalid Przelewy24 response data',
                     implode("&", $_POST)
                 ));
-                return array('error' => 1, 'errorMessage' => $npsprzelewy24l('Unable to verifi payment'));
+                return array('error' => 1, 'errorMessage' => $npsprzelewy24->l('Unable to verifi payment'));
             }
         } else {
             $npsprzelewy24->reportError(array(
@@ -108,7 +108,7 @@ class P24PaymentValodator {
                 'Current: '.$this->session_id,
                 'Expected: '.$this->generateSign()
             ));
-            return array('error' => 1, 'errorMessage' => $npsprzelewy24l('Unable to verifi payment. Invalid session ID'));
+            return array('error' => 1, 'errorMessage' => $npsprzelewy24->l('Unable to verifi payment. Invalid session ID'));
         }
     }
 
