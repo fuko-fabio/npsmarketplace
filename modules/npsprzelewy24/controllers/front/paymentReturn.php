@@ -73,8 +73,8 @@ class NpsPrzelewy24PaymentReturnModuleFrontController extends ModuleFrontControl
         $id_order = Order::getOrderByCartId($id_cart);
         if(isset($id_order)) {
             $history = new OrderHistory();
-            $history->id_order = intval($order_id);
-            $history->changeIdOrderState(8, intval($order_id));
+            $history->id_order = intval($id_order);
+            $history->changeIdOrderState(8, intval($id_order));
             $history->addWithemail(true);
         }
     }
