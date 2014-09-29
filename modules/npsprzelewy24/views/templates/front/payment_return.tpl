@@ -24,11 +24,7 @@
     <p>{l s='Total of the transaction:' mod='npsprzelewy24'} <span class="bold">{$price|escape:'htmlall':'UTF-8'}</span></p>
     <p>{l s='Your order ID is :' mod='npsprzelewy24'} 
         <span class="bold">
-        {if isset($reference_order)}
-            {$reference_order|escape:'htmlall':'UTF-8'}
-        {else}
-            {$order.id_order|intval}
-        {/if}
+        {$reference_order|escape:'htmlall':'UTF-8'}
         </span>
     </p>
     <p>{l s='Your Przelewy24 transaction ID is :' mod='npsprzelewy24'} <span class="bold">{$order.order_id|escape:'htmlall':'UTF-8'}</span></p>

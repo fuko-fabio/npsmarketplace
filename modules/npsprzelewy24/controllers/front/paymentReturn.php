@@ -17,10 +17,12 @@ class NpsPrzelewy24PaymentReturnModuleFrontController extends ModuleFrontControl
 
         $m = new NpsPrzelewy24();
         $p24_error_code = Tools::getValue('p24_error_code');
-        $session_id_array = explode('|', Tools::getValue('p24_session_id'));
-        $id_cart = $session_id_array[1];
-        $id_order = Order::getOrderByCartId($id_cart);
-        if (empty($p24_error_code)) {
+        $p24_session_id = Tools::getValue('p24_session_id');
+
+        if (empty($p24_error_code) && isset($p24_session_id)) {
+            $session_id_array = explode('|', $p24_session_id);
+            $id_cart = $session_id_array[1];
+
             $validator = new P24PaymentValodator(
                 Tools::getValue('p24_session_id'),
                 Tools::getValue('p24_amount'),
@@ -31,8 +33,9 @@ class NpsPrzelewy24PaymentReturnModuleFrontController extends ModuleFrontControl
                 Tools::getValue('p24_sign')
             );
 
-            $result = $validator->validate(Tools::getValue('p24-token'));
+            $result = $validator->validate(Tools::getValue('p24_token'));
             if ($result['error'] == 0) {
+                $id_order = Order::getOrderByCartId($id_cart);
                 $order = P24Payment::getSummaryByCartId($id_cart);
                 $price = Tools::displayPrice($order['amount'] / 100, $this->context->currency);
                 $this->context->smarty->assign(array(
@@ -49,7 +52,7 @@ class NpsPrzelewy24PaymentReturnModuleFrontController extends ModuleFrontControl
                 ));
             }
         } else {
-            $this->persistPaymentError($order_id);
+            $this->persistPaymentError($p24_session_id);
             $m->reportError(array(
                 'Requested URL: '.$this->context->link->getModuleLink('npsprzelewy24', 'paymentReturn'),
                 'GET params: '.implode(' | ', $_GET),
@@ -64,10 +67,15 @@ class NpsPrzelewy24PaymentReturnModuleFrontController extends ModuleFrontControl
         $this->setTemplate('payment_return.tpl');
     }
 
-    private function persistPaymentError($order_id) {
-        $history = new OrderHistory();
-        $history->id_order = intval($order_id);
-        $history->changeIdOrderState(8, intval($order_id));
-        $history->addWithemail(true);
+    private function persistPaymentError($p24_session_id) {
+        $session_id_array = explode('|', $p24_session_id);
+        $id_cart = $session_id_array[1];
+        $id_order = Order::getOrderByCartId($id_cart);
+        if(isset($id_order)) {
+            $history = new OrderHistory();
+            $history->id_order = intval($order_id);
+            $history->changeIdOrderState(8, intval($order_id));
+            $history->addWithemail(true);
+        }
     }
 }

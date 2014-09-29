@@ -24,7 +24,7 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
         if (Tools::isSubmit('submitSeller')) {
 
             $seller = new Seller(null, $this->context->customer->id);
-            if ($this->_seller->id != null) 
+            if ($seller->id != null) 
                 Tools::redirect('index.php?controller=my-account');
             $nps_instance = new NpsMarketplace();
 

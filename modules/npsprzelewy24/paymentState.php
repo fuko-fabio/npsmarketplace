@@ -10,7 +10,7 @@ include(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24PaymentValidator.php');
 include(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24TransationDispatcher.php');
 
 $p24_error_code = Tools::getValue('p24_error_code');
-$p24_token = Tools::getValue('p24-token'); 
+$p24_token = Tools::getValue('p24_token'); 
 $session_id_array = explode('|', Tools::getValue('p24_session_id'));
 $id_cart = $session_id_array[1];
 $id_order = Order::getOrderByCartId($id_cart);
@@ -25,7 +25,7 @@ if (empty($p24_error_code)) {
         Tools::getValue('p24_statement'),
         Tools::getValue('p24_sign')
     );
-    $result = $validator->validate($p24_token);
+    $result = $validator->validate($p24_token, true);
     if ($result['error'] == 0) {
         PrestaShopLogger::addLog('Background payment. Verification success. Session ID: '.Tools::getValue('p24_session_id'));
         $dispatcher = new P24TransationDispatcher($id_cart);
@@ -34,13 +34,13 @@ if (empty($p24_error_code)) {
         $history = new OrderHistory();
         $history->id_order = intval($order_id);
         $history->changeIdOrderState(8, intval($order_id));
-        $history->addWithemail(false);
+        $history->addWithemail(true);
     }
 } else {
     $history = new OrderHistory();
     $history->id_order = intval($order_id);
     $history->changeIdOrderState(8, intval($order_id));
-    $history->addWithemail(false);
+    $history->addWithemail(true);
     $m->reportError(array(
         'Background payment. Unabe to verify payment. Error code: '.$p24_error_code,
         'Requested URL: '.$this->context->link->getModuleLink('npsprzelewy24', 'paymentState'),

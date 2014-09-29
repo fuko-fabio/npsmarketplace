@@ -14,6 +14,7 @@ class P24DispatchHistory extends ObjectModel {
     public $p24_amount;
     public $total_amount;
     public $status;
+    public $error;
 
     public function __construct($id_dispatch_history = null, $id_payment = null) {
         if (empty($id_dispatch_history) && !empty($id_payment)) {
@@ -42,6 +43,7 @@ class P24DispatchHistory extends ObjectModel {
             'p24_amount' =>      array('type' => self::TYPE_INT,    'required' => true, 'validate' => 'isUnsignedInt'),
             'total_amount' =>    array('type' => self::TYPE_INT,    'required' => true, 'validate' => 'isUnsignedInt'),
             'status' =>          array('type' => self::TYPE_BOOL,   'required' => true),
+            'error' =>           array('type' => self::TYPE_STRING),
         ),
     );
 

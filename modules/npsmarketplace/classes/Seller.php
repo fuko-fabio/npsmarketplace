@@ -42,7 +42,7 @@ class Seller extends ObjectModel
     /** @var boolean account lock state */
     public $locked = false;
 
-    /** @var integer NIP */
+    /** @var float commision */
     public $commision;
 
     /** @var string Company name */
@@ -92,7 +92,7 @@ class Seller extends ObjectModel
             'phone' =>               array('type' => self::TYPE_STRING, 'validate' => 'isPhoneNumber', 'required' => true),
             'nip' =>                 array('type' => self::TYPE_STRING, 'validate' => 'isNip',         ),
             'regon' =>               array('type' => self::TYPE_STRING, 'validate' => 'isRegon',       ),
-            'commision' =>           array('type' => self::TYPE_INT,    'validate' => 'isUnsignedInt', 'required' => true),
+            'commision' =>           array('type' => self::TYPE_FLOAT,  'validate' => 'isFloat',       'required' => true),
             'regulations_active' =>  array('type' => self::TYPE_BOOL,   'validate' => 'isBool',        ),
             'name' =>                array('type' => self::TYPE_STRING, 'validate' => 'isGenericName', 'required' => true, 'size' => 128),
             'company_name' =>        array('type' => self::TYPE_STRING, 'validate' => 'isGenericName', 'required' => true,),

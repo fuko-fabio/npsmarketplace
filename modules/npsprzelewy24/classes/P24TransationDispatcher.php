@@ -25,10 +25,15 @@ class P24TransationDispatcher {
     }
 
     public function dispatchMoney() {
-        if (!$this->isMerchanSpidValid() || !$this->isPaymentSummaryValid())
+        if (!$this->isMerchanSpidValid() || !$this->isPaymentSummaryValid() || $this->alreadyDispatched())
             return;
 
         $total = $this->cart->getOrderTotal() * 100;
+
+        $available_funds = $this->checkFunds($total);
+        if($available_funds == null)
+            return;
+
         $merchant_amount = $total;
         $currencies = $this->module->getCurrency(intval($this->cart->id_currency));
         $currency = $currencies[0];
@@ -70,9 +75,7 @@ class P24TransationDispatcher {
         foreach($result as $key => $value)
             $sellers_amount = $sellers_amount + $value;
 
-        $p24_amount = $this->getPrzelewy24Amount($total);
-        if ($p24_amount == null)
-            return;
+        $p24_amount = $total - $available_funds;
 
         $merchant_amount = $merchant_amount - $p24_amount;
         if (array_key_exists($this->merchant_spid, $result)) {
@@ -104,6 +107,8 @@ class P24TransationDispatcher {
                 ));
         }
 
+        $success = $res->error->errorCode ? false : true;
+
         $history = new P24DispatchHistory();
         $history->sellers_amount = $sellers_amount;
         $history->sellers_number = $sellers_number;
@@ -112,11 +117,12 @@ class P24TransationDispatcher {
         $history->total_amount = $total;
         $history->date = date("Y-m-d H:i:s");
         $history->id_payment = $this->payment_summary['id_payment'];
-        $h_s = true;
+        $h_s = $success;
         foreach ($res->result as $r) {
             $h_s = $h_s && $r->status;
         }
         $history->status = $h_s;
+        $history->error = $res->error->errorMessage;
         $history->save();
 
         foreach ($res->result as $r) {
@@ -154,7 +160,7 @@ class P24TransationDispatcher {
         return floor($result * 100);
     }
 
-    private function getPrzelewy24Amount($total) {
+    private function checkFunds($total) {
         $res = P24::checkFunds($this->payment_summary['order_id'], $this->payment_summary['session_id']);
         if ($res->error->errorCode) {
             $this->module->reportError(array(
@@ -173,15 +179,15 @@ class P24TransationDispatcher {
             ));
             return null;
         }
-        return $total - $res->result;
+        return $res->result;
     }
 
     private function isMerchanSpidValid() {
         if (empty($this->merchant_spid)) {
             $this->module->reportError(array(
                 'Unable to dispatch money',
-                'Unable to find merchant Przelewy24 Seller ID. Chec your Przelewy24 module configuration',
-                'Transaction must by verified manualy'
+                'Unable to find merchant Przelewy24 Seller ID. Check your Przelewy24 module configuration',
+                'Verifiy transaction manualy'
             ));
             return false;
         }
@@ -193,10 +199,23 @@ class P24TransationDispatcher {
             $this->module->reportError(array(
                 'Unable to dispatch money',
                 'Unable to find payment and payment statement entry in database',
-                'Transaction must by verified manualy'
+                'Verifiy transaction manualy'
             ));
             return false;
         }
         return true;
+    }
+
+    private function alreadyDispatched() {
+        $history = new P24DispatchHistory(null, $this->payment_summary['id_payment']);
+        if ($history->id != null) {
+            $this->module->reportError(array(
+                'Unable to dispatch money',
+                'Money already dispatched.',
+                'Verifiy transaction manualy'
+            ));
+            return true;
+        }
+        return false;
     }
 }

@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS `PREFIX_seller` (
   `request_date` datetime,
   `phone` varchar(16) NOT NULL,
   `email` varchar(128) NOT NULL,
-  `commision` int(10),
+  `commision` DECIMAL(5,2),
   `nip` varchar(14),
   `regon` varchar(14),
   PRIMARY KEY (`id_seller`),

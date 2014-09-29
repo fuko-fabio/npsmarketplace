@@ -66,8 +66,11 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
         }
         $amount = number_format($amount, 2, '.', '') * 100;
 
-        $this->persistP24Payment($session_id, $cart->id, $amount, $currency['iso_code'], $timestamp);
-        $this->transactionRegister($session_id, $cart, $amount, $customer, $currency, $address, $s_descr, $npsprzelewy24);
+        if($this->persistP24Payment($session_id, $cart->id, $amount, $currency['iso_code'], $timestamp))
+            $this->transactionRegister($session_id, $cart, $amount, $customer, $currency, $address, $s_descr, $npsprzelewy24);
+        else
+            $this -> errors[] = $npsprzelewy24->l('Unable to finalize order. Please contact with customer support.');
+            return;
     }
 
     private function transactionRegister($session_id, $cart, $amount, $customer, $currency, $address, $s_descr, $module) {
@@ -92,9 +95,9 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
             'p24_country' => $s_lang->iso_code,
             'p24_phone' => $phone,
             'p24_language' => strtolower($s_lang->iso_code),
-            'p24_url_cancel' => $this->context->link->getModuleLink('npsprzelewy24', 'paymentCancel', array('p24-token' => $p24_token)),
-            'p24_url_return' => $this->context->link->getModuleLink('npsprzelewy24', 'paymentReturn', array('p24-token' => $p24_token)),
-            'p24_url_status' => Tools::getHttpHost(true).__PS_BASE_URI__.'modules/npsprzelewy24/paymentState.php?p24-token='.$p24_token,
+            'p24_url_cancel' => $this->context->link->getModuleLink('npsprzelewy24', 'paymentCancel', array('p24_token' => $p24_token)),
+            'p24_url_return' => $this->context->link->getModuleLink('npsprzelewy24', 'paymentReturn', array('p24_token' => $p24_token)),
+            'p24_url_status' => Tools::getHttpHost(true).__PS_BASE_URI__.'modules/npsprzelewy24/paymentState.php?p24_token='.$p24_token,
             'p24_shipping' => $cart->getTotalShippingCost(),
             'p24_sign' => $this->generateSign($session_id, $p24_id, $amount, $currency['iso_code']),
             'p24_encoding' => 'UTF-8',
@@ -117,11 +120,12 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
         if ($result['error'] == 0) {
             Tools::redirect(P24::url().'/trnRequest/'.$result['token']);
         } else {
-            $order = Order::getOrderByCartId($cart->id);
-            if($order) {
+            $id_order = Order::getOrderByCartId($cart->id);
+            if($id_order) {
                 $history = new OrderHistory();
-                $history->id_order = intval($order_id);
-                $history->changeIdOrderState(8, intval($order['id_order']));
+                $history->id_order = intval($id_order);
+                $history->changeIdOrderState(8, intval($id_order));
+                $history->addWithemail(true);
             }
             $module->reportError(array(
                 'Requested URL: '.P24::url().'/trnRegister',

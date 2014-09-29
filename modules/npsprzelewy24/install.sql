@@ -46,6 +46,7 @@ CREATE TABLE IF NOT EXISTS `PREFIX_p24_dispatch_history` (
   `total_amount` INT UNSIGNED NOT NULL,
   `status` tinyint(1) NOT NULL,
   `date` datetime,
+  `error` text,
   KEY `id_payment` (`id_payment`)
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;
 
