@@ -252,15 +252,13 @@
                                     <td>
                                     {if $product['haveImage']}
                                         <img src="{$product['cover']}" class="imgm img-thumbnail" width="52"/>
-                                    {else}
-                                        <img src="{$img_prod_dir}{$lang_iso}-default-cart_default.jpg" class="imgm img-thumbnail" width="52"/>
                                     {/if}
                                     <td><a href="index.php?controller=adminproducts&amp;id_product={$product['id']}&amp;updateproduct&amp;token={getAdminToken tab='AdminProducts'}"> <span class="productName">{$product['name']}</span>
                                     <br />
                                     <td>{$product['description']}</td>
                                     <td>
                                     <span class="product_price_show">{displayPrice price=$product['price'] currency=$currency->id}</span></td>
-                                    <td class="productQuantity text-center"><span class="product_quantity_show{if (int)$product['quantity'] > 1} badge{/if}">{$product['quantity']}</span></td>
+                                    <td class="productQuantity text-center"><span class="product_quantity_show{if (int)$product['quantity'] < 1} badge badge-danger{/if}">{$product['quantity']}</span></td>
                                     <td class="text-center">
                                         <a class="list-action-enable {if $product['active']}action-enabled{else}action-disabled{/if}" href="{$product['active_url']}">
                                         {if $product['active']}

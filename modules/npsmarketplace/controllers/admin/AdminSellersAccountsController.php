@@ -235,11 +235,12 @@ class AdminSellersAccountsController extends AdminController
 
     public function processChangeActiveProduct() {
         $obj = $this->loadObject(true);
-
+        $ctx = $this->context;
         $p_id = trim(Tools::getValue('id_product'));
-        $product = new Product($p_id);
-        $is_active = $product->active;
-        if ($product->id = null)
+        $product = new Product((int)$p_id);
+        $default_product = new Product((int)$p_id, false, null, (int)$product->id_shop_default);
+        $is_active = $default_product->active;
+        if ($default_product->id == null)
             $this->errors[] = sprintf($this->l('Invalid product ID: %s'), $p_id);
 
         if(!$is_active) {
@@ -254,8 +255,7 @@ class AdminSellersAccountsController extends AdminController
         }
         if (count($this->errors))
             return;
-        //TODO Sth is wrong here Duplicate entry '0-1' for key 'PRIMARY' WHY? :(
-        $product->toggleStatus();
+        $default_product->toggleStatus();
     }
 
     public function renderList() {

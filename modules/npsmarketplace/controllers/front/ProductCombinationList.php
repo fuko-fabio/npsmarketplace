@@ -4,10 +4,9 @@
 *  @copyright 2014 npsoftware
 */
 
-class NpsMarketplaceProductCombinationListModuleFrontController extends ModuleFrontController
-{
-    public function postProcess()
-    {
+class NpsMarketplaceProductCombinationListModuleFrontController extends ModuleFrontController {
+
+    public function postProcess() {
         if (Tools::isSubmit('action') && Tools::isSubmit('id_product_attribute') && Tools::isSubmit('id_product')) {
             if (Tools::getValue('action') == 'delete') {
                 $id_product = (int)Tools::getValue('id_product', 0);
@@ -18,10 +17,14 @@ class NpsMarketplaceProductCombinationListModuleFrontController extends ModuleFr
                 if (!$product->hasAttributes()) {
                     $product->cache_default_attribute = 0;
                     $product->update();
+                    if($product->active)
+                        $product->toggleStatus();
+                    Search::indexation(false, $product->id);
+                    Tools::redirect('index.php?fc=module&module=npsmarketplace&controller=ProductsList');
                 }
                 else
                     Product::updateDefaultAttribute($product->id);
-                Tools::redirect('index.php?fc=module&module=npsmarketplace&controller=ProductsList');
+                Tools::redirect('index.php?fc=module&module=npsmarketplace&controller=ProductCombinationList&id_product='.$id_product);
             }
         }
     }
@@ -72,19 +75,12 @@ class NpsMarketplaceProductCombinationListModuleFrontController extends ModuleFr
             {
                 foreach ($comb_array as $id_product_attribute => $product_attribute)
                 {
-                    $list = '';
-
                     /* In order to keep the same attributes order */
                     asort($product_attribute['attributes']);
 
-                    foreach ($product_attribute['attributes'] as $attribute)
-                        $list .= $attribute[0].' - '.$attribute[1].', ';
-
-                    $list = rtrim($list, ', ');
                     $comb_array[$id_product_attribute]['image'] = $product_attribute['id_image'] ? new Image($product_attribute['id_image']) : false;
                     $comb_array[$id_product_attribute]['available_date'] = $product_attribute['available_date'] != 0 ? date('Y-m-d', strtotime($product_attribute['available_date'])) : '0000-00-00';
-                    $comb_array[$id_product_attribute]['attributes'] = $list;
-                    $comb_array[$id_product_attribute]['name'] = substr(strstr($list,'-'), 2);
+                    $comb_array[$id_product_attribute]['attributes'] = $product_attribute['attributes'];
                     $comb_array[$id_product_attribute]['quantity'] = StockAvailable::getQuantityAvailableByProduct($product->id, $id_product_attribute, $this->context->shop->id);
                     $comb_array[$id_product_attribute]['delete_url'] = $this->context->link->getModuleLink('npsmarketplace',
                                                                                                            'ProductCombinationList',
@@ -102,6 +98,8 @@ class NpsMarketplaceProductCombinationListModuleFrontController extends ModuleFr
         $this -> context -> smarty -> assign(array(
             'HOOK_MY_ACCOUNT_COLUMN' => Hook::exec('displayMyAccountColumn'),
             'comb_array' => $comb_array,
+            'name' => $product->name,
+            'new_combination_url' => $this->context->link->getModuleLink('npsmarketplace', 'ProductCombination', array('id_product' => $product->id)),
         ));
         $this->setTemplate('product_combinations_list.tpl');
     }

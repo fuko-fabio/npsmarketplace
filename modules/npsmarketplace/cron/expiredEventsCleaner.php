@@ -31,7 +31,8 @@ foreach ($products_ids as $id) {
     if(empty($attrs_ids)) {
         $product = new Product($id);
         if($product->active) {
-            $product->toggleStatus();
+            $default_product = new Product((int)$id, false, null, (int)$product->id_shop_default);
+            $default_product->toggleStatus();
         }
     }
 }

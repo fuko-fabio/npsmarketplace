@@ -424,8 +424,8 @@ class NpsMarketplace extends Module {
                 'medium_default',
                 'home_default',
                 'large_default')";
-
-        return Db::getInstance()->Execute($alterImageType) && Db::getInstance()->Execute($updateImageType);
+        $res = Db::getInstance()->Execute($alterImageType);
+        return Db::getInstance()->Execute($updateImageType) && $res;
     }
     
     private function _createFeatures() {

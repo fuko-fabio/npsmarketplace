@@ -37,7 +37,7 @@
                         {/if}
                     </td>
                     <td>
-                        <div class="btn-group pull-right">
+                        <div class="btn-group">
                             <a href="{$order['link']}" class="edit btn btn-default"><i class="icon-search"></i> {l s='View' mod='npsmarketplace'}</a>
                         </div>
                     </td>

@@ -9,7 +9,7 @@
 {/capture}
 {include file="$tpl_dir./errors.tpl"}
 <div class="block-center" id="block-seller-products-list">
-    <h1 class="page-heading bottom-indent">{l s='My events' mod='npsmarketplace'}</h1>
+    <h1 class="page-heading bottom-indent">{l s='My events' mod='npsmarketplace'}{if $seler_active}<a href="{$add_product_link}" class="btn btn-default pull-right"><i class="icon-plus"></i> {l s='Add Event' mod='npsmarketplace'}</a>{/if}</h1>
 
     {if $products}
     <div class="table-responsive">
@@ -22,23 +22,23 @@
                     <th class="item">{l s='Price' mod='npsmarketplace'}</th>
                     <th class="item">{l s='Quantity' mod='npsmarketplace'}</th>
                     <th class="item">{l s='State' mod='npsmarketplace'}</th>
-                    <th class="last_item" data-sort-ignore="true" width="150px">{l s='Action' mod='npsmarketplace'}</th>
+                    <th class="last_item" data-sort-ignore="true" width="150px"></th>
                 </tr>
             </thead>
             <tbody>
                 {foreach from=$products item=product}
                 <tr>
                     <td>
-                    {if $product['haveImage']}
+                    {if $product.haveImage}
                         <img src="{$product['cover']}" class="imgm img-thumbnail" width="52"/>
                     {else}
                         <img src="{$img_prod_dir}{$lang_iso}-default-cart_default.jpg" class="imgm img-thumbnail" width="52"/>
                     {/if}
                     </td>
-                    <td>{$product['name']}</td>
-                    <td>{$product['description']}</td>
-                    <td>{$product['price']}</td>
-                    <td>{$product['quantity']}</td>
+                    <td>{$product.name}</td>
+                    <td>{$product.description}</td>
+                    <td>{$product.price}</td>
+                    <td>{$product.quantity}</td>
                     <td>
                         {if $product['active'] == 1}
                         <i class="icon-ok"></i>
@@ -47,41 +47,30 @@
                         {/if}
                     </td>
                     <td>
-                        <div class="btn-group pull-right">
-                            <a href="{$product.edit_url}" class="edit btn btn-default"><i class="icon-pencil"></i> {l s='Edit' mod='npsmarketplace'}</a>
-                            <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                <i class="icon-caret-down"></i>
-                            </button>
-                            <ul class="dropdown-menu">
-                                {if $product['active'] == 1}
-                                <li>
-                                    <a href="{$product.view_url}"> <i class="icon-search"></i> {l s='Preview' mod='npsmarketplace'} </a>
-                                </li>
-                                <li>
-                                    <a href="{$product.new_combination_url}"> <i class="icon-calendar"></i> {l s='New Term' mod='npsmarketplace'} </a>
-                                </li>
-                                <li>
-                                    <a href="{$product.edit_combination_url}"> <i class="icon-calendar"></i> {l s='List of Terms' mod='npsmarketplace'} </a>
-                                </li>
-                                <li class="divider"></li>
-                                {/if}
-                                <li>
-                                    <a href="{$product.delete_url}" class="delete"> <i class="icon-trash"></i> {l s='Delete' mod='npsmarketplace'} </a>
-                                </li>
-                            </ul>
-                        </div>
+                        <ul class="nav navbar-nav">
+                            <li class="dropdown">
+                                <a href="#" data-toggle="dropdown" class="dropdown-toggle"><i class="icon-list"></i> {l s='Options' mod='npsmarketplace'}<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="{$product.edit_url}"> <i class="icon-pencil"></i> {l s='Edit' mod='npsmarketplace'}</a></li>
+                                    {if $seler_active}
+                                    <li><a href="{$product.new_combination_url}"> <i class="icon-calendar"></i> {l s='New Term' mod='npsmarketplace'}</a></li>
+                                    {/if}
+                                    {if $product.active == 1}
+                                    <li><a href="{$product.edit_combination_url}"> <i class="icon-calendar"></i> {l s='List of Terms' mod='npsmarketplace'}</a></li>
+                                    <li><a href="{$product.view_url}"> <i class="icon-search"></i> {l s='Preview' mod='npsmarketplace'}</a></li>
+                                    {/if}
+                                    <li class="divider"></li>
+                                    <li><a href="{$product.delete_url}" class="delete"> <i class="icon-trash"></i> {l s='Delete' mod='npsmarketplace'}</a></li>
+                                </ul>
+                            </li>
+                        </ul>
                     </td>
                     </tr>
                 {/foreach}
             </tbody>
         </table>
-        <script>
-            $('.dropdown-toggle').dropdown();
-        </script>
     </div>
     {else}
         <p class="alert alert-info">{l s='You have not added any event yet.' mod='npsmarketplace'}</p>
-        </br>
-        {l s='Click' mod='npsmarketplace'} <a href="{$add_product_link}">{l s='here'}</a> {l s='to add your first event.' mod='npsmarketplace'}
     {/if}
 </div>

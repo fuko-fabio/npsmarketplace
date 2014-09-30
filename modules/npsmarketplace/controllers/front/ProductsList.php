@@ -38,7 +38,9 @@ class NpsMarketplaceProductsListModuleFrontController extends ModuleFrontControl
         $this -> context -> smarty -> assign(array(
             'HOOK_MY_ACCOUNT_COLUMN' => Hook::exec('displayMyAccountColumn'),
             'add_product_link' => $this -> context -> link -> getModuleLink('npsmarketplace', 'Product'),
-            'products' => $products));
+            'products' => $products,
+            'seler_active' => $seller->active && !$seller->locked
+        ));
 
         $this -> setTemplate('products_list.tpl');
     }
@@ -61,7 +63,7 @@ class NpsMarketplaceProductsListModuleFrontController extends ModuleFrontControl
                 'delete_url' => $this->context->link->getModuleLink('npsmarketplace', 'ProductsList', array('id_product' => $product->id, 'action' => 'delete')),
                 'edit_url' => $this->context->link->getModuleLink('npsmarketplace', 'Product', array('id_product' => $product->id)),
                 'new_combination_url' => $this->context->link->getModuleLink('npsmarketplace', 'ProductCombination', array('id_product' => $product->id)),
-                'edit_combination_url' => $this->context->link->getModuleLink('npsmarketplace', 'ProductCombinationList', array('id_product' => $product->id))
+                'edit_combination_url' => $this->context->link->getModuleLink('npsmarketplace', 'ProductCombinationList', array('id_product' => $product->id)),
             );
         }
         return $result;
