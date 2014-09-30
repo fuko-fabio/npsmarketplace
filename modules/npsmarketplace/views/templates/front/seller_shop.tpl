@@ -40,23 +40,39 @@
 <div class="tabs-container">
     <ul class="nav nav-tabs">
         <li class="active"><a href="#seller_events" data-toggle="tab">{l s='Events'  mod='npsmarketplace'}</a></li>
-        <li><a href="#seller_comments" data-toggle="tab">{l s='Comments'  mod='npsmarketplace'}</a></li>
         {if $seller['regulations_active']}
         <li><a href="#seller_regulations" data-toggle="tab">{l s='Regulations'  mod='npsmarketplace'}</a></li>
         {/if}
+        {$HOOK_SELLER_TAB}
     </ul>
     <div class="tab-content">
-        <div class="tab-pane fade active" id="seller_events">
-
-        </div>
-        <div class="tab-pane fade" id="seller_comments">
-
+        <div class="tab-pane fade active in" id="seller_events">
+            {if $products}
+            <div class="content_sortPagiBar clearfix">
+                <div class="sortPagiBar clearfix">
+                    {include file="$tpl_dir./product-sort.tpl"}
+                    {include file="$tpl_dir./nbr-product-page.tpl"}
+                </div>
+                <div class="top-pagination-content clearfix">
+                    {include file="$tpl_dir./product-compare.tpl"}
+                    {include file="$tpl_dir./pagination.tpl"}
+                </div>
+            </div>
+            {include file="$tpl_dir./product-list.tpl" products=$products}
+            <div class="content_sortPagiBar">
+                <div class="bottom-pagination-content clearfix">
+                    {include file="$tpl_dir./product-compare.tpl" paginationId='bottom'}
+                    {include file="$tpl_dir./pagination.tpl" paginationId='bottom'}
+                </div>
+            </div>
+            {/if}
         </div>
         {if $seller['regulations_active']}
         <div class="tab-pane fade" id="seller_regulations">
             <textarea class="form-control" readonly="">{$seller['regulations'][$current_id_lang]}</textarea>
         </div>
         {/if}
+        {$HOOK_SELLER_TAB_CONTENT}
     </div><!-- tab content -->
 </div>
 

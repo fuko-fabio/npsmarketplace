@@ -437,92 +437,104 @@
 				</div>
 			</section>
 		{/if}
-		{if isset($features) && $features}
-			<!-- Data sheet -->
-			<section class="page-product-box">
-				<h3 class="page-product-heading">{l s='Data sheet'}</h3>
-				<table class="table-data-sheet">			
-					{foreach from=$features item=feature}
-					<tr class="{cycle values="odd,even"}">
-						{if isset($feature.value)}			    
-						<td>{$feature.name|escape:'html':'UTF-8'}</td>
-						<td>{$feature.value|escape:'html':'UTF-8'}</td>
-						{/if}
-					</tr>
-					{/foreach}
-				</table>
-			</section>
-			<!--end Data sheet -->
-		{/if}
-		{if $product->description}
-			<!-- More info -->
-			<section class="page-product-box">
-				<h3 class="page-product-heading">{l s='More info'}</h3>{/if}
-				{if isset($product) && $product->description}
-					<!-- full description -->
-					<div  class="rte">{$product->description}</div>
-			</section>
-			<!--end  More info -->
-		{/if}
-		<!--HOOK_PRODUCT_TAB -->
-		<section class="page-product-box">
-			{$HOOK_PRODUCT_TAB}
-			{if isset($HOOK_PRODUCT_TAB_CONTENT) && $HOOK_PRODUCT_TAB_CONTENT}{$HOOK_PRODUCT_TAB_CONTENT}{/if}
-		</section>
+
+        <!--HOOK_PRODUCT_TAB -->
+        <div class="tabs-container">
+            <ul class="nav nav-tabs">
+                {if isset($features) && $features}
+                <li class="active"><a href="#product-data-sheet" data-toggle="tab">{l s='Data sheet'}</a></li>
+                {/if}
+                {if $product->description}
+                <li><a href="#product-more-info" data-toggle="tab">{l s='Description'}</a></li>
+                {/if}
+                {$HOOK_PRODUCT_TAB}
+                {if isset($accessories) && $accessories}
+                <li><a href="#product-accessories" data-toggle="tab">{l s='Accessories'}</a></li>
+                {/if}
+            </ul>
+            <div class="tab-content">
+                <!-- Data sheet -->
+                {if isset($features) && $features}
+                <div class="tab-pane fade active in" id="product-data-sheet">
+                    <table class="table-data-sheet">
+                        {foreach from=$features item=feature}
+                        <tr class="{cycle values="odd,even"}">
+                            {if isset($feature.value)}              
+                            <td>{$feature.name|escape:'html':'UTF-8'}</td>
+                            <td>{$feature.value|escape:'html':'UTF-8'}</td>
+                            {/if}
+                        </tr>
+                        {/foreach}
+                    </table>
+                </div>
+                {/if}
+                <!--end Data sheet -->
+
+                <!-- More info -->
+                {if isset($product) && $product->description}
+                <div class="tab-pane fade" id="product-more-info">
+                    <!-- full description -->
+                    <div  class="rte">{$product->description}</div>
+                </div>
+                {/if}
+                 <!--end  More info -->
+                {$HOOK_PRODUCT_TAB_CONTENT}
+                <!--Accessories -->
+                {if isset($accessories) && $accessories}
+                <div class="tab-pane fade" id="product-accessories">
+                        <div class="block products_block accessories-block clearfix">
+                            <div class="block_content">
+                                <ul id="bxslider" class="bxslider clearfix">
+                                    {foreach from=$accessories item=accessory name=accessories_list}
+                                        {if ($accessory.allow_oosp || $accessory.quantity_all_versions > 0 || $accessory.quantity > 0) && $accessory.available_for_order && !isset($restricted_country_mode)}
+                                            {assign var='accessoryLink' value=$link->getProductLink($accessory.id_product, $accessory.link_rewrite, $accessory.category)}
+                                            <li class="item product-box ajax_block_product{if $smarty.foreach.accessories_list.first} first_item{elseif $smarty.foreach.accessories_list.last} last_item{else} item{/if} product_accessories_description">
+                                                <div class="product_desc">
+                                                    <a href="{$accessoryLink|escape:'html':'UTF-8'}" title="{$accessory.legend|escape:'html':'UTF-8'}" class="product-image product_image">
+                                                        <img class="lazyOwl" src="{$link->getImageLink($accessory.link_rewrite, $accessory.id_image, 'home_default')|escape:'html':'UTF-8'}" alt="{$accessory.legend|escape:'html':'UTF-8'}" width="{$homeSize.width}" height="{$homeSize.height}"/>
+                                                    </a>
+                                                    <div class="block_description">
+                                                        <a href="{$accessoryLink|escape:'html':'UTF-8'}" title="{l s='More'}" class="product_description">
+                                                            {$accessory.description_short|strip_tags|truncate:25:'...'}
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="s_title_block">
+                                                    <h5 class="product-name">
+                                                        <a href="{$accessoryLink|escape:'html':'UTF-8'}">
+                                                            {$accessory.name|truncate:20:'...':true|escape:'html':'UTF-8'}
+                                                        </a>
+                                                    </h5>
+                                                    {if $accessory.show_price && !isset($restricted_country_mode) && !$PS_CATALOG_MODE}
+                                                    <span class="price">
+                                                        {if $priceDisplay != 1}
+                                                        {displayWtPrice p=$accessory.price}{else}{displayWtPrice p=$accessory.price_tax_exc}
+                                                        {/if}
+                                                    </span>
+                                                    {/if}
+                                                </div>
+                                                <div class="clearfix" style="margin-top:5px">
+                                                    {if !$PS_CATALOG_MODE && ($accessory.allow_oosp || $accessory.quantity > 0)}
+                                                        <div class="no-print">
+                                                            <a class="exclusive button ajax_add_to_cart_button" href="{$link->getPageLink('cart', true, NULL, "qty=1&amp;id_product={$accessory.id_product|intval}&amp;token={$static_token}&amp;add")|escape:'html':'UTF-8'}" data-id-product="{$accessory.id_product|intval}" title="{l s='Add to cart'}">
+                                                                <span>{l s='Add to cart'}</span>
+                                                            </a>
+                                                        </div>
+                                                    {/if}
+                                                </div>
+                                            </li>
+                                        {/if}
+                                    {/foreach}
+                                </ul>
+                            </div>
+                        </div>  
+                </div>
+                {/if}
+                <!--end Accessories -->
+            </div>
+        </div>
 		<!--end HOOK_PRODUCT_TAB -->
-		{if isset($accessories) && $accessories}
-			<!--Accessories -->
-			<section class="page-product-box">
-				<h3 class="page-product-heading">{l s='Accessories'}</h3>
-				<div class="block products_block accessories-block clearfix">
-					<div class="block_content">
-						<ul id="bxslider" class="bxslider clearfix">
-							{foreach from=$accessories item=accessory name=accessories_list}
-								{if ($accessory.allow_oosp || $accessory.quantity_all_versions > 0 || $accessory.quantity > 0) && $accessory.available_for_order && !isset($restricted_country_mode)}
-									{assign var='accessoryLink' value=$link->getProductLink($accessory.id_product, $accessory.link_rewrite, $accessory.category)}
-									<li class="item product-box ajax_block_product{if $smarty.foreach.accessories_list.first} first_item{elseif $smarty.foreach.accessories_list.last} last_item{else} item{/if} product_accessories_description">
-										<div class="product_desc">
-											<a href="{$accessoryLink|escape:'html':'UTF-8'}" title="{$accessory.legend|escape:'html':'UTF-8'}" class="product-image product_image">
-												<img class="lazyOwl" src="{$link->getImageLink($accessory.link_rewrite, $accessory.id_image, 'home_default')|escape:'html':'UTF-8'}" alt="{$accessory.legend|escape:'html':'UTF-8'}" width="{$homeSize.width}" height="{$homeSize.height}"/>
-											</a>
-											<div class="block_description">
-												<a href="{$accessoryLink|escape:'html':'UTF-8'}" title="{l s='More'}" class="product_description">
-													{$accessory.description_short|strip_tags|truncate:25:'...'}
-												</a>
-											</div>
-										</div>
-										<div class="s_title_block">
-											<h5 class="product-name">
-												<a href="{$accessoryLink|escape:'html':'UTF-8'}">
-													{$accessory.name|truncate:20:'...':true|escape:'html':'UTF-8'}
-												</a>
-											</h5>
-											{if $accessory.show_price && !isset($restricted_country_mode) && !$PS_CATALOG_MODE}
-											<span class="price">
-												{if $priceDisplay != 1}
-												{displayWtPrice p=$accessory.price}{else}{displayWtPrice p=$accessory.price_tax_exc}
-												{/if}
-											</span>
-											{/if}
-										</div>
-										<div class="clearfix" style="margin-top:5px">
-											{if !$PS_CATALOG_MODE && ($accessory.allow_oosp || $accessory.quantity > 0)}
-												<div class="no-print">
-													<a class="exclusive button ajax_add_to_cart_button" href="{$link->getPageLink('cart', true, NULL, "qty=1&amp;id_product={$accessory.id_product|intval}&amp;token={$static_token}&amp;add")|escape:'html':'UTF-8'}" data-id-product="{$accessory.id_product|intval}" title="{l s='Add to cart'}">
-														<span>{l s='Add to cart'}</span>
-													</a>
-												</div>
-											{/if}
-										</div>
-									</li>
-								{/if}
-							{/foreach}
-						</ul>
-					</div>
-				</div>	
-			</section>
-			<!--end Accessories -->
-		{/if}
+
 		{if isset($HOOK_PRODUCT_FOOTER) && $HOOK_PRODUCT_FOOTER}{$HOOK_PRODUCT_FOOTER}{/if}
 		<!-- description & features -->
 		{if (isset($product) && $product->description) || (isset($features) && $features) || (isset($accessories) && $accessories) || (isset($HOOK_PRODUCT_TAB) && $HOOK_PRODUCT_TAB) || (isset($attachments) && $attachments) || isset($product) && $product->customizable}
