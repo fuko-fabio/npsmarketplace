@@ -243,9 +243,10 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             $images = Image::getImages($this->context->language->id, $this->_product->id);
             foreach ($images as $k => $image)
                 $images[$k] = array(
-                    'url' => str_replace('http://', Tools::getShopProtocol(), Context::getContext()->link->getImageLink(null, $image['id_image'], 'medium_default')),
+                    'url' => $this->context->link->getImageLink($this->_product->link_rewrite[$this->context->language->id], $image['id_image'], 'medium_default'),
                     'id_image' => $image['id_image']
                 );
+                
             $tpl_product = array(
                 'id' => $this->_product->id,
                 'name' => $this->_product->name,
