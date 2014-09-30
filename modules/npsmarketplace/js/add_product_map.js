@@ -93,10 +93,10 @@ google.maps.event.addDomListener(window, 'load', initialize);
 $(document).ready(function(){
     Dropzone.options.dropzoneContainer = {
     
-        url: 'empty',
+        url: 'modules/npsmarketplace/dropzone.php?token=' + $('input[name="form_token"]').val(),
         addRemoveLinks: true,
-        autoProcessQueue: false,
-        uploadMultiple: true,
+        autoProcessQueue: true,
+        uploadMultiple: false,
         parallelUploads: maxAllowImages,
         maxFiles: maxAllowImages,
         previewsContainer: ".dropzone-previews",
@@ -113,5 +113,26 @@ $(document).ready(function(){
         dictRemoveFile: dictRemoveFile,
         dictRemoveFileConfirmation: null,
         dictMaxFilesExceeded: dictMaxFilesExceeded,
+        init: function() {
+            var that = this;
+            this.on("success", function(file, response) {
+                n = file['name'];
+                $('#' + that.element.id).append(
+                    '<input class="hidden" data-target="' + n + '" name="images[' + n + '][name]" value="' + response['name'] + '"/>' +
+                    '<input class="hidden" data-target="' + n + '" name="images[' + n + '][save_path]" value="' + response['save_path'] + '"/>' +
+                    '<input class="hidden" data-target="' + n + '" name="images[' + n + '][size]" value="' + response['size'] + '"/>' +
+                    '<input class="hidden" data-target="' + n + '" name="images[' + n + '][tmp_name]" value="' + response['tmp_name'] + '"/>' +
+                    '<input class="hidden" data-target="' + n + '" name="images[' + n + '][type]" value="' + response['type'] + '"/>' +
+                    '<input class="hidden" data-target="' + n + '" name="images[' + n + '][error]" value="' + response['error'] + '"/>'
+                );
+            });
+            this.on("removedfile", function(file, response) {
+                $('input[data-target="' + file['name'] + '"]').remove();
+                $.ajax({
+                    url: that.options.url + '&name=' + file['name'],
+                    type: 'DELETE',
+                });
+            });
+        }
     };
 });

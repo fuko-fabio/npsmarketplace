@@ -64,7 +64,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             if (isset($_POST['category'])) {
                 $categories = $_POST['category'];
             }
-            $images = $this->getImages();
+            $images = $_POST['images'];
 
             if(Tools::getValue('form_token') != $this->context->cookie->__get('form_token')) {
                 $this -> errors[] = $nps_instance->l('This form has been already saved. Go to your profile page and check saved products.');
@@ -297,14 +297,8 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
         return true;
     }
 
-    private function getImages() {
-        $image_uploader = new HelperImageUploader('file');
-        $image_uploader -> setAcceptTypes(array('jpeg', 'gif', 'png', 'jpg')) -> setMaxSize((int)Configuration::get('PS_PRODUCT_PICTURE_MAX_SIZE'));
-        return $image_uploader -> process();
-    }
-
     private function saveProductImages($files) {
-        foreach ($files as &$file) {
+        foreach ($files as $file) {
             $image = new Image();
             $image -> id_product = (int)($this -> _product -> id);
             $image -> position = Image::getHighestPosition($this -> _product -> id) + 1;
@@ -330,7 +324,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
 
                 $error = 0;
 
-                if (!ImageManager::resize($file['save_path'], $new_path . '.' . $image -> image_format, null, null, 'jpg', false, $error)) {
+                if (!ImageManager::resize(_PS_UPLOAD_DIR_.$file['save_path'], $new_path . '.' . $image -> image_format, null, null, 'jpg', false, $error)) {
                     switch ($error) {
                         case ImageManager::ERROR_FILE_NOT_EXIST :
                             $this -> errors[] = Tools::displayError('An error occurred while copying image, the file does not exist anymore.');
@@ -352,14 +346,14 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                 } else {
                     $imagesTypes = ImageType::getImagesTypes('products');
                     foreach ($imagesTypes as $imageType) {
-                        if (!ImageManager::resize($file['save_path'], $new_path . '-' . stripslashes($imageType['name']) . '.' . $image -> image_format, $imageType['width'], $imageType['height'], $image -> image_format)) {
+                        if (!ImageManager::resize(_PS_UPLOAD_DIR_.$file['save_path'], $new_path . '-' . stripslashes($imageType['name']) . '.' . $image -> image_format, $imageType['width'], $imageType['height'], $image -> image_format)) {
                             $this -> errors[] = Tools::displayError('An error occurred while copying image:') . ' ' . stripslashes($imageType['name']);
                             continue;
                         }
                     }
                 }
 
-                unlink($file['save_path']);
+                unlink(_PS_UPLOAD_DIR_.$file['save_path']);
                 //Necesary to prevent hacking
                 unset($file['save_path']);
                 Hook::exec('actionWatermark', array('id_image' => $image -> id, 'id_product' => $this -> _product -> id));

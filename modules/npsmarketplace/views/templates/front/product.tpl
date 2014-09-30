@@ -27,7 +27,7 @@
 <h1 class="page-heading bottom-indent">{l s='Add Event' mod='npsmarketplace'}</h1>
 {/if}
 <div class="block-center" id="block-seller-product">
-    <form enctype="multipart/form-data" role="form" action="{$request_uri}" method="post" id="edit-product-form">
+    <form role="form" action="{$request_uri}" method="post" id="edit-product-form">
         <input type="hidden" name="form_token" value="{$form_token}" />
         {include file="$product_fieldset_tpl_path" categories_tree=$categories_tree category_partial_tpl_path=$category_partial_tpl_path}
         </br>
