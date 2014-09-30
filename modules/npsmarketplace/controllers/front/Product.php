@@ -10,6 +10,11 @@ include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24SellerCompany.php');
 
 class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
 
+    const MAX_IMAGES = 4;
+    public $auth = true;
+    public $authRedirection = 'my-account';
+    public $ssl = true;
+
     /**
      * @var _product Current product
      */
@@ -105,6 +110,8 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                     $this -> errors[] = $nps_instance->l('Invalid product quantity format');
                 if (empty($images))
                     $this -> errors[] = $nps_instance->l('At least one picture is required');
+                else if (count($images) > self::MAX_IMAGES)
+                    $this -> errors[] = $nps_instance->l('You can upload max 4 pictures');
             }
 
             foreach (Language::getLanguages() as $key => $lang) {
@@ -173,8 +180,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
      */
     public function init() {
         parent::init();
-        if (!$this->context->customer->isLogged() && $this->php_self != 'authentication' && $this->php_self != 'password')
-            Tools::redirect('index.php?controller=authentication?back=my-account');
+
         $this->_seller = new Seller(null, $this->context->customer->id);
         if ($this->_seller->id == null) 
             Tools::redirect('index.php?controller=my-account');
@@ -214,12 +220,11 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
         }
     }
 
-    public function initContent()
-    {
+    public function initContent() {
         parent::initContent();
 
-        $tpl_product = array('categories' => array(), 'town' => null);
-        if ($this->_product->id != 0) {
+        $tpl_product = array('categories' => array(), 'town' => null, 'allow_images' => self::MAX_IMAGES);
+        if ($this->_product->id) {
             $features = $this->_product->getFeatures();
             $images = Image::getImages($this->context->language->id, $this->_product->id);
             foreach ($images as $k => $image)
@@ -237,7 +242,8 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                 'address' => $this->getFeatureValue($features, 'address'),
                 'district' => $this->getFeatureValue($features, 'district'),
                 'categories' => $this->_product->getCategories(),
-                'images' => $images
+                'images' => $images,
+                'allow_images' => self::MAX_IMAGES - count($images)
             );
         }
         $towns = $this->getActiveTowns((int)$this->context->language->id);

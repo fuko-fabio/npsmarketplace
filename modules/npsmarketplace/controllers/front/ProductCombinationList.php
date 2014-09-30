@@ -6,6 +6,10 @@
 
 class NpsMarketplaceProductCombinationListModuleFrontController extends ModuleFrontController {
 
+    public $auth = true;
+    public $authRedirection = 'my-account';
+    public $ssl = true;
+
     public function postProcess() {
         if (Tools::isSubmit('action') && Tools::isSubmit('id_product_attribute') && Tools::isSubmit('id_product')) {
             if (Tools::getValue('action') == 'delete') {
@@ -31,8 +35,7 @@ class NpsMarketplaceProductCombinationListModuleFrontController extends ModuleFr
 
     public function initContent() {
         parent::initContent();
-        if (!$this->context->customer->isLogged() && $this->php_self != 'authentication' && $this->php_self != 'password')
-            Tools::redirect('index.php?controller=authentication?back=my-account');
+
         $seller = new Seller(null, $this->context->customer->id);
         if ($seller->id == null) 
             Tools::redirect('index.php?controller=my-account');

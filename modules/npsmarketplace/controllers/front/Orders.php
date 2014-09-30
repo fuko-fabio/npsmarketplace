@@ -4,9 +4,12 @@
 *  @copyright 2014 npsoftware
 */
 
-class NpsMarketplaceOrdersModuleFrontController extends ModuleFrontController
-{
-    
+class NpsMarketplaceOrdersModuleFrontController extends ModuleFrontController {
+
+    public $auth = true;
+    public $authRedirection = 'my-account';
+    public $ssl = true;
+
     public function setMedia() {
         parent::setMedia();
         $this->addJqueryPlugin('footable');
@@ -16,8 +19,7 @@ class NpsMarketplaceOrdersModuleFrontController extends ModuleFrontController
     
     public function initContent() {
         parent::initContent();
-        if (!$this->context->customer->isLogged() && $this->php_self != 'authentication' && $this->php_self != 'password')
-            Tools::redirect('index.php?controller=authentication?back=my-account');
+
         $seller = new Seller(null, $this->context->customer->id);
         if ($seller->id == null) 
             Tools::redirect('index.php?controller=my-account');

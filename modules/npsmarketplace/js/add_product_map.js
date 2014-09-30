@@ -89,6 +89,7 @@ function initialize() {
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);
+
 $(document).ready(function(){
     Dropzone.options.dropzoneContainer = {
     
@@ -96,8 +97,8 @@ $(document).ready(function(){
         addRemoveLinks: true,
         autoProcessQueue: false,
         uploadMultiple: true,
-        parallelUploads: 4,
-        maxFiles: 4,
+        parallelUploads: maxAllowImages,
+        maxFiles: maxAllowImages,
         previewsContainer: ".dropzone-previews",
         acceptedFiles: ".jpeg,.gif,.png,.jpg",
         maxFilesize: 8,

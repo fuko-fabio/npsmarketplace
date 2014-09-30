@@ -8,6 +8,10 @@ include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24.php');
 
 class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontController {
 
+    public $auth = true;
+    public $authRedirection = 'order-follow';
+    public $ssl = true;
+
     public function initContent() {
         parent::initContent();
         $this->setTemplate('payment_confirmation.tpl');

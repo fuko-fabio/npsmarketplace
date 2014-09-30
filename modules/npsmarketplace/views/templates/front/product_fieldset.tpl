@@ -130,24 +130,40 @@
     </div>
     {if $edit_product == 0}
     <div class="form-group">
-        <label class="required" >{l s='Pictures' mod='npsmarketplace'}</label>
+        <label>{l s='Pictures' mod='npsmarketplace'}</label>
         <div class="dropzone" id="dropzone-container">
             <div class="dropzone-previews"></div>
             <div class="fallback">
                 <input name="file[]" type="file" multiple />
             </div>
         </div>
-        <span class="form_info">{l s='At least one picture is required. Max allowed size 8MB. Recommended min size 512px X 512px' mod='npsprzelewy24'}</span>
+        <span class="form_info">{l s='It is nice to have at least one picture. Max allowed size 8MB. Recommended min size 512px X 512px' mod='npsprzelewy24'}</span>
     </div>
     {else}
     <div class="form-group">
-        <label class="required" >{l s='Pictures' mod='npsmarketplace'}</label>
+        <label>{l s='Current Pictures' mod='npsmarketplace'}</label>
         <div>
+        {if count($product['images']) == 0}
+        {l s='No pictures' mod='npsmarketplace'}
+        {else}
         {foreach from=$product['images'] item=image}
             <img src="{$image}" />
         {/foreach}
+        {/if}
         </div>
     </div>
+    {if $product.allow_images > 0}
+    <div class="form-group">
+        <label>{l s='New Pictures' mod='npsmarketplace'}</label>
+        <div class="dropzone" id="dropzone-container">
+            <div class="dropzone-previews"></div>
+            <div class="fallback">
+                <input name="file[]" type="file" multiple />
+            </div>
+        </div>
+        <span class="form_info">{l s='It is nice to have at least one picture. Max allowed size 8MB. Recommended min size 512px X 512px' mod='npsprzelewy24'}</span>
+    </div>
+    {/if}
     {/if}
     <div class="form-group">
         <label class="required" for="product_category">{l s='Category' mod='npsmarketplace'}</label>

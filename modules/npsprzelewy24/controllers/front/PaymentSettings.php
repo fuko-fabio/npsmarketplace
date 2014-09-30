@@ -11,6 +11,10 @@ include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
 
 class NpsPrzelewy24PaymentSettingsModuleFrontController extends ModuleFrontController {
 
+    public $auth = true;
+    public $authRedirection = 'my-account';
+    public $ssl = true;
+
     public function setMedia() {
         parent::setMedia();
         $this -> addJS (_PS_MODULE_DIR_.'npsprzelewy24/js/iban.js');
@@ -130,8 +134,6 @@ class NpsPrzelewy24PaymentSettingsModuleFrontController extends ModuleFrontContr
 
     public function initContent() {
         parent::initContent();
-        if (!$this->context->customer->isLogged() && $this->php_self != 'authentication' && $this->php_self != 'password')
-            Tools::redirect('index.php?controller=authentication?back=my-account');
         $seller = new Seller(null, $this->context->customer->id);
         if ($seller->id == null || !$seller->active) {
             Tools::redirect('index.php?controller=my-account');

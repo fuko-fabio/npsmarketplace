@@ -6,6 +6,10 @@
 
 class NpsMarketplaceProductCombinationModuleFrontController extends ModuleFrontController {
 
+    public $auth = true;
+    public $authRedirection = 'my-account';
+    public $ssl = true;
+
      /**
      * @var _product Current product
      */
@@ -87,8 +91,11 @@ class NpsMarketplaceProductCombinationModuleFrontController extends ModuleFrontC
 
     private function enableProductIfNeeded($seller, $product) {
         if ($seller->active && !$seller->locked && !$product->active) {
-            $default_product = new Product((int)$product->id, false, null, (int)$product->id_shop_default);
-            $default_product->toggleStatus();
+            $settings = new P24SellerCompany(null, $seller->id);
+            if ($settings->id != null) {
+                $default_product = new Product((int)$product->id, false, null, (int)$product->id_shop_default);
+                $default_product->toggleStatus();
+            }
         }
     }
 
@@ -123,8 +130,7 @@ class NpsMarketplaceProductCombinationModuleFrontController extends ModuleFrontC
 
     public function initContent() {
         parent::initContent();
-        if (!$this->context->customer->isLogged() && $this->php_self != 'authentication' && $this->php_self != 'password')
-            Tools::redirect('index.php?controller=authentication?back=my-account');
+
         $seller = new Seller(null, $this->context->customer->id);
         if ($seller->id == null || !$seller->active)
             Tools::redirect('index.php?controller=my-account');

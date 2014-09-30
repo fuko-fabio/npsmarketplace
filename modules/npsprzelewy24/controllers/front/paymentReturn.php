@@ -10,6 +10,11 @@ include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24TransationDispatcher.php'
 
 class NpsPrzelewy24PaymentReturnModuleFrontController extends ModuleFrontController {
 
+    public $auth = true;
+    public $php_self = 'order-follow';
+    public $authRedirection = 'order-follow';
+    public $ssl = true;
+
     public function initContent() {
         $this->display_column_left = false;
         $this->display_column_right = false;
