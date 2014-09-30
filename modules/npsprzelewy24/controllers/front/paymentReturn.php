@@ -22,18 +22,25 @@ class NpsPrzelewy24PaymentReturnModuleFrontController extends ModuleFrontControl
         if (empty($p24_error_code) && isset($p24_session_id)) {
             $session_id_array = explode('|', $p24_session_id);
             $id_cart = $session_id_array[1];
+            $p24_amount = Tools::getValue('p24_amount');
+            $p24_currency = Tools::getValue('p24_currency');
+            $p24_order_id = Tools::getValue('p24_order_id');
+            $p24_method = Tools::getValue('p24_method');
+            $p24_statement = Tools::getValue('p24_statement');
+            $p24_sign = Tools::getValue('p24_sign');
+            $p24_token = Tools::getValue('p24_token');
 
             $validator = new P24PaymentValodator(
-                Tools::getValue('p24_session_id'),
-                Tools::getValue('p24_amount'),
-                Tools::getValue('p24_currency'),
-                Tools::getValue('p24_order_id'),
-                Tools::getValue('p24_method'),
-                Tools::getValue('p24_statement'),
-                Tools::getValue('p24_sign')
+                $p24_session_id,
+                $p24_amount,
+                $p24_currency,
+                $p24_order_id,
+                $p24_method,
+                $p24_statement,
+                $p24_sign
             );
 
-            $result = $validator->validate(Tools::getValue('p24_token'));
+            $result = $validator->validate($p24_token);
             if ($result['error'] == 0) {
                 $id_order = Order::getOrderByCartId($id_cart);
                 $order = P24Payment::getSummaryByCartId($id_cart);
@@ -46,7 +53,8 @@ class NpsPrzelewy24PaymentReturnModuleFrontController extends ModuleFrontControl
                 $dispatcher = new P24TransationDispatcher($id_cart);
                 $dispatcher->dispatchMoney();
             } else {
-                $this->persistPaymentError($p24_session_id);
+                if ($result['error'] == 1)
+                    $this->persistPaymentError($p24_session_id);
                 $this->context->smarty->assign(array(
                     'error' => array('code' => $result['error'], 'message' => $result['errorMessage']),
                 ));

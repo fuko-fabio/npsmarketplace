@@ -77,7 +77,7 @@ class P24PaymentValodator {
                 }
                 $ps = new P24PaymentStatement(null, $p24_payment->id);
                 if($ps->id != null) {
-                    return array('error' => 1, 'errorMessage' => $npsprzelewy24->l('Payment has been already finalized and verified'));
+                    return array('error' => -1, 'errorMessage' => $npsprzelewy24->l('Payment has been already finalized and verified'));
                 }
                 
                 $result = $this->transactionVerify();
