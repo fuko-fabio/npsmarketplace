@@ -8,8 +8,10 @@
     var dictCancelUpload = "{l s='Cancel upload' mod='npsmarketplace' js=1}";
     var dictCancelUploadConfirmation = "{l s='Are you sure you want to cancel this upload?' mod='npsmarketplace' js=1}";
     var dictRemoveFile = "{l s='Remove' mod='npsmarketplace' js=1}";
-    var dictMaxFilesExceeded = "{l s='You can not upload more than 4 files.' mod='npsmarketplace' js=1}";
-    var maxAllowImages = {$product.allow_images};
+    var dictMaxFilesExceeded = "{l s='You can not upload more than %s files.' mod='npsmarketplace' js=1 sprintf=$max_images}";
+    var dropzoneImages = {$product['images']|json_encode};
+    var maxImages = {$max_images};
+    var maxImageSize = {$max_image_size};
 </script>
 {capture name=path}
 <a href="{$link->getPageLink('my-account', true)|escape:'html':'UTF-8'}"> {l s='My account'} </a>

@@ -694,7 +694,7 @@ require.register("dropzone/lib/dropzone.js", function (exports, module) {
         setupHiddenFileInput = (function(_this) {
           return function() {
             if (_this.hiddenFileInput) {
-              document.body.removeChild(_this.hiddenFileInput);
+              _this.hiddenFileInput.parentNode.removeChild(_this.hiddenFileInput);
             }
             _this.hiddenFileInput = document.createElement("input");
             _this.hiddenFileInput.setAttribute("type", "file");
@@ -702,7 +702,7 @@ require.register("dropzone/lib/dropzone.js", function (exports, module) {
             if ((_this.options.maxFiles == null) || _this.options.maxFiles > 1) {
               _this.hiddenFileInput.setAttribute("multiple", "multiple");
             }
-            _this.hiddenFileInput.className = "dz-hidden-input";
+            _this.hiddenFileInput.className = "dz-hidden-input hidden";
             if (_this.options.acceptedFiles != null) {
               _this.hiddenFileInput.setAttribute("accept", _this.options.acceptedFiles);
             }

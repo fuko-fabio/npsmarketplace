@@ -51,6 +51,7 @@ class NpsMarketplace extends Module {
             || !$this->registerHook('displayCustomerAccount')
             || !$this->registerHook('productTab')
             || !$this->registerHook('productTabContent')
+            || !$this->registerHook('displayRightColumnProduct')
             || !$this->registerHook('displayMyAccountColumn')
             || !Configuration::updateValue('NPS_GLOBAL_COMMISION', 3)
             || !Configuration::updateValue('NPS_PRODUCT_GUIDE_URL', $shop_url)
@@ -73,7 +74,8 @@ class NpsMarketplace extends Module {
             || !$this->unregisterHook('displayCustomerAccount')
             || !$this->unregisterHook('productTab')
             || !$this->unregisterHook('productTabContent')
-            || !$this->unregisterHook('productTabContent')
+            || !$this->unregisterHook('displayRightColumnProduct')
+            || !$this->unregisterHook('displayMyAccountColumn')
             || !Configuration::deleteByName('NPS_GLOBAL_COMMISION')
             || !Configuration::deleteByName('NPS_PRODUCT_GUIDE_URL')
             || !Configuration::deleteByName('NPS_SELLER_GUIDE_URL')
@@ -90,6 +92,19 @@ class NpsMarketplace extends Module {
             || !Tools::deleteDirectory(_NPS_SEL_IMG_DIR_))
             return false;
         return true;
+    }
+
+    public function hookDisplayRightColumnProduct() {
+        $id_seller = (int)Seller::getSellerByProduct(Tools::getValue('id_product'));
+        if(isset($id_seller) && $id_seller > 0) {
+            $seller = new Seller($id_seller);
+            $this->context->smarty->assign(array(
+                'seller_shop_url' => $this->context->link->getModuleLink('npsmarketplace', 'SellerShop', array('id_seller' => $seller->id)),
+                'seller_name' => $seller->name,
+                'seller_ask_url' => $this->context->link->getModuleLink('npsmarketplace', 'SellerShop', array('id_seller' => $seller->id, 'action' => 'ask')),
+            ));
+            return $this->display(__FILE__, 'views/templates/hook/product_seller_info.tpl');
+        }
     }
 
     public function hookDisplayMyAccountColumn() {
@@ -166,7 +181,7 @@ class NpsMarketplace extends Module {
     public function hookProductTab() {
         $id_seller = (int)Seller::getSellerByProduct(Tools::getValue('id_product'));
         if(isset($id_seller) && $id_seller > 0) {
-            $seller = new Seller(Seller::getSellerByProduct(Tools::getValue('id_product')));
+            $seller = new Seller($id_seller);
             $this->context->smarty->assign(array(
                 'show_regulations' => $seller->regulations_active,
             ));

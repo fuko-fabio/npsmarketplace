@@ -61,10 +61,16 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             $reference = trim(Tools::getValue('reference'));
             $categories = array();
             $link_rewrite = array();
-            if (isset($_POST['category'])) {
+            $images = array();
+            $removed_images = array();
+            if (isset($_POST['category']))
                 $categories = $_POST['category'];
-            }
-            $images = $_POST['images'];
+
+            if(isset($_POST['images']))
+                $images = $_POST['images'];
+
+            if(isset($_POST['removed_images']))
+                $removed_images = $_POST['removed_images'];
 
             if(Tools::getValue('form_token') != $this->context->cookie->__get('form_token')) {
                 $this -> errors[] = $nps_instance->l('This form has been already saved. Go to your profile page and check saved products.');
@@ -111,6 +117,13 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                 if (empty($images))
                     $this -> errors[] = $nps_instance->l('At least one picture is required');
                 else if (count($images) > self::MAX_IMAGES)
+                    $this -> errors[] = $nps_instance->l('You can upload max 4 pictures');
+            } else {
+                $current_images = Image::getImages($this->context->language->id, $current_id_product);
+                $img_sum = count($current_images) - count($removed_images) + count($images);
+                if ($img_sum < 1)
+                    $this -> errors[] = $nps_instance->l('At least one picture is required');
+                else if ($img_sum > self::MAX_IMAGES)
                     $this -> errors[] = $nps_instance->l('You can upload max 4 pictures');
             }
 
@@ -161,6 +174,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                         $this->_seller->assignProduct($this->_product->id);
                     }
                     $this->saveProductImages($images);
+                    $this->removeProductImages($removed_images, $current_id_product);
                     Tools::redirect($this->context->link->getModuleLink('npsmarketplace', 'ProductsList'));
                 }
             }
@@ -223,13 +237,15 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
     public function initContent() {
         parent::initContent();
 
-        $tpl_product = array('categories' => array(), 'town' => null, 'allow_images' => self::MAX_IMAGES);
+        $tpl_product = array('categories' => array(), 'town' => null, 'images' => array());
         if ($this->_product->id) {
             $features = $this->_product->getFeatures();
             $images = Image::getImages($this->context->language->id, $this->_product->id);
             foreach ($images as $k => $image)
-                $images[$k] = str_replace('http://', Tools::getShopProtocol(), Context::getContext()->link->getImageLink(null, $image['id_image'], 'medium_default'));
-
+                $images[$k] = array(
+                    'url' => str_replace('http://', Tools::getShopProtocol(), Context::getContext()->link->getImageLink(null, $image['id_image'], 'medium_default')),
+                    'id_image' => $image['id_image']
+                );
             $tpl_product = array(
                 'id' => $this->_product->id,
                 'name' => $this->_product->name,
@@ -243,7 +259,6 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                 'district' => $this->getFeatureValue($features, 'district'),
                 'categories' => $this->_product->getCategories(),
                 'images' => $images,
-                'allow_images' => self::MAX_IMAGES - count($images)
             );
         }
         $towns = $this->getActiveTowns((int)$this->context->language->id);
@@ -264,6 +279,8 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             'towns' => $towns,
             'districts' => $districts,
             'form_token' => $form_token,
+            'max_images' => self::MAX_IMAGES,
+            'max_image_size' => (int)Configuration::get('PS_PRODUCT_PICTURE_MAX_SIZE') / 1024 /1024, 
             'new_tem_link' => $this->context->link->getModuleLink('npsmarketplace', 'ProductCombination', array('id_product' => $this->_product->id)),
         ));
 
@@ -295,6 +312,36 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
         Product::addFeatureProductImport($this->_product->id, $feature_id, $feature_value_id);
 
         return true;
+    }
+
+    private function removeProductImages($images_ids, $id_product) {
+        if(empty($images_ids))
+            return true;
+        $res = true;
+        foreach ($images_ids as $id_image) {
+            $image = new Image($id_image);
+            $res &= $image->delete();
+            if (file_exists(_PS_TMP_IMG_DIR_.'product_'.$image->id_product.'.jpg'))
+                $res &= @unlink(_PS_TMP_IMG_DIR_.'product_'.$image->id_product.'.jpg');
+            if (file_exists(_PS_TMP_IMG_DIR_.'product_mini_'.$image->id_product.'_'.$this->context->shop->id.'.jpg'))
+                $res &= @unlink(_PS_TMP_IMG_DIR_.'product_mini_'.$image->id_product.'_'.$this->context->shop->id.'.jpg');
+        }
+        if (!Image::getCover($id_product)) {
+            $res &= Db::getInstance()->execute('
+            UPDATE `'._DB_PREFIX_.'image_shop` image_shop, '._DB_PREFIX_.'image i
+            SET image_shop.`cover` = 1,
+            i.cover = 1
+            WHERE image_shop.`id_image` = (SELECT id_image FROM
+                                                        (SELECT image_shop.id_image
+                                                            FROM '._DB_PREFIX_.'image i'.
+                                                            Shop::addSqlAssociation('image', 'i').'
+                                                            WHERE i.id_product ='.(int)$id_product.' LIMIT 1
+                                                        ) tmpImage)
+            AND id_shop='.(int)$this->context->shop->id.'
+            AND i.id_image = image_shop.id_image
+            ');
+        }
+        return $res;
     }
 
     private function saveProductImages($files) {
