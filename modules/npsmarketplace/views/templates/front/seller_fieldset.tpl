@@ -26,7 +26,7 @@
         {foreach from=$languages item=lang}
             <div class="tab-pane {if $lang.id_lang == $current_id_lang}active{/if}" id="shop_lang{$lang.id_lang}">
                 <div class="form-group">
-                    <textarea class="validate form-control rte textarea-autosize" data-validate="isMessage" name="company_description[{$lang.id_lang}]">{if isset($smarty.post.company_description[$lang.id_lang])}{$smarty.post.company_description[$lang.id_lang]}{else}{if isset($seller['company_description'][$lang.id_lang])}{$seller['company_description'][$lang.id_lang]|escape:'html':'UTF-8'}{/if}{/if}</textarea>
+                    <textarea class="tinymce form-control" name="company_description[{$lang.id_lang}]">{if isset($smarty.post.company_description[$lang.id_lang])}{$smarty.post.company_description[$lang.id_lang]}{else}{if isset($seller['company_description'][$lang.id_lang])}{$seller['company_description'][$lang.id_lang]|escape:'html':'UTF-8'}{/if}{/if}</textarea>
                 </div>
             </div>
         {/foreach}
@@ -71,7 +71,7 @@
         {foreach from=$languages item=lang}
             <div class="tab-pane {if $lang.id_lang == $current_id_lang}active{/if}" id="shop_lang_reg{$lang.id_lang}">
                 <div class="form-group">
-                    <textarea class="form-control rte textarea-autosize" name="regulations[{$lang.id_lang}]">{if isset($smarty.post.regulations[$lang.id_lang])}{$smarty.post.regulations[$lang.id_lang]}{else}{if isset($seller['regulations'][$lang.id_lang])}{$seller['regulations'][$lang.id_lang]|escape:'html':'UTF-8'}{/if}{/if}</textarea>
+                    <textarea class="tinymce form-control" name="regulations[{$lang.id_lang}]">{if isset($smarty.post.regulations[$lang.id_lang])}{$smarty.post.regulations[$lang.id_lang]}{else}{if isset($seller['regulations'][$lang.id_lang])}{$seller['regulations'][$lang.id_lang]|escape:'html':'UTF-8'}{/if}{/if}</textarea>
                 </div>
             </div>
         {/foreach}

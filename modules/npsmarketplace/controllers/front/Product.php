@@ -31,9 +31,12 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
         $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/dropzone.js');
         $this->addJS ("https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places");
         $this->addJS(_PS_JS_DIR_.'validate.js');
-        $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/add_product_map.js');
+        $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/edit_map.js');
+        $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/dropzone_init.js');
         $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/datetime_init.js');
         $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/bootstrap-datetimepicker.min.js');
+        $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/tinymce/tinymce.min.js');
+        $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/tinymce_init.js');
 
         $this->addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/dropzone.css');
         $this->addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/bootstrap-datetimepicker.min.css');
@@ -267,6 +270,8 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
         $categoriesList = new CategoriesList($this->context);
         $form_token = uniqid();
         $this->context->cookie->__set('form_token', $form_token);
+        $iso = $this->context->language->iso_code;
+
         $this -> context -> smarty -> assign(array(
             'HOOK_MY_ACCOUNT_COLUMN' => Hook::exec('displayMyAccountColumn'),
             'user_agreement_url' =>'#',
@@ -283,6 +288,9 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             'max_images' => self::MAX_IMAGES,
             'max_image_size' => (int)Configuration::get('PS_PRODUCT_PICTURE_MAX_SIZE') / 1024 /1024, 
             'new_tem_link' => $this->context->link->getModuleLink('npsmarketplace', 'ProductCombination', array('id_product' => $this->_product->id)),
+            'iso' => file_exists(_PS_CORE_DIR_.'/js/tiny_mce/langs/'.$iso.'.js') ? $iso : 'en',
+            'path_css' => _THEME_CSS_DIR_,
+            'tinymce' => true
         ));
 
         $this->setTemplate('product.tpl');

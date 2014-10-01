@@ -459,7 +459,7 @@
                     <table class="table-data-sheet">
                         {foreach from=$features item=feature}
                         <tr class="{cycle values="odd,even"}">
-                            {if isset($feature.value)}              
+                            {if isset($feature.value)}
                             <td>{$feature.name|escape:'html':'UTF-8'}</td>
                             <td>{$feature.value|escape:'html':'UTF-8'}</td>
                             {/if}
@@ -474,7 +474,7 @@
                 {if isset($product) && $product->description}
                 <div class="tab-pane fade" id="product-more-info">
                     <!-- full description -->
-                    <div  class="rte">{$product->description}</div>
+                    <div class="rte">{$product->description}</div>
                 </div>
                 {/if}
                  <!--end  More info -->

@@ -20,6 +20,8 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
                 _PS_JS_DIR_.'validate.js',
                 _PS_JS_DIR_.'tiny_mce/tiny_mce.js',
                 _PS_JS_DIR_.'tinymce.inc.js',
+                _PS_MODULE_DIR_.'npsmarketplace/js/tinymce/tinymce.min.js',
+                 _PS_MODULE_DIR_.'npsmarketplace/js/tinymce_init.js'
             ));
     }
 

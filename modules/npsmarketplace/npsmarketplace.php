@@ -196,7 +196,7 @@ class NpsMarketplace extends Module {
         if(isset($id_seller) && $id_seller > 0) {
             $this->context->controller->addJS (array(
                 "https://maps.googleapis.com/maps/api/js",
-                _PS_MODULE_DIR_.'npsmarketplace/js/product_map.js'
+                _PS_MODULE_DIR_.'npsmarketplace/js/view_map.js'
             ));
             $this->context->controller->addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/map.css');
             $features = Product::getFeaturesStatic((int)$id_product);
