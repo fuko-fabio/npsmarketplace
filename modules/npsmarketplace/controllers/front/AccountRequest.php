@@ -24,7 +24,7 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
         if (Tools::isSubmit('submitSeller')) {
 
             $seller = new Seller(null, $this->context->customer->id);
-            if ($this->_seller->id != null) 
+            if ($seller->id == null) 
                 Tools::redirect('index.php?controller=my-account');
             $nps_instance = new NpsMarketplace();
 
@@ -76,7 +76,7 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
 
                 $link_rewrite[$lang['id_lang']] = Tools::link_rewrite($name);
             }
-    
+
             if(empty($this->errors)) {
                 $seller -> company_name = $company_name;
                 $seller -> company_description = $company_description;
