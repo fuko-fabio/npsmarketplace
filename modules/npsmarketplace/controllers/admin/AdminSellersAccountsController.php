@@ -444,10 +444,17 @@ class AdminSellersAccountsController extends AdminController
         return $ret;
     }
 
+    public function setMedia() {
+        parent::setMedia();
+
+        $this->addJqueryUI('ui.datepicker');
+    }
+
     public function renderView() {
         $obj = $this->loadObject(true);
 
         $this->tpl_view_vars = array(
+            'HOOK_ADMIN_SELLER_VIEW' => Hook::exec('adminSellerView'),
             'seller' => $obj,
             'products' => $this->getProducts($obj),
             'currency' => $this->context->currency,

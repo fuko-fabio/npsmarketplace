@@ -2,6 +2,9 @@
     @author Norbert Pabian <norbert.pabian@gmail.com>
     @copyright 2014 npsoftware
 -->
+
+{$HOOK_ADMIN_SELLER_VIEW}
+
 <div id="container-seller">
     <div class="row">
         {*left*}

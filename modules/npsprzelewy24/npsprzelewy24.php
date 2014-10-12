@@ -47,6 +47,7 @@ class NpsPrzelewy24 extends PaymentModule {
             && $this->createOrderStates()
             && $this->createTab()
             && $this->registerHook('payment')
+            && $this->registerHook('adminSellerView')
             && $this->registerHook('displayOrderDetail')
             && $this->registerHook('displayCustomerAccount');
     }
@@ -56,6 +57,7 @@ class NpsPrzelewy24 extends PaymentModule {
             && $this->unregisterHook('displayCustomerAccount')
             && $this->unregisterHook('payment')
             && $this->unregisterHook('displayOrderDetail')
+            && $this->unregisterHook('adminSellerView')
             && $this->deleteTab()
             && $this->deleteOrderStates()
             && $this->deleteTables();
@@ -378,6 +380,13 @@ class NpsPrzelewy24 extends PaymentModule {
         );
         return $this->display(__FILE__, 'npsprzelewy24.tpl');
        }
+    }
+
+    public function hookAdminSellerView() {
+        $this->context->smarty->assign(
+            'id_seller', Tools::getValue('id_seller')
+        );
+        return $this->display(__FILE__, 'seller_generator.tpl');
     }
 
     public function hookPayment() {
