@@ -64,3 +64,13 @@ CREATE TABLE IF NOT EXISTS `PREFIX_p24_dispatch_history_detail` (
   KEY `id_p24_dispatch_history` (`id_p24_dispatch_history`),
   KEY `id_seller` (`id_seller`)
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `PREFIX_seller_invoice` (
+  `id_seller_invoice` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `id_seller` INT UNSIGNED NOT NULL,
+  `start_date` datetime,
+  `end_date` datetime,
+  `generated_date` datetime,
+  `filename` char(32) NOT NULL,
+  KEY `id_seller` (`id_seller`)
+) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;

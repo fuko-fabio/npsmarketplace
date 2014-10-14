@@ -8,6 +8,9 @@
         console.log(generateReportUrl);
         window.open(generateReportUrl, '_blank');
     }
+    $(function() {
+        $( ".datepicker" ).datepicker();
+    });
 </script>
 <div id="container-reports">
     <div class="panel clearfix">
@@ -20,7 +23,7 @@
                 <div class="col-lg-6">
                     <label>{l s='Date from' mod='npsprzelewy24'}</label>
                     <div class="input-group fixed-width-xl">
-                        <input type="text" name="start_date" class="datepicker" value="{date('Y-m-d')}" />
+                        <input type="text" name="start_date" class="datepicker" value="{date('Y-m-01', strtotime('-1 month'))}" />
                         <div class="input-group-addon">
                             <i class="icon-calendar-o"></i>
                         </div>
@@ -29,7 +32,7 @@
                 <div class="col-lg-6">
                     <label>{l s='Date to' mod='npsprzelewy24'}</label>
                     <div class="input-group fixed-width-xl">
-                        <input type="text" name="end_date" class="datepicker" value="{date('Y-m-d')}" />
+                        <input type="text" name="end_date" class="datepicker" value="{date('Y-m-t', strtotime('-1 month'))}" />
                         <div class="input-group-addon">
                             <i class="icon-calendar-o"></i>
                         </div>

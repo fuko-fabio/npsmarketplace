@@ -280,6 +280,7 @@ class AdminSellersAccountsController extends AdminController
         $image_size = file_exists($image) ? filesize($image) / 1000 : false;
 
         $this->fields_form = array(
+        'tinymce' => true,
             'legend' => array(
                 'title' => $this->l('Seller'),
                 'icon' => 'icon-user'
@@ -343,6 +344,7 @@ class AdminSellersAccountsController extends AdminController
                     'name' => 'company_description',
                     'required' => true,
                     'lang' => true,
+                    'autoload_rte' => 'rte', //Enable TinyMCE editor
                 ),
                 array(
                     'type' => 'text',
@@ -412,6 +414,7 @@ class AdminSellersAccountsController extends AdminController
                     'label' => $this->l('Company Regulations'),
                     'name' => 'regulations',
                     'lang' => true,
+                    'autoload_rte' => 'rte', //Enable TinyMCE editor
                 ),
             ),
             'submit' => array(

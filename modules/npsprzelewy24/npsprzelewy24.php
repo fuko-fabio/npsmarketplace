@@ -428,8 +428,8 @@ class NpsPrzelewy24 extends PaymentModule {
         $languages = Language::getLanguages();
         foreach ($languages AS $language)
             $t->name[intval($language['id_lang'])] = 'Payment History';
-
         $resutl = $t->add();
+
         $t = new Tab();
         $t->id_parent = $tabs[0]->id;
         $t->position = 2;
@@ -438,6 +438,16 @@ class NpsPrzelewy24 extends PaymentModule {
         $languages = Language::getLanguages();
         foreach ($languages AS $language)
             $t->name[intval($language['id_lang'])] = 'Przelewy24 Accounts';
+        $resutl && $t->add();
+
+        $t = new Tab();
+        $t->id_parent = $tabs[0]->id;
+        $t->position = 3;
+        $t->module = $this->name;
+        $t->class_name = 'AdminSellerInvoices';
+        $languages = Language::getLanguages();
+        foreach ($languages AS $language)
+            $t->name[intval($language['id_lang'])] = 'Sellers Invoices';
 
         return $resutl && $t->add();
     }

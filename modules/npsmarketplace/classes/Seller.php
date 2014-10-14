@@ -84,7 +84,7 @@ class Seller extends ObjectModel
         'multilang' => true,
         'fields' => array(
             'id_customer' =>         array('type' => self::TYPE_INT,    'validate' => 'isUnsignedId',  'required' => true),
-            'request_date' =>        array('type' => self::TYPE_STRING, 'validate' => 'isDateFormat'),
+            'request_date' =>        array('type' => self::TYPE_DATE,   'validate' => 'isDateFormat'),
             'active' =>              array('type' => self::TYPE_BOOL,   'validate' => 'isBool',        'required' => true),
             'requested' =>           array('type' => self::TYPE_BOOL,   'validate' => 'isBool',        'required' => true),
             'locked' =>              array('type' => self::TYPE_BOOL,   'validate' => 'isBool',        'required' => true),
@@ -98,8 +98,8 @@ class Seller extends ObjectModel
             'company_name' =>        array('type' => self::TYPE_STRING, 'validate' => 'isGenericName', 'required' => true,),
              // Lang fields
             'link_rewrite' =>        array('type' => self::TYPE_STRING, 'validate' => 'isLinkRewrite', 'required' => true, 'lang' => true, 'size' => 128),
-            'company_description' => array('type' => self::TYPE_STRING, 'validate' => 'isCleanHtml',   'required' => false,'lang' => true),
-            'regulations' =>         array('type' => self::TYPE_STRING, 'validate' => 'isCleanHtml',   'required' => false,'lang' => true),
+            'company_description' => array('type' => self::TYPE_HTML,   'validate' => 'isCleanHtml',   'required' => false,'lang' => true),
+            'regulations' =>         array('type' => self::TYPE_HTML,   'validate' => 'isCleanHtml',   'required' => false,'lang' => true),
         ),
         'associations' => array(
             'customer' => array('type' => self::HAS_ONE,  'field' => 'id_customer', 'object' => 'Customer'),

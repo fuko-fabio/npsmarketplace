@@ -28,7 +28,7 @@
         {if $seller['company_description'][$current_id_lang]}
         <p class="rte align_justify">
             <label>{l s='Company description' mod='npsmarketplace'}</label><br />
-            {$seller['company_description'][$current_id_lang]}
+            <div class="rte">{$seller['company_description'][$current_id_lang]}</div>
         </p>
         <!-- end short_description_block -->
         {/if}
@@ -69,7 +69,7 @@
         </div>
         {if $seller['regulations_active']}
         <div class="tab-pane fade" id="seller_regulations">
-            <textarea class="form-control" readonly="">{$seller['regulations'][$current_id_lang]}</textarea>
+            <div class="rte">{$seller['regulations'][$current_id_lang]}</div>
         </div>
         {/if}
         {$HOOK_SELLER_TAB_CONTENT}
