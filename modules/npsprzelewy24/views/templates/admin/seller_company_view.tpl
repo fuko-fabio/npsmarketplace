@@ -1,7 +1,7 @@
-<!--
-    @author Norbert Pabian <norbert.pabian@gmail.com>
-    @copyright 2014 npsoftware
--->
+{*
+*  @author Norbert Pabian <norbert.pabian@gmail.com>
+*  @copyright 2014 npsoftware
+*}
 <div id="container-seller-payment-settings">
     <div class="row">
         {*left*}

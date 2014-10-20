@@ -4,13 +4,14 @@
 *  @copyright 2014 npsoftware
 */
 
+include_once(_PS_MODULE_DIR_.'npsprzelewy24/npsprzelewy24.php');
 include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24SellerCompany.php');
 include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24.php');
 include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24PaymentStatement.php');
 include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24DispatchHistory.php');
 include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24DispatchHistoryDetail.php');
 
-class P24TransationDispatcher {
+class P24TransactionDispatcher {
 
     private $cart;
     private $module;
@@ -24,20 +25,22 @@ class P24TransationDispatcher {
         $this->payment_summary = P24PaymentStatement::getSummaryByCartId($id_cart);
     }
 
-    public function dispatchMoney() {
-        if (!$this->isMerchanSpidValid() || !$this->isPaymentSummaryValid() || $this->alreadyDispatched())
-            return;
+    public function dispatchMoney($retry = false) {
+        if (!$this->isMerchanSpidValid() || !$this->isPaymentSummaryValid() || $this->alreadyDispatched($retry))
+            return false;
 
         $total = $this->cart->getOrderTotal() * 100;
 
         $available_funds = $this->checkFunds($total);
         if($available_funds == null)
-            return;
+            return false;
 
         $merchant_amount = $total;
         $currencies = $this->module->getCurrency(intval($this->cart->id_currency));
+        $date_now = date("Y-m-d H:i:s");
         $currency = $currencies[0];
         $result = array();
+        $sllers_invoices_data = array();
 
         foreach ($this->cart->getProducts() as $product) {
             $id_seller = Seller::getSellerByProduct($product['id_product']);
@@ -53,19 +56,32 @@ class P24TransationDispatcher {
                     'Unable to find seller payment settings. Seller ID: '.$id_seller,
                     'Transaction must by verified manualy'
                 ));
-                return;
+                return false;
             }
+            $total_product_price = $product['price'] * $product['cart_quantity'];
+            $a_f_s = $this->amountForSeller($seller, $total_product_price);
+
+            $invoice_data = array(
+                'id_seller' => $seller->id,
+                'id_product' => $product['id_product'],
+                'product_qty' => $product['cart_quantity'],
+                'id_currency' => intval($this->cart->id_currency),
+                'product_total_price' => $total_product_price,
+                'commission' => ($total_product_price * 100) - $a_f_s,
+                'date' => $date_now,
+            );
+            $sllers_invoices_data[] = $invoice_data;
+
             if (array_key_exists($spid, $result)) {
                 $current_amount = $result[$spid];
-                $a_f_s = $this->amountForSeller($seller, ($product['price'] * $product['cart_quantity']));
                 $merchant_amount = $merchant_amount - $a_f_s;
                 $result[$spid] = $current_amount + $a_f_s;
             } else {
-                $a_f_s = $this->amountForSeller($seller, ($product['price'] * $product['cart_quantity']));
                 $merchant_amount = $merchant_amount - $a_f_s;
                 $result[$spid] = $a_f_s;
             }
         }
+
         $message = 'Payment summary for cart with ID: '.$this->cart->id.' | ';
         foreach($result as $key => $value)
             $message = $message.'Seller ID: '.$key.' amount: '.$value.' | ';
@@ -109,13 +125,13 @@ class P24TransationDispatcher {
 
         $success = $res->error->errorCode ? false : true;
 
-        $history = new P24DispatchHistory();
+        $history = new P24DispatchHistory(null, $this->payment_summary['id_payment']);
         $history->sellers_amount = $sellers_amount;
         $history->sellers_number = $sellers_number;
         $history->p24_amount = $p24_amount;
         $history->merchant_amount = $merchant_amount;
         $history->total_amount = $total;
-        $history->date = date("Y-m-d H:i:s");
+        $history->date = $date_now;
         $history->id_payment = $this->payment_summary['id_payment'];
         $h_s = $success;
         foreach ($res->result as $r) {
@@ -136,6 +152,26 @@ class P24TransationDispatcher {
             $h->error = $r->error;
             $h->merchant = $r->sellerId == $this->merchant_spid;
             $h->save();
+        }
+        
+        if ($success) {
+            $this->persistInvoicesData($sllers_invoices_data);
+        }
+        return $success;
+    }
+
+    private function persistInvoicesData($sllers_invoices_data) {
+        foreach ($sllers_invoices_data as $data) {
+            $sql = 'INSERT INTO `'._DB_PREFIX_.'seller_invoice_data`
+            (`id_seller`, `id_product`, `id_currency`, `product_qty`, `product_total_price`, `commission`, `date`)
+            VALUES ('.$data['id_seller']
+            .','.$data['id_product']
+            .','.$data['id_currency']
+            .','.$data['product_qty']
+            .','.$data['product_total_price']
+            .','.$data['commission']
+            .',\''.$data['date'].'\')';
+            Db::getInstance()->execute($sql);
         }
     }
 
@@ -206,9 +242,9 @@ class P24TransationDispatcher {
         return true;
     }
 
-    private function alreadyDispatched() {
+    private function alreadyDispatched($retry) {
         $history = new P24DispatchHistory(null, $this->payment_summary['id_payment']);
-        if ($history->id != null) {
+        if ($history->id != null && !$retry) {
             $this->module->reportError(array(
                 'Unable to dispatch money',
                 'Money already dispatched.',

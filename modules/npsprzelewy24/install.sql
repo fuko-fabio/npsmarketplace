@@ -74,3 +74,16 @@ CREATE TABLE IF NOT EXISTS `PREFIX_seller_invoice` (
   `filename` char(32) NOT NULL,
   KEY `id_seller` (`id_seller`)
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `PREFIX_seller_invoice_data` (
+  `id_seller` INT UNSIGNED NOT NULL,
+  `id_product` INT UNSIGNED NOT NULL,
+  `id_currency` INT UNSIGNED NOT NULL,
+  `product_total_price` INT UNSIGNED NOT NULL,
+  `product_qty` INT UNSIGNED NOT NULL,
+  `commission` INT UNSIGNED NOT NULL,
+  `date` datetime,
+  KEY `id_seller` (`id_seller`),
+  KEY `id_product` (`id_product`),
+  KEY `id_currency` (`id_currency`)
+) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;

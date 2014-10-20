@@ -6,7 +6,7 @@
 
 include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24PaymentValidator.php');
 include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24ErrorMessage.php');
-include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24TransationDispatcher.php');
+include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24TransactionDispatcher.php');
 
 class NpsPrzelewy24PaymentReturnModuleFrontController extends ModuleFrontController {
 
@@ -55,7 +55,7 @@ class NpsPrzelewy24PaymentReturnModuleFrontController extends ModuleFrontControl
                     'price' => $price,
                     'reference_order' => Order::getUniqReferenceOf($id_order)
                 ));
-                $dispatcher = new P24TransationDispatcher($id_cart);
+                $dispatcher = new P24TransactionDispatcher($id_cart);
                 $dispatcher->dispatchMoney();
             } else {
                 if ($result['error'] == 1)

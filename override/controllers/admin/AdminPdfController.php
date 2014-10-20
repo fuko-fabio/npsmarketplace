@@ -3,11 +3,8 @@
 *  @author Norbert Pabian <norbert.pabian@gmail.com>
 *  @copyright 2014 npsoftware
 */
-include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
 
 class AdminPdfController extends AdminPdfControllerCore {
-
-    const TEMPLATE_SALES_REPORT = 'SalesReport';
 
     public function processGenerateSalesReportPDF() {
         if (Tools::isSubmit('id_seller') && Tools::isSubmit('start') && Tools::isSubmit('end'))
@@ -17,11 +14,11 @@ class AdminPdfController extends AdminPdfControllerCore {
     }
 
     private function generateSalesReportPDF($id_seller, $start, $end) {
-        $seller = new Seller($id_seller);
-        $this->generatePDF(array(
-            'seller' => $seller,
+        require_once _PS_MODULE_DIR_.'npsprzelewy24/classes/HTMLTemplateSalesReport.php';
+        $this->generatePDF(array(array(
+            'id_seller' => $id_seller,
             'start_date' => $start,
             'end_date' => $end
-        ), self::TEMPLATE_SALES_REPORT);
+        )), 'SalesReport');
     }
 }

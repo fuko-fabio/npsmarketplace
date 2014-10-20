@@ -1,7 +1,7 @@
-<!--
-    @author Norbert Pabian <norbert.pabian@gmail.com>
-    @copyright 2014 npsoftware
--->
+{*
+*  @author Norbert Pabian <norbert.pabian@gmail.com>
+*  @copyright 2014 npsoftware
+*}
 <div class="panel">
     <div class="row">
         <div class="col-lg-12">
@@ -76,6 +76,12 @@
                         </table>
                     </div>
                 </div>
+                {if $available_funds != 0}
+                    <a class="btn btn-primary pull-right" href="{$link->getAdminLink('AdminDispatchHistory')}&retryDispatch&viewp24_dispatch_history&id_cart={$cart->id}&id_p24_dispatch_history={$history->id}">
+                        <i class="icon-money"></i>
+                        {l s='Retry' mod='npsprzelewy24'}
+                    </a>
+                {/if}
             </form>
         </div>
     </div>

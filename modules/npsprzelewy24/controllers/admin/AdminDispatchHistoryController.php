@@ -7,6 +7,7 @@ include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24DispatchHistory.php');
 include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24Payment.php');
 include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24PaymentStatement.php');
 include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24.php');
+include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24TransactionDispatcher.php');
 
 class AdminDispatchHistoryController extends AdminController {
     protected $delete_mode;
@@ -165,4 +166,20 @@ class AdminDispatchHistoryController extends AdminController {
         return $products;
     }
 
+    public function initProcess() {
+        parent::initProcess();
+
+        if (Tools::isSubmit('retryDispatch') && $this->id_object) {
+            if ($this->tabAccess['edit'] === '1')
+                $this->action = 'retry_dispatch';
+            else
+                $this->errors[] = Tools::displayError('You do not have permission to edit this.');
+        }
+    }
+
+    public function processRetryDispatch() {
+        $id_cart = trim(Tools::getValue('id_cart'));
+        $dispatcher = new P24TransactionDispatcher($id_cart);
+        $dispatcher->dispatchMoney(true);
+    }
 }

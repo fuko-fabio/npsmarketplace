@@ -1,8 +1,11 @@
+{*
+*  @author Norbert Pabian <norbert.pabian@gmail.com>
+*  @copyright 2014 npsoftware
+*}
 <script type="text/javascript">
-    var generateReportUrl = "{$link->getAdminLink('AdminPdf')|escape:'html':'UTF-8'}&submitAction=generateSalesReportPDF&id_seller={$id_seller}"
+    var generateReportUrl = "{$link->getAdminLink('AdminPdf')}&submitAction=generateSalesReportPDF&id_seller={$id_seller}"
 
     function generateReport() {
-        generateReportUrl = unescape(generateReportUrl);
         generateReportUrl += '&start=' + $("[name='start_date']").val();
         generateReportUrl += '&end=' + $("[name='end_date']").val();
         console.log(generateReportUrl);

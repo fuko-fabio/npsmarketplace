@@ -7,7 +7,7 @@ include(dirname(__FILE__).'/../../config/config.inc.php');
 include dirname(__FILE__).'/../../init.php';
 include(_PS_MODULE_DIR_.'npsprzelewy24/npsprzelewy24.php');
 include(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24PaymentValidator.php');
-include(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24TransationDispatcher.php');
+include(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24TransactionDispatcher.php');
 
 $p24_error_code = Tools::getValue('p24_error_code');
 $p24_token = Tools::getValue('p24_token'); 
@@ -28,7 +28,7 @@ if (empty($p24_error_code)) {
     $result = $validator->validate($p24_token, true);
     if ($result['error'] == 0) {
         PrestaShopLogger::addLog('Background payment. Verification success. Session ID: '.Tools::getValue('p24_session_id'));
-        $dispatcher = new P24TransationDispatcher($id_cart);
+        $dispatcher = new P24TransactionDispatcher($id_cart);
         $dispatcher->dispatchMoney();
     } else {
         $history = new OrderHistory();
