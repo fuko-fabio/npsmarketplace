@@ -3,28 +3,19 @@
 *  @author Norbert Pabian <norbert.pabian@gmail.com>
 *  @copyright 2014 npsoftware
 */
-include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
-include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24SellerCompany.php');
+require_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
+require_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24SellerCompany.php');
 
-class HTMLTemplateSalesReport extends HTMLTemplate {
+class HTMLTemplateShopSalesReport extends HTMLTemplate {
 
-    private $seller;
-    private $start_date;
-    private $end_date;
-    private $full_start_date;
-    private $full_end_date;
+    protected $report_data;
+    protected $month_summary = false;
+    
     public $available_in_your_account = false;
-    private $month_summary = false;
-
+        
     public function __construct($report, $smarty) {
         $this->smarty = $smarty;
-        $this->seller = new Seller($report['id_seller']);
-        $this->full_start_date = $report['start_date'];
-        $this->full_end_date = $report['end_date'];
-        $parts = explode(' ', $report['start_date']);
-        $this->start_date = $parts[0];
-        $parts = explode(' ', $report['end_date']);
-        $this->end_date = $parts[0];
+        $this->report_data = $report['report_data'];
         if (isset($report['month_summary'])) {
             $this->month_summary = $report['month_summary'];
         }
@@ -33,9 +24,15 @@ class HTMLTemplateSalesReport extends HTMLTemplate {
 
         $ctx = Context::getContext();
         $id_lang = $ctx->language->id;
-        $this->title = HTMLTemplateSalesReport::l('Sales report').' '.HTMLTemplateSalesReport::l('from').': '.$this->start_date.' '.HTMLTemplateSalesReport::l('to').': '.$this->end_date;
+        $this->initTitle();
         // footer informations
         $this->shop = $ctx->shop;
+    }
+
+    protected function initTitle() {
+        $this->title = HTMLTemplateShopSalesReport::l('Report').
+            ' '.HTMLTemplateShopSalesReport::l('from').': '.$this->report_data[0]['start_date'].
+            ' '.HTMLTemplateShopSalesReport::l('to').': '.$this->report_data[0]['end_date'];
     }
 
     /**
@@ -43,22 +40,16 @@ class HTMLTemplateSalesReport extends HTMLTemplate {
      * @return string HTML content
      */
     public function getContent() {
-        $p24_company = new P24SellerCompany(null, $this->seller->id);
         $items = $this->getItems();
-        $total_commison = $this->count($items, 'commision_price');
-        $total_seller = $this->count($items, 'seller_price');
-        $total = $this->count($items, 'total_price');
 		$data = array(
 		    'id_currency' => (int)Configuration::get('PS_CURRENCY_DEFAULT'),
             'date' => $this->date,
-            'company' => $p24_company,
             'items' => $items,
-            'total_commission' => $total_commison,
-            'total_seller' => $total_seller,
-            'total' => $total,
-            'start_date' => $this->start_date,
-			'end_date' => $this->end_date,
-			'seller' => $this->seller
+            'total_commission' => $this->count($items, 'total_commission'),
+            'total_seller' => $this->count($items, 'total_seller'),
+            'total' => $this->count($items, 'total'),
+            'start_date' => $this->report_data[0]['start_date'],
+			'end_date' => $this->report_data[0]['end_date'],
 		);
 
 		if (Tools::getValue('debug'))
@@ -66,33 +57,23 @@ class HTMLTemplateSalesReport extends HTMLTemplate {
 
 		$this->smarty->assign($data);
 
-        return $this->smarty->fetch(_PS_MODULE_DIR_.'npsprzelewy24/views/templates/pdf/sales-report.tpl');
+        return $this->smarty->fetch(_PS_MODULE_DIR_.'npsprzelewy24/views/templates/pdf/shop-report.tpl');
     }
 
     private function getItems() {
-        $rows = Db::getInstance()->executeS('
-            SELECT * FROM `'._DB_PREFIX_.'seller_invoice_data`
-            WHERE (date BETWEEN \''.$this->full_start_date.'\' AND \''.$this->full_end_date.'\') AND `id_seller` = '.(int)$this->seller->id
-        );
-        $result = array();
-        foreach ($rows as $data) {
-            $p = new Product($data['id_product']);
-            $qty = $data['product_qty'];
-            $total = $data['product_total_price'] / 100;
-            $commission = $data['commission'] / 100;
-            $result[] = array(
-                'id_currency' => $data['id_currency'],
-                'date' => $data['date'],
-                'product_name' => $p->name[(int)Configuration::get('PS_LANG_DEFAULT')],
-                'product_reference' => $p->reference,
-                'unit_price' => $total / $qty,
-                'product_quantity' => $qty,
-                'total_price' => $total,
-                'commision_price' => $commission,
-                'seller_price' => $total - $commission
-            );
-        }
-        return $result;
+      $result = array();
+      foreach ($this->report_data as $data) {
+          if($data['empty'])
+              continue;
+          $result[] = array(
+              'total' => $data['total'],
+              'total_commission' => $data['total_commison'],
+              'total_seller' => $data['total_seller'],
+              'id_seller' => $data['id_seller'],
+              'company_name' => $data['company_name']
+          );
+      }
+      return $result;
     }
 
     private function count($items, $attr) {
@@ -108,7 +89,7 @@ class HTMLTemplateSalesReport extends HTMLTemplate {
      * @return string filename
      */
     public function getBulkFilename() {
-        return 'sales_reports.pdf';
+        return 'shop_reports.pdf';
     }
 
     /**
@@ -118,9 +99,10 @@ class HTMLTemplateSalesReport extends HTMLTemplate {
     public function getFilename() {
         $path = '';
         if ($this->month_summary) {
-            $path = _PS_ROOT_DIR_._NPS_SELLER_REPORTS_DIR_;
+            $path = _PS_ROOT_DIR_._NPS_REPORTS_DIR_;
+            @mkdir(_PS_ROOT_DIR_._NPS_REPORTS_DIR_);
         }
-        $file = $path.$this->seller->company_name.'_'.$this->start_date.'_to_'.$this->end_date.'.pdf';
+        $file = $path.$this->report_data[0]['start_date'].'_to_'.$this->report_data[0]['end_date'].'.pdf';
         return $file;
     }
 

@@ -34,9 +34,9 @@
         <td style="text-align: left; background-color: #4D4D4D; color: #FFF; padding-left: 10px; font-weight: bold; width: 35%">{l s='Product / Reference' pdf='true'}</td>
         <td style="background-color: #4D4D4D; color: #FFF; text-align: right; font-weight: bold; width: 15%">{l s='Unit Price' pdf='true'}</td>
         <td style="background-color: #4D4D4D; color: #FFF; text-align: center; font-weight: bold; width: 5%">{l s='Qty' pdf='true'}</td>
-        <td style="background-color: #4D4D4D; color: #FFF; text-align: right; font-weight: bold; width: 15%">{l s='Total' pdf='true'}</td>
-        <td style="background-color: #4D4D4D; color: #FFF; text-align: right; font-weight: bold; width: 15%">{l s='Commission' pdf='true'}</td>
-        <td style="background-color: #4D4D4D; color: #FFF; text-align: right; font-weight: bold; width: 15%">{l s='For seller' pdf='true'}</td>
+        <td style="background-color: #4D4D4D; color: #FFF; text-align: right; font-weight: bold; width: 15%">{l s='Total Turnover' pdf='true'}</td>
+        <td style="background-color: #4D4D4D; color: #FFF; text-align: right; font-weight: bold; width: 15%">{l s='Seller Revenue' pdf='true'}</td>
+        <td style="background-color: #4D4D4D; color: #FFF; text-align: right; font-weight: bold; width: 15%">{l s='Shop Commission' pdf='true'}</td>
     </tr>
     <!-- PRODUCTS -->
     {foreach $items as $item}
@@ -51,27 +51,28 @@
             {displayPrice currency=$item.id_currency price=$item.total_price}
         </td>
         <td style="text-align: right; width: 15%; white-space: nowrap;">
-            {displayPrice currency=$item.id_currency price=$item.commision_price}
+            {displayPrice currency=$item.id_currency price=$item.seller_price}
         </td>
         <td style="text-align: right; width: 15%; white-space: nowrap;">
-            {displayPrice currency=$item.id_currency price=$item.seller_price}
+            {displayPrice currency=$item.id_currency price=$item.commision_price}
         </td>
     </tr>
     {/foreach}
     <!-- END PRODUCTS --> 
     <hr />
     <table style="width: 100%">
-            <tr style="line-height:5px;">
-            <td style="width: 83%; text-align: right; font-weight: bold">{l s='Total Commission' pdf='true'}</td>
+        <tr style="line-height:5px;">
+            <td style="width: 83%; text-align: right; font-weight: bold">{l s='Total seller turnover' pdf='true'}</td>
+            <td style="width: 17%; text-align: right;">{displayPrice currency=$id_currency price=$total}</td>
+        </tr>
+        <tr style="line-height:5px;">
+            <td style="width: 83%; text-align: right; font-weight: bold">{l s='Total shop commission' pdf='true'}</td>
             <td style="width: 17%; text-align: right;">{displayPrice currency=$id_currency price=$total_commission}</td>
         </tr>
+        <hr />
         <tr style="line-height:5px;">
-            <td style="width: 83%; text-align: right; font-weight: bold">{l s='Total Seller' pdf='true'}</td>
+            <td style="width: 83%; text-align: right; font-weight: bold">{l s='Total seller revenue' pdf='true'}</td>
             <td style="width: 17%; text-align: right;">{displayPrice currency=$id_currency price=$total_seller}</td>
-        </tr>
-        <tr style="line-height:5px;">
-            <td style="text-align: right; font-weight: bold">{l s='Total' pdf='true'}</td>
-            <td style="width: 17%; text-align: right;">{displayPrice currency=$id_currency price=$total}</td>
         </tr>
     </table>          
 </table>

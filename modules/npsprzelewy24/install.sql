@@ -72,7 +72,16 @@ CREATE TABLE IF NOT EXISTS `PREFIX_seller_invoice` (
   `end_date` datetime,
   `generated_date` datetime,
   `filename` char(255) NOT NULL,
+  `empty` tinyint(1) NOT NULL,
   KEY `id_seller` (`id_seller`)
+) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `PREFIX_shop_invoice` (
+  `id_shop_invoice` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `start_date` datetime,
+  `end_date` datetime,
+  `generated_date` datetime,
+  `filename` char(255) NOT NULL
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `PREFIX_seller_invoice_data` (

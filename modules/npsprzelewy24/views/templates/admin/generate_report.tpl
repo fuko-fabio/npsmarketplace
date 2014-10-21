@@ -3,12 +3,11 @@
 *  @copyright 2014 npsoftware
 *}
 <script type="text/javascript">
-    var generateReportUrl = "{$link->getAdminLink('AdminPdf')}&submitAction=generateSalesReportPDF&id_seller={$id_seller}"
+    var generateReportUrl = "{$generate_url}";
 
     function generateReport() {
         generateReportUrl += '&start=' + $("[name='start_date']").val();
         generateReportUrl += '&end=' + $("[name='end_date']").val();
-        console.log(generateReportUrl);
         window.open(generateReportUrl, '_blank');
     }
     $(function() {
@@ -19,7 +18,7 @@
     <div class="panel clearfix">
         <div class="panel-heading">
             <i class="icon-gear"></i>
-            {l s='Sales report' mod='npsprzelewy24'}
+            {l s='Shop report' mod='npsprzelewy24'}
         </div>
         <div class="form-horizontal">
             <div class="row">

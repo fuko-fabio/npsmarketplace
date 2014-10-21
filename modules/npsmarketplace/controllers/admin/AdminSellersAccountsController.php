@@ -427,6 +427,19 @@ class AdminSellersAccountsController extends AdminController
         return parent::renderForm();
     }
 
+    public function initPageHeaderToolbar() {
+        parent::initPageHeaderToolbar();
+
+        if ($this->display != 'edit' && $this->display != 'add' && $this->display != 'view') {
+
+            $this->page_header_toolbar_btn['new_seller'] = array(
+                'href' => self::$currentIndex.'&addseller&token='.$this->token,
+                'desc' => $this->l('Add new seller'),
+                'icon' => 'process-icon-new'
+            );
+        }
+    }
+
     protected function postImage($id) {
         $ret = parent::postImage($id);
         if (($id_seller = (int)Tools::getValue('id_seller')) &&

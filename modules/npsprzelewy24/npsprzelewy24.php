@@ -7,14 +7,10 @@
 if (!defined('_PS_VERSION_'))
     exit;
 
-if ( !defined( '_NPS_REPORTS_DIR_' ) ) {
+if ( !defined( '_NPS_REPORTS_DIR_' ) )
     define('_NPS_REPORTS_DIR_', '/sales_reports/');
-    @mkdir(_PS_ROOT_DIR_._NPS_REPORTS_DIR_);
-}
-if ( !defined( '_NPS_SELLER_REPORTS_DIR_' ) ) {
+if ( !defined( '_NPS_SELLER_REPORTS_DIR_' ) )
     define('_NPS_SELLER_REPORTS_DIR_', _NPS_REPORTS_DIR_.'sellers/');
-    @mkdir(_PS_ROOT_DIR_._NPS_REPORTS_DIR_._NPS_SELLER_REPORTS_DIR_);
-}
 
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
 
@@ -122,6 +118,9 @@ class NpsPrzelewy24 extends PaymentModule {
         return Db::getInstance()->Execute('
             DROP TABLE IF EXISTS
             `'._DB_PREFIX_.'p24_payment`,
+            `'._DB_PREFIX_.'shop_invoice`,
+            `'._DB_PREFIX_.'seller_invoice`,
+            `'._DB_PREFIX_.'seller_invoice_data`,
             `'._DB_PREFIX_.'p24_payment_statement`,
             `'._DB_PREFIX_.'p24_seller_company`,
             `'._DB_PREFIX_.'p24_dispatch_history`,
@@ -396,7 +395,7 @@ class NpsPrzelewy24 extends PaymentModule {
         $this->context->smarty->assign(
             'id_seller', Tools::getValue('id_seller')
         );
-        return $this->display(__FILE__, 'seller_generator.tpl');
+        return $this->display(__FILE__, 'seller_generate_report.tpl');
     }
 
     public function hookPayment() {
@@ -457,7 +456,17 @@ class NpsPrzelewy24 extends PaymentModule {
         $t->class_name = 'AdminSellerInvoices';
         $languages = Language::getLanguages();
         foreach ($languages AS $language)
-            $t->name[intval($language['id_lang'])] = 'Sellers Invoices';
+            $t->name[intval($language['id_lang'])] = 'Sellers Reports';
+        $resutl && $t->add();
+
+        $t = new Tab();
+        $t->id_parent = $tabs[0]->id;
+        $t->position = 4;
+        $t->module = $this->name;
+        $t->class_name = 'AdminShopInvoices';
+        $languages = Language::getLanguages();
+        foreach ($languages AS $language)
+            $t->name[intval($language['id_lang'])] = 'Shop Reports';
 
         return $resutl && $t->add();
     }

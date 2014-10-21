@@ -62,6 +62,12 @@ class AdminSellerInvoicesController extends AdminController {
                 'type' => 'date',
                 'align' => 'text-right'
             ),
+            'empty' => array(
+                'title' => $this->l('Empty'),
+                'align' => 'text-center',
+                'type' => 'bool',
+                'callback' => 'printIcon',
+            ),
             'filename' => array(
                 'title' => $this->l('PDF'),
                 'align' => 'text-center',
@@ -76,6 +82,10 @@ class AdminSellerInvoicesController extends AdminController {
         $this->shopShareDatas = Shop::SHARE_CUSTOMER;
 
         parent::__construct();
+    }
+
+    public function printIcon($value) {
+        return $value ? '<i class="icon-check"></i>' : '<i class="icon-remove"></i>';
     }
 
     public function printPDFIcons($filename, $tr) {
