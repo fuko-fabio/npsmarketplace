@@ -25,7 +25,9 @@ class AdminSellerCompanyController extends AdminController {
 
         $this->context = Context::getContext();
         $this->default_form_language = $this->context->language->id;
-
+        $this->_join .= 'LEFT JOIN `'._DB_PREFIX_.'seller` s ON (s.`id_seller` = a.`id_seller`)';
+        $this->_select .= 's.`id_seller`, s.`name`, s.`company_name`, s.`nip`';
+        
         $this->fields_list = array(
             'id_p24_seller_company' => array(
                 'title' => $this->l('ID'),
@@ -33,6 +35,18 @@ class AdminSellerCompanyController extends AdminController {
             ),
             'id_seller' => array(
                 'title' => $this->l('Seller ID'),
+                'align' => 'text-center',
+            ),
+            'name' => array(
+                'title' => $this->l('Seller Name'),
+                'align' => 'text-center',
+            ),
+            'company_name' => array(
+                'title' => $this->l('Seller Company Name'),
+                'align' => 'text-center',
+            ),
+            'nip' => array(
+                'title' => $this->l('Seller NIP'),
                 'align' => 'text-center',
             ),
             'spid' => array(

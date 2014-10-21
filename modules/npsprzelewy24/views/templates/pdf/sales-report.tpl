@@ -44,17 +44,17 @@
     <tr style="line-height:6px;background-color:{$bgcolor};">
         <td style="text-align: left; width: 35%">{$item.product_name}{if isset($item.product_reference) && !empty($item.product_reference)} ({l s='Reference:' pdf='true'} {$item.product_reference}){/if}</td>
         <td style="text-align: right; width: 15%; white-space: nowrap;">
-            {displayPrice currency=$id_currency price=$item.unit_price}
+            {displayPrice currency=$item.id_currency price=$item.unit_price}
         </td>
         <td style="text-align: center; width: 5%">{$item.product_quantity}</td>
         <td style="text-align: right; width: 15%; white-space: nowrap;">
-            {displayPrice currency=$id_currency price=$item.total_price}
+            {displayPrice currency=$item.id_currency price=$item.total_price}
         </td>
         <td style="text-align: right; width: 15%; white-space: nowrap;">
-            {displayPrice currency=$id_currency price=$item.commision_price}
+            {displayPrice currency=$item.id_currency price=$item.commision_price}
         </td>
         <td style="text-align: right; width: 15%; white-space: nowrap;">
-            {displayPrice currency=$id_currency price=$item.seller_price}
+            {displayPrice currency=$item.id_currency price=$item.seller_price}
         </td>
     </tr>
     {/foreach}

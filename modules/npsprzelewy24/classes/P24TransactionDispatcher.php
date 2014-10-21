@@ -66,7 +66,7 @@ class P24TransactionDispatcher {
                 'id_product' => $product['id_product'],
                 'product_qty' => $product['cart_quantity'],
                 'id_currency' => intval($this->cart->id_currency),
-                'product_total_price' => $total_product_price,
+                'product_total_price' => $total_product_price * 100,
                 'commission' => ($total_product_price * 100) - $a_f_s,
                 'date' => $date_now,
             );

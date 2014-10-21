@@ -6,6 +6,16 @@
 
 if (!defined('_PS_VERSION_'))
     exit;
+
+if ( !defined( '_NPS_REPORTS_DIR_' ) ) {
+    define('_NPS_REPORTS_DIR_', '/sales_reports/');
+    @mkdir(_PS_ROOT_DIR_._NPS_REPORTS_DIR_);
+}
+if ( !defined( '_NPS_SELLER_REPORTS_DIR_' ) ) {
+    define('_NPS_SELLER_REPORTS_DIR_', _NPS_REPORTS_DIR_.'sellers/');
+    @mkdir(_PS_ROOT_DIR_._NPS_REPORTS_DIR_._NPS_SELLER_REPORTS_DIR_);
+}
+
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
 
 class NpsPrzelewy24 extends PaymentModule {

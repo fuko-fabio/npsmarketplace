@@ -25,5 +25,14 @@ class SellerInvoice extends ObjectModel {
             'filename' =>       array('type' => self::TYPE_STRING, 'required' => true),
         ),
     );
+    
+    public function isGenerated() {
+        if ($this->id_seller == null || $this->start_date == null || $this->end_date == null)
+            return false;
+        return Db::getInstance(_PS_USE_SQL_SLAVE_)->getValue('
+            SELECT `id_seller_invoice`
+            FROM `'._DB_PREFIX_.'seller_invoice`
+            WHERE `id_seller` = '.$this->id_seller.' AND `start_date` = \''.$this->start_date.'\' AND `end_date` = \''.$this->end_date.'\'');
+    }
 }
 

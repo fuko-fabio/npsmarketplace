@@ -12,7 +12,7 @@
         window.open(generateReportUrl, '_blank');
     }
     $(function() {
-        $( ".datepicker" ).datepicker();
+        $( ".datepicker" ).datepicker({ dateFormat: 'yy-mm-dd' });
     });
 </script>
 <div id="container-reports">

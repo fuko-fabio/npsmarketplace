@@ -17,8 +17,8 @@ class AdminPdfController extends AdminPdfControllerCore {
         require_once _PS_MODULE_DIR_.'npsprzelewy24/classes/HTMLTemplateSalesReport.php';
         $this->generatePDF(array(array(
             'id_seller' => $id_seller,
-            'start_date' => $start,
-            'end_date' => $end
+            'start_date' => $start.' 00:00:00',
+            'end_date' => $end.' 23:59:59'
         )), 'SalesReport');
     }
 }

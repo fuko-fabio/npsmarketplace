@@ -1,0 +1,13 @@
+
+[{shop_url}] 
+
+Witaj {firstname}!
+
+W załączniku przezyłamy podsumowanie sprzedarzy za ubiegły miesiąc. 
+
+Dziekujemy za współpracę.
+
+Pozdrawiamy,
+zespół {shop_name}.
+
+To jest automatyczna wiadomość, prosimy na nią NIE odpowiadać.

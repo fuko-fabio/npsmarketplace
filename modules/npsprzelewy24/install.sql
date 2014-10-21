@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `PREFIX_seller_invoice` (
   `start_date` datetime,
   `end_date` datetime,
   `generated_date` datetime,
-  `filename` char(32) NOT NULL,
+  `filename` char(255) NOT NULL,
   KEY `id_seller` (`id_seller`)
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;
 
