@@ -30,6 +30,7 @@
 /override/controllers/admin/*
 !/override/controllers/admin/AdminStatsController.php
 !/override/controllers/admin/AdminProductsController.php
+!/override/controllers/admin/AdminPdfController.php
 
 !/override/controllers/admin/templates
 /override/controllers/admin/templates/*
