@@ -159,6 +159,7 @@ ul.product_list.grid {
     }
     .product-container {
       border: 1px solid $base-listing-border-color;
+      border-bottom: 3px solid $base-listing-border-color;
       background: $light-background;
       padding: 0;
       position: relative;
@@ -225,10 +226,10 @@ ul.product_list.grid {
         display: block;
         position: absolute;
         top: 0;
-        height: 80%;
+        height: 82%;
         width: 100%;
         margin: auto;
-        background: rgba(0,0,0,0.7);
+        background: rgba(0,0,0,0.8);
         text-align: center;
         @media (min-width: $screen-lg) {
           // min 1200px
@@ -279,11 +280,6 @@ ul.product_list.grid {
       &.first-item-of-tablet-line {
         clear: left;
       }
-    }
-  }
-  li.hovered {
-    h5 {
-      min-height: 30px;
     }
   }
 }

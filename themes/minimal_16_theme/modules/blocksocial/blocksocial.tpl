@@ -25,7 +25,8 @@
 *}
 
 <section id="social_block">
-	<ul>
+    <h4>{l s='Stay updated with' mod='blocksocial'} Labs in <span>Town</span>!</h4>
+    <ul>
 		{if $facebook_url != ''}
 			<li class="facebook">
 				<a target="_blank" href="{$facebook_url|escape:html:'UTF-8'}">
@@ -69,6 +70,4 @@
         	</li>
         {/if}
 	</ul>
-    <h4>{l s='Follow us' mod='blocksocial'}</h4>
 </section>
-<div class="clearfix"></div>

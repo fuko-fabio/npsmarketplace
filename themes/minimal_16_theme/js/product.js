@@ -809,7 +809,7 @@ function refreshProductImages(id_product_attribute)
 		$('#wrapResetImages').stop(true, true).hide();
 
 	var thumb_width = $('#thumbs_list_frame >li').width() + parseInt($('#thumbs_list_frame >li').css('marginRight'));
-	$('#thumbs_list_frame').width((parseInt((thumb_width) * $('#thumbs_list_frame >li').length)) + 'px');
+	//$('#thumbs_list_frame').width((parseInt((thumb_width) * $('#thumbs_list_frame >li').length)) + 'px');
 	$('#thumbs_list').trigger('goto', 0);
 	serialScrollFixLock('', '', '', '', 0);// SerialScroll Bug on goto 0 ?
 }
@@ -857,8 +857,8 @@ function checkMinimalQuantity(minimal_quantity)
 	}
 	else
 	{
-		$('#quantity_wanted').css('border', '1px solid #BDC2C9');
-		$('#minimal_quantity_wanted_p').css('color', '#374853');
+		$('#quantity_wanted').css('border', '1px solid transparent');
+		$('#minimal_quantity_wanted_p').css('color', 'transparent');
 	}
 }
 

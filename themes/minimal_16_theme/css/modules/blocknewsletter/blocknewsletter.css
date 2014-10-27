@@ -21,8 +21,7 @@
 /* Block newsletter footer */
 #footer #newsletter_block_left {
   overflow: hidden;
-  width: 50%;
-  float: left;
+  float: right;
   padding: 13px 15px 7px 15px;
   margin-bottom: 0; }
   @media (max-width: 767px) {
@@ -32,7 +31,9 @@
     background: none;
     float: left;
     padding: 7px 16px 5px 0;
-    text-transform: none;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: 300;
     font-size: 21px;
     line-height: 25px;
     border: none; }
@@ -46,25 +47,21 @@
       height: 45px;
       line-height: 30px;
       max-width: 267px;
-      background: #3c3c3c;
-      border-color: #515151;
-      color: #fff;
+      background: #d9d9d9;
+      border-color: #36454f;
+      color: #333;
       padding: 5px 43px 5px 12px;
       display: inline-block;
       float: left; }
-      #footer #newsletter_block_left .form-group .form-control:focus {
-        -moz-box-shadow: black 0px 0px 0px;
-        -webkit-box-shadow: black 0px 0px 0px;
-        box-shadow: black 0px 0px 0px; }
     #footer #newsletter_block_left .form-group .button-small {
       margin-left: -43px;
       border: none;
       background: none;
       text-align: center;
-      color: #908f8f;
-      padding: 8px; }
+      color: #36454f;
+      padding: 9px; }
       #footer #newsletter_block_left .form-group .button-small:before {
-        content: "\f138";
+        content: "\f054";
         font-family: "FontAwesome";
         font-size: 28px;
         line-height: 28px; }

@@ -476,39 +476,23 @@ span.exclusive {
 
 .btn.button-plus,
 .btn.button-minus {
-  font-size: 14px;
-  line-height: 14px;
-  color: $button-pm-color;
-  text-shadow: 1px -1px rgba(0, 0, 0, 0.05);
+  font-size: 16px;
+  line-height: 16px;
+  color: $dark-background;
   padding: 0;
-  border: 1px solid;
-  border-color: #dedcdc #c1bfbf #b5b4b4 #dad8d8;
-  @include border-radius(0);
+  border: none;
   span {
     display: block;
-    border: 1px solid $light-border-color;
     vertical-align: middle;
-    width: 25px;
-    height: 25px;
+    width: 28px;
+    height: 28px;
     text-align: center;
     vertical-align: middle;
     padding: 4px 0 0 0;
-    background: rgb(30, 87, 153);
-    background: rgb(255, 255, 255);
-    background: -moz-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(251, 251, 251, 1) 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(255, 255, 255, 1)), color-stop(100%, rgba(251, 251, 251, 1)));
-    background: -webkit-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(251, 251, 251, 1) 100%);
-    background: -o-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(251, 251, 251, 1) 100%);
-    background: -ms-linear-gradient(top, rgba(255, 255, 255, 1) 0%, rgba(251, 251, 251, 1) 100%);
-    background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(251, 251, 251, 1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#fbfbfb', GradientType=0);
   }
   &:hover {
-    color: $base-text-color;
-    span {
-      filter: none;
-      background: #f6f6f6;
-    }
+    color: $dark-background-hoover;
+    background: $light-background;
   }
 }
 
@@ -743,12 +727,11 @@ table.table_block td {
 }
 
 .new-label {
-  font: 700 14px / 12px $font-family;
+  font: 300 14px / 12px $font-family;
   color: $light-text-color;
-  background: #6ad4ff;
+  background: $product-new-color;
   text-transform: uppercase;
   padding: 9px 0 7px;
-  text-shadow: 1px 1px rgba(0, 0, 0, 0.24);
   width: 130px;
   text-align: center;
   display: block;
@@ -756,42 +739,14 @@ table.table_block td {
   left: -33px;
   top: 16px;
   z-index: 1;
-  @include rotate(-45deg);
-  &:before {
-    position: absolute;
-    bottom: -3px;
-    right: 5px;
-    width: 0px;
-    height: 0px;
-    border-style: solid;
-    border-width: 4px 4px 0px 4px;
-    border-color: #21a3d8 transparent transparent transparent;
-    content: ".";
-    text-indent: -5000px;
-    @include rotate(225deg);
-  }
-  &:after {
-    position: absolute;
-    bottom: -3px;
-    left: 3px;
-    width: 0px;
-    height: 0px;
-    border-style: solid;
-    border-width: 4px 4px 0px 4px;
-    border-color: #21a3d8 transparent transparent transparent;
-    content: ".";
-    text-indent: -5000px;
-    @include rotate(135deg);
-  }
 }
 
 .sale-label {
-  font: 700 14px / 12px $font-family;
+  font: 300 14px / 12px $font-family;
   color: $light-text-color;
-  background: #f13340;
+  background: $product-reduced-price;
   text-transform: uppercase;
   padding: 9px 0 7px;
-  text-shadow: 1px 1px rgba(0, 0, 0, 0.24);
   width: 130px;
   text-align: center;
   display: block;
@@ -799,33 +754,6 @@ table.table_block td {
   right: -33px;
   top: 16px;
   z-index: 1;
-  @include rotate(45deg);
-  &:before {
-    position: absolute;
-    bottom: -3px;
-    right: 4px;
-    width: 0px;
-    height: 0px;
-    border-style: solid;
-    border-width: 4px 4px 0px 4px;
-    border-color: #ad2b34 transparent transparent transparent;
-    content: ".";
-    text-indent: -5000px;
-    @include rotate(225deg);
-  }
-  &:after {
-    position: absolute;
-    bottom: -3px;
-    left: 5px;
-    width: 0px;
-    height: 0px;
-    border-style: solid;
-    border-width: 4px 4px 0px 4px;
-    border-color: #ad2b34 transparent transparent transparent;
-    content: ".";
-    text-indent: -5000px;
-    @include rotate(135deg);
-  }
 }
 
 .ie8 {
@@ -834,24 +762,12 @@ table.table_block td {
     top: 0px;
     width: auto;
     padding: 5px 15px;
-    &:after {
-      display: none;
-    }
-    &:before {
-      display: none;
-    }
   }
   .sale-label {
     right: 0px;
     top: 0px;
     width: auto;
     padding: 5px 15px;
-    &:after {
-      display: none;
-    }
-    &:before {
-      display: none;
-    }
   }
   .new-box {
     top: -1px;
@@ -973,12 +889,11 @@ table.table_block td {
 .block {
   .title_block,
   h4 {
-    font: 600 18px / 22px $font-custom;
+    font: 400 18px / 22px $font-custom;
     color: $base-heading-color;
-    background: #f6f6f6;
-    border-top: 5px solid $dark-border-color;
+    border-bottom: 1px solid $primary-background;
     text-transform: uppercase;
-    padding: 14px 5px 17px 20px;
+    padding: 5px;
     margin-bottom: 20px;
     @media (min-width: $screen-sm) and (max-width: $screen-sm-max) {
       font-size: 14px;
@@ -1105,7 +1020,7 @@ table.table_block td {
     float: right;
     color: $base-text-color;
     text-transform: none;
-    margin-bottom: 10px;
+    margin-bottom: 0;
     @media (max-width: $screen-xs) {
       float: none;
       display: block;
@@ -1683,6 +1598,7 @@ div.star a:hover {
 
 // BREADCRUMB
 .breadcrumb {
+  background: $light-background;
   display: inline-block;
   padding: 0 11px;
   font-weight: bold;
@@ -1690,7 +1606,7 @@ div.star a:hover {
   line-height: 24px;
   min-height: 6px;
   overflow: hidden;
-  margin-bottom: 16px;
+  margin-bottom: 0px;
   position: relative;
   z-index: 1;
   color: $base-text-color;
@@ -1705,10 +1621,9 @@ div.star a:hover {
   }
   a {
     display: inline-block;
-    padding: 0 15px 0 22px;
-    margin-left: -26px;
     position: relative;
     z-index: 2;
+    color: $base-text-color;
     &.home {
       text-align: center;
       padding: 0;
@@ -1719,9 +1634,6 @@ div.star a:hover {
       height: 25px;
       i {
         display: none;
-      }
-      span {
-        color: $base-text-color;
       }
       span:last-of-type {
         color: $primary-background;
@@ -1775,13 +1687,13 @@ div.star a:hover {
 
 // FOOTER
 .footer-container {
-  background-color: $dark-background;
+  background-color: $homepage-footer-bg;
   // min 768px
   @media (min-width: $screen-sm) {
-    background: url(../img/footer-bg.png) repeat-x $dark-background;
+    background: url(../img/footer-bg.png) repeat-x $homepage-footer-bg;
   }
   .container {
-    padding-bottom: 100px;
+    padding-bottom: 160px;
   }
   #footer {
     color: #777777;
@@ -1796,14 +1708,14 @@ div.star a:hover {
       }
     }
     a {
-      color: #777777;
+      color: $dark-text-color;
       &:hover {
-        color: $light-text-color;
+        color: $primary-background;
       }
     }
     h4 {
       font: 600 18px / 22px $font-custom;
-      color: $light-text-color;
+      color: $dark-text-color;
       margin: 0 0 13px 0;
       // max 767px
       @media (max-width: $screen-xs-max) {
@@ -1823,24 +1735,15 @@ div.star a:hover {
         }
       }
       a {
-        color: $light-text-color;
+        color: $dark-text-color;
       }
     }
     ul {
       li {
         padding-bottom: 8px;
-        a {
-          font-weight: bold;
-          text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.4);
-        }
       }
     }
     #block_contact_infos {
-      border-left: 1px solid #515151;
-      // max 767px
-      @media (max-width: $screen-xs-max) {
-        border: none;
-      }
       > div {
         padding: 0 0 0 5px;
         // max 767px
@@ -1854,7 +1757,7 @@ div.star a:hover {
             line-height: 30px;
             > span,
             > span a {
-              color: $light-text-color;
+              color: $dark-text-color;
               font-weight: normal;
             }
             i {
@@ -1863,7 +1766,7 @@ div.star a:hover {
               text-align: center;
               padding-right: 12px;
               float: left;
-              color: #908f8f;
+              color: $dark-text-color;
             }
           }
         }
@@ -1874,7 +1777,6 @@ div.star a:hover {
     }
     #social_block {
       float: left;
-      width: 50%;
       padding: 22px 15px 0 15px;
       // max 767px
       @media (max-width: $screen-xs-max) {
@@ -1884,6 +1786,7 @@ div.star a:hover {
       }
       ul {
         float: right;
+        margin-right: 10px;
         @media (max-width: $screen-xs-max) {
           float: none;
         }
@@ -1897,7 +1800,7 @@ div.star a:hover {
           }
           a {
             display: inline-block;
-            color: #908f8f;
+            color: $light-text-color;
             font-size: 28px;
             // min 768px max 991px
             @media (min-width: $screen-sm) and (max-width: $screen-sm-max) {
@@ -1915,7 +1818,7 @@ div.star a:hover {
               -moz-osx-font-smoothing: grayscale;
             }
             &:hover {
-              color: $light-text-color;
+              color: $primary-background;
             }
           }
           &.facebook {
@@ -1967,23 +1870,44 @@ div.star a:hover {
         margin-bottom: 0;
         font-size: 21px;
         line-height: 25px;
-        text-transform: none;
+        color: $light-text-color;
+        text-transform: uppercase;
+        font-weight: 300;
         padding: 0 10px 0 0;
         // max 767px
         @media (max-width: $screen-xs-max) {
           display: none;
           text-align: center;
         }
+        span {
+          color: $primary-background;
+        }
+      }
+    }
+    .bottom-eu {
+      position: absolute;
+      bottom: -100px;
+      left: 0;
+      width: 100%;
+      img {
+        width:250px;
       }
     }
     .bottom-footer {
       position: absolute;
-      bottom: -55px;
+      bottom: -150px;
       left: 0;
+      width: 100%;
+      border-top: 1px solid #515151;
       div {
         padding: 15px 0 0 0;
-        border-top: 1px solid #515151;
-        width: 100%;
+        float: left;
+      }
+      .cname {
+        font-family: $font-danube;
+      }
+      .csoftware {
+        font-family: $font-quicksand;
       }
     }
   }

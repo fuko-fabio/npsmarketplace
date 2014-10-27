@@ -74,7 +74,7 @@
     }
     span.grower {
       display: block;
-      background: #f6f6f6;
+      background: $light-background;
       position: absolute;
       right: 0;
       top: 0;
@@ -89,20 +89,20 @@
           vertical-align: middle;
           width: 30px;
           height: 30px;
-          color: $base-text-color;
+          color: $dark-background;
           line-height: 30px;
           text-align: center;
         }
       }
       &.CLOSE:before {
         content: "\f067";
-        color: silver;
+        color: $dark-background;
       }
     }
     & span.grower:hover + a,
     a:hover,
     a.selected {
-      background: #f6f6f6;
+      color: $primary-background;
     }
     li {
       a {

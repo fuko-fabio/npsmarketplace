@@ -12,3 +12,13 @@
   font-weight: normal;
   font-style: normal;
 }
+
+@font-face {
+  font-family: 'Danube';
+  src: url('#{$FontAwesomePath}/DANUBE__.TTF');
+}
+
+@font-face {
+  font-family: 'Quicksand';
+  src: url('#{$FontAwesomePath}/Quicksand_Light.otf');
+}

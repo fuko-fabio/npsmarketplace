@@ -111,6 +111,7 @@ ul.product_list.grid > li {
       float: left; } }
   ul.product_list.grid > li .product-container {
     border: 1px solid #d6d4d4;
+    border-bottom: 3px solid #d6d4d4;
     background: #fff;
     padding: 0;
     position: relative; }
@@ -162,10 +163,10 @@ ul.product_list.grid > li {
       display: block;
       position: absolute;
       top: 0;
-      height: 80%;
+      height: 82%;
       width: 100%;
       margin: auto;
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.8);
       text-align: center; }
       @media (min-width: 1200px) {
         ul.product_list.grid > li .product-container .button-container {
@@ -197,8 +198,6 @@ ul.product_list.grid > li {
   @media (min-width: 480px) and (max-width: 991px) {
     ul.product_list.grid > li.first-item-of-tablet-line {
       clear: left; } }
-ul.product_list.grid li.hovered h5 {
-  min-height: 30px; }
 
 @media (min-width: 1200px) {
   #blockpack ul > li.last-line {

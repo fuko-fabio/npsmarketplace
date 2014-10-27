@@ -7,6 +7,8 @@ $font-custom: 'Open Sans', sans-serif;
 $font-icon: "FontAwesome";
 $font-hammer: 'Hammersmith One', sans-serif;
 $font-montser: 'Montserrat', sans-serif;
+$font-danube: 'Danube', sans-serif;
+$font-quicksand: 'Quicksand', sans-serif;
 
 //-------- BORDERS
 $base-border-color: #d6d4d4;
@@ -33,7 +35,7 @@ $light-text-color: #fff;
 $link-color: #3457cb;
 $link-hover-color: #4465cf;
 $description-color: #666;
-$dark-text-color: #121212;
+$dark-text-color: #353535;
 
 //--------- Indents
 $base-page-indent: $grid-gutter-width;
@@ -44,10 +46,11 @@ $base-box-indent: 0 0 30px 0;
 $product-name-color: #3a3939;
 $product-name-hover-color: #515151;
 $price-color: $base-body-color;
-$product-price-color: $base-text-color;
+$product-price-color: $dark-background;
 $product-reduced-price: #f00;
 $product-special-price-color: #f13340;
 $product-old-price-color: #6f6f6f;
+$product-new-color: #28BFFC;
 
 //---------- Buttons
 $button-text-color: $light-text-color;
@@ -81,6 +84,7 @@ $pagination-hover-bg: #f6f6f6;
 //---------- Product Info
 $top-line-color: #C4C4C4;
 $product-image-border: #dbdbdb;
+$product-image-border-shown: $primary-background;
 $scroll-button-color: #c0c0c0;
 $list-info-bg: #f6f6f6;
 $scroll-button-hover-color: $base-text-color;
