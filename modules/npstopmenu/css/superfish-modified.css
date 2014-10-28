@@ -1,0 +1,168 @@
+/*** ESSENTIAL STYLES ***/
+.nps-sf-contener {
+	clear: both;
+}
+.nps-sf-right {
+  margin-right: 14px;
+  float: right;
+  width: 7px;
+}
+.nps-sf-menu, .nps-sf-menu * {
+	margin:			0;
+	padding:		0;
+	list-style:		none;
+}
+.nps-sf-menu {
+	margin: 10px 0;
+	padding:0;
+	color: black;
+}
+.nps-sf-menu ul {
+	position:		absolute;
+	top:			-999em;
+	width:			10em; /* left offset of submenus need to match (see below) */
+}
+.nps-sf-menu ul li {
+	width:			100%;
+}
+.nps-sf-menu li:hover {
+	visibility:		inherit; /* fixes IE7 'sticky bug' */
+}
+.nps-sf-menu li {
+	float:			left;
+	position:		relative;
+	border-right: 1px solid #777;
+}
+.nps-sf-menu a {
+	display:		block;
+	position:		relative;
+}
+.nps-sf-menu li:hover ul,
+.nps-sf-menu li.sfHover ul {
+	left:			0;
+	top:			34px; /* match top ul list item height */
+	z-index:		99;
+	width:auto
+}
+ul.nps-sf-menu li:hover li ul,
+ul.nps-sf-menu li.sfHover li ul {
+	top:			-999em;
+}
+ul.nps-sf-menu li li:hover ul,
+ul.nps-sf-menu li li.sfHover ul {
+	left:			200px; /* match ul width */
+	top:			0;
+}
+ul.nps-sf-menu li li:hover li ul,
+ul.nps-sf-menu li li.sfHover li ul {
+	top:			-999em;
+}
+ul.nps-sf-menu li li li:hover ul,
+ul.nps-sf-menu li li li.sfHover ul {
+	left:			200px; /* match ul width */
+	top:			0;
+}
+
+/*** DEMO SKIN ***/
+.nps-sf-menu {
+	float:			left;
+	margin-bottom:	1em;
+}
+.nps-sf-menu a {
+	display:block;
+	margin-right:2px;
+	padding: 0 22px 0 20px;
+	line-height:34px;
+	border: 0;
+	text-decoration:none;
+}
+.nps-sf-menu a, .nps-sf-menu a:visited  { /* visited pseudo selector so IE6 applies text colour*/
+	white-space:nowrap;
+}
+.nps-sf-menu li li {
+	background: rgba(113, 113, 113, 0.9);
+}
+.nps-sf-menu li li li {
+	background:	rgba(113, 113, 113, 0.9);
+}
+.nps-sf-menu a:focus, .nps-sf-menu a:hover, .nps-sf-menu a:active {
+  	background: white;
+}
+.nps-sf-menu ul li:hover, .nps-sf-menu ul li.sfHover,
+.nps-sf-menu ul li a:focus, .nps-sf-menu ul li a:hover, .nps-sf-menu ul li a:active {
+	background:		white;
+	outline:		0;
+}
+/*** arrows **/
+.nps-sf-menu a.nps-sf-with-ul {
+	padding-right: 	2.25em;
+	min-width:		1px; /* trigger IE7 hasLayout so spans position accurately */
+}
+.nps-sf-sub-indicator {
+	position:		absolute;
+	display:		block;
+	right:			10px;
+	top:			1.05em; /* IE6 only */
+	width:			10px;
+	height:			10px;
+	text-indent: 	-999em;
+	overflow:		hidden;
+	background:		url('../img/arrows-ffffff.png') no-repeat -10px -100px; /* 8-bit indexed alpha png. IE6 gets solid image only */
+}
+a > .nps-sf-sub-indicator {  /* give all except IE6 the correct values */
+	top: 11px;
+	background-position: 0 -100px; /* use translucent arrow for modern browsers*/
+}
+/* apply hovers to modern browsers */
+a:focus > .nps-sf-sub-indicator,
+a:hover > .nps-sf-sub-indicator,
+a:active > .nps-sf-sub-indicator,
+li:hover > a > .nps-sf-sub-indicator,
+li.sfHover > a > .nps-sf-sub-indicator {
+	background-position: -10px -100px; /* arrow hovers for modern browsers*/
+}
+
+/* point right for anchors in subs */
+.nps-sf-menu ul .nps-sf-sub-indicator { background-position:  -10px 0; }
+.nps-sf-menu ul a > .nps-sf-sub-indicator { background-position:  0 0; }
+/* apply hovers to modern browsers */
+.nps-sf-menu ul a:focus > .nps-sf-sub-indicator,
+.nps-sf-menu ul a:hover > .nps-sf-sub-indicator,
+.nps-sf-menu ul a:active > .nps-sf-sub-indicator,
+.nps-sf-menu ul li:hover > a > .nps-sf-sub-indicator,
+.nps-sf-menu ul li.sfHover > a > .nps-sf-sub-indicator {
+	background-position: -10px 0; /* arrow hovers for modern browsers*/
+}
+
+/*** shadows for all but IE6 ***/
+.nps-sf-shadow ul {
+	background:	url('../img/shadow.png') no-repeat bottom right;
+	padding: 0 8px 9px 0;
+	-moz-border-bottom-left-radius: 17px;
+	-moz-border-top-right-radius: 17px;
+	-webkit-border-top-right-radius: 17px;
+	-webkit-border-bottom-left-radius: 17px;
+}
+.nps-sf-shadow ul.nps-sf-shadow-off {
+	background: transparent;
+}
+li.nps-sf-search {
+  background: inherit;
+  float: right;
+  line-height: 25px;
+}
+li.nps-sf-search input {
+  -moz-border-radius: 0 5px 5px 0;
+  padding: 3px 0;
+  padding-left: 20px;
+  margin: 6px 6px 0 0;
+  background: #fff url('../img/search.gif') no-repeat left center;
+  border:1px solid #777
+}
+
+/* hack IE7 */
+.nps-sf-menu a, .nps-sf-menu a:visited {height:34px !IE;}
+.nps-sf-menu li li {
+	width:200px;
+	background: white !IE;
+}

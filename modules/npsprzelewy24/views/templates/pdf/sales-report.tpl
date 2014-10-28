@@ -31,8 +31,9 @@
 <!-- SUMMARY TAB -->
 <table style="width: 100%; font-size: 8pt;">
     <tr style="line-height:4px;">
-        <td style="text-align: left; background-color: #4D4D4D; color: #FFF; padding-left: 10px; font-weight: bold; width: 35%">{l s='Product / Reference' pdf='true'}</td>
-        <td style="background-color: #4D4D4D; color: #FFF; text-align: right; font-weight: bold; width: 15%">{l s='Unit Price' pdf='true'}</td>
+        <td style="text-align: left; background-color: #4D4D4D; color: #FFF; padding-left: 10px; font-weight: bold; width: 30%">{l s='Product / Reference' pdf='true'}</td>
+        <td style="background-color: #4D4D4D; color: #FFF; text-align: center; font-weight: bold; width: 10%">{l s='Date/Time' pdf='true'}</td>
+        <td style="background-color: #4D4D4D; color: #FFF; text-align: right; font-weight: bold; width: 10%">{l s='Unit Price' pdf='true'}</td>
         <td style="background-color: #4D4D4D; color: #FFF; text-align: center; font-weight: bold; width: 5%">{l s='Qty' pdf='true'}</td>
         <td style="background-color: #4D4D4D; color: #FFF; text-align: right; font-weight: bold; width: 15%">{l s='Total Turnover' pdf='true'}</td>
         <td style="background-color: #4D4D4D; color: #FFF; text-align: right; font-weight: bold; width: 15%">{l s='Seller Revenue' pdf='true'}</td>
@@ -42,8 +43,9 @@
     {foreach $items as $item}
     {cycle values='#FFF,#DDD' assign=bgcolor}
     <tr style="line-height:6px;background-color:{$bgcolor};">
-        <td style="text-align: left; width: 35%">{$item.product_name}{if isset($item.product_reference) && !empty($item.product_reference)} ({l s='Reference:' pdf='true'} {$item.product_reference}){/if}</td>
-        <td style="text-align: right; width: 15%; white-space: nowrap;">
+        <td style="text-align: left; width: 30%">{$item.product_name}{if isset($item.product_reference) && !empty($item.product_reference)} ({l s='Reference:' pdf='true'} {$item.product_reference}){/if}</td>
+        <td style="text-align: center; width: 10%">{$item.date}</td>
+        <td style="text-align: right; width: 10%; white-space: nowrap;">
             {displayPrice currency=$item.id_currency price=$item.unit_price}
         </td>
         <td style="text-align: center; width: 5%">{$item.product_quantity}</td>
