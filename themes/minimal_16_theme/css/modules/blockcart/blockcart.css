@@ -4,21 +4,22 @@
 #header .shopping_cart {
   position: relative;
   float: right;
-  padding-top: 50px; }
+  margin-top: 50px;
+  background: #36454F; }
   #header .shopping_cart > a:first-child:after {
     content: "\f0d7";
     font-family: "FontAwesome";
     display: inline-block;
     float: right;
     font-size: 18px;
-    color: #686666;
+    color: #AAA;
     padding: 6px 0 0 0; }
   #header .shopping_cart > a:first-child:hover:after {
     content: "\f0d8";
     padding: 4px 0px 2px 0px; }
 
 .shopping_cart {
-  width: 270px; }
+  width: 220px; }
   @media (max-width: 480px) {
     .shopping_cart {
       padding-top: 20px; } }
@@ -28,29 +29,31 @@
       float: none;
       width: 100%; } }
   .shopping_cart > a:first-child {
-    padding: 7px 10px 14px 16px;
+    padding: 7px 10px 7px 16px;
     display: block;
     font-weight: bold;
-    color: #333;
-    text-shadow: 1px 1px rgba(0, 0, 0, 0.2);
+    color: white;
     overflow: hidden; }
-    @media (min-width: 768px) and (max-width: 991px) {
-      .shopping_cart > a:first-child span.ajax_cart_product_txt, .shopping_cart > a:first-child span.ajax_cart_product_txt_s {
-        display: none !important; } }
+  .shopping_cart > a:first-child span.ajax_cart_product_txt, .shopping_cart > a:first-child span.ajax_cart_product_txt_s, .shopping_cart > a:first-child span.ajax_cart_no_product{
+     display: none !important; }
+  .shopping_cart > a:first-child span.ajax_cart_quantity {
+  	display: inline !important;
+  	font-size: 22px; }
     .shopping_cart > a:first-child b {
-    color: #999999;
-    font: 15px/22px "Open Sans",sans-serif;
+    color: white;
+    font: 22px sans-serif;
     padding-right: 5px;
     text-shadow: none;
     text-transform: uppercase;}
-    .shopping_cart > a:first-child:before {
+    .shopping_cart > a:first-child b:after {
       content: "\f07a";
       font-family: "FontAwesome";
       display: inline-block;
       font-size: 23px;
       line-height: 23px;
       color: #FFAA00;
-      padding-right: 15px; }
+      padding-right: 10px;
+      padding-left: 10px; }
   .shopping_cart .ajax_cart_total {
     display: none !important; }
   .shopping_cart .block_cart_expand:after, .shopping_cart .block_cart_collapse:after {
