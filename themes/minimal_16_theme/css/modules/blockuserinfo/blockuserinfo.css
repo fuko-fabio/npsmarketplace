@@ -1,13 +1,14 @@
 .header_user_info {
   float: right; }
   .header_user_info a {
-    color: white;
-	text-transform:uppercase;
+    color: #fff;
+    font-weight: bold;
     display: block;
-    padding: 9px 9px 11px 9px;
+    padding: 8px 9px 11px 8px;
     cursor: pointer;
     line-height: 18px; }
     @media (max-width: 479px) {
       .header_user_info a {
         font-size: 11px; } }
-    .header_user_info a:hover, .header_user_info a.active { background: #4a5f6d;}
+    .header_user_info a:hover, .header_user_info a.active {
+      background: #5E6A72; }

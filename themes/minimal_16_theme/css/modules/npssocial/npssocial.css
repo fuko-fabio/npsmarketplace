@@ -1,0 +1,78 @@
+/*******************************************************************
+					nps Social Styles
+********************************************************************/
+#nps_social_block {
+  float: right;
+  padding: 15px 15px 0 15px; }
+  #nps_social_block ul {
+    float: right; }
+    @media (max-width: 767px) {
+      #nps_social_block ul {
+        float: none; } }
+    #nps_social_block ul li {
+      float: left;
+      width: 50px;
+      height: 50px;
+      text-align: center;
+      border-radius: 50px;
+      background: #000000;
+      padding-top: 10px;
+      margin-left: 5px; }
+      #nps_social_block ul li:first-of-type {
+        margin-left: 0px; }
+      @media (min-width: 768px) and (max-width: 991px) {
+        #nps_social_block ul li {
+          width: 30px;
+          height: 30px;
+          padding-top: 2px; } }
+      #nps_social_block ul li a {
+        display: inline-block;
+        color: #fff;
+        font-size: 28px; }
+        @media (min-width: 768px) and (max-width: 991px) {
+          #nps_social_block ul li a {
+            font-size: 20px; } }
+        #nps_social_block ul li a span {
+          display: none; }
+        #nps_social_block ul li a:before {
+          display: inline-block;
+          font-family: "FontAwesome";
+          vertical-align: -5px;
+          font-weight: normal;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale; }
+        #nps_social_block ul li a:hover {
+          color: #ffaa00; }
+      #nps_social_block ul li.blog {
+        background: #fff;
+        border: 1px solid #777;
+        width: 130px;
+        border-radius: 0px;
+        margin-right: 10px; }
+        @media (min-width: 768px) and (max-width: 991px) {
+          #nps_social_block ul li.blog {
+            width: 100px; } }
+        #nps_social_block ul li.blog a {
+          color: #777; }
+          #nps_social_block ul li.blog a span {
+            display: inline-block;
+            text-transform: uppercase;
+            font-family: 'Hammersmith One', sans-serif;
+            margin-top: 6px; }
+          #nps_social_block ul li.blog a:hover {
+            color: #ffaa00; }
+      #nps_social_block ul li.facebook a:before {
+        content: "\f09a"; }
+      #nps_social_block ul li.twitter a:before {
+        content: "\f099"; }
+      #nps_social_block ul li.rss a:before {
+        content: "\f09e"; }
+      #nps_social_block ul li.youtube a:before {
+        content: "\f167"; }
+      #nps_social_block ul li.google-plus a:before {
+        content: "\f0d5"; }
+      #nps_social_block ul li.pinterest a:before {
+        content: "\f0d2"; }
+  #nps_social_block h4 {
+    display: none;
+    text-align: center; }

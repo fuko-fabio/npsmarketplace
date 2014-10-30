@@ -200,7 +200,7 @@ ul.sf-menu li li li.sfHover ul {
 		}
 	}
 }
-.cat-title {
+.sf-contener .cat-title {
 	display: none;
 	@media (max-width: $screen-xs-max) { // max 767px
 		display: block;

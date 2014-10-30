@@ -13,10 +13,12 @@
 !/modules/npsprzelewy24
 !/modules/npscalendar
 !/modules/npstopmenu
+!/modules/npssocial
 !/themes
 /themes/*
 !/themes/minimal_16_theme
 /themes/minimal_16_theme/cache/*
+/themes/minimal_16_theme/.idea/*
 
 !/override
 /override/*

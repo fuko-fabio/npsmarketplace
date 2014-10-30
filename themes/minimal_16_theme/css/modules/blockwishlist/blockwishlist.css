@@ -4,17 +4,15 @@
   #wishlist_button:before {
     content: "\f08a";
     font: 400 15px/31px "FontAwesome";
-    color: white;
+    color: #fff;
     background: #929292;
     width: 30px;
     text-align: center;
     display: inline-block;
     height: 30px;
     margin: 0 6px 0 0;
-    -webkit-border-radius: 50px;
     -moz-border-radius: 50px;
-    -ms-border-radius: 50px;
-    -o-border-radius: 50px;
+    -webkit-border-radius: 50px;
     border-radius: 50px; }
 
 /* wishlist block */
@@ -61,7 +59,7 @@
   height: 14px;
   float: right; }
   #wishlist_block .ajax_cart_block_remove_link:hover {
-    color: #515151; }
+    color: #4465cf; }
 #wishlist_block .cart_block_product_name {
   width: 85%;
   display: inline-block;
@@ -87,11 +85,11 @@
   margin-bottom: 20px; }
   #module-blockwishlist-mywishlist .wishlistLinkTop ul.display_list a {
     display: inline-block;
-    color: #333333;
+    color: #333;
     margin: 10px 10px 10px 0px;
     font-weight: bold; }
     #module-blockwishlist-mywishlist .wishlistLinkTop ul.display_list a:hover {
-      color: #515151; }
+      color: #4465cf; }
 
 #module-blockwishlist-mywishlist .wishlistLinkTop li {
   float: left; }
