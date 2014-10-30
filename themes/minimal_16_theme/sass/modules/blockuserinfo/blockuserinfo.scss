@@ -4,7 +4,6 @@
 	float: right;
 	a {
 		color: $light-text-color;
-		font-weight: bold;
 		display: block;
 		padding: 8px 9px 11px 8px;
 		cursor: pointer;
@@ -13,7 +12,7 @@
 			font-size: 11px;
 		}
 		&:hover, &.active {
-			background: $dark-background-hoover;
+			color: $primary-background;
 		}
 	}
 }

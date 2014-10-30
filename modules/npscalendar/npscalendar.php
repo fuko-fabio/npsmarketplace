@@ -25,13 +25,13 @@ class NpsCalendar extends Module {
 
     public function install() {
         return parent::install()
-            && $this->registerHook('displayHome')
+            && $this->registerHook('displayTopColumn')
             && $this->registerHook('header');
     }
 
     public function uninstall() {
         return parent::uninstall()
-            && $this->unregisterHook('displayHome')
+            && $this->unregisterHook('displayTopColumn')
             && $this->unregisterHook('header');
     }
 
@@ -46,7 +46,7 @@ class NpsCalendar extends Module {
         return $output.$this->displayForm();
     }
 
-    public function hookDisplayHome() {
+    public function hookDisplayTopColumn() {
         return $this->display(__FILE__, 'calendar.tpl');
     }
 

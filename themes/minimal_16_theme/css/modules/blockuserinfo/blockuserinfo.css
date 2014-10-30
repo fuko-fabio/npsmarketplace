@@ -2,7 +2,6 @@
   float: right; }
   .header_user_info a {
     color: #fff;
-    font-weight: bold;
     display: block;
     padding: 8px 9px 11px 8px;
     cursor: pointer;
@@ -11,4 +10,4 @@
       .header_user_info a {
         font-size: 11px; } }
     .header_user_info a:hover, .header_user_info a.active {
-      background: #5E6A72; }
+      color: #ffaa00; }

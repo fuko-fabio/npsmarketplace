@@ -1,32 +1,28 @@
 #languages-block-top {
   float: right;
-  position: relative; }
+  position: relative;
+  color: #fff; }
   @media (max-width: 479px) {
     #languages-block-top {
       width: 25%; } }
   #languages-block-top span.firstWord {
     display: none; }
   #languages-block-top:hover {
-    background: #5E6A72; }
+    color: #ffaa00; }
   #languages-block-top div.current {
-    font-weight: bold;
     padding: 8px 10px 10px 10px;
     line-height: 18px;
-    color: #fff;
     cursor: pointer; }
     @media (max-width: 479px) {
       #languages-block-top div.current {
         text-align: center;
         padding: 9px 5px 10px;
         font-size: 11px; } }
-    #languages-block-top div.current strong {
-      color: #777777; }
     #languages-block-top div.current:after {
       content: "\f0d7";
       font-family: "FontAwesome";
       font-size: 18px;
       line-height: 18px;
-      color: #fff;
       vertical-align: -2px;
       padding-left: 12px; }
       @media (max-width: 479px) {
@@ -47,7 +43,6 @@
     background: #36454f;
     z-index: 2; }
     #languages-block-top ul li {
-      color: #fff;
       line-height: 35px;
       font-size: 13px; }
       #languages-block-top ul li a,
@@ -56,4 +51,4 @@
         display: block;
         color: #fff; }
       #languages-block-top ul li.selected, #languages-block-top ul li:hover a {
-        background: #5E6A72; }
+        color: #ffaa00; }

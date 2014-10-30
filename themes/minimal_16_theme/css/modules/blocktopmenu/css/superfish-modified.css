@@ -14,8 +14,9 @@
   position: relative;
   padding: 0;
   width: 100%;
-  border-bottom: 3px solid #e9e9e9;
-  background: #f6f6f6; }
+  border-top: 1px solid #d6d4d4;
+  border-bottom: 1px solid #d6d4d4;
+  background: #fff; }
   @media (max-width: 767px) {
     .sf-menu {
       display: none; } }
@@ -37,8 +38,7 @@
 
 .sf-menu > li {
   float: left;
-  border-right: 1px solid #d6d4d4;
-  margin-bottom: -3px; }
+  border-right: 1px solid #d6d4d4; }
   @media (max-width: 767px) {
     .sf-menu > li {
       float: none;
@@ -58,17 +58,19 @@
         .sf-menu > li span.active:after {
           content: "\f068"; } }
   .sf-menu > li > a {
-    font: 600 18px/22px "Open Sans", sans-serif;
     text-transform: uppercase;
-    color: #484848;
+    color: #36454f;
     display: block;
-    padding: 17px 20px;
-    border-bottom: 3px solid #e9e9e9; }
+    padding: 10px 20px;
+    margin-top: -1px;
+    margin-bottom: -1px;
+    border-top: 1px solid #d6d4d4;
+    border-bottom: 1px solid #d6d4d4; }
   .sf-menu > li.sfHover > a,
   .sf-menu > li > a:hover, .sf-menu > li.sfHoverForce > a {
-    background: #36454f;
-    border-bottom-color: #666666;
-    color: #fff; }
+    color: #ffaa00; }
+  .sf-menu > li:last-of-type {
+    border-right: none; }
 
 .sf-menu li li li a {
   display: inline-block;
@@ -89,7 +91,7 @@
 .sf-menu li ul {
   display: none;
   left: 0;
-  top: 59px;
+  top: 39px;
   /* match top ul list item height */
   z-index: 99;
   padding: 12px 0px 18px 0px;
@@ -140,10 +142,9 @@ ul.sf-menu li li li.sfHover ul {
   width: 100%; }
   .sf-menu > li > ul > li > a {
     text-transform: uppercase;
-    font: 600 16px/20px "Open Sans", sans-serif;
-    color: #333; }
+    color: #36454f; }
     .sf-menu > li > ul > li > a:hover {
-      color: #4465cf; }
+      color: #ffaa00; }
 
 .sf-menu > li > ul > li {
   float: left;

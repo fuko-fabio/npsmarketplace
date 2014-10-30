@@ -4,6 +4,7 @@
 #languages-block-top {
   float: right;
   position: relative;
+  color: $light-text-color;
   // max 479px
   @media (max-width: $screen-xs - 1) {
     width: 25%;
@@ -12,28 +13,22 @@
     display: none;
   }
   &:hover {
-    background: $dark-background-hoover;
+    color: $primary-background;
   }
   div.current {
-    font-weight: bold;
     padding: 8px 10px 10px 10px;
     line-height: 18px;
-    color: $light-text-color;
     cursor: pointer;
     @media (max-width: $screen-xs - 1) {
       text-align: center;
       padding: 9px 5px 10px;
       font-size: 11px;
     }
-    strong {
-      color: #777777;
-    }
     &:after {
       content: "\f0d7";
       font-family: $font-icon;
       font-size: 18px;
       line-height: 18px;
-      color: $light-text-color;
       vertical-align: -2px;
       padding-left: 12px;
       // max 479px
@@ -60,7 +55,6 @@
     background: $dark-background;
     z-index: 2;
     li {
-      color: $light-text-color;
       line-height: 35px;
       font-size: 13px;
       a,
@@ -70,7 +64,7 @@
         color: $light-text-color;
       }
       &.selected, &:hover a {
-        background: $dark-background-hoover;
+        color: $primary-background;
       }
     }
   }
