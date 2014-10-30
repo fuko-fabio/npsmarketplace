@@ -19,6 +19,7 @@
 !/themes/minimal_16_theme
 /themes/minimal_16_theme/cache/*
 /themes/minimal_16_theme/.idea/*
+/themes/minimal_16_theme/.sass-cache/*
 
 !/override
 /override/*
