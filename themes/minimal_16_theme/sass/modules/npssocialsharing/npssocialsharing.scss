@@ -1,0 +1,73 @@
+@import "compass";
+@import "theme_variables";
+
+.npssocialsharing {
+
+  position: absolute;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.8);
+  width: calc(100% - 30px);
+  padding: 10px 5px 10px calc((100% / 2) - 120px);
+  button {
+    border: 5px solid;
+    border-radius: 50%;
+    background: transparent;
+    width: 55px;
+    height: 55px;
+    margin-right: 5px;
+
+    i {
+      font-weight: 700;
+      font-size: 24px;
+    }
+  }
+
+  .btn-facebook, .btn-twitter, .btn-google-plus, .btn-pinterest {
+    color: white;
+    &:hover {
+      background: transparent;
+    }
+  }
+
+  .btn-facebook {
+    border-color: $fb-color;
+    &:hover {
+      color: $fb-color;
+    }
+  }
+
+  .btn-twitter {
+    border-color: $twitter-color;
+    &:hover {
+      color: $twitter-color;
+    }
+  }
+
+  .btn-google-plus {
+    border-color: $google-plus-color;
+    &:hover {
+      color: $google-plus-color;
+    }
+  }
+
+  .btn-pinterest {
+    border-color: $pinterest-color;
+    &:hover {
+      color: $pinterest-color;
+    }
+  }
+
+  @media (max-width: $screen-sm-max) {
+    padding: 10px 5px 10px calc((100% / 2) - 100px);
+
+    button {
+      padding: 0;
+      width: 45px;
+      height: 45px;
+
+      i {
+        font-size: 18px;
+      }
+    }
+  }
+}

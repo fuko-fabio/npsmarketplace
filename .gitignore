@@ -46,6 +46,7 @@
 !/override/controllers/front/HistoryController.php
 !/override/controllers/front/IdentityController.php
 !/override/controllers/front/OrderSlipController.php
+!/override/controllers/front/ProductController.php
 
 !/override/controllers/admin/templates
 /override/controllers/admin/templates/*

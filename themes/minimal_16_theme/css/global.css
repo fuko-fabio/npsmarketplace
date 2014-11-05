@@ -6566,12 +6566,7 @@ div.star a:hover {
       clear: left; }
     .footer-container #footer #social_block {
       float: left;
-      padding: 22px 15px 0 15px; }
-      @media (max-width: 767px) {
-        .footer-container #footer #social_block {
-          width: 100%;
-          float: left;
-          padding-top: 5px; } }
+      padding: 22px 15px 10px 15px; }
       .footer-container #footer #social_block ul {
         float: right;
         margin-right: 10px; }
@@ -6589,6 +6584,9 @@ div.star a:hover {
             display: inline-block;
             color: #fff;
             font-size: 28px; }
+            @media (max-width: 767px) {
+              .footer-container #footer #social_block ul li a {
+                color: #36454f; } }
             @media (min-width: 768px) and (max-width: 991px) {
               .footer-container #footer #social_block ul li a {
                 font-size: 20px; } }
@@ -6624,7 +6622,7 @@ div.star a:hover {
         text-transform: uppercase;
         font-weight: 300;
         padding: 0 10px 0 0; }
-        @media (max-width: 767px) {
+        @media (max-width: 992px) {
           .footer-container #footer #social_block h4 {
             display: none;
             text-align: center; } }
@@ -7653,41 +7651,6 @@ div.star.star_hover:after {
   padding: 10px; }
 #product_comparison #social-share-compare {
   margin-bottom: 50px; }
-
-.btn-facebook:hover, .btn-twitter:hover, .btn-google-plus:hover, .btn-pinterest:hover {
-  border-color: white; }
-
-.btn-facebook i {
-  color: #435f9f; }
-.btn-facebook:hover {
-  color: white;
-  background-color: #435f9f; }
-  .btn-facebook:hover i {
-    color: white; }
-
-.btn-twitter i {
-  color: #00aaf0; }
-.btn-twitter:hover {
-  color: white;
-  background-color: #00aaf0; }
-  .btn-twitter:hover i {
-    color: white; }
-
-.btn-google-plus i {
-  color: #e04b34; }
-.btn-google-plus:hover {
-  color: white;
-  background-color: #e04b34; }
-  .btn-google-plus:hover i {
-    color: white; }
-
-.btn-pinterest i {
-  color: #ce1f21; }
-.btn-pinterest:hover {
-  color: white;
-  background-color: #ce1f21; }
-  .btn-pinterest:hover i {
-    color: white; }
 
 .detail_step_by_step .label {
   color: #333; }

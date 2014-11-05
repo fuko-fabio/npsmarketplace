@@ -34,12 +34,8 @@
   #newsletter_block_left {
     overflow: hidden;
     float: right;
-    padding: 13px 15px 7px 15px;
+    padding: 13px 15px 7px 0px;
     margin-bottom: 0;
-    @media (max-width: $screen-xs-max) {
-      // max 767px
-      width: 100%;
-    }
     h4 {
       background: none;
       float: left;
@@ -53,6 +49,11 @@
       &:after {
         display: none;
       }
+      @media (max-width: $screen-xs-max) {
+        // max 767px
+       display: none;
+      }
+
     }
     .block_content {
       overflow: hidden;
@@ -62,7 +63,6 @@
       .form-control {
         height: 45px;
         line-height: 30px;
-        max-width: 267px;
         background: $homepage-footer-border;
         border-color: $dark-background;
         color: $base-text-color;
@@ -110,7 +110,7 @@
       }
     }
     .newsletter-input {
-      max-width: 300px !important;
+      max-width: 250px;
     }
   }
 }

@@ -13,7 +13,7 @@
   #best-sellers_block_center a .name {
     display: none;
     position: absolute;
-    width: 85%;
+    width: calc(100% - 30px);
     height: 100%;
     background: rgba(0, 0, 0, 0.8);
     top: 0;
@@ -27,6 +27,7 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
     border: 1px solid #d6d4d4; }
   #best-sellers_block_center a:hover img {
+    border: 1px solid #ffaa00;
     -moz-box-shadow: 0 2px 8px rgba(255, 170, 0, 0.8);
     -webkit-box-shadow: 0 2px 8px rgba(255, 170, 0, 0.8);
     box-shadow: 0 2px 8px rgba(255, 170, 0, 0.8);

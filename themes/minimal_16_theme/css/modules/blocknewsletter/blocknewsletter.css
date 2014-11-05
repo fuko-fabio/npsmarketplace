@@ -22,11 +22,8 @@
 #footer #newsletter_block_left {
   overflow: hidden;
   float: right;
-  padding: 13px 15px 7px 15px;
+  padding: 13px 15px 7px 0px;
   margin-bottom: 0; }
-  @media (max-width: 767px) {
-    #footer #newsletter_block_left {
-      width: 100%; } }
   #footer #newsletter_block_left h4 {
     background: none;
     float: left;
@@ -39,6 +36,9 @@
     border: none; }
     #footer #newsletter_block_left h4:after {
       display: none; }
+    @media (max-width: 767px) {
+      #footer #newsletter_block_left h4 {
+        display: none; } }
   #footer #newsletter_block_left .block_content {
     overflow: hidden; }
   #footer #newsletter_block_left .form-group {
@@ -46,7 +46,6 @@
     #footer #newsletter_block_left .form-group .form-control {
       height: 45px;
       line-height: 30px;
-      max-width: 267px;
       background: #d9d9d9;
       border-color: #36454f;
       color: #333;
@@ -88,4 +87,4 @@
         left: 15px;
         clear: none; } }
   #footer #newsletter_block_left .newsletter-input {
-    max-width: 300px !important; }
+    max-width: 250px; }

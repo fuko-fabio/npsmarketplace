@@ -55,6 +55,7 @@ class NpsMarketplace extends Module {
             || !$this->registerHook('displayRightColumnProduct')
             || !$this->registerHook('displayMyAccountColumn')
             || !$this->registerHook('displayHome')
+            || !$this->registerHook('displayNav')
             || !Configuration::updateValue('NPS_GLOBAL_COMMISION', 3)
             || !Configuration::updateValue('NPS_PRODUCT_GUIDE_URL', $shop_url)
             || !Configuration::updateValue('NPS_SELLER_GUIDE_URL', $shop_url)
@@ -71,6 +72,7 @@ class NpsMarketplace extends Module {
     }
 
     public function uninstall() {
+        $this->registerHook('displayNav');return;
         if (!parent::uninstall()
             || !$this->unregisterHook('header')
             || !$this->unregisterHook('displayCustomerAccount')
@@ -80,6 +82,7 @@ class NpsMarketplace extends Module {
             || !$this->unregisterHook('displayRightColumnProduct')
             || !$this->unregisterHook('displayMyAccountColumn')
             || !$this->unregisterHook('displayHome')
+            || !$this->unregisterHook('displayNav')
             || !Configuration::deleteByName('NPS_GLOBAL_COMMISION')
             || !Configuration::deleteByName('NPS_PRODUCT_GUIDE_URL')
             || !Configuration::deleteByName('NPS_SELLER_GUIDE_URL')
@@ -96,6 +99,10 @@ class NpsMarketplace extends Module {
             || !Tools::deleteDirectory(_NPS_SEL_IMG_DIR_))
             return false;
         return true;
+    }
+
+    public function hookDisplayNav() {
+        return $this->display(__FILE__, 'views/templates/hook/header_top.tpl');
     }
 
     public function hookDisplayRightColumnProduct() {

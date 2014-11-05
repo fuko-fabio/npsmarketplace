@@ -152,7 +152,7 @@ class NpsSocialSharing extends Module
 		if (!isset($this->context->controller->php_self) || !in_array($this->context->controller->php_self, array('product')))
 			return;
 
-		$this->context->controller->addCss($this->_path.'css/npssocialsharing.css');
+		$this->context->controller->addCss($this->_path.'npssocialsharing.css');
 		$this->context->controller->addJS($this->_path.'js/npssocialsharing.js');
 
 		// Exception are managed with Module::registerExceptions() but this is needed in case the merchant added new controllers afterwards

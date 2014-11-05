@@ -103,6 +103,12 @@ $current_step_color: $primary-color;
 $todo_step_color: $light-border-color;
 $done_step_color: #dedede;
 
+//---------- Social
+$fb-color: #435f9f;
+$twitter-color: #00aaf0;
+$google-plus-color: #e04b34;
+$pinterest-color: #ce1f21;
+
 //sub heading (h2,h3) define
 @mixin sub-heading {
   color: $base-heading-color;

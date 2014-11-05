@@ -147,6 +147,7 @@ img {
       @include transition(all 0.3s ease);
       &.shown, &:hover {
         @include box-shadow(0 2px 8px rgba(255, 170, 0, 0.8));
+        border: 1px solid $primary-color;
       }
     }
     img {

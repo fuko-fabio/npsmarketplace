@@ -108,6 +108,11 @@ ul.product_list.grid {
       background: $light-background;
       padding: 0;
       position: relative;
+      &:hover {
+        border: 1px solid $primary-color;
+        border-bottom: 2px solid $primary-color;
+        @include box-shadow(0 2px 8px rgba(255, 170, 0, 0.8));
+      }
       .product-image-container {
         position: relative;
         @media (max-width: $screen-xs-max) {
@@ -206,9 +211,6 @@ ul.product_list.grid {
         .product-container {
           position: relative;
           z-index: 10;
-          border: 1px solid $primary-color;
-          border-bottom: 2px solid $primary-color;
-          @include box-shadow(0 2px 8px rgba(255, 170, 0, 0.8));
           .button-container,
           .functional-buttons {
             display: block;

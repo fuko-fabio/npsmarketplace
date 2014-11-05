@@ -199,7 +199,7 @@ function display(view)
 	if (view == 'list')
 	{
 		$('ul.product_list').removeClass('grid').addClass('list row');
-		$('.product_list > li').removeClass('col-xs-12 col-sm-6 col-md-4').addClass('col-xs-12');
+		$('.product_list > li').removeClass('col-xs-12 col-sm-4 col-md-3').addClass('col-xs-12');
 		$('.product_list > li').each(function(index, element) {
 			html = '';
 			html = '<div class="product-container"><div class="row">';
@@ -239,7 +239,7 @@ function display(view)
 	else 
 	{
 		$('ul.product_list').removeClass('list').addClass('grid row');
-		$('.product_list > li').removeClass('col-xs-12').addClass('col-xs-12 col-sm-6 col-md-4');
+		$('.product_list > li').removeClass('col-xs-12').addClass('col-xs-12 col-sm-4 col-md-3');
 		$('.product_list > li').each(function(index, element) {
 		html = '';
 		html += '<div class="product-container">';

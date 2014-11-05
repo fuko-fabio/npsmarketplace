@@ -105,11 +105,6 @@
                                  title="{if !empty($cover.legend)}{$cover.legend|escape:'html':'UTF-8'}{else}{$product->name|escape:'html':'UTF-8'}{/if}"
                                  alt="{if !empty($cover.legend)}{$cover.legend|escape:'html':'UTF-8'}{else}{$product->name|escape:'html':'UTF-8'}{/if}"
                                  width="{$largeSize.width}" height="{$largeSize.height}"/>
-
-
-                                                                                            {if !$content_only}
-                            <span class="span_link no-print">{l s='View larger'}</span>
-                        {/if}
                         {/if}
 					</span>
                     {else}
@@ -117,11 +112,6 @@
 						<img itemprop="image" src="{$img_prod_dir}{$lang_iso}-default-large_default.jpg" id="bigpic"
                              alt="" title="{$product->name|escape:'html':'UTF-8'}" width="{$largeSize.width}"
                              height="{$largeSize.height}"/>
-                            {if !$content_only}
-                                <span class="span_link">
-								{l s='View larger'}
-							</span>
-                            {/if}
 					</span>
                     {/if}
                 </div>
@@ -449,6 +439,7 @@
                                 <h2 class="title">{l s='Select term'}</h2>
 
                                 <div class="select_combination_form_content">
+                                    <p class="alert alert-info">{l s='Please select event term from list below'}</p>
                                     <div class="form_container">
                                         <ul>
                                         {foreach from=$combinations key=key item=combination}
@@ -464,8 +455,8 @@
                                         </ul>
                                     </div>
                                     <p class="submit">
-                                        <input class="button ccl" type="button" value="{l s='Cancel' mod='sendtoafriend'}" onclick="$.fancybox.close();"/>
-                                        <input id="selectCombination" class="button" type="button" value="{l s='Ok' mod='sendtoafriend'}" />
+                                        <input class="button ccl" type="button" value="{l s='Cancel'}" onclick="$.fancybox.close();"/>
+                                        <input id="selectCombination" class="button" type="button" value="{l s='Ok'}"/>
                                     </p>
                                 </div>
                             </div>

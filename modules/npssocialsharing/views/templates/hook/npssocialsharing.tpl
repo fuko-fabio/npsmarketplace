@@ -24,28 +24,28 @@
 *}
 {if $PS_NPS_SC_TWITTER || $PS_NPS_SC_FACEBOOK || $PS_NPS_SC_GOOGLE || $PS_NPS_SC_PINTEREST}
 
-	<p class="npssocialsharing_product list-inline no-print">
+	<p class="npssocialsharing list-inline no-print">
 		{if $PS_NPS_SC_TWITTER}
 			<button data-type="twitter" type="button" class="btn btn-default btn-twitter nps-social-sharing">
-				<i class="icon-twitter"></i> {l s="Tweet" mod='socialsharing'}
+				<i class="icon-twitter"></i>
 				<!-- <img src="{$link->getMediaLink("`$module_dir`img/twitter.gif")}" alt="Tweet" /> -->
 			</button>
 		{/if}
 		{if $PS_NPS_SC_FACEBOOK}
 			<button data-type="facebook" type="button" class="btn btn-default btn-facebook nps-social-sharing">
-				<i class="icon-facebook"></i> {l s="Share" mod='socialsharing'}
+				<i class="icon-facebook"></i>
 				<!-- <img src="{$link->getMediaLink("`$module_dir`img/facebook.gif")}" alt="Facebook Like" /> -->
 			</button>
 		{/if}
 		{if $PS_NPS_SC_GOOGLE}
 			<button data-type="google-plus" type="button" class="btn btn-default btn-google-plus nps-social-sharing">
-				<i class="icon-google-plus"></i> {l s="Google+" mod='socialsharing'}
+				<i class="icon-google-plus"></i>
 				<!-- <img src="{$link->getMediaLink("`$module_dir`img/google.gif")}" alt="Google Plus" /> -->
 			</button>
 		{/if}
 		{if $PS_NPS_SC_PINTEREST}
 			<button data-type="pinterest" type="button" class="btn btn-default btn-pinterest nps-social-sharing">
-				<i class="icon-pinterest"></i> {l s="Pinterest" mod='socialsharing'}
+				<i class="icon-pinterest"></i>
 				<!-- <img src="{$link->getMediaLink("`$module_dir`img/pinterest.gif")}" alt="Pinterest" /> -->
 			</button>
 		{/if}

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <module>
-    <name>npafavorite</name>
+    <name>npsfavorite</name>
     <displayName><![CDATA[nps Favorite Products]]></displayName>
     <version><![CDATA[1.2.2]]></version>
     <description><![CDATA[Display a page featuring the customer&#039;s favorite products.]]></description>

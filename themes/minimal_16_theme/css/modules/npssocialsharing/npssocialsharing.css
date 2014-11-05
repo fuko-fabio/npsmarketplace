@@ -1,0 +1,45 @@
+.npssocialsharing {
+  position: absolute;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.8);
+  width: calc(100% - 30px);
+  padding: 10px 5px 10px calc((100% / 2) - 120px); }
+  .npssocialsharing button {
+    border: 5px solid;
+    border-radius: 50%;
+    background: transparent;
+    width: 55px;
+    height: 55px;
+    margin-right: 5px; }
+    .npssocialsharing button i {
+      font-weight: 700;
+      font-size: 24px; }
+  .npssocialsharing .btn-facebook, .npssocialsharing .btn-twitter, .npssocialsharing .btn-google-plus, .npssocialsharing .btn-pinterest {
+    color: white; }
+    .npssocialsharing .btn-facebook:hover, .npssocialsharing .btn-twitter:hover, .npssocialsharing .btn-google-plus:hover, .npssocialsharing .btn-pinterest:hover {
+      background: transparent; }
+  .npssocialsharing .btn-facebook {
+    border-color: #435f9f; }
+    .npssocialsharing .btn-facebook:hover {
+      color: #435f9f; }
+  .npssocialsharing .btn-twitter {
+    border-color: #00aaf0; }
+    .npssocialsharing .btn-twitter:hover {
+      color: #00aaf0; }
+  .npssocialsharing .btn-google-plus {
+    border-color: #e04b34; }
+    .npssocialsharing .btn-google-plus:hover {
+      color: #e04b34; }
+  .npssocialsharing .btn-pinterest {
+    border-color: #ce1f21; }
+    .npssocialsharing .btn-pinterest:hover {
+      color: #ce1f21; }
+  @media (max-width: 991px) {
+    .npssocialsharing {
+      padding: 10px 5px 10px calc((100% / 2) - 100px); }
+      .npssocialsharing button {
+        padding: 0;
+        width: 45px;
+        height: 45px; }
+        .npssocialsharing button i {
+          font-size: 18px; } }

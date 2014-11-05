@@ -1651,13 +1651,7 @@ div.star a:hover {
     }
     #social_block {
       float: left;
-      padding: 22px 15px 0 15px;
-      // max 767px
-      @media (max-width: $screen-xs-max) {
-        width: 100%;
-        float: left;
-        padding-top: 5px;
-      }
+      padding: 22px 15px 10px 15px;
       ul {
         float: right;
         margin-right: 10px;
@@ -1676,6 +1670,10 @@ div.star a:hover {
             display: inline-block;
             color: $light-text-color;
             font-size: 28px;
+            @media (max-width: $screen-xs-max) {
+              color: $dark-background;
+            }
+
             // min 768px max 991px
             @media (min-width: $screen-sm) and (max-width: $screen-sm-max) {
               font-size: 20px;
@@ -1749,7 +1747,7 @@ div.star a:hover {
         font-weight: 300;
         padding: 0 10px 0 0;
         // max 767px
-        @media (max-width: $screen-xs-max) {
+        @media (max-width: $screen-md) {
           display: none;
           text-align: center;
         }
@@ -3184,65 +3182,6 @@ div.star.star_hover {
   }
   #social-share-compare {
     margin-bottom: 50px;
-  }
-}
-
-//Social Sharing
-.btn-facebook, .btn-twitter, .btn-google-plus, .btn-pinterest {
-  &:hover {
-    border-color: white;
-  }
-}
-
-.btn-facebook {
-  i {
-    color: #435f9f;
-  }
-  &:hover {
-    color: white;
-    background-color: #435f9f;
-    i {
-      color: white;
-    }
-  }
-}
-
-.btn-twitter {
-  i {
-    color: #00aaf0;
-  }
-  &:hover {
-    color: white;
-    background-color: #00aaf0;
-    i {
-      color: white;
-    }
-  }
-}
-
-.btn-google-plus {
-  i {
-    color: #e04b34;
-  }
-  &:hover {
-    color: white;
-    background-color: #e04b34;
-    i {
-      color: white;
-    }
-  }
-}
-
-.btn-pinterest {
-  i {
-    color: #ce1f21;
-  }
-  &:hover {
-    color: white;
-    background-color: #ce1f21;
-    i {
-      color: white;
-    }
   }
 }
 

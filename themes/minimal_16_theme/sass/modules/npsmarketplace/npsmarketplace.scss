@@ -98,6 +98,7 @@
       margin-bottom: 10px;
       color: $dark-background;
       &:hover {
+        border: 1px solid $primary-color;
         @include box-shadow(0 2px 8px rgba(255, 170, 0, 0.8));
       }
     }
@@ -129,7 +130,7 @@
     span {
       position: absolute;
       left: 35px;
-      text-transform: uppercase;
+      font-size: 14px;
     }
     &:hover {
       color: $primary-color;
@@ -182,6 +183,7 @@
         }
       }
       img {
+        border: 1px solid $primary-color;
         @include box-shadow(0 2px 8px rgba(255, 170, 0, 0.8));
       }
     }
@@ -222,5 +224,21 @@
       }
     }
   }
+}
 
+.nps-header-sell {
+  padding: 8px 9px 11px 8px;
+  float: right;
+  a {
+    color: $light-text-color;
+    text-transform: none;
+
+    i {
+      color: $primary-color;
+    }
+
+    &:hover {
+      color: $primary-color;
+    }
+  }
 }

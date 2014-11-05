@@ -75,6 +75,7 @@
       margin-bottom: 10px;
       color: #36454f; }
       .nps-product-seller-info .content .col-md-6 img:hover {
+        border: 1px solid #ffaa00;
         -moz-box-shadow: 0 2px 8px rgba(255, 170, 0, 0.8);
         -webkit-box-shadow: 0 2px 8px rgba(255, 170, 0, 0.8);
         box-shadow: 0 2px 8px rgba(255, 170, 0, 0.8); }
@@ -97,7 +98,7 @@
   .nps-myaccount-block a span {
     position: absolute;
     left: 35px;
-    text-transform: uppercase; }
+    font-size: 14px; }
   .nps-myaccount-block a:hover {
     color: #ffaa00; }
 
@@ -138,6 +139,7 @@
     .nps-sellers-list a:hover .mask {
       display: block; } }
   .nps-sellers-list a:hover img {
+    border: 1px solid #ffaa00;
     -moz-box-shadow: 0 2px 8px rgba(255, 170, 0, 0.8);
     -webkit-box-shadow: 0 2px 8px rgba(255, 170, 0, 0.8);
     box-shadow: 0 2px 8px rgba(255, 170, 0, 0.8); }
@@ -162,3 +164,14 @@
     .nps-seller-shop .tabs-container .nav-tabs li.active a {
       border: none;
       background: none; }
+
+.nps-header-sell {
+  padding: 8px 9px 11px 8px;
+  float: right; }
+  .nps-header-sell a {
+    color: #fff;
+    text-transform: none; }
+    .nps-header-sell a i {
+      color: #ffaa00; }
+    .nps-header-sell a:hover {
+      color: #ffaa00; }
