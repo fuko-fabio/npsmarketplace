@@ -9,7 +9,7 @@
 {/capture}
 {include file="$tpl_dir./errors.tpl"}
 <div class="block-center" id="block-seller-products-list">
-    <h1 class="page-heading bottom-indent">{l s='My events' mod='npsmarketplace'}{if $seler_active}<a href="{$add_product_link}" class="btn btn-default pull-right"><i class="icon-plus"></i> {l s='Add Event' mod='npsmarketplace'}</a>{/if}</h1>
+    <h1 class="page-heading with-button">{l s='My events' mod='npsmarketplace'}{if $seler_active}<a href="{$add_product_link}" class="btn btn-default pull-right"><i class="icon-plus"></i> {l s='Add Event' mod='npsmarketplace'}</a>{/if}</h1>
 
     {if $products}
     <div class="table-responsive">

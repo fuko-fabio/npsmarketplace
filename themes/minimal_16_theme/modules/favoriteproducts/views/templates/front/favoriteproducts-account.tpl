@@ -62,16 +62,4 @@
 	{else}
 		<p class="alert alert-warning">{l s='No favorite products have been determined just yet. ' mod='favoriteproducts'}</p>
 	{/if}
-
-	<ul class="footer_links clearfix">
-		<li>
-			<a 
-			class="btn btn-default button button-small" 
-			href="{$link->getPageLink('my-account', true)|escape:'html':'UTF-8'}">
-				<span>
-					<i class="icon-chevron-left"></i>{l s='Back to your account' mod='favoriteproducts'}
-				</span>
-			</a>
-		</li>
-	</ul>
 </div>

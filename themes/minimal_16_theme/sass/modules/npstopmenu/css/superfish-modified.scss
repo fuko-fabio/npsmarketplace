@@ -62,7 +62,7 @@
   &.sfHover > a,
   > a:hover,
   &.sfHoverForce > a {
-    color: $primary-background;
+    color: $primary-color;
   }
   &:last-of-type {
     border-right: none;
@@ -219,7 +219,7 @@ ul.nps-sf-menu li li li.sfHover ul {
     border: 1px solid $dark-background;
     position: relative;
     &:hover {
-      border-color: $primary-background;
+      border-color: $primary-color;
     }
     &:after {
       display: block;
@@ -231,7 +231,7 @@ ul.nps-sf-menu li li li.sfHover ul {
       font-size: 26px;
       color: $dark-background;
       &:hover {
-        color: $primary-background;
+        color: $primary-color;
       }
     }
     &.active:after {

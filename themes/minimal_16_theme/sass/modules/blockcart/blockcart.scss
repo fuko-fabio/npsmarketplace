@@ -46,7 +46,7 @@
     color: $light-text-color;
     overflow: hidden;
     &:hover {
-      color: $primary-background;
+      color: $primary-color;
     }
     span.ajax_cart_total, span.ajax_cart_product_txt, span.ajax_cart_product_txt_s, span.ajax_cart_no_product {
       display: none !important;

@@ -99,6 +99,13 @@ class npsmsellercomments extends Module
         if(isset($id_seller) && $id_seller > 0) {
             require_once(_PS_MODULE_DIR_.'/npsmsellercomments/classes/SellerComment.php');
             require_once(_PS_MODULE_DIR_.'/npsmsellercomments/classes/SellerCommentCriterion.php');
+
+            $this->context->controller->addJS(array(
+                _PS_MODULE_DIR_.'npsmsellercomments/js/jquery.rating.pack.js',
+                _PS_MODULE_DIR_.'npsmsellercomments/js/jquery.textareaCounter.plugin.js',
+                _PS_MODULE_DIR_.'npsmsellercomments/js/sellercomments.js'));
+            $this->context->controller->addCSS(_PS_MODULE_DIR_.'/npsmsellercomments/npsmsellercomments.css', 'all');
+
             $average = SellerComment::getAverageGrade((int)$id_seller);
 
             $this->context->smarty->assign(array(
@@ -108,7 +115,6 @@ class npsmsellercomments extends Module
                                             'averageTotal' => round($average['grade']),
                                             'nbComments' => (int)(SellerComment::getCommentNumber($id_seller))
                                        ));
-
             return $this->display(__FILE__, 'views/templates/hook/tab.tpl');
         }
     }
@@ -118,11 +124,6 @@ class npsmsellercomments extends Module
         if(isset($id_seller) && $id_seller > 0) {
             require_once(_PS_MODULE_DIR_.'/npsmsellercomments/classes/SellerComment.php');
             require_once(_PS_MODULE_DIR_.'/npsmsellercomments/classes/SellerCommentCriterion.php');
-            
-            $this->context->controller->addJS($this->_path.'js/jquery.rating.pack.js');
-            $this->context->controller->addJS($this->_path.'js/jquery.textareaCounter.plugin.js');
-            $this->context->controller->addJS($this->_path.'js/sellercomments.js');
-            $this->context->controller->addCSS($this->_path.'npsmsellercomments.css', 'all');
 
             $seller = new Seller($id_seller);
             $id_guest = (!$id_customer = (int)$this->context->cookie->id_customer) ? (int)$this->context->cookie->id_guest : false;

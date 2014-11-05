@@ -9,16 +9,6 @@
 	display: none;
 }
 
-#create-account_form {
-	min-height: 297px;
-	p {
-		margin-bottom: 8px;
-	}
-	.form-group {
-		margin: 0 0 20px 0;
-	}
-}
-
 #login_form {
 	min-height: 297px;
 	.form-group {
@@ -32,11 +22,5 @@
 				}	
 			}
 		}
-	}
-}
-
-#login_form, #create-account_form {
-	.form-control {
-		max-width: 271px;	
 	}
 }

@@ -89,7 +89,7 @@
   &.sfHover > a,
   > a:hover,
   &.sfHoverForce > a {
-    color: $primary-background;
+    color: $primary-color;
   }
   &:last-of-type {
     border-right: none;
@@ -174,7 +174,7 @@ ul.sf-menu li li li.sfHover ul {
       text-transform: uppercase;
       color: $dark-background;
       &:hover {
-        color: $primary-background;
+        color: $primary-color;
       }
     }
   }

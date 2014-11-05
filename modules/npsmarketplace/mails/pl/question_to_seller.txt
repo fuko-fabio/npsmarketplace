@@ -1,0 +1,14 @@
+
+[{shop_url}] 
+
+Witaj {seller_name}!
+
+Przesłano zapytanie odnośnie twojego wydarzenia. 
+
+Wydarzenie {product_name}: [{product_link}]
+
+Pytanie:
+{question}
+
+Pozdrawiamy,
+zespół {shop_name}.

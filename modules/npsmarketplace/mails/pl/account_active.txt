@@ -7,8 +7,8 @@ Twój butik został otwarty.
 
 Adres Twojego butiku to: [{seller_shop_url}]
 
-Skonfiguruj płatności abyś mógł swobodnie sprzedawać własne pomysły.<br />
-Płatności możesz skonfigurować pod adresem: [{seller_payment_configuration_url}]<br />
+Skonfiguruj płatności abyś mógł swobodnie sprzedawać własne pomysły.
+Płatności możesz skonfigurować pod adresem: [{seller_payment_configuration_url}]
 
 Aby było Ci łatwiej, przygotowaliśmy pomocne instrukcje któte możesz znależć tutaj: [{payment_settings_guide_url}]
 

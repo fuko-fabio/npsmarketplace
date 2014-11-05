@@ -18,6 +18,6 @@
 <div class="block-center" id="block-seller-account">
     <form enctype="multipart/form-data" role="form" action="{$request_uri}" method="post" id="selleraccount">
         {include file="$seller_fieldset_tpl_path"}
-        <button type="submit" class="btn btn-primary btn-lg pull-right" name="submitSeller"><span>{l s='Save' mod='npsmarketplace'} <i class="icon-save right"></i></span></button>
+        <button type="submit" class="btn btn-default button button-medium pull-right" name="submitSeller"><span>{l s='Save' mod='npsmarketplace'} <i class="icon-save right"></i></span></button>
     </form>
 </div>

@@ -4,7 +4,7 @@
 <span class="navigation_page">{l s='Event terms' mod='npsmarketplace'}</span>
 {/capture}
 {include file="$tpl_dir./errors.tpl"}
-<h1 class="page-heading bottom-indent">{l s='%s Terms' sprintf=$name mod='npsmarketplace'}<a href="{$new_combination_url}" class="btn btn-default pull-right"><i class="icon-calendar"></i> {l s='Add Term' mod='npsmarketplace'}</a></h1>
+<h1 class="page-heading with-button">{l s='%s Terms' sprintf=$name mod='npsmarketplace'}<a href="{$new_combination_url}" class="btn btn-default pull-right"><i class="icon-calendar"></i> {l s='Add Term' mod='npsmarketplace'}</a></h1>
 <div class="block-center" id="block-seller-products-list">
     {if $comb_array}
     <div class="table-responsive">

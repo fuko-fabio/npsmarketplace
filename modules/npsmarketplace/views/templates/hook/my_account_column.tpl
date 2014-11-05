@@ -1,3 +1,7 @@
+{*
+* @author Norbert Pabian <norbert.pabian@gmail.com>
+* @copyright 2014 npsoftware
+*}
 <ul class="nps-myaccount-block">
     <li class="section"><p>{l s='Shopping' mod='npsmarketplace'}</p></li>
     <li><a href="{$link->getPageLink('identity', true)|escape:'html':'UTF-8'}" title="{l s='Information'}"><i class="icon-user"></i><span>{l s='My account' mod=npsmarketplace}</span></a></li>

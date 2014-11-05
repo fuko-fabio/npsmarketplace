@@ -9,6 +9,7 @@ $font-hammer: 'Hammersmith One', sans-serif;
 $font-montser: 'Montserrat', sans-serif;
 $font-danube: 'Danube', sans-serif;
 $font-quicksand: 'Quicksand', sans-serif;
+$font-extra: 'Poiret One', sans-serif;
 
 //-------- BORDERS
 $base-border-color: #d6d4d4;
@@ -24,7 +25,6 @@ $dark-background: #36454f;
 $dark-background-hoover: #5E6A72;
 $light-background: #fff;
 $homepage-footer-bg: #f2f2f2;
-$primary-background: #ffaa00;
 
 //--------- COLORS
 $base-body-color: #777;
@@ -36,6 +36,8 @@ $link-color: #3457cb;
 $link-hover-color: #4465cf;
 $description-color: #666;
 $dark-text-color: #353535;
+$primary-color: #ffaa00;
+$primary-color-light: #FFC654;
 
 //--------- Indents
 $base-page-indent: $grid-gutter-width;
@@ -54,6 +56,12 @@ $product-new-color: #28BFFC;
 
 //---------- Buttons
 $button-text-color: $light-text-color;
+
+$btn-primary-color: $primary-color;
+$btn-primary-color-hover: $primary-color-light;
+$btn-color: #DBDBDB;
+$btn-color-hover: #E8E8E8;
+$btn-text-color: $dark-text-color;
 
 //------ Buttons +/- ---
 $button-pm-color: #c0c0c0;
@@ -84,7 +92,7 @@ $pagination-hover-bg: #f6f6f6;
 //---------- Product Info
 $top-line-color: #C4C4C4;
 $product-image-border: #dbdbdb;
-$product-image-border-shown: $primary-background;
+$product-image-border-shown: $primary-color;
 $scroll-button-color: #c0c0c0;
 $list-info-bg: #f6f6f6;
 $scroll-button-hover-color: $base-text-color;

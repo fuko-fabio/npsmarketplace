@@ -127,6 +127,14 @@ p.info-account {
   margin: -4px 0 24px 0;
 }
 
+p.required {
+  color: red;
+
+  sup {
+    font-size: 14px;
+  }
+}
+
 .dark {
   color: $base-text-color;
 }
@@ -147,6 +155,7 @@ p.info-account {
   &.alert-success {
     background: none;
     color: $state-success-border;
+    border-color: $state-success-border;
     &:before {
       font-family: $font-icon;
       content: "\f058";
@@ -159,6 +168,7 @@ p.info-account {
   &.alert-error {
     background: none;
     color: $state-danger-border;
+    border-color: $state-danger-border;
     &:before {
       font-family: $font-icon;
       content: "\f057";
@@ -171,6 +181,7 @@ p.info-account {
   &.alert-info {
     background: none;
     color: $state-info-border;
+    border-color: $state-info-border;
     &:before {
       font-family: $font-icon;
       content: "\f05a";
@@ -183,6 +194,7 @@ p.info-account {
   &.alert-warning {
     background: none;
     color: $state-warning-border;
+    border-color: $state-warning-border;
     &:before {
       font-family: $font-icon;
       content: "\f071";
@@ -348,19 +360,28 @@ span.exclusive {
 .btn[disabled]:hover {
   opacity: 0.3;
 }
+.button.ccl {
+  background: $btn-color !important;
+  span {
+    &:hover {
+      background: $btn-color-hover;
+    }
+  }
+}
 
 .button.button-small {
   font: bold 13px / 17px $font-family;
-  color: $button-text-color;
-  background: $button-small-bg;
+  color: $btn-text-color;
+  background: $btn-primary-color;
   padding: 0;
-  text-shadow: 1px 1px rgba(0, 0, 0, 0.24);
+  min-width: 80px;
+  text-align: center;
   @include border-radius(0);
+  border: none;
+  @include box-shadow(0 2px 8px rgba(0, 0, 0, 0.16));
   span {
     display: block;
     padding: 3px 8px 3px 8px;
-    border: 1px solid;
-    border-color: #8b8a8a;
     i {
       vertical-align: 0px;
       margin-right: 5px;
@@ -370,8 +391,7 @@ span.exclusive {
       }
     }
     &:hover {
-      background: $button-small-hover-bg;
-      border-color: #303030 #303030 #666666 #444444;
+      background: $btn-primary-color-hover;
     }
   }
 }
@@ -379,25 +399,16 @@ span.exclusive {
 .button.button-medium {
   font-size: 17px;
   line-height: 21px;
-  color: $button-text-color;
+  color: $btn-text-color;
   padding: 0;
   font-weight: bold;
-  background: rgb(67, 183, 84);
-  background: -moz-linear-gradient(top, rgba(67, 183, 84, 1) 0%, rgba(65, 183, 87, 1) 2%, rgba(65, 184, 84, 1) 4%, rgba(67, 183, 86, 1) 6%, rgba(65, 179, 84, 1) 38%, rgba(68, 179, 85, 1) 40%, rgba(69, 175, 85, 1) 66%, rgba(65, 174, 83, 1) 74%, rgba(66, 172, 82, 1) 91%, rgba(65, 174, 85, 1) 94%, rgba(67, 171, 84, 1) 96%, rgba(66, 172, 82, 1) 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(67, 183, 84, 1)), color-stop(2%, rgba(65, 183, 87, 1)), color-stop(4%, rgba(65, 184, 84, 1)), color-stop(6%, rgba(67, 183, 86, 1)), color-stop(38%, rgba(65, 179, 84, 1)), color-stop(40%, rgba(68, 179, 85, 1)), color-stop(66%, rgba(69, 175, 85, 1)), color-stop(74%, rgba(65, 174, 83, 1)), color-stop(91%, rgba(66, 172, 82, 1)), color-stop(94%, rgba(65, 174, 85, 1)), color-stop(96%, rgba(67, 171, 84, 1)), color-stop(100%, rgba(66, 172, 82, 1)));
-  background: -webkit-linear-gradient(top, rgba(67, 183, 84, 1) 0%, rgba(65, 183, 87, 1) 2%, rgba(65, 184, 84, 1) 4%, rgba(67, 183, 86, 1) 6%, rgba(65, 179, 84, 1) 38%, rgba(68, 179, 85, 1) 40%, rgba(69, 175, 85, 1) 66%, rgba(65, 174, 83, 1) 74%, rgba(66, 172, 82, 1) 91%, rgba(65, 174, 85, 1) 94%, rgba(67, 171, 84, 1) 96%, rgba(66, 172, 82, 1) 100%);
-  background: -o-linear-gradient(top, rgba(67, 183, 84, 1) 0%, rgba(65, 183, 87, 1) 2%, rgba(65, 184, 84, 1) 4%, rgba(67, 183, 86, 1) 6%, rgba(65, 179, 84, 1) 38%, rgba(68, 179, 85, 1) 40%, rgba(69, 175, 85, 1) 66%, rgba(65, 174, 83, 1) 74%, rgba(66, 172, 82, 1) 91%, rgba(65, 174, 85, 1) 94%, rgba(67, 171, 84, 1) 96%, rgba(66, 172, 82, 1) 100%);
-  background: -ms-linear-gradient(top, rgba(67, 183, 84, 1) 0%, rgba(65, 183, 87, 1) 2%, rgba(65, 184, 84, 1) 4%, rgba(67, 183, 86, 1) 6%, rgba(65, 179, 84, 1) 38%, rgba(68, 179, 85, 1) 40%, rgba(69, 175, 85, 1) 66%, rgba(65, 174, 83, 1) 74%, rgba(66, 172, 82, 1) 91%, rgba(65, 174, 85, 1) 94%, rgba(67, 171, 84, 1) 96%, rgba(66, 172, 82, 1) 100%);
-  background: linear-gradient(to bottom, rgba(67, 183, 84, 1) 0%, rgba(65, 183, 87, 1) 2%, rgba(65, 184, 84, 1) 4%, rgba(67, 183, 86, 1) 6%, rgba(65, 179, 84, 1) 38%, rgba(68, 179, 85, 1) 40%, rgba(69, 175, 85, 1) 66%, rgba(65, 174, 83, 1) 74%, rgba(66, 172, 82, 1) 91%, rgba(65, 174, 85, 1) 94%, rgba(67, 171, 84, 1) 96%, rgba(66, 172, 82, 1) 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#43b754', endColorstr='#42ac52', GradientType=0);
-  border: 1px solid;
-  border-color: #399a49 #247f32 #1a6d27 #399a49;
+  border: none;
+  background: $btn-primary-color;
   @include border-radius(0);
+  @include box-shadow(0 2px 8px rgba(0, 0, 0, 0.16));
   span {
     display: block;
     padding: 10px 10px 10px 14px;
-    border: 1px solid;
-    border-color: #74d578;
     // max 480px
     @media (max-width: $screen-xs) {
       font-size: 15px;
@@ -426,37 +437,15 @@ span.exclusive {
     }
   }
   &:hover {
-    background: rgb(58, 160, 76);
-    background: -moz-linear-gradient(top, rgba(58, 160, 76, 1) 0%, rgba(58, 160, 74, 1) 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(58, 160, 76, 1)), color-stop(100%, rgba(58, 160, 74, 1)));
-    background: -webkit-linear-gradient(top, rgba(58, 160, 76, 1) 0%, rgba(58, 160, 74, 1) 100%);
-    background: -o-linear-gradient(top, rgba(58, 160, 76, 1) 0%, rgba(58, 160, 74, 1) 100%);
-    background: -ms-linear-gradient(top, rgba(58, 160, 76, 1) 0%, rgba(58, 160, 74, 1) 100%);
-    background: linear-gradient(to bottom, rgba(58, 160, 76, 1) 0%, rgba(58, 160, 74, 1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#3aa04c', endColorstr='#3aa04a', GradientType=0);
-    border-color: #196f28 #399a49 #399a49 #258033;
+    background: $btn-primary-color-hover;
   }
 }
 
 .button.button-medium.exclusive {
-  border-color: #db8600 #d98305 #c86d26 #d98305;
-  background: rgb(253, 170, 2);
-  background: -moz-linear-gradient(top, rgba(253, 170, 2, 1) 0%, rgba(254, 151, 2, 1) 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(253, 170, 2, 1)), color-stop(100%, rgba(254, 151, 2, 1)));
-  background: -webkit-linear-gradient(top, rgba(253, 170, 2, 1) 0%, rgba(254, 151, 2, 1) 100%);
-  background: -o-linear-gradient(top, rgba(253, 170, 2, 1) 0%, rgba(254, 151, 2, 1) 100%);
-  background: -ms-linear-gradient(top, rgba(253, 170, 2, 1) 0%, rgba(254, 151, 2, 1) 100%);
-  background: linear-gradient(to bottom, rgba(253, 170, 2, 1) 0%, rgba(254, 151, 2, 1) 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fdaa02', endColorstr='#fe9702', GradientType=0);
+  background: $primary-color;
   span {
-    border-color: #fec133 #febc33 #feb233 #febc33;
     &:hover {
-      filter: none;
-      background: #f89609;
-      border-color: #a6550c #ba6708 #db8600 #ba6708;
-      span {
-        border-color: #fec133;
-      }
+      background: $primary-color-light;
     }
   }
 }
@@ -481,6 +470,8 @@ span.exclusive {
   color: $dark-background;
   padding: 0;
   border: none;
+  margin-left: 5px;
+  margin-right: 5px;
   span {
     display: block;
     vertical-align: middle;
@@ -500,43 +491,24 @@ span.exclusive {
   font-size: 17px;
   padding: 0;
   line-height: 21px;
-  color: $button-em-color;
+  color: $btn-text-color;
   font-weight: bold;
-  border: 1px solid;
-  border-color: #cacaca #b7b7b7 #9a9a9a #b7b7b7;
-  text-shadow: 1px 1px rgba(255, 255, 255, 1);
+  background: $btn-color;
+  border: none;
+  @include box-shadow(0 2px 8px rgba(0, 0, 0, 0.16));
   span {
-    border: 1px solid;
-    border-color: $light-border-color;
     display: block;
+    border: none;
     padding: 9px 10px 11px 10px;
-    background: rgb(247, 247, 247);
-    background: -moz-linear-gradient(top, rgba(247, 247, 247, 1) 0%, rgba(237, 237, 237, 1) 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(247, 247, 247, 1)), color-stop(100%, rgba(237, 237, 237, 1)));
-    background: -webkit-linear-gradient(top, rgba(247, 247, 247, 1) 0%, rgba(237, 237, 237, 1) 100%);
-    background: -o-linear-gradient(top, rgba(247, 247, 247, 1) 0%, rgba(237, 237, 237, 1) 100%);
-    background: -ms-linear-gradient(top, rgba(247, 247, 247, 1) 0%, rgba(237, 237, 237, 1) 100%);
-    background: linear-gradient(to bottom, rgba(247, 247, 247, 1) 0%, rgba(237, 237, 237, 1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f7f7f7', endColorstr='#ededed', GradientType=0);
     // max 480px
     @media (max-width: $screen-xs) {
       font-size: 15px;
       padding-right: 7px;
       padding-left: 7px;
     }
-    &:hover {
-      border-color: #9e9e9e #c2c2c2 #c8c8c8 #c2c2c2;
-      span {
-        background: rgb(231, 231, 231);
-        background: -moz-linear-gradient(top, rgba(231, 231, 231, 1) 0%, rgba(231, 231, 231, 1) 0%);
-        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(231, 231, 231, 1)), color-stop(0%, rgba(231, 231, 231, 1)));
-        background: -webkit-linear-gradient(top, rgba(231, 231, 231, 1) 0%, rgba(231, 231, 231, 1) 0%);
-        background: -o-linear-gradient(top, rgba(231, 231, 231, 1) 0%, rgba(231, 231, 231, 1) 0%);
-        background: -ms-linear-gradient(top, rgba(231, 231, 231, 1) 0%, rgba(231, 231, 231, 1) 0%);
-        background: linear-gradient(to bottom, rgba(231, 231, 231, 1) 0%, rgba(231, 231, 231, 1) 0%);
-        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e7e7e7', endColorstr='#e7e7e7', GradientType=0);
-      }
-    }
+  }
+  &:hover {
+    background: $btn-color-hover;
   }
 }
 
@@ -547,7 +519,7 @@ span.exclusive {
   span {
     padding: 10px 14px;
     display: block;
-    background: $primary-background;
+    background: $primary-color;
   }
   &:hover {
     span {
@@ -578,7 +550,6 @@ span.exclusive {
 
 //form
 .form-control {
-  padding: 3px 5px;
   height: 27px;
   @include box-shadow(none);
   &.grey {
@@ -781,7 +752,6 @@ table.table_block td {
 
 //BOXES
 .box {
-  background: $base-box-bg;
   border: 1px solid $base-border-color;
   padding: $base-box-padding;
   margin: $base-box-indent;
@@ -891,7 +861,7 @@ table.table_block td {
   h4 {
     font: 400 18px / 22px $font-custom;
     color: $base-heading-color;
-    border-bottom: 1px solid $primary-background;
+    border-bottom: 1px solid $primary-color;
     text-transform: uppercase;
     padding: 5px;
     margin-bottom: 20px;
@@ -1036,6 +1006,10 @@ table.table_block td {
   &.product-listing {
     border-bottom: none;
     margin-bottom: 0;
+  }
+
+  &.with-button {
+    padding: 0px 0px 5px 0px;
   }
 }
 
@@ -1636,7 +1610,7 @@ div.star a:hover {
         display: none;
       }
       span:last-of-type {
-        color: $primary-background;
+        color: $primary-color;
       }
       &:before {
         border: none;
@@ -1710,7 +1684,7 @@ div.star a:hover {
     a {
       color: $dark-text-color;
       &:hover {
-        color: $primary-background;
+        color: $primary-color;
       }
     }
     h4 {
@@ -1818,7 +1792,7 @@ div.star a:hover {
               -moz-osx-font-smoothing: grayscale;
             }
             &:hover {
-              color: $primary-background;
+              color: $primary-color;
             }
           }
           &.facebook {
@@ -1880,7 +1854,7 @@ div.star a:hover {
           text-align: center;
         }
         span {
-          color: $primary-background;
+          color: $primary-color;
         }
       }
     }
@@ -2584,88 +2558,6 @@ p.cheque-indent {
   display: none;
 }
 
-//PAGES ADRESSES, IDENTITY
-#address,
-#identity,
-#account-creation_form,
-#new_account_form,
-#opc_account_form,
-#authentication {
-  .box {
-    padding-bottom: 20px;
-    line-height: 20px;
-  }
-  p.required {
-    color: #f13340;
-    margin: 9px 0 16px 0;
-  }
-  p.inline-infos {
-    color: red;
-  }
-  .form-group {
-    margin-bottom: 4px;
-    .form-control {
-      max-width: 271px;
-      &#adress_alias {
-        margin-bottom: 20px;
-      }
-    }
-    &.phone-number {
-      // min 1200px
-      @media (min-width: $screen-lg) {
-        float: left;
-        width: 270px;
-        margin-right: 13px;
-      }
-      + p {
-        @media (min-width: $screen-lg) {
-          padding: 23px 0 0 0px;
-          margin-bottom: 0;
-        }
-      }
-    }
-  }
-  .gender-line {
-    margin-bottom: 4px;
-    padding-top: 4px;
-    > label {
-      margin-right: 10px;
-      margin-bottom: 0;
-    }
-    .radio-inline {
-      label {
-        font-weight: normal;
-        color: #777777;
-      }
-    }
-  }
-}
-
-#identity,
-#authentication,
-#order-opc {
-  #center_column {
-    form.std {
-      .row {
-        margin-left: -5px;
-        margin-right: -5px;
-        .col-xs-4 {
-          padding-left: 5px;
-          padding-right: 5px;
-          max-width: 94px;
-          .form-control {
-            max-width: 84px;
-          }
-        }
-      }
-    }
-    .footer_links {
-      border: none;
-      padding-top: 0;
-    }
-  }
-}
-
 #new_account_form .box {
   line-height: 20px;
   .date-select {
@@ -2676,12 +2568,6 @@ p.cheque-indent {
   }
   .customerprivacy {
     padding-top: 15px;
-  }
-}
-
-#authentication {
-  fieldset.account_creation {
-    margin-bottom: 20px;
   }
 }
 
@@ -3147,23 +3033,77 @@ div.star.star_hover {
 
 .fancybox-skin {
   background: $light-background !important;
+  -webkit-border-radius: 0px !important;
+  -moz-border-radius: 0px !important;
+  border-radius: 0px !important;
+
+  .fancybox-inner {
+    min-width: 400px;
+    min-height: 200px;
+  }
+  .submit {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+
+    .button {
+      border: none;
+      min-width: 80px;
+      text-align: center;
+      background: $btn-primary-color;
+      color: $btn-text-color;
+      @include box-shadow(0 2px 8px rgba(0, 0, 0, 0.16));
+
+      &:hover {
+        background: $btn-primary-color-hover;
+      }
+    }
+    .ccl {
+      background: $btn-color;
+      &:hover {
+        background: $btn-color-hover;
+      }
+    }
+  }
+}
+
+#fancybox-loading {
+  top: 0 !important;
+  left: 0 !important;
+  margin-top: 0px !important;
+  margin-left: 0px !important;
+  background: black !important;
+  opacity: 0.5 !important;
+  width: 100% !important;
+  height: 100% !important;
+  cursor: default !important;
+
+  div {
+    top: 50%;
+    position: absolute;
+    left: 50%;
+    margin-left: -22px;
+    margin-top: -22px;
+    cursor: default;
+  }
 }
 
 .fancybox-skin .fancybox-close {
   width: 28px;
   height: 28px;
   background: none;
-  font-size: 28px;
+  font-size: 16px;
   line-height: 28px;
   color: $base-text-color;
   text-align: center;
   background: white;
-  @include border-radius(50px);
+  top: 0px;
+  right: 0px;
   &:hover {
     color: $link-hover-color;
   }
   &:after {
-    content: "\f057";
+    content: "\f00d";
     font-family: $font-icon;
   }
 }

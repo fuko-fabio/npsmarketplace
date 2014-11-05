@@ -51,7 +51,9 @@
 		<link href='//fonts.googleapis.com/css?family=Dosis' rel='stylesheet' type='text/css'>
 		<link href='//fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
 		<link href='//fonts.googleapis.com/css?family=Hammersmith+One' rel='stylesheet' type='text/css'>
-{if isset($css_files)}
+        <link href='//fonts.googleapis.com/css?family=Calligraffitti' rel='stylesheet' type='text/css'>
+        <link href='//fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
+        {if isset($css_files)}
 	{foreach from=$css_files key=css_uri item=media}
 		<link rel="stylesheet" href="{$css_uri}" type="text/css" media="{$media}" />
 	{/foreach}

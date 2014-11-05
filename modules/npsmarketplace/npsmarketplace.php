@@ -16,8 +16,8 @@ if ( !defined( '_THEME_SEL_DIR_' ) )
 if ( !defined( '_NPS_MAILS_DIR_' ) )
     define('_NPS_MAILS_DIR_', dirname(__FILE__).'/mails/');
 
-include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
-include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24SellerCompany.php');
+require_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
+require_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24SellerCompany.php');
 
 class NpsMarketplace extends Module {
     const INSTALL_SQL_FILE = 'install.sql';
@@ -51,6 +51,7 @@ class NpsMarketplace extends Module {
             || !$this->registerHook('displayCustomerAccount')
             || !$this->registerHook('productTab')
             || !$this->registerHook('productTabContent')
+            || !$this->registerHook('productFooter')
             || !$this->registerHook('displayRightColumnProduct')
             || !$this->registerHook('displayMyAccountColumn')
             || !Configuration::updateValue('NPS_GLOBAL_COMMISION', 3)
@@ -74,6 +75,7 @@ class NpsMarketplace extends Module {
             || !$this->unregisterHook('displayCustomerAccount')
             || !$this->unregisterHook('productTab')
             || !$this->unregisterHook('productTabContent')
+            || !$this->unregisterHook('productFooter')
             || !$this->unregisterHook('displayRightColumnProduct')
             || !$this->unregisterHook('displayMyAccountColumn')
             || !Configuration::deleteByName('NPS_GLOBAL_COMMISION')
@@ -95,16 +97,58 @@ class NpsMarketplace extends Module {
     }
 
     public function hookDisplayRightColumnProduct() {
-        $id_seller = (int)Seller::getSellerByProduct(Tools::getValue('id_product'));
+        $id_product = Tools::getValue('id_product');
+        $id_seller = (int)Seller::getSellerByProduct($id_product);
+
         if(isset($id_seller) && $id_seller > 0) {
+            $this->context->controller->addJS(_PS_JS_DIR_.'validate.js');
+            $product = new Product($id_product, false, $this->context->language->id);
             $seller = new Seller($id_seller);
             $this->context->smarty->assign(array(
                 'seller_shop_url' => $this->context->link->getModuleLink('npsmarketplace', 'SellerShop', array('id_seller' => $seller->id)),
                 'seller_name' => $seller->name,
-                'seller_ask_url' => $this->context->link->getModuleLink('npsmarketplace', 'SellerShop', array('id_seller' => $seller->id, 'action' => 'ask')),
+                'sts_secure_key' => $this->secure_key,
+                'sts_product_id' => $product->id,
+                
             ));
             return $this->display(__FILE__, 'views/templates/hook/product_seller_info.tpl');
         }
+    }
+
+    private function getProductObject($product) {
+        $cover = Product::getCover($product->id);
+        $have_image = !empty($cover);
+        return array(
+            'url' =>  $this->context->link->getProductLink($product),
+            'img' => $have_image ? $this->context->link->getImageLink($product->link_rewrite[$this->context->language->id], $cover['id_image'], 'home_default') : null,
+        );
+    }
+
+    public function hookProductFooter() {
+        $seller = new Seller(null, $this->context->customer->id);
+        $products = $seller->getProducts();
+        $count = count($products);
+        $p1 = null;
+        $p2 = null;
+        $p3 = null;
+        if ($count > 0) {
+            $p1 = $this->getProductObject($products[0]);
+        }
+        if ($count > 1) {
+            $p1 = $this->getProductObject($products[1]);
+        }
+        if ($count > 2) {
+            $p1 = $this->getProductObject($products[2]);
+        }
+        $this->context->smarty->assign(array(
+            'seller' => $seller,
+            'logo' => $seller->getImageLink('cart_default', $this->context),
+            'seller_shop_url' => $this->context->link->getModuleLink('npsmarketplace', 'SellerShop', array('id_seller' => $seller->id)),
+            'p1' => $p1,
+            'p2' => $p2,
+            'p3' => $p3,
+        ));
+        return $this->display(__FILE__, 'views/templates/hook/product_footer.tpl');
     }
 
     public function hookDisplayMyAccountColumn() {

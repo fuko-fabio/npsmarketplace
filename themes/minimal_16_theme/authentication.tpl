@@ -54,7 +54,7 @@
 			<form action="{$link->getPageLink('authentication', true)|escape:'html':'UTF-8'}" method="post" id="create-account_form" class="box">
 				<h3 class="page-subheading">{l s='Create an account'}</h3>
 				<div class="form_content clearfix">
-					<p>{l s='Please enter your email address to create an account.'}</p>
+					<p class="alert alert-info">{l s='Please enter your email address to create an account.'}</p>
 					<div class="alert alert-danger" id="create_account_error" style="display:none"></div>
 					<div class="form-group">
 						<label for="email_create">{l s='Email address'}</label>
@@ -62,7 +62,7 @@
 					</div>
 					<div class="submit">
 						{if isset($back)}<input type="hidden" class="hidden" name="back" value="{$back|escape:'html':'UTF-8'}" />{/if}
-						<button class="btn btn-default button button-medium exclusive" type="submit" id="SubmitCreate" name="SubmitCreate">
+						<button class="btn btn-default button button-medium exclusive pull-right" type="submit" id="SubmitCreate" name="SubmitCreate">
 							<span>
 								<i class="icon-user left"></i>
 								{l s='Create an account'}
@@ -88,7 +88,7 @@
 					<p class="lost_password form-group"><a href="{$link->getPageLink('password')|escape:'html':'UTF-8'}" title="{l s='Recover your forgotten password'}" rel="nofollow">{l s='Forgot your password?'}</a></p>
 					<p class="submit">
 						{if isset($back)}<input type="hidden" class="hidden" name="back" value="{$back|escape:'html':'UTF-8'}" />{/if}
-						<button type="submit" id="SubmitLogin" name="SubmitLogin" class="button btn btn-default button-medium">
+						<button type="submit" id="SubmitLogin" name="SubmitLogin" class="button btn btn-default button-medium pull-right">
 							<span>
 								<i class="icon-lock left"></i>
 								{l s='Sign in'}

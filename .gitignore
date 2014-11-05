@@ -34,7 +34,13 @@
 /override/controllers/admin/*
 !/override/controllers/admin/AdminStatsController.php
 !/override/controllers/admin/AdminProductsController.php
-!/override/controllers/admin/AdminPdfController.php
+!/override/controllers/front
+/override/controllers/front/*
+!/override/controllers/front/AddressController.php
+!/override/controllers/front/AddressesController.php
+!/override/controllers/front/HistoryController.php
+!/override/controllers/front/IdentityController.php
+!/override/controllers/front/OrderSlipController.php
 
 !/override/controllers/admin/templates
 /override/controllers/admin/templates/*
