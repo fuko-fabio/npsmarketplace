@@ -769,6 +769,20 @@ table.table-product-discounts {
     padding-bottom: 0;
     color: #666; }
 
+#new_seller_comment_form {
+  overflow: hidden;
+  width: 555px; }
+  @media (max-width: 767px) {
+    #new_seller_comment_form {
+      width: 280px; } }
+  #new_seller_comment_form #id_new_seller_comment_form {
+    margin-bottom: 50px; }
+    #new_seller_comment_form #id_new_seller_comment_form .seller img {
+      display: block;
+      margin-bottom: 10px; }
+    #new_seller_comment_form #id_new_seller_comment_form .seller strong {
+      margin-bottom: 10px; }
+
 /* PERSONNALISATION ##################################################################### */
 p.infoCustomizable {
   margin-bottom: 30px; }

@@ -188,26 +188,19 @@
     overflow: hidden;
     padding: 20px 20px 10px 20px;
     margin: 0;
-    background: #f6f6f6;
     a {
       width: 100%;
       float: left;
       text-align: center;
       margin-bottom: 10px;
       margin-right: 10px;
+      text-transform: none;
       &#button_order_cart {
         margin-right: 0;
         border: none;
         span {
           padding: 7px 0;
           font-size: 1.1em;
-          border: solid 1px lighten(#43b155, 10%);
-          background: #43b155;
-        }
-        &:hover span {
-          border: solid 1px darken(#43b155, 10%);
-          background: darken(#43b155, 15%);
-          color: $light-text-color;
         }
       }
     }
@@ -220,39 +213,30 @@
 #header {
   .cart_block {
     position: absolute;
-    top: 95px;
     right: 0;
     z-index: 100;
     display: none;
     height: auto;
-    background: #484848;
-    color: $light-text-color;
+    background: $light-background;
+    color: $base-text-color;
     width: 270px;
+    border: $main_border;
     @media (max-width: $screen-xs) {
       width: 100%;
     }
     @media (max-width: $screen-lg) {
       width: 100%;
     }
-    a {
-      color: $light-text-color;
-      &:hover {
-        color: #9c9b9b;
-      }
-    }
     .cart_block_list {
       .remove_link a,
       .ajax_cart_block_remove_link {
-        color: $light-text-color;
+        color: $base-text-color;
         outline: none;
         text-decoration: none;
         &:hover {
           color: #9c9b9b;
         }
       }
-    }
-    .price {
-      color: $light-text-color;
     }
     dt {
       background: url(../../../img/cart-shadow.png) repeat-x;
@@ -269,13 +253,6 @@
           color: $light-text-color;
         }
       }
-    }
-    .cart-prices {
-      border: none;
-      background: url(../../../img/cart-shadow.png) repeat-x #3d3d3d;
-    }
-    .cart-buttons {
-      background: url(../../../img/cart-shadow.png) repeat-x $dark-background;
     }
   }
   .block_content {

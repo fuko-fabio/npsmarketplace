@@ -141,60 +141,48 @@
 .cart_block .cart-buttons {
   overflow: hidden;
   padding: 20px 20px 10px 20px;
-  margin: 0;
-  background: #f6f6f6; }
+  margin: 0; }
   .cart_block .cart-buttons a {
     width: 100%;
     float: left;
     text-align: center;
     margin-bottom: 10px;
-    margin-right: 10px; }
+    margin-right: 10px;
+    text-transform: none; }
     .cart_block .cart-buttons a#button_order_cart {
       margin-right: 0;
       border: none; }
       .cart_block .cart-buttons a#button_order_cart span {
         padding: 7px 0;
-        font-size: 1.1em;
-        border: solid 1px #63c473;
-        background: #43b155; }
-      .cart_block .cart-buttons a#button_order_cart:hover span {
-        border: solid 1px #358c43;
-        background: #2e7a3a;
-        color: #fff; }
+        font-size: 1.1em; }
 
 /*******************************************************************
 					Cart Block(Header) Styles
 ********************************************************************/
 #header .cart_block {
   position: absolute;
-  top: 95px;
   right: 0;
   z-index: 100;
   display: none;
   height: auto;
-  background: #484848;
-  color: #fff;
-  width: 270px; }
+  background: #fff;
+  color: #333;
+  width: 270px;
+  border: 1px solid #d6d4d4; }
   @media (max-width: 480px) {
     #header .cart_block {
       width: 100%; } }
   @media (max-width: 1200px) {
     #header .cart_block {
       width: 100%; } }
-  #header .cart_block a {
-    color: #fff; }
-    #header .cart_block a:hover {
-      color: #9c9b9b; }
   #header .cart_block .cart_block_list .remove_link a,
   #header .cart_block .cart_block_list .ajax_cart_block_remove_link {
-    color: #fff;
+    color: #333;
     outline: none;
     text-decoration: none; }
     #header .cart_block .cart_block_list .remove_link a:hover,
     #header .cart_block .cart_block_list .ajax_cart_block_remove_link:hover {
       color: #9c9b9b; }
-  #header .cart_block .price {
-    color: #fff; }
   #header .cart_block dt {
     background: url(../../../img/cart-shadow.png) repeat-x; }
     #header .cart_block dt.first_item {
@@ -206,11 +194,6 @@
       color: #9c9b9b; }
       #header .cart_block .product-atributes a:hover {
         color: #fff; }
-  #header .cart_block .cart-prices {
-    border: none;
-    background: url(../../../img/cart-shadow.png) repeat-x #3d3d3d; }
-  #header .cart_block .cart-buttons {
-    background: url(../../../img/cart-shadow.png) repeat-x #36454f; }
 #header .block_content {
   margin-bottom: 0; }
 

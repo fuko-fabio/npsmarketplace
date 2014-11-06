@@ -53,11 +53,6 @@
 						<a class="product_img_link"	href="{$product.link|escape:'html':'UTF-8'}" title="{$product.name|escape:'html':'UTF-8'}" itemprop="url">
 							<img class="replace-2x img-responsive" src="{$link->getImageLink($product.link_rewrite, $product.id_image, 'home_default')|escape:'html':'UTF-8'}" alt="{if !empty($product.legend)}{$product.legend|escape:'html':'UTF-8'}{else}{$product.name|escape:'html':'UTF-8'}{/if}" title="{if !empty($product.legend)}{$product.legend|escape:'html':'UTF-8'}{else}{$product.name|escape:'html':'UTF-8'}{/if}" {if isset($homeSize)} width="{$homeSize.width}" height="{$homeSize.height}"{/if} itemprop="image" />
 						</a>
-						{if isset($quick_view) && $quick_view}
-							<a class="quick-view" href="{$product.link|escape:'html':'UTF-8'}" rel="{$product.link|escape:'html':'UTF-8'}">
-								<span>{l s='Quick view'}</span>
-							</a>
-						{/if}
 						{if (!$PS_CATALOG_MODE AND ((isset($product.show_price) && $product.show_price) || (isset($product.available_for_order) && $product.available_for_order)))}
 							<div class="content_price" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
 								{if isset($product.show_price) && $product.show_price && !isset($restricted_country_mode)}
@@ -88,7 +83,7 @@
 						{/if}
 					</div>
 				</div>
-				<div class="right-block">
+				<div class="right-block" onclick="window.location='{$product.link|escape:'html':'UTF-8'}';">
                     {if (!$PS_CATALOG_MODE AND ((isset($product.show_price) && $product.show_price) || (isset($product.available_for_order) && $product.available_for_order)))}
                         <div itemprop="offers" itemscope itemtype="http://schema.org/Offer" class="content_price">
                             {if isset($product.show_price) && $product.show_price && !isset($restricted_country_mode)}
@@ -114,25 +109,25 @@
 						</a>
 					</h5>
 					{hook h='displayProductListReviews' product=$product}
-					<div class="button-container">
+					<div class="button-container" onclick="window.location='{$product.link|escape:'html':'UTF-8'}';">
                         <p class="product-desc" itemprop="description">
                             {$product.description_short|strip_tags:'UTF-8'|truncate:360:'...'}
                         </p>
 						{if ($product.id_product_attribute == 0 || (isset($add_prod_display) && ($add_prod_display == 1))) && $product.available_for_order && !isset($restricted_country_mode) && $product.minimal_quantity <= 1 && $product.customizable != 2 && !$PS_CATALOG_MODE}
 							{if ($product.allow_oosp || $product.quantity > 0)}
 								{if isset($static_token)}
-									<a class="button ajax_add_to_cart_button btn btn-default" href="{$link->getPageLink('cart',false, NULL, "add=1&amp;id_product={$product.id_product|intval}&amp;token={$static_token}", false)|escape:'html':'UTF-8'}" rel="nofollow" title="{l s='Add to cart'}" data-id-product="{$product.id_product|intval}">
-										<span>{l s='Add to cart'}</span></a><br />
+									<a class="btn btn-default button button-medium" href="{$link->getPageLink('cart',false, NULL, "add=1&amp;id_product={$product.id_product|intval}&amp;token={$static_token}", false)|escape:'html':'UTF-8'}" rel="nofollow" title="{l s='Add to cart'}" data-id-product="{$product.id_product|intval}">
+										<span>{l s='Add to cart'} <i class="icon-shopping-cart right"></i></span>
 									</a>
 								{else}
-									<a class="button ajax_add_to_cart_button btn btn-default" href="{$link->getPageLink('cart',false, NULL, 'add=1&amp;id_product={$product.id_product|intval}', false)|escape:'html':'UTF-8'}" rel="nofollow" title="{l s='Add to cart'}" data-id-product="{$product.id_product|intval}">
-										<span>{l s='Add to cart'}</span><br />
+									<a class="btn btn-default button button-medium" href="{$link->getPageLink('cart',false, NULL, 'add=1&amp;id_product={$product.id_product|intval}', false)|escape:'html':'UTF-8'}" rel="nofollow" title="{l s='Add to cart'}" data-id-product="{$product.id_product|intval}">
+										<span>{l s='Add to cart'} <i class="icon-shopping-cart right"></i></span>
 									</a>
 								{/if}						
 							{/if}
 						{/if}
-						<a itemprop="url" class="button lnk_view btn btn-default" href="{$product.link|escape:'html':'UTF-8'}" title="{l s='View'}">
-							<span>{l s='More'}</span>
+						<a itemprop="url" class="btn btn-default button button-medium ccl view-more" href="{$product.link|escape:'html':'UTF-8'}" title="{l s='View'}">
+							<span>{l s='More'} <i class="icon-zoom-in right"></i></span>
 						</a>
 					</div>
 					{if isset($product.color_list)}

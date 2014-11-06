@@ -59,7 +59,11 @@
       background: none;
       text-align: center;
       color: #36454f;
-      padding: 9px; }
+      padding: 9px;
+      min-width: 0;
+      -moz-box-shadow: none;
+      -webkit-box-shadow: none;
+      box-shadow: none; }
       #footer #newsletter_block_left .form-group .button-small:before {
         content: "\f054";
         font-family: "FontAwesome";

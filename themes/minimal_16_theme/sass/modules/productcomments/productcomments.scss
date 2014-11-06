@@ -227,7 +227,7 @@
 		}
 		.comment_author {		
 			padding: 0 20px;
-			line-height: 18px
+			line-height: 18px;
 			span{
 				font-weight: bold;
 				float: left;
@@ -244,17 +244,7 @@
 			@media (max-width: $screen-sm-max) { //max 767px
 				border-left: none;
 				ul {
-					list-style-type: none;
-					margin: 0;
-					li {
-						padding: 2px 0 2px;
-						&:before{
-							font-family: $font-icon;	
-							content: "\f0da";	
-							color: $base-text-color;
-							margin-right: 8px;
-						}
-					}
+					display: none;
 				}					
 			}
 		}			
@@ -272,7 +262,7 @@
 			content: "\f005";
 			font-family: $font-icon;
 			display: inline-block;
-			color: #ef8743;	
+			color: $primary-color;
 		}
 	}
 	.comment_author_infos {

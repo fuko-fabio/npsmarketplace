@@ -77,6 +77,8 @@
         text-align: center;
         color: $dark-background;
         padding: 9px;
+        min-width: 0;
+        @include box-shadow(none);
         &:before {
           content: "\f054";
           font-family: $font-icon;

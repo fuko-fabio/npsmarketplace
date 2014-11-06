@@ -182,9 +182,10 @@
       border: none; }
     #product_comments_block_tab div.comment .comment_author {
       padding: 0 20px;
-      line-height: 18px span;
-        line-height-font-weight: bold;
-        line-height-float: left; }
+      line-height: 18px; }
+      #product_comments_block_tab div.comment .comment_author span {
+        font-weight: bold;
+        float: left; }
       #product_comments_block_tab div.comment .comment_author .star_content {
         display: inline-block;
         vertical-align: middle;
@@ -196,15 +197,7 @@
         #product_comments_block_tab div.comment .comment_details {
           border-left: none; }
           #product_comments_block_tab div.comment .comment_details ul {
-            list-style-type: none;
-            margin: 0; }
-            #product_comments_block_tab div.comment .comment_details ul li {
-              padding: 2px 0 2px; }
-              #product_comments_block_tab div.comment .comment_details ul li:before {
-                font-family: "FontAwesome";
-                content: "\f0da";
-                color: #333;
-                margin-right: 8px; } }
+            display: none; } }
   #product_comments_block_tab div.star:after {
     content: "\f006";
     font-family: "FontAwesome";
@@ -214,7 +207,7 @@
     content: "\f005";
     font-family: "FontAwesome";
     display: inline-block;
-    color: #ef8743; }
+    color: #ffaa00; }
   #product_comments_block_tab .comment_author_infos {
     clear: both;
     padding-top: 9px; }

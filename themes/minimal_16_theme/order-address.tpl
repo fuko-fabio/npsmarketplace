@@ -38,7 +38,12 @@
 {/if}
 <div class="addresses clearfix">
 	<div class="row">
-		<div class="col-xs-12 col-sm-6">
+		<div class="col-xs-12 col-sm-4">
+            <p class="address_add submit">
+                <a href="{$link->getPageLink('address', true, NULL, "back={$back_order_page}?step=1{if $back}&mod={$back}{/if}")|escape:'html':'UTF-8'}" title="{l s='Add'}" class="button button-small btn btn-default">
+                    <span>{l s='Add a new address'}<i class="icon-plus right"></i></span>
+                </a>
+            </p>
 			<div class="address_delivery select form-group selector1">
 				<label for="id_address_delivery">{if $cart->isVirtualCart()}{l s='Choose a billing address:'}{else}{l s='Choose a delivery address:'}{/if}</label>
 				<select name="id_address_delivery" id="id_address_delivery" class="address_select form-control">
@@ -54,7 +59,7 @@
 				<label for="addressesAreEquals">{l s='Use the delivery address as the billing address.'}</label>
 			</p>
 		</div>
-		<div class="col-xs-12 col-sm-6">
+		<div class="unvisible">
 			<div id="address_invoice_form" class="select form-group selector1"{if $cart->id_address_invoice == $cart->id_address_delivery} style="display: none;"{/if}>
 				{if $addresses|@count > 1}
 					<label for="id_address_invoice" class="strong">{l s='Choose a billing address:'}</label>
@@ -69,30 +74,23 @@
 					<a href="{$link->getPageLink('address', true, NULL, "back={$back_order_page}?step=1&select_address=1{if $back}&mod={$back}{/if}")|escape:'html':'UTF-8'}" title="{l s='Add'}" class="button button-small btn btn-default">
 						<span>
 							{l s='Add a new address'}
-							<i class="icon-chevron-right right"></i>
+							<i class="icon-plus right"></i>
 						</span>
 					</a>
 				{/if}
 			</div>
 		</div>
+        <div class="unvisible"{if $cart->isVirtualCart()} style="display:none;"{/if}>
+            <ul class="address item box" id="address_delivery">
+            </ul>
+        </div>
+        <div class="col-xs-12 col-sm-8">
+            <ul class="address alternate_item{if $cart->isVirtualCart()} full_width{/if} box" id="address_invoice">
+            </ul>
+        </div>
 	</div> <!-- end row -->
-	<div class="row">
-		<div class="col-xs-12 col-sm-6"{if $cart->isVirtualCart()} style="display:none;"{/if}>
-			<ul class="address item box" id="address_delivery">
-			</ul>
-		</div>
-		<div class="col-xs-12 col-sm-6">
-			<ul class="address alternate_item{if $cart->isVirtualCart()} full_width{/if} box" id="address_invoice">
-			</ul>
-		</div>
-	</div> <!-- end row -->
-	<p class="address_add submit">
-		<a href="{$link->getPageLink('address', true, NULL, "back={$back_order_page}?step=1{if $back}&mod={$back}{/if}")|escape:'html':'UTF-8'}" title="{l s='Add'}" class="button button-small btn btn-default">
-			<span>{l s='Add a new address'}<i class="icon-chevron-right right"></i></span>
-		</a>
-	</p>
 	{if !$opc}
-		<div id="ordermsg" class="form-group">
+		<div id="ordermsg" class="form-group unvisible">
 			<label>{l s='If you would like to add a comment about your order, please write it in the field below.'}</label>
 			<textarea class="form-control" cols="60" rows="6" name="message">{if isset($oldMessage)}{$oldMessage}{/if}</textarea>
 		</div>

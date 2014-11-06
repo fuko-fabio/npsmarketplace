@@ -56,10 +56,10 @@ $(function() {
     $('#submitSellerNewMessage').click(function(e) {
         // Kill default behaviour
         e.preventDefault();
-
+		$.fancybox.showLoading();
         // Form element
         $.ajax({
-            url : sellercomments_controller_url + '&' + 'action=add_comment&secure_key=' + sellercomments_secure_key + '&rand=' + new Date().getTime(),
+            url : sellercomments_controller_url + '&' + 'action=add_comment&id_seller=' + sellercomments_id_seller + '&secure_key=' + sellercomments_secure_key + '&rand=' + new Date().getTime(),
             data : $('#id_new_seller_comment_form').serialize(),
             type : 'POST',
             headers : {
@@ -67,6 +67,7 @@ $(function() {
             },
             dataType : "json",
             success : function(data) {
+            	$.fancybox.hideLoading();
                 if (data.result) {
                     $.fancybox.close();
                     var buttons = {};

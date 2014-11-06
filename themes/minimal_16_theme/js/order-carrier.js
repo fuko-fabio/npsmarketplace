@@ -59,7 +59,7 @@ function acceptCGV()
 	            type: 'inline',
 	            autoScale: true,
 	            minHeight: 30,
-	            content: '<p class="fancybox-error">' + msg_order_carrier + '</p>'
+	            content: '<h2 class="page-subheading" style="padding-left: 10px;">' + msg_order_carrier_title + '</h2><p class="fancybox-error">' + msg_order_carrier + '</p>'
 	        }],
 			{
 		        padding: 0

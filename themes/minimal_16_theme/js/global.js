@@ -137,7 +137,7 @@ function blockHover(status)
 
 		if ('ontouchstart' in document.documentElement)
 			return;
-		if ($('body').find('.container').width() == 1170)
+		if ($('body').find('.container').width() >= 940)
 		{
 			var pcHeight = $(this).parent().outerHeight();
 			var pcPHeight = $(this).parent().find('.button-container').outerHeight() + $(this).parent().find('.comments_note').outerHeight() + $(this).parent().find('.functional-buttons').outerHeight();
@@ -147,7 +147,7 @@ function blockHover(status)
 	});
 
 	$(document).off('mouseleave').on('mouseleave', '.product_list.grid li.ajax_block_product .product-container', function(e){
-		if ($('body').find('.container').width() == 1170)
+		if ($('body').find('.container').width() >= 940)
 			$(this).parent().removeClass('hovered').removeAttr('style');
 	});
 }

@@ -112,10 +112,7 @@ table#product_comparison .comparison_feature .product_name {
   #columns table#product_comparison tbody tr td.td_empty span {
     font-size: 14px; }
   #columns table#product_comparison tbody tr td.product-block {
-    padding: 14px; }
-  #columns table#product_comparison .button.ajax_add_to_cart_button,
-  #columns table#product_comparison .button.lnk_view {
-    font-size: 14px; } }
+    padding: 14px; } }
 @media (max-width: 767px) {
   #product_comparison table,
   #product_comparison thead,

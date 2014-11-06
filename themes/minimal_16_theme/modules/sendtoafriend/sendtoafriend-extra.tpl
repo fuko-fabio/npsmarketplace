@@ -59,14 +59,14 @@
                             <label for="friend_name">
                                 {l s='Name of your friend' mod='sendtoafriend'} <sup class="required">*</sup>
                             </label>
-                            <input id="friend_name" class="validate form-control" data-validate="isGenericName" name="friend_name" type="text" value=""/>
+                            <input id="friend_name" class="is_required validate form-control" data-validate="isGenericName" name="friend_name" type="text" value=""/>
                         </div>
 
                         <div class="form-group">
                             <label for="friend_email">
                                 {l s='E-mail address of your friend' mod='sendtoafriend'} <sup class="required">*</sup>
                             </label>
-                            <input id="friend_email" class="validate form-control" data-validate="isEmail" name="friend_email" type="text" value=""/>
+                            <input id="friend_email" class="is_required validate form-control" data-validate="isEmail" name="friend_email" type="text" value=""/>
                         </div>
 
                         <p class="txt_required">
