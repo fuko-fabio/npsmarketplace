@@ -1,0 +1,36 @@
+#best-sellers_block_center h2 {
+  font: 600 21px/24px "Open Sans", sans-serif;
+  color: #333;
+  text-transform: uppercase; }
+#best-sellers_block_center .item {
+  margin-bottom: 15px; }
+#best-sellers_block_center a {
+  color: #fff; }
+  #best-sellers_block_center a .new-box {
+    left: 10px; }
+  #best-sellers_block_center a .sale-box {
+    right: 10px; }
+  #best-sellers_block_center a .name {
+    display: none;
+    position: absolute;
+    width: 85%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    top: 0;
+    left: 15px;
+    padding-top: 85%;
+    padding-left: 5px; }
+  #best-sellers_block_center a img {
+    width: 100%;
+    -moz-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+    -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+    border: 1px solid #d6d4d4; }
+  #best-sellers_block_center a:hover img {
+    -moz-box-shadow: 0 2px 8px rgba(255, 170, 0, 0.8);
+    -webkit-box-shadow: 0 2px 8px rgba(255, 170, 0, 0.8);
+    box-shadow: 0 2px 8px rgba(255, 170, 0, 0.8);
+    border-color: #ffaa00; }
+  @media (min-width: 992px) {
+    #best-sellers_block_center a:hover .name {
+      display: block; } }

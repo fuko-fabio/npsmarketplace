@@ -317,6 +317,37 @@ span.view_scroll_spacer {
     &#favoriteproducts_block_extra_removed:before {
       content: "\f004";
     }
+
+    &#npsfavorite_block_extra_remove,
+    &#npsfavorite_block_extra_add,
+    &#npsfavorite_block_extra_removed,
+    &#npsfavorite_block_extra_added {
+      cursor: pointer;
+      font-weight: 300;
+      clear: both;
+      float: none;
+      margin: 0 0 8px 0;
+      position: relative;
+      color: $dark-background;
+      cursor: pointer;
+      background: none !important;
+      &:before {
+        font-family: $font-icon;
+        color: $dark-background;
+        font-size: 19px;
+        line-height: 24px;
+        font-weight: normal;
+        content: "\f08a";
+        position: relative;
+        top: 2px;
+      }
+      &:hover {
+        color: $primary-color;
+      }
+    }
+    &#npsfavorite_block_extra_removed:before {
+      content: "\f004";
+    }
   }
 }
 

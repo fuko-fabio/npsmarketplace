@@ -1,3 +1,7 @@
+{*
+*  @author Norbert Pabian <norbert.pabian@gmail.com>
+*  @copyright 2014 npsoftware
+*}
 {capture name=path}
     <a href="{$link->getPageLink('my-account', true)|escape:'html':'UTF-8'}">
         {l s='My account'}
@@ -84,6 +88,6 @@
         </br>
         <strong>{l s='By clicking "Add" I accept the' mod='npsmarketplace'} <a href="{$user_agreement_url}">{l s='User Agreement.' mod='npsmarketplace'}</a></strong>
         </br>
-        <button type="submit" name="submitCombination" class="btn btn-primary btn-lg pull-right"><span>{l s='Add' mod='npsmarketplace'} <i class="icon-plus right"></i></span></button>
+        <button type="submit" name="submitCombination" class="btn btn-default button button-medium pull-right"><span>{l s='Add' mod='npsmarketplace'} <i class="icon-plus right"></i></span></button>
     </form>
 </div>

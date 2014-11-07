@@ -1,0 +1,50 @@
+@import "compass";
+@import "theme_variables";
+
+#best-sellers_block_center {
+  h2 {
+    font: 600 21px / 24px $font-custom;
+    color: $base-text-color;
+    text-transform: uppercase;
+  }
+  .item {
+    margin-bottom: 15px;
+  }
+  a {
+    color: $light-text-color;
+    .new-box {
+      left: 10px;
+    }
+    .sale-box {
+      right: 10px;
+    }
+
+    .name {
+      display: none;
+      position: absolute;
+      width: 85%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      top: 0;
+      left: 15px;
+      padding-top: 85%;
+      padding-left: 5px
+    }
+    img {
+      width: 100%;
+      @include box-shadow(0 2px 8px rgba(0, 0, 0, 0.16));
+      border: 1px solid $base-border-color;
+    }
+    &:hover {
+      img {
+        @include box-shadow(0 2px 8px rgba(255, 170, 0, 0.8));
+        border-color: $primary-color;
+      }
+      @media (min-width: $screen-md) {
+        .name {
+          display: block;
+        }
+      }
+    }
+  }
+}

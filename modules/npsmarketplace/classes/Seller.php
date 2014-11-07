@@ -152,15 +152,13 @@ class Seller extends ObjectModel
         return Db::getInstance()->insert('seller_product', $seller_products);
     }
 
-    public function getImageLink($type = null, $context) {
-        if (file_exists(_NPS_SEL_IMG_DIR_.$this->id.'.'.$this->getImgFormat())) {
-            if ($this->id) {
-                if($type)
-                    $uri_path = _THEME_SEL_DIR_.$this->id.'-'.$type.'.jpg';
-                else
-                    $uri_path = _THEME_SEL_DIR_.$this->id.($type ? '-'.$type : '').'.jpg';
-                return $context->link->protocol_content.Tools::getMediaServer($uri_path).$uri_path;
-            }
+    public static function getImageLink($id_seller, $type = null, $context) {
+        if (file_exists(_NPS_SEL_IMG_DIR_.$id_seller.'.'.Seller::getImgFormat())) {
+            if($type)
+                $uri_path = _THEME_SEL_DIR_.$id_seller.'-'.$type.'.jpg';
+            else
+                $uri_path = _THEME_SEL_DIR_.$id_seller.($type ? '-'.$type : '').'.jpg';
+            return $context->link->protocol_content.Tools::getMediaServer($uri_path).$uri_path;
         }
         return null;
     }
@@ -232,8 +230,8 @@ class Seller extends ObjectModel
         return isset($result);
     }
 
-    public function getImgFormat() {
-        return $this->image_format;
+    public static function getImgFormat() {
+        return 'jpg';
     }
 
     public function getAccountState() {

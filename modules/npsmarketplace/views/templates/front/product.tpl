@@ -1,3 +1,7 @@
+{*
+*  @author Norbert Pabian <norbert.pabian@gmail.com>
+*  @copyright 2014 npsoftware
+*}
 <script type="text/javascript">
     var dictDefaultMessage = "{l s='Drop files here to upload' mod='npsmarketplace' js=1}";
     var dictFallbackMessage = "{l s='Your browser does not support drag\'n\'drop file uploads.' mod='npsmarketplace' js=1}";
@@ -36,7 +40,7 @@
         <strong>{l s='By clicking "Add" I accept the' mod='npsmarketplace'} <a href="{$user_agreement_url}">{l s='User Agreement.' mod='npsmarketplace'}</a></strong>
         </br>
         {if isset($product['id'])}
-            <button type="submit" class="btn btn-primary btn-lg pull-right" name="saveProduct"><span>{l s='Save' mod='npsmarketplace'} <i class="icon-save right"></i></span></button>
+            <button type="submit" class="btn btn-default button button-medium pull-right" name="saveProduct"><span>{l s='Save' mod='npsmarketplace'} <i class="icon-save right"></i></span></button>
         {else}
             <button id="save-product-btn" type="submit" class="btn btn-default button button-medium pull-right" name="saveProduct"><span>{l s='Add' mod='npsmarketplace'} <i class="icon-plus right"></i></span></button>
         {/if}

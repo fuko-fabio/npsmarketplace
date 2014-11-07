@@ -204,6 +204,12 @@ p.required {
       float: left;
     }
   }
+  .alert-link {
+    color: $link-color;
+    &:hover {
+      color: $link-hover-color;
+    }
+  }
 }
 
 .label {
@@ -373,7 +379,6 @@ span.exclusive {
   font: bold 13px / 17px $font-family;
   color: $btn-text-color;
   background: $btn-primary-color;
-  padding: 0;
   min-width: 80px;
   text-align: center;
   @include border-radius(0);
@@ -400,7 +405,6 @@ span.exclusive {
   font-size: 17px;
   line-height: 21px;
   color: $btn-text-color;
-  padding: 0;
   font-weight: bold;
   border: none;
   background: $btn-primary-color;
@@ -408,7 +412,7 @@ span.exclusive {
   @include box-shadow(0 2px 8px rgba(0, 0, 0, 0.16));
   span {
     display: block;
-    padding: 10px 10px 10px 14px;
+    padding: 5px;
     // max 480px
     @media (max-width: $screen-xs) {
       font-size: 15px;
@@ -645,12 +649,7 @@ table.table_block td {
 .new-box,
 .sale-box {
   position: absolute;
-  top: -4px;
-  overflow: hidden;
-  height: 85px;
-  width: 85px;
-  text-align: center;
-  z-index: 0;
+  top: 0px;
 }
 
 .new-box {
@@ -666,13 +665,12 @@ table.table_block td {
   color: $light-text-color;
   background: $product-new-color;
   text-transform: uppercase;
-  padding: 9px 0 7px;
-  width: 130px;
+  padding: 5px 0;
+  width: 80px;
   text-align: center;
   display: block;
   position: absolute;
-  left: -33px;
-  top: 16px;
+  top: 10px;
   z-index: 1;
 }
 
@@ -681,13 +679,13 @@ table.table_block td {
   color: $light-text-color;
   background: $product-reduced-price;
   text-transform: uppercase;
-  padding: 9px 0 7px;
-  width: 130px;
+  padding: 5px 0;
+  width: 80px;
   text-align: center;
   display: block;
   position: absolute;
-  right: -33px;
-  top: 16px;
+  right: 0px;
+  top: 10px;
   z-index: 1;
 }
 
@@ -1766,7 +1764,7 @@ div.star a:hover {
       left: 0;
       width: 100%;
       img {
-        width:250px;
+        width:210px;
       }
     }
     .bottom-footer {

@@ -100,3 +100,65 @@
     text-transform: uppercase; }
   .nps-myaccount-block a:hover {
     color: #ffaa00; }
+
+.nps-sellers-list h2 {
+  font: 600 21px/24px "Open Sans", sans-serif;
+  color: #333;
+  text-transform: uppercase; }
+.nps-sellers-list .item {
+  margin-bottom: 15px; }
+.nps-sellers-list a {
+  font-family: "Poiret One", sans-serif;
+  font-weight: 700;
+  font-size: 24px; }
+  .nps-sellers-list a img {
+    width: 100%;
+    -moz-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+    -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+    border: 1px solid #d6d4d4; }
+  .nps-sellers-list a .mask {
+    display: none;
+    background: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    left: 15px;
+    top: 0;
+    width: 90%;
+    height: 100%;
+    color: #fff;
+    padding: 10px;
+    border: 1px solid #ffaa00; }
+  .nps-sellers-list a .name {
+    position: absolute;
+    top: 0;
+    padding: 10px;
+    color: #333;
+    border: 1px solid transparent; }
+  @media (min-width: 992px) {
+    .nps-sellers-list a:hover .mask {
+      display: block; } }
+  .nps-sellers-list a:hover img {
+    -moz-box-shadow: 0 2px 8px rgba(255, 170, 0, 0.8);
+    -webkit-box-shadow: 0 2px 8px rgba(255, 170, 0, 0.8);
+    box-shadow: 0 2px 8px rgba(255, 170, 0, 0.8); }
+
+.nps-seller-shop #bigpic {
+  width: 100%; }
+.nps-seller-shop .tabs-container .nav-tabs {
+  border: none;
+  margin-top: 20px; }
+  .nps-seller-shop .tabs-container .nav-tabs li a {
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #333;
+    font-size: 14px; }
+    .nps-seller-shop .tabs-container .nav-tabs li a:hover {
+      background: none;
+      color: #ffaa00;
+      border: none; }
+  .nps-seller-shop .tabs-container .nav-tabs li.active {
+    border-color: transparent;
+    border-bottom: 3px solid #ffaa00; }
+    .nps-seller-shop .tabs-container .nav-tabs li.active a {
+      border: none;
+      background: none; }

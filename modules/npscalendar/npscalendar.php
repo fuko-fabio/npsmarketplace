@@ -47,13 +47,15 @@ class NpsCalendar extends Module {
     }
 
     public function hookDisplayTopColumn() {
+        if (!isset($this->context->controller->php_self) || $this->context->controller->php_self != 'index')
+            return;
         return $this->display(__FILE__, 'calendar.tpl');
     }
 
     public function hookHeader() {
         $this->page_name = Dispatcher::getInstance()->getController();
         if ($this->page_name == 'index') {
-            $this->context->controller->addCss(($this->_path).'css/npscalendar.css');
+            $this->context->controller->addCss(($this->_path).'npscalendar.css');
             $this->context->controller->addJS(array(
                 ($this->_path).'js/underscore-min.js',
                 ($this->_path).'js/backbone-min.js',

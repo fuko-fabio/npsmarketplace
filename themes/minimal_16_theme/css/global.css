@@ -5372,6 +5372,10 @@ p.required {
     vertical-align: -2px;
     padding-right: 7px;
     float: left; }
+.alert .alert-link {
+  color: #3457cb; }
+  .alert .alert-link:hover {
+    color: #4465cf; }
 
 .label {
   white-space: normal;
@@ -5518,7 +5522,6 @@ span.exclusive {
   font: bold 13px/17px Arial, Helvetica, sans-serif;
   color: #353535;
   background: #ffaa00;
-  padding: 0;
   min-width: 80px;
   text-align: center;
   -webkit-border-radius: 0;
@@ -5543,7 +5546,6 @@ span.exclusive {
   font-size: 17px;
   line-height: 21px;
   color: #353535;
-  padding: 0;
   font-weight: bold;
   border: none;
   background: #ffaa00;
@@ -5554,7 +5556,7 @@ span.exclusive {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16); }
   .button.button-medium span {
     display: block;
-    padding: 10px 10px 10px 14px; }
+    padding: 5px; }
     @media (max-width: 480px) {
       .button.button-medium span {
         font-size: 15px;
@@ -5738,12 +5740,7 @@ table.table_block td {
 .new-box,
 .sale-box {
   position: absolute;
-  top: -4px;
-  overflow: hidden;
-  height: 85px;
-  width: 85px;
-  text-align: center;
-  z-index: 0; }
+  top: 0px; }
 
 .new-box {
   left: -4px; }
@@ -5756,13 +5753,12 @@ table.table_block td {
   color: #fff;
   background: #28BFFC;
   text-transform: uppercase;
-  padding: 9px 0 7px;
-  width: 130px;
+  padding: 5px 0;
+  width: 80px;
   text-align: center;
   display: block;
   position: absolute;
-  left: -33px;
-  top: 16px;
+  top: 10px;
   z-index: 1; }
 
 .sale-label {
@@ -5770,13 +5766,13 @@ table.table_block td {
   color: #fff;
   background: #f00;
   text-transform: uppercase;
-  padding: 9px 0 7px;
-  width: 130px;
+  padding: 5px 0;
+  width: 80px;
   text-align: center;
   display: block;
   position: absolute;
-  right: -33px;
-  top: 16px;
+  right: 0px;
+  top: 10px;
   z-index: 1; }
 
 .ie8 .new-label {
@@ -6640,7 +6636,7 @@ div.star a:hover {
       left: 0;
       width: 100%; }
       .footer-container #footer .bottom-eu img {
-        width: 250px; }
+        width: 210px; }
     .footer-container #footer .bottom-footer {
       position: absolute;
       bottom: -150px;

@@ -5,10 +5,10 @@
 
 var CalendarTemplate = '\
     <div class="header row">\
-        <div class="left col-md-6">\
+        <div class="left col-xs-12 col-sm-6 col-md-6">\
             <p class="title"><%= title %></p>\
         </div>\
-        <div class="right col-md-6">\
+        <div class="right col-xs-12 col-sm-6 col-md-6">\
             <div class="nav">\
                 <button class="previous"><i class="icon-chevron-left"></i></button>\
                 <button class="next"><i class="icon-chevron-right"></i></button>\
@@ -21,11 +21,11 @@ var CalendarTemplate = '\
     </div>\
     <div class="content row seven-col">\
         <% _.each(days, function(day) { %>\
-            <div class="col-md-1">\
+            <div class="col-xs-12 col-sm-1 col-md-1">\
                 <div class="day">\
                     <div class="top">\
-                        <p class="number"><%= day.day %></p>\
-                        <p class="name"><%= day.name %></p>\
+                        <span class="number"><%= day.day %></span>\
+                        <span class="name"><%= day.name %></span>\
                     </div>\
                     <div class="events">\
                         <% if (_.isEmpty(day.events)) { %>\

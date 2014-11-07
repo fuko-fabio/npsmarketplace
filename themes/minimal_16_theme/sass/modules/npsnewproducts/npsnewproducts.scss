@@ -1,0 +1,10 @@
+@import "compass";
+@import "theme_variables";
+
+.nps-best-sell-list {
+    h2 {
+        font: 600 21px / 24px $font-custom;
+        color: $base-text-color;
+        text-transform: uppercase;
+    }
+}

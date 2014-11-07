@@ -258,6 +258,29 @@ span.view_scroll_spacer {
         color: #ffaa00; }
     #usefull_link_block li#favoriteproducts_block_extra_removed:before {
       content: "\f004"; }
+    #usefull_link_block li#npsfavorite_block_extra_remove, #usefull_link_block li#npsfavorite_block_extra_add, #usefull_link_block li#npsfavorite_block_extra_removed, #usefull_link_block li#npsfavorite_block_extra_added {
+      cursor: pointer;
+      font-weight: 300;
+      clear: both;
+      float: none;
+      margin: 0 0 8px 0;
+      position: relative;
+      color: #36454f;
+      cursor: pointer;
+      background: none !important; }
+      #usefull_link_block li#npsfavorite_block_extra_remove:before, #usefull_link_block li#npsfavorite_block_extra_add:before, #usefull_link_block li#npsfavorite_block_extra_removed:before, #usefull_link_block li#npsfavorite_block_extra_added:before {
+        font-family: "FontAwesome";
+        color: #36454f;
+        font-size: 19px;
+        line-height: 24px;
+        font-weight: normal;
+        content: "\f08a";
+        position: relative;
+        top: 2px; }
+      #usefull_link_block li#npsfavorite_block_extra_remove:hover, #usefull_link_block li#npsfavorite_block_extra_add:hover, #usefull_link_block li#npsfavorite_block_extra_removed:hover, #usefull_link_block li#npsfavorite_block_extra_added:hover {
+        color: #ffaa00; }
+    #usefull_link_block li#npsfavorite_block_extra_removed:before {
+      content: "\f004"; }
 
 /* pb-left-column ****************************************************************************** */
 .pb-center-column {

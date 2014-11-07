@@ -126,9 +126,11 @@
 								{/if}						
 							{/if}
 						{/if}
+<!--
 						<a itemprop="url" class="btn btn-default button button-medium ccl view-more" href="{$product.link|escape:'html':'UTF-8'}" title="{l s='View'}">
 							<span>{l s='More'} <i class="icon-zoom-in right"></i></span>
-						</a>
+						</a>-->
+
 					</div>
 					{if isset($product.color_list)}
 						<div class="color-list-container">{$product.color_list} </div>
@@ -164,16 +166,14 @@
 						{/if}
 					{/if}
 				</div>
-				{if $page_name != 'index'}
-	 				<div class="functional-buttons clearfix">
-						{hook h='displayProductListFunctionalButtons' product=$product}
-						{if isset($comparator_max_item) && $comparator_max_item}
-							<div class="compare">
-								<a class="add_to_compare" href="{$product.link|escape:'html':'UTF-8'}" data-id-product="{$product.id_product}">{l s='Add to Compare'}</a>
-							</div>
-						{/if}
-					</div>
-				{/if}
+	 	    	<div class="functional-buttons clearfix">
+					{hook h='displayProductListFunctionalButtons' product=$product}
+					{if isset($comparator_max_item) && $comparator_max_item}
+						<div class="compare">
+							<a class="add_to_compare" href="{$product.link|escape:'html':'UTF-8'}" data-id-product="{$product.id_product}">{l s='Add to Compare'}</a>
+						</div>
+					{/if}
+				</div>
 			</div><!-- .product-container> -->
 		</li>
 	{/foreach}

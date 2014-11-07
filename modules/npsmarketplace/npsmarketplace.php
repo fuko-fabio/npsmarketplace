@@ -54,6 +54,7 @@ class NpsMarketplace extends Module {
             || !$this->registerHook('productFooter')
             || !$this->registerHook('displayRightColumnProduct')
             || !$this->registerHook('displayMyAccountColumn')
+            || !$this->registerHook('displayHome')
             || !Configuration::updateValue('NPS_GLOBAL_COMMISION', 3)
             || !Configuration::updateValue('NPS_PRODUCT_GUIDE_URL', $shop_url)
             || !Configuration::updateValue('NPS_SELLER_GUIDE_URL', $shop_url)
@@ -78,6 +79,7 @@ class NpsMarketplace extends Module {
             || !$this->unregisterHook('productFooter')
             || !$this->unregisterHook('displayRightColumnProduct')
             || !$this->unregisterHook('displayMyAccountColumn')
+            || !$this->unregisterHook('displayHome')
             || !Configuration::deleteByName('NPS_GLOBAL_COMMISION')
             || !Configuration::deleteByName('NPS_PRODUCT_GUIDE_URL')
             || !Configuration::deleteByName('NPS_SELLER_GUIDE_URL')
@@ -142,7 +144,7 @@ class NpsMarketplace extends Module {
         }
         $this->context->smarty->assign(array(
             'seller' => $seller,
-            'logo' => $seller->getImageLink('cart_default', $this->context),
+            'logo' => Seller::getImageLink($seller->id, 'cart_default', $this->context),
             'seller_shop_url' => $this->context->link->getModuleLink('npsmarketplace', 'SellerShop', array('id_seller' => $seller->id)),
             'p1' => $p1,
             'p2' => $p2,
@@ -203,6 +205,29 @@ class NpsMarketplace extends Module {
 
     public function hookHeader() {
         $this->context->controller->addCss(($this->_path).'npsmarketplace.css');
+    }
+
+    public function hookDisplayHome() {
+        $this->context->smarty->assign(array(
+            'home_sellers' => $this->getSellersObjects(),
+        ));
+        return $this->display(__FILE__, 'views/templates/hook/home_sellers.tpl');
+    }
+
+    private function getSellersObjects() {
+        $sql = 'SELECT `id_seller`, `name` FROM `ps_seller` WHERE `active` = 1 AND `locked` = 0 ORDER BY RAND() LIMIT 4';
+        
+        $ret = array();
+        $rows = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS($sql);
+
+        if ($rows)
+            foreach ($rows as $row)
+                $ret[] = array(
+                    'name' => $row['name'],
+                    'url' => $this->context->link->getModuleLink('npsmarketplace', 'SellerShop', array('id_seller' => $row['id_seller'])),
+                    'img' => Seller::getImageLink($row['id_seller'], 'home_default', $this->context),
+                );
+        return $ret;
     }
 
     public function getContent() {

@@ -66,6 +66,8 @@
     <div class="pb-left-column col-xs-12 col-sm-8">
         <div class="row">
             <div class="col-xs-9">
+                {if isset($HOOK_EXTRA_PRODUCT_IMAGE) && $HOOK_EXTRA_PRODUCT_IMAGE}{$HOOK_EXTRA_PRODUCT_IMAGE}{/if}
+
                 <!-- product img-->
                 <div id="image-block" class="clearfix">
                     {if $product->new}
@@ -196,9 +198,7 @@
             <!--HOOK_PRODUCT_TAB -->
             <div class="tabs-container col-xs-12">
                 <ul class="nav nav-tabs">
-                    {if $product->description}
-                        <li class="active"><a href="#product-more-info" data-toggle="tab">{l s='Description'}</a></li>
-                    {/if}
+                    <li class="active"><a href="#product-more-info" data-toggle="tab">{l s='Description'}</a></li>
                     {$HOOK_PRODUCT_TAB}
                     {if isset($accessories) && $accessories}
                         <li><a href="#product-accessories" data-toggle="tab">{l s='Accessories'}</a></li>
@@ -206,12 +206,10 @@
                 </ul>
                 <div class="tab-content">
                     <!-- More info -->
-                    {if isset($product) && $product->description}
-                        <div class="tab-pane fade active in" id="product-more-info">
-                            <!-- full description -->
-                            <div class="rte">{$product->description}</div>
-                        </div>
-                    {/if}
+                    <div class="tab-pane fade active in" id="product-more-info">
+                        <!-- full description -->
+                        <div class="rte">{$product->description}</div>
+                    </div>
                     <!--end  More info -->
                     {$HOOK_PRODUCT_TAB_CONTENT}
                     <!--Accessories -->
@@ -437,11 +435,15 @@
                     {/foreach}
                     <span class="combination_info">{$combination_name|escape:'html':'UTF-8'}</span>
                     <div{if (!$allow_oosp && $product->quantity <= 0) || !$product->available_for_order || (isset($restricted_country_mode) && $restricted_country_mode) || $PS_CATALOG_MODE} class="unvisible"{/if}>
+                        {if $combinations|@count > 1}
                         <p id="change_term">
                             <a id="select_combination_button" class="exclusive light" href="#select_combination_form">
                                 <span><i class="icon-calendar"></i> {l s='Change term'}</span>
                             </a>
                         </p>
+                        {else}
+                        <p class="alert alert-info">{l s='No other terms'}</p>
+                        {/if}
                         <div style="display: none;">
                             <div id="select_combination_form">
                                 <h2 class="title">{l s='Select term'}</h2>

@@ -14,6 +14,11 @@
 !/modules/npscalendar
 !/modules/npstopmenu
 !/modules/npssocial
+!/modules/npsbestsellers
+!/modules/npsfeatured
+!/modules/npsnewproducts
+!/modules/npsfavorite
+!/modules/npssocialsharing
 !/themes
 /themes/*
 !/themes/minimal_16_theme

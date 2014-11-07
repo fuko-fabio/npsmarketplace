@@ -148,6 +148,14 @@
             {include file="$category_partial_tpl_path" node=$child}
             {/if}
             {/foreach}
+            <!-- Home category -->
+            {if in_array(2, $product['categories'])}
+            <li class="category_2 unvisible">
+                <p class="checkbox">
+                    <input type="checkbox" name="category[]" id="category_2" value="2" checked=""/>
+                </p>
+            </li>
+            {/if}
         </ul>
     </div>
 </fieldset>
