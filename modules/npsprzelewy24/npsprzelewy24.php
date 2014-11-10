@@ -36,6 +36,10 @@ class NpsPrzelewy24 extends PaymentModule {
      * @return bool
      */
     public function install() {
+        if (!extension_loaded('soap')) {
+            $this->_errors[] = $this->l('Soap Client lib is not installed');
+            return false;
+        }
         Configuration::updateValue('NPS_P24_ORDER_STATE_AWAITING', 0);
         Configuration::updateValue('NPS_P24_ORDER_STATE_ACCEPTED', 0);
         Configuration::updateValue('NPS_P24_COMMISION', 2.5);

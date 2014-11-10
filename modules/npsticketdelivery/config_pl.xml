@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<module>
+	<name>npsticketdelivery</name>
+	<displayName><![CDATA[nps Ticket Delivery]]></displayName>
+	<version><![CDATA[1]]></version>
+	<description><![CDATA[Generates and sends tickets via e-mail.]]></description>
+	<author><![CDATA[Norbert Pabian]]></author>
+	<tab><![CDATA[shipping_logistics]]></tab>
+	<is_configurable>0</is_configurable>
+	<need_instance>0</need_instance>
+	<limited_countries></limited_countries>
+</module>

@@ -1,3 +1,4 @@
+<?php
 /*
 * 2007-2014 PrestaShop
 *
@@ -19,45 +20,17 @@
 *
 *  @author PrestaShop SA <contact@prestashop.com>
 *  @copyright  2007-2014 PrestaShop SA
+*  @version  Release: $Revision$
 *  @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *  International Registered Trademark & Property of PrestaShop SA
 */
-$(document).ready(function(){
 
-	if (!!$.prototype.fancybox)
-		$("a.iframe").fancybox({
-			'type': 'iframe',
-			'width': 600,
-			'height': 600
-		});
+header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+header('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT');
 
-	if (typeof cart_gift != 'undefined' && cart_gift && $('input#gift').is(':checked'))
-		$('p#gift_div').show();
+header('Cache-Control: no-store, no-cache, must-revalidate');
+header('Cache-Control: post-check=0, pre-check=0', false);
+header('Pragma: no-cache');
 
-	$(document).on('change', 'input.delivery_option_radio', function(){
-		var key = $(this).data('key');
-		var id_address = parseInt($(this).data('id_address'));
-		if (orderProcess == 'order' && key && id_address)
-			updateExtraCarrier(key, id_address);
-		else if(orderProcess == 'order-opc' && typeof updateCarrierSelectionAndGift !== 'undefined')
-			updateCarrierSelectionAndGift();
-	});
-
-	$(document).on('submit', 'form[name=carrier_area]', function(){
-		return acceptCGV();
-	});
-
-});
-
-function acceptCGV()
-{
-	if ($('#cgv').length && !$('input#cgv:checked').length)
-	{
-        $('.error-terms-of-service').show();
-	}
-	else {
-        $('.error-terms-of-service').hide();
-        return true;
-    }
-	return false;
-}
+header('Location: ../');
+exit;

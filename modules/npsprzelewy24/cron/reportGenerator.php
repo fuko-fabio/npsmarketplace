@@ -82,7 +82,7 @@ foreach ($rows as $row) {
             strval(Configuration::get('PS_SHOP_NAME')),
             $file_attachement,
             null,
-            _PS_MODULE_DIR_.'/npsprzelewy24/mails/');
+            _PS_MODULE_DIR_.'npsprzelewy24/mails/');
     }
 }
 

@@ -72,7 +72,6 @@ class NpsMarketplace extends Module {
     }
 
     public function uninstall() {
-        $this->registerHook('displayNav');return;
         if (!parent::uninstall()
             || !$this->unregisterHook('header')
             || !$this->unregisterHook('displayCustomerAccount')

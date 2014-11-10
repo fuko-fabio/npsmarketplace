@@ -36,10 +36,13 @@
 			<div id="opc_delivery_methods" class="opc-main-block">
 				<div id="opc_delivery_methods-overlay" class="opc-overlay" style="display: none;"></div>
 {/if}
+<p class="alert alert-error error-terms-of-service" style="display: none;">{l s='You must agree to the terms of service before continuing.'}</p>
+
 <div class="order_carrier_content box">
 	{if isset($virtual_cart) && $virtual_cart}
 		<input id="input_virtual_carrier" class="hidden" type="hidden" name="id_carrier" value="0" />
-	{else}
+        {$HOOK_BEFOREVIRTUALCARRIER}
+    {else}
 		<div id="HOOK_BEFORECARRIER">
 			{if isset($carriers) && isset($HOOK_BEFORECARRIER)}
 				{$HOOK_BEFORECARRIER}
@@ -304,7 +307,5 @@
 	{addJsDef orderUrl=$link->getPageLink("order", true)|addslashes}
 	{addJsDefL name=txtProduct}{l s='Product' js=1}{/addJsDefL}
 	{addJsDefL name=txtProducts}{l s='Products' js=1}{/addJsDefL}
-    {addJsDefL name=msg_order_carrier_title}{l s='Error' js=1}{/addJsDefL}
-    {addJsDefL name=msg_order_carrier}{l s='You must agree to the terms of service before continuing.' js=1}{/addJsDefL}
 {/if}
 {/strip}

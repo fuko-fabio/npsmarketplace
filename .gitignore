@@ -19,6 +19,7 @@
 !/modules/npsnewproducts
 !/modules/npsfavorite
 !/modules/npssocialsharing
+!/modules/npsticketdelivery
 !/themes
 /themes/*
 !/themes/minimal_16_theme

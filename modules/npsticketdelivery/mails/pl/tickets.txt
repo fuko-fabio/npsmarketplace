@@ -1,0 +1,13 @@
+
+[{shop_url}] 
+
+Witaj!
+
+W załączniku przezyłamy bilety zakupione w naszym serwisie. 
+
+Dziekujemy i zapraszamy ponownie.
+
+Pozdrawiamy,
+zespół {shop_name}.
+
+To jest automatyczna wiadomość, prosimy na nią NIE odpowiadać.
