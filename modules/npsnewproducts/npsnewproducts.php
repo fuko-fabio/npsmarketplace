@@ -83,6 +83,7 @@ class NpsNewProducts extends Module
 			else
 			{
 				Configuration::updateValue('PS_NB_DAYS_NPS_NEW_PRODUCT', (int)(Tools::getValue('PS_NB_DAYS_NPS_NEW_PRODUCT')));
+                Configuration::updateValue('PS_NPS_NEWPRODUCTS_DISPLAY', (int)(Tools::getValue('PS_NPS_NEWPRODUCTS_DISPLAY')));
 				Configuration::updateValue('NPS_NEW_PRODUCTS_NBR', (int)($productNbr));
 				$this->_clearCache('*');
 				$output .= $this->displayConfirmation($this->l('Settings updated'));
