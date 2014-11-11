@@ -15,14 +15,9 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
 
     public function setMedia() {
         parent::setMedia();
-        $this->addjQueryPlugin('autosize');
-        $this -> addJS(array(
-                _PS_JS_DIR_.'validate.js',
-                _PS_JS_DIR_.'tiny_mce/tiny_mce.js',
-                _PS_JS_DIR_.'tinymce.inc.js',
-                _PS_MODULE_DIR_.'npsmarketplace/js/tinymce/tinymce.min.js',
-                 _PS_MODULE_DIR_.'npsmarketplace/js/tinymce_init.js'
-            ));
+        $this->addJS(_PS_JS_DIR_.'validate.js');
+        $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/tinymce/tinymce.min.js');
+        $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/tinymce_init.js');
     }
 
     public function postProcess() {
