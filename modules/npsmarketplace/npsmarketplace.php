@@ -221,7 +221,7 @@ class NpsMarketplace extends Module {
     }
 
     private function getSellersObjects() {
-        $sql = 'SELECT `id_seller`, `name` FROM `ps_seller` WHERE `active` = 1 AND `locked` = 0 ORDER BY RAND() LIMIT 4';
+        $sql = 'SELECT `id_seller`, `name` FROM `'._DB_PREFIX_.'seller` WHERE `active` = 1 AND `locked` = 0 ORDER BY RAND() LIMIT 4';
         
         $ret = array();
         $rows = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS($sql);
