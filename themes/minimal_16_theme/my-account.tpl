@@ -47,7 +47,8 @@
                             <div class="code">{$ticket.code}</div>
                         </div>
                         <div class="buttons">
-                            <a href="{$link->getModuleLink('npsticketdelivery', 'Tickets')|escape:'html'}&id_ticket={$ticket.id_ticket}" class="btn btn-default button button-small pull-right"><i class="icon-download"></i> {l s='Download'}</a>
+                            {assign var=url value=['id_ticket'=>$ticket.id_ticket]}
+                            <a href="{$link->getModuleLink('npsticketdelivery', 'Tickets', $url)|escape:'html'}" class="btn btn-default button button-small pull-right"><i class="icon-download"></i> {l s='Download'}</a>
                         </div>
                     </div>
                 </li>
