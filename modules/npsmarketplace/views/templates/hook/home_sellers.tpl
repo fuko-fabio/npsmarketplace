@@ -4,6 +4,7 @@
 *}
 <div class="nps-sellers-list">
     <h2>{l s='Our shops' mod='npsmarketplace'}</h2>
+    {if $home_sellers|@count > 0}
     <div class="row">
         {foreach from=$home_sellers item=seller}
             <div class="item col-xs-6 col-sm-4 col-md-3">
@@ -19,4 +20,6 @@
             </div>
         {/foreach}
     </div>
+    {else}
+    <p class="alert alert-info">{l s='No sellers available' mod='npsmarketplace'}</p>
 </div>
