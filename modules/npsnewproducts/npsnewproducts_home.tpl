@@ -24,5 +24,9 @@
 *}
 <div class="nps-best-sell-list">
     <h2>{l s='New arrivals' mod='npsnewproducts'}</h2>
+    {if $new_products|@count > 0}
     {include file="$tpl_dir./product-list.tpl" products=$new_products class='npsnewproducts' id='npsnewproducts'}
+    {else}
+    <p class="alert alert-info">{l s='No new products' mod='npsmarketplace'}</p>
+    {/if}
 </div>
