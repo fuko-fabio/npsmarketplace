@@ -6,7 +6,7 @@
 $(document).ready(function(){
     Dropzone.options.dropzoneContainer = {
     
-        url: 'modules/npsmarketplace/dropzone.php?token=' + $('input[name="form_token"]').val(),
+        url: dropzoneServerUrl,
         addRemoveLinks: true,
         autoProcessQueue: true,
         uploadMultiple: false,

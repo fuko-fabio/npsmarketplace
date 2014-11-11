@@ -16,6 +16,7 @@
     var dropzoneImages = {$product['images']|json_encode};
     var maxImages = {$max_images};
     var maxImageSize = {$max_image_size};
+    var dropzoneServerUrl = ''{$dropzone_url}';
 </script>
 {capture name=path}
 <a href="{$link->getPageLink('my-account', true)|escape:'html':'UTF-8'}"> {l s='My account'} </a>

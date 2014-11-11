@@ -290,7 +290,8 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             'new_tem_link' => $this->context->link->getModuleLink('npsmarketplace', 'ProductCombination', array('id_product' => $this->_product->id)),
             'iso' => file_exists(_PS_CORE_DIR_.'/js/tiny_mce/langs/'.$iso.'.js') ? $iso : 'en',
             'path_css' => _THEME_CSS_DIR_,
-            'tinymce' => true
+            'tinymce' => true,
+            'dropzone_url' => Tools::getHttpHost(true).__PS_BASE_URI__.'modules/npsmarketplace/dropzone.php?token='.$form_token
         ));
 
         $this->setTemplate('product.tpl');
