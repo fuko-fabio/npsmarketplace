@@ -519,6 +519,7 @@ span.exclusive {
 //form
 .form-control {
   height: 27px;
+  border-color: $input-border-color;
   @include box-shadow(none);
   &.grey {
     background: $base-box-bg;
@@ -3188,5 +3189,16 @@ div.star.star_hover {
 .detail_step_by_step {
   .label {
     color: $base-text-color;
+  }
+}
+.nav-tabs {
+  border-color: $input-border-color;
+
+  li.active > a,
+  li.active > a:hover,
+  li.active > a:focus {
+    border-top-color: $input-border-color;
+    border-left-color: $input-border-color;
+    border-right-color: $input-border-color;
   }
 }

@@ -26,8 +26,8 @@ http://uniformjs.com/
 	font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
 	font-weight: normal;
 	line-height:18px;
-	color: #777;
-	border: solid 1px #d6d4d4;
+	color: #333;
+	border: solid 1px #bbb;
 
 
 	@include whenHover {
@@ -113,15 +113,14 @@ div#{$class-wrapper}#{$class-radio} {
 /* Uploader */
 div#{$class-wrapper}#{$class-upload} {
 	span#{$class-action} {
-		text-shadow: rgba(0,0,0,0.1) 0px 1px 0px;
 		font-size: 13px;
 		font-weight: bold;
-		color:#fff;
+		color:#333;
 	}
 
 	span#{$class-filename} {
-		color: #777;
-		border: solid 1px #d6d4d4;
+		color: #333;
+		border: solid 1px #bbb;
 		font-size: 13px;
 		background:#fbfbfb;
 		margin-right:2px;

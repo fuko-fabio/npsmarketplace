@@ -5641,6 +5641,7 @@ span.exclusive {
 
 .form-control {
   height: 27px;
+  border-color: #bbb;
   -webkit-box-shadow: none;
   box-shadow: none; }
   .form-control.grey {
@@ -7654,3 +7655,12 @@ div.star.star_hover:after {
 
 .detail_step_by_step .label {
   color: #333; }
+
+.nav-tabs {
+  border-color: #bbb; }
+  .nav-tabs li.active > a,
+  .nav-tabs li.active > a:hover,
+  .nav-tabs li.active > a:focus {
+    border-top-color: #bbb;
+    border-left-color: #bbb;
+    border-right-color: #bbb; }
