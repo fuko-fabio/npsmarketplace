@@ -22,9 +22,11 @@
 *  @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *  International Registered Trademark & Property of PrestaShop SA
 *}
+{*
 <div class="box box-small clearfix">
+*}
 {if isset($order)}
-<form id="submitReorder" action="{if isset($opc) && $opc}{$link->getPageLink('order-opc', true)}{else}{$link->getPageLink('order', true)}{/if}" method="post" class="submit">
+{*<form id="submitReorder" action="{if isset($opc) && $opc}{$link->getPageLink('order-opc', true)}{else}{$link->getPageLink('order', true)}{/if}" method="post" class="submit">
 		<input type="hidden" value="{$order->id}" name="id_order"/>
 		<input type="hidden" value="" name="submitReorder"/>
 		
@@ -34,7 +36,7 @@
 		</p>
 	
 </form>
-</div>
+</div>*}
 <div class="info-order box">
 	{if $carrier->id}<p><strong class="dark">{l s='Carrier'}</strong> {if $carrier->name == "0"}{$shop_name|escape:'html':'UTF-8'}{else}{$carrier->name|escape:'html':'UTF-8'}{/if}</p>{/if}
 	<p><strong class="dark">{l s='Payment method'}</strong> <span class="color-myaccount">{$order->payment|escape:'html':'UTF-8'}</span></p>
@@ -365,7 +367,7 @@
 	</div>
 {/if}
 </form>
-{if $order->getShipping()|count > 0}
+{*{if $order->getShipping()|count > 0}
 	<table class="table table-bordered footab">
 		<thead>
 			<tr>
@@ -390,7 +392,7 @@
 			{/foreach}
 		</tbody>
 	</table>
-{/if}
+{/if}*}
 {if !$is_guest}
 	{if count($messages)}
 	<h3 class="page-heading">{l s='Messages'}</h3>
@@ -435,7 +437,7 @@
 			</ol>
 		</div>
 	{/if}
-	{if isset($message_confirmation) && $message_confirmation}
+{*	{if isset($message_confirmation) && $message_confirmation}
 	<p class="alert alert-success">
 		{l s='Message successfully sent'}
 	</p>
@@ -460,7 +462,7 @@
 			<input type="submit" class="unvisible" name="submitMessage" value="{l s='Send'}"/>
 			<button type="submit" name="submitMessage" class="button btn btn-default button-medium"><span>{l s='Send'}<i class="icon-chevron-right right"></i></span></button>
 		</div>
-	</form>
+	</form>*}
 {else}
 <p class="alert alert-info"><i class="icon-info-sign"></i>{l s='You cannot return merchandise with a guest account'}</p>
 {/if}
