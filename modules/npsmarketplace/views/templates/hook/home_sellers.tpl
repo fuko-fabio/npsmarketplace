@@ -22,4 +22,5 @@
     </div>
     {else}
     <p class="alert alert-info">{l s='No sellers available' mod='npsmarketplace'}</p>
+    {/if}
 </div>
