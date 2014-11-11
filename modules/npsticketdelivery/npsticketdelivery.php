@@ -39,7 +39,7 @@ class NpsTicketDelivery extends Module {
         $shop_url = Tools::getHttpHost(true).__PS_BASE_URI__;
 
         if (!parent::install()
-            || !$this->registerHook('actionOrderStatusPostUpdate')
+            || !$this->registerHook('actionOrderHistoryAddAfter')
             || !$this->registerHook('displayBeforeVirtualCarrier')
             || !$this->registerHook('actionPostProcessCarrier')
             || !$this->createTables($sql))
@@ -48,7 +48,7 @@ class NpsTicketDelivery extends Module {
     }
     public function uninstall() {
         if (!parent::uninstall()
-            || !$this->unregisterHook('actionOrderStatusPostUpdate')
+            || !$this->unregisterHook('actionOrderHistoryAddAfter')
             || !$this->unregisterHook('displayBeforeVirtualCarrier')
             || !$this->unregisterHook('actionPostProcessCarrier')
             || !$this->deleteTables())
@@ -56,12 +56,12 @@ class NpsTicketDelivery extends Module {
         return true;
     }
 
-    public function hookActionOrderStatusPostUpdate($params) {
-        $o_s = $params['newOrderStatus'];
+    public function hookActionOrderHistoryAddAfter($params) {
+        $order_history = $params['order_history'];
         $id_order_state = Configuration::get('NPS_P24_ORDER_STATE_ACCEPTED');
-        if ($id_order_state == $o_s->id) {
-            $id_order = $params['id_order'];
-            $cart = CartCore::getCartByOrderId($id_order);
+        if ($id_order_state == $order_history->id_order_state) {
+            $id_order = $order_history->id_order;
+            $cart = Cart::getCartByOrderId($id_order);
             $c_t = CartTicket::getByCartId($cart->id);
             foreach ($cart->getProducts() as $product) {
                 $id_seller = Seller::getSellerByProduct($product['id_product']);
@@ -116,9 +116,10 @@ class NpsTicketDelivery extends Module {
     public function hookActionPostProcessCarrier($params) {
         $ticket = new CartTicket(null, $params['id_cart']);
         $ticket->id_cart = $params['id_cart'];
-        $ticket->id_customer =$this->context->customer->id;
+        $ticket->id_customer = $this->context->customer->id;
         $ticket->email = $params['ticket_email'];
         $ticket->gift = $params['gift_ticket'];
+        $ticket->id_currency = $this->context->currency->id;
         $ticket->save();
     }
 

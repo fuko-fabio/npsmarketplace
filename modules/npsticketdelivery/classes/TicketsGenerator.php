@@ -21,6 +21,7 @@ class TicketsGenerator {
             );
         }
         TicketsGenerator::sentTickets($c_t->email, $attachments);
+        TicketsGenerator::updateOrdetState($c_t->id_cart);
     }
 
     public static function generateTicket($ticket) {
@@ -65,5 +66,20 @@ class TicketsGenerator {
         $code = $code + (int)$ticket['id_ticket'];
         $code = $code + 1000000000000;
         return number_format($code, 0, '', ' ');
+    }
+
+    public static function updateOrdetState($id_cart) {
+        $order_id = Order::getOrderByCartId(intval($id_cart));
+        $order = new Order($order_id);
+
+        $history = new OrderHistory();
+        $history->id_order = intval($order_id);
+        $history->changeIdOrderState(4, intval($order_id), true);
+        $history->add();
+        
+        $history = new OrderHistory();
+        $history->id_order = intval($order_id);
+        $history->changeIdOrderState(5, intval($order_id), true);
+        $history->add();
     }
 }

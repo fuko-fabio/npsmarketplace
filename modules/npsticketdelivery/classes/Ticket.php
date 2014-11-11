@@ -8,7 +8,6 @@ class Ticket extends ObjectModel {
 
     public $id_cart_ticket;
     public $id_seller;
-    public $id_currency;
     public $name;
     public $price;
     public $tax;
@@ -27,7 +26,6 @@ class Ticket extends ObjectModel {
         'fields' => array(
             'id_cart_ticket' => array('type' => self::TYPE_INT,    'validate' => 'isUnsignedId',  'required' => true),
             'id_seller' =>      array('type' => self::TYPE_INT,    'validate' => 'isUnsignedId',  'required' => true),
-            'id_currency' =>    array('type' => self::TYPE_INT,    'validate' => 'isUnsignedId',  'required' => true),
             'price' =>          array('type' => self::TYPE_FLOAT,  'validate' => 'isPrice',       'required' => true),
             'tax' =>            array('type' => self::TYPE_INT,    'validate' => 'isUnsignedId'),
             'name' =>           array('type' => self::TYPE_STRING, 'validate' => 'isGenericName', 'required' => true),

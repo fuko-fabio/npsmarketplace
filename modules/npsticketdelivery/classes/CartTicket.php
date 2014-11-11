@@ -8,6 +8,7 @@ class CartTicket extends ObjectModel {
 
     public $id_customer;
     public $id_cart;
+    public $id_currency;
     public $email;
     public $gift;
 
@@ -31,6 +32,7 @@ class CartTicket extends ObjectModel {
         'fields' => array(
             'id_customer' => array('type' => self::TYPE_INT,    'validate' => 'isUnsignedId',  'required' => true),
             'id_cart' =>     array('type' => self::TYPE_INT,    'validate' => 'isUnsignedId',  'required' => true),
+            'id_currency' =>    array('type' => self::TYPE_INT,    'validate' => 'isUnsignedId',  'required' => true),
             'email' =>       array('type' => self::TYPE_STRING, 'validate' => 'isEmail',       'required' => true),
             'gift' =>        array('type' => self::TYPE_BOOL,   'validate' => 'isBool',        'required' => true),
         ),
