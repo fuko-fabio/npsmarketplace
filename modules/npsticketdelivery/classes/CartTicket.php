@@ -45,6 +45,8 @@ class CartTicket extends ObjectModel {
     }
 
     public static function getAllTickets($id_cart_ticket) {
+        if (!isset($id_cart_ticket))
+            return null;
         $dbquery = new DbQuery();
         $dbquery->select('*');
         $dbquery->from('cart_ticket', 'c');
@@ -52,6 +54,18 @@ class CartTicket extends ObjectModel {
         $dbquery->where('c.`id_cart_ticket` = '.$id_cart_ticket);
         
         return Db::getInstance()->executeS($dbquery);
-    }   
+    }
+
+    public static function getCustomerTickets($id_customer) {
+        if ( !isset($id_customer))
+            return null;
+        $dbquery = new DbQuery();
+        $dbquery->select('*');
+        $dbquery->from('cart_ticket', 'c');
+        $dbquery->leftJoin('ticket', 't', 't.id_cart_ticket = c.id_cart_ticket');
+        $dbquery->where('c.`id_customer` = '.$id_customer);
+        
+        return Db::getInstance()->executeS($dbquery);
+    }    
 }
 

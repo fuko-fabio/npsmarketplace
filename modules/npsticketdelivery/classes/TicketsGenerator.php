@@ -13,19 +13,33 @@ class TicketsGenerator {
         $tickets = CartTicket::getAllTickets($id_cart_ticket);
         $attachments = array();
         foreach ($tickets as $ticket) {
-            $attachments[] = TicketsGenerator::generateTicket($ticket);
+            $t = TicketsGenerator::generateTicket($ticket);
+            $attachments[] = array(
+                'content' => $t['content'],
+                'name' => $t['code'].'.pdf',
+                'mime' => 'application/pdf'
+            );
         }
         TicketsGenerator::sentTickets($c_t->email, $attachments);
     }
 
     public static function generateTicket($ticket) {
-        require_once _PS_MODULE_DIR_.'npsticketdelivery/classes/HTMLTemplateTicket.php';
-        $pdf = new PDF(array($ticket), 'Ticket', Context::getContext()->smarty);
-        $file_attachement = array();
-        $file_attachement['content'] = $pdf->render(false);
-        $file_attachement['name'] = $pdf->filename;
-        $file_attachement['mime'] = 'application/pdf';
-        return $file_attachement;
+        require_once(_PS_TCPDF_PATH_.'/barcodes.php');
+        require_once(_PS_TOOL_DIR_.'dompdf/dompdf_config.inc.php');
+        $code = TicketsGenerator::getCode($ticket);
+        $barcodeobj = new TCPDFBarcode($code, 'C128');
+        $ticket['barcode'] = $barcodeobj->getBarcodeHTML(1, 90);
+        $ticket['code'] = $code;
+        $smarty =  Context::getContext()->smarty;
+        $smarty->assign($ticket);
+        $html = $smarty->fetch(_PS_MODULE_DIR_.'npsticketdelivery/views/templates/pdf/normal_ticket.tpl');
+        $dompdf = new DOMPDF();
+        $dompdf->load_html($html);
+        $dompdf->render();
+        return array(
+            'content' => $dompdf->output(),
+            'code' => $code
+        );
     }
 
     public static function sentTickets($email, $attachments) {
@@ -44,5 +58,12 @@ class TicketsGenerator {
             $attachments,
             null,
             _PS_MODULE_DIR_.'npsticketdelivery/mails/');
+    }
+    
+    public static function getCode($ticket) {
+        $code = (int)$ticket['id_seller'] * 1000000;
+        $code = $code + (int)$ticket['id_ticket'];
+        $code = $code + 1000000000000;
+        return number_format($code, 0, '', ' ');
     }
 }

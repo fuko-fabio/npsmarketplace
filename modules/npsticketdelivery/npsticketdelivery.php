@@ -109,8 +109,6 @@ class NpsTicketDelivery extends Module {
     }
 
     public function hookDisplayBeforeVirtualCarrier() {
-                    TicketsGenerator::generateAndSend(2);
-        
         $this->context->controller->addJS(_PS_JS_DIR_.'validate.js');
         return $this->display(__FILE__, 'views/templates/hook/virtual_carrier.tpl');
     }
