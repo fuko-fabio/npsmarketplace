@@ -7,6 +7,10 @@ include(dirname(__FILE__).'/../../../config/config.inc.php');
 include dirname(__FILE__).'/../../../init.php';
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/ProductAttributeExpiryDate.php');
 
+$token = Tools::getValue('token');
+
+if ($token != '733acb9920b35800545d7d3e9c2e9e21')
+    exit(1);
 
 $sql = 'SELECT * FROM `'._DB_PREFIX_.'product_attribute_expiry_date` WHERE `expiry_date` < NOW()';
 

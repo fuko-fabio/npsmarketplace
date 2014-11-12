@@ -17,6 +17,11 @@ if ( !defined( '_NPS_REPORTS_DIR_' ) )
 if ( !defined( '_NPS_SELLER_REPORTS_DIR_' ) )
     define('_NPS_SELLER_REPORTS_DIR_', _NPS_REPORTS_DIR_.'sellers/');
 
+$token = Tools::getValue('token');
+
+if ($token != '733acb9920b35800545d7d3e9c2e9e21')
+    exit(1);
+
 $sql = 'SELECT `id_seller` FROM `'._DB_PREFIX_.'seller`';
 $rows = Db::getInstance()->executeS($sql);
 
