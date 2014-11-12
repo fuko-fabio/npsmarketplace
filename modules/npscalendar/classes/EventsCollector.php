@@ -69,7 +69,7 @@ class EventsCollector {
     private function searchForDay($day, $link) {
         $events = array();
         $max_search_events = Configuration::get('NPS_EVENTS_SEARCH');
-        $res = Search::find(Configuration::get('PS_LANG_DEFAULT'), $day, 1, $max_search_events);
+        $res = Search::find(Context::getContext()->language->id, $day, 1, $max_search_events);
         if (empty($res))
             return $events;
         $max_events = Configuration::get('NPS_EVENTS_PER_DAY');

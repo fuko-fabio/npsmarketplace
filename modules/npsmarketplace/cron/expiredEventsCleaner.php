@@ -23,6 +23,7 @@ foreach ($outdated_ids as $id) {
     $products_ids[] = $combination->id_product;
     $combination->delete();
     ProductAttributeExpiryDate::deleteByProductAttribute($id);
+    Search::indexation(false, $combination->id_product);
 }
 
 $products_ids = array_unique($products_ids);
