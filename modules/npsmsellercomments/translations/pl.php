@@ -21,6 +21,9 @@ $_MODULE['<{npsmsellercomments}prestashop>adminsellerscommentscontroller_bcc9552
 $_MODULE['<{npsmsellercomments}prestashop>adminsellerscommentscontroller_c204080b4a528d5ec26637624b4cc95c'] = 'Zaakceptować wybrane komentarze?';
 $_MODULE['<{npsmsellercomments}prestashop>adminsellerscommentscontroller_b718adec73e04ce3ec720dd11a06a308'] = 'ID';
 $_MODULE['<{npsmsellercomments}prestashop>adminsellerscommentscontroller_3126e180423b2256ea60fb1df8c9a8cf'] = 'ID sprzedawcy';
+$_MODULE['<{npsmsellercomments}prestashop>adminsellerscommentscontroller_86d16211b0151426945c6887c93267af'] = 'Nazwa sprzedawcy';
+$_MODULE['<{npsmsellercomments}prestashop>adminsellerscommentscontroller_dde2dcf0783536d73e6a03511c6d47e4'] = 'Nazwa firmy';
+$_MODULE['<{npsmsellercomments}prestashop>adminsellerscommentscontroller_d6279e7d038e0da421d570bcfe031f72'] = 'NIP sprzedawcy';
 $_MODULE['<{npsmsellercomments}prestashop>adminsellerscommentscontroller_2ea989f83006e233627987293f4bde0a'] = 'Nazwa klienta';
 $_MODULE['<{npsmsellercomments}prestashop>adminsellerscommentscontroller_b78a3223503896721cca1303f776159b'] = 'Tytuł';
 $_MODULE['<{npsmsellercomments}prestashop>adminsellerscommentscontroller_f15c1cae7882448b3fb0404682e17e61'] = 'Zawartość';
