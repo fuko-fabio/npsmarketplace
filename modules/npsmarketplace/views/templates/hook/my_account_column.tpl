@@ -10,7 +10,7 @@
     <li><a href="{$link->getPageLink('address', true)|escape:'html':'UTF-8'}" title="{l s='Add my first address' mod='npsmarketplace'}"><i class="icon-building"></i><span>{l s='Add address' mod='npsmarketplace'}</span></a></li>
     {/if}
     <li><a href="{$link->getPageLink('addresses', true)|escape:'html':'UTF-8'}" title="{l s='Addresses' mod='npsmarketplace'}"><i class="icon-building"></i><span>{l s='My addresses' mod='npsmarketplace'}</span></a></li>
-    <li><a href="{$link->getPageLink('history', true)|escape:'html':'UTF-8'}" title="{l s='Orders'}"><i class="icon-list-ol"></i><span>{l s='Order history' mod='npsmarketplace'}</span></a></li>
+    <li><a href="{$link->getPageLink('history', true)|escape:'html':'UTF-8'}" title="{l s='Orders' mod='npsmarketplace'}"><i class="icon-list-ol"></i><span>{l s='Order history' mod='npsmarketplace'}</span></a></li>
     {if $returnAllowed}
     <li><a href="{$link->getPageLink('order-follow', true)|escape:'html':'UTF-8'}" title="{l s='Merchandise returns' mod='npsmarketplace'}"><i class="icon-refresh"></i><span>{l s='Merchandise returns' mod='npsmarketplace'}</span></a></li>
     {/if}
