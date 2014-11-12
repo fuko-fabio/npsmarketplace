@@ -5,7 +5,7 @@
 
 <!-- MODULE nps Home Featured Products -->
 <div id="nps-featured-products_center">
-    <h2>{l s='Popular' mod='npshomefeatured'}</h2>
+    <h2>{l s='Popular' mod='npsfeatured'}</h2>
     {if isset($products) AND $products}
         {include file="$tpl_dir./product-list.tpl" products=$products class='npsnewproducts' id='npsnewproducts'}
   	{else}

@@ -114,7 +114,7 @@ class P24TransactionDispatcher {
             );
         }
 
-        $res = P24::dispatchMoney((int)$this->cart->id, $dispatch_req);
+        $res = P24::dispatchMoney(time() + (int)$this->cart->id, $dispatch_req);
         if ($res->error->errorCode) {
             $this->module->reportError(array(
                     'Unable to dispatch money',
