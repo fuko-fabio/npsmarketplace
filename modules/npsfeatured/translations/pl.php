@@ -19,3 +19,4 @@ $_MODULE['<{npsfeatured}prestashop>npsfeatured_3c12c1068fb0e02fe65a6c4fc40bc29a'
 $_MODULE['<{npsfeatured}prestashop>npsfeatured_93cba07454f06a4a960172bbd6e2a435'] = 'Tak';
 $_MODULE['<{npsfeatured}prestashop>npsfeatured_bafd7322c6e97d25b6299b5d6fe8920b'] = 'Nie';
 $_MODULE['<{npsfeatured}prestashop>npsfeatured_c9cc8cce247e49bae79f15173ce97354'] = 'Zapisz';
+$_MODULE['<{npsfeatured}prestashop>npsfeatured_2cc1943d4c0b46bfcf503a75c44f988b'] = 'Polecane';
