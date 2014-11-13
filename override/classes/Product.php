@@ -56,6 +56,11 @@ class Product extends ProductCore
             $time_attr->position = -1;
             $time_attr->save();
         }
+        
+        $default_attribute = Product::getDefaultAttribute($this->id);
+        $default = true;
+        if ($default_attribute)
+            $default = false;
 
         $id_product_attribute = $this->addAttribute(
             0,//$price,
@@ -65,7 +70,7 @@ class Product extends ProductCore
             null,//$id_images,
             null,//$reference,
             null,//$ean13,
-            true,//$default
+            $default,//$default
             null,//$location
             null,//$upc 
             1,//$minimal_quantity
@@ -220,6 +225,66 @@ class Product extends ProductCore
         // Thus you can avoid one query per product, because there will be only one query for all the products of the cart
         Product::cacheFrontFeatures($products_ids, $id_lang);
         return Product::getProductsProperties((int)$id_lang, $result);
+    }
+
+    /**
+    * Get all available product attributes combinations
+    *
+    * @param integer $id_lang Language id
+    * @return array Product attributes combinations
+    */
+    public static function getStaticAttributeCombinations($id_product, $id_lang)
+    {
+        if (!Combination::isFeatureActive())
+            return array();
+
+        $sql = 'SELECT pa.*, product_attribute_shop.*, ag.`id_attribute_group`, ag.`is_color_group`, agl.`name` AS group_name, al.`name` AS attribute_name,
+                    a.`id_attribute`, pa.`unit_price_impact`
+                FROM `'._DB_PREFIX_.'product_attribute` pa
+                '.Shop::addSqlAssociation('product_attribute', 'pa').'
+                LEFT JOIN `'._DB_PREFIX_.'product_attribute_combination` pac ON pac.`id_product_attribute` = pa.`id_product_attribute`
+                LEFT JOIN `'._DB_PREFIX_.'attribute` a ON a.`id_attribute` = pac.`id_attribute`
+                LEFT JOIN `'._DB_PREFIX_.'attribute_group` ag ON ag.`id_attribute_group` = a.`id_attribute_group`
+                LEFT JOIN `'._DB_PREFIX_.'attribute_lang` al ON (a.`id_attribute` = al.`id_attribute` AND al.`id_lang` = '.(int)$id_lang.')
+                LEFT JOIN `'._DB_PREFIX_.'attribute_group_lang` agl ON (ag.`id_attribute_group` = agl.`id_attribute_group` AND agl.`id_lang` = '.(int)$id_lang.')
+                WHERE pa.`id_product` = '.(int)$id_product.'
+                GROUP BY pa.`id_product_attribute`, ag.`id_attribute_group`
+                ORDER BY pa.`id_product_attribute`';
+
+        $res = Db::getInstance()->executeS($sql);
+
+        //Get quantity of each variations
+        foreach ($res as $key => $row)
+        {
+            $cache_key = $row['id_product'].'_'.$row['id_product_attribute'].'_quantity';
+
+            if (!Cache::isStored($cache_key))
+                Cache::store(
+                    $cache_key,
+                    StockAvailable::getQuantityAvailableByProduct($row['id_product'], $row['id_product_attribute'])
+                );
+
+            $res[$key]['quantity'] = Cache::retrieve($cache_key);
+        }
+
+        return $res;
+    }
+
+    public static function getVideoUrl($id_product) {
+        if (!isset($id_product))
+            return null;
+        $sql = 'SELECT `url`
+                FROM `'._DB_PREFIX_.'product_video`
+                WHERE `id_product` = '.$id_product;
+        return Db::getInstance()->getValue($sql);
+    }
+
+    public function persistVideoUrl($video_url) {
+        if(!isset($video_url))
+            return false;
+        $insert['id_product'] = $this->id;
+        $insert['url'] = $video_url;
+        return Db::getInstance()->insert('product_video', $insert, true);
     }
 }
 ?>

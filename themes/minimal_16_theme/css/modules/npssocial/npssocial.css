@@ -44,23 +44,13 @@
         #nps_social_block ul li a:hover {
           color: #ffaa00; }
       #nps_social_block ul li.blog {
-        background: #fff;
-        border: 1px solid #d6d4d4;
-        width: 130px;
-        border-radius: 0px;
-        margin-right: 10px; }
-        @media (min-width: 768px) and (max-width: 991px) {
-          #nps_social_block ul li.blog {
-            width: 100px; } }
+        width: 90px; }
         #nps_social_block ul li.blog a {
-          color: #777; }
+          margin-top: 5px; }
           #nps_social_block ul li.blog a span {
             display: inline-block;
             text-transform: uppercase;
-            font-family: 'Hammersmith One', sans-serif;
-            margin-top: 6px; }
-          #nps_social_block ul li.blog a:hover {
-            color: #ffaa00; }
+            font-family: 'Hammersmith One', sans-serif; }
       #nps_social_block ul li.facebook a:before {
         content: "\f09a"; }
       #nps_social_block ul li.twitter a:before {

@@ -255,11 +255,13 @@ class NpsMarketplace extends Module {
     }
 
     public function hookProductTab() {
-        $id_seller = (int)Seller::getSellerByProduct(Tools::getValue('id_product'));
+        $id_product = Tools::getValue('id_product');
+        $id_seller = (int)Seller::getSellerByProduct($id_product);
         if(isset($id_seller) && $id_seller > 0) {
             $seller = new Seller($id_seller);
             $this->context->smarty->assign(array(
                 'show_regulations' => $seller->regulations_active,
+                'video_url' => Product::getVideoUrl($id_product)
             ));
             return ($this->display(__FILE__, '/tab.tpl'));
         }
@@ -288,6 +290,7 @@ class NpsMarketplace extends Module {
                 'regulations' => $seller->regulations,
                 'show_regulations' => $seller->regulations_active,
                 'product_address' => isset($address) ? $address->value[$lang_id] : '',
+                'video_url' => Product::getVideoUrl($id_product)
             ));
             return ($this->display(__FILE__, '/tab_content.tpl'));
         }

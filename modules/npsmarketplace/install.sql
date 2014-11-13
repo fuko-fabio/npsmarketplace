@@ -59,3 +59,9 @@ CREATE TABLE IF NOT EXISTS `PREFIX_product_attribute_expiry_date` (
   PRIMARY KEY (`id_expiry`),
   KEY `id_product_attribute` (`id_product_attribute`)
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `PREFIX_product_video` (
+  `id_product` int(10) unsigned NOT NULL,
+  `url` varchar(1024) NOT NULL,
+  KEY `id_product` (`id_product`)
+) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;

@@ -13,10 +13,10 @@
   a {
     color: $light-text-color;
     .new-box {
-      left: 10px;
+      display: none;
     }
     .sale-box {
-      right: 10px;
+      display: none;
     }
 
     .name {

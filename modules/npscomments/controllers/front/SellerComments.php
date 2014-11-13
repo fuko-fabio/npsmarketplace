@@ -4,10 +4,10 @@
 *  @copyright 2014 npsoftware
 */
 
-require_once(_PS_MODULE_DIR_.'npsmsellercomments/classes/SellerComment.php');
-require_once(_PS_MODULE_DIR_.'npsmsellercomments/classes/SellerCommentCriterion.php');
+require_once(_PS_MODULE_DIR_.'npscomments/classes/SellerComment.php');
+require_once(_PS_MODULE_DIR_.'npscomments/classes/SellerCommentCriterion.php');
 
-class NpsMSellerCommentsSellerCommentsModuleFrontController extends ModuleFrontController
+class NpsCommentsSellerCommentsModuleFrontController extends ModuleFrontController
 {
     public function __construct()
     {
@@ -100,7 +100,7 @@ class NpsMSellerCommentsSellerCommentsModuleFrontController extends ModuleFrontC
                     $comment->save();
                 }
                 $result = true;
-                Tools::clearCache(Context::getContext()->smarty, $this->getTemplatePath('sellercomments-reviews.tpl'));
+                Tools::clearCache(Context::getContext()->smarty, $this->getTemplatePath('npscomments-reviews.tpl'));
             }
             else
             {

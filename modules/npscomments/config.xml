@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <module>
-	<name>npsmsellercomments</name>
+	<name>npscomments</name>
 	<displayName><![CDATA[nps Marketplace Seller Comments]]></displayName>
 	<version><![CDATA[1]]></version>
 	<description><![CDATA[Allow customers to add seller coments.]]></description>

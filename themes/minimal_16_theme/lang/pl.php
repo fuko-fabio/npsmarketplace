@@ -158,9 +158,15 @@ $_LANG['discount_d3f5baf7537ec2a40ade00599a8da8c6'] = 'Nie posiadasz żadnych ku
 $_LANG['discount_d95cf4ab2cbf1dfb63f066b50558b07d'] = 'Moje konto';
 $_LANG['discount_eb2527806a7e1ef48009eaaa785368fe'] = 'Łącznie';
 $_LANG['discount_f4a0d7cb0cd45214c8ca5912c970de13'] = 'Wliczony podatek';
+<<<<<<< HEAD
 $_LANG['errors_0557fa923dcee4d0f86b1409f5c2167f'] = 'Wstecz';
 $_LANG['errors_5fbddd8d4e0d8c7a868272f2f171df09'] = 'Ilość błędów: $d';
 $_LANG['errors_9ead913c5b7c87efda39ca9640c46ae4'] = 'Ilość błędów: $d';
+=======
+$_LANG['errors_0557fa923dcee4d0f86b1409f5c2167f'] = 'Powrót';
+$_LANG['errors_5fbddd8d4e0d8c7a868272f2f171df09'] = 'Ilość błędów: %d';
+$_LANG['errors_9ead913c5b7c87efda39ca9640c46ae4'] = 'Ilość błędów: %d';
+>>>>>>> 8c001276d084078fbf198e833c030808daee17a0
 $_LANG['global_10ac3d04253ef7e1ddc73e6091c0cd55'] = 'Dalej';
 $_LANG['global_d3d2e617335f08df83599665eef8a418'] = 'Zamknij';
 $_LANG['global_dd1f775e443ff3b9a89270713580a51b'] = 'Wstecz';
@@ -558,8 +564,8 @@ $_LANG['product-list_69d08bd5f8cf4e228930935c3f13e42f'] = 'Dostępne';
 $_LANG['product-list_7f5508c884f40e3378895c83d99cbbd3'] = 'Dodaj do porównania';
 $_LANG['product-list_90723749917a82bf3ff8a73247d32ffb'] = 'Nie możesz dodać więcej niż %d wydarzeń do porównania';
 $_LANG['product-list_b55197a49e8c4cd8c314bc2aa39d6feb'] = 'Niedostępne';
-$_LANG['product-list_bb63f16d5ebfcfa8a651642a7bb2ea5c'] = 'Wyprzedarz!';
-$_LANG['product-list_ca2bf12169883f4982d8fe34b7e3c618'] = 'Nowa cena!';
+$_LANG['product-list_bb63f16d5ebfcfa8a651642a7bb2ea5c'] = 'Wyprzedaż';
+$_LANG['product-list_ca2bf12169883f4982d8fe34b7e3c618'] = 'Nowa cena';
 $_LANG['product-list_cb3c718c905f00adbb6735f55bfb38ef'] = 'Wydarzenie dostępne w innych opcjach';
 $_LANG['product-list_d3da97e2d9aee5c8fbe03156ad051c99'] = 'Więcej';
 $_LANG['product-sort_03590cca8220917788b5a6c25fa39a15'] = 'Najwyższa cena';

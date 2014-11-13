@@ -79,7 +79,7 @@ $_MODULE['<{npsmarketplace}prestashop>admintownscontroller_b718adec73e04ce3ec720
 $_MODULE['<{npsmarketplace}prestashop>admintownscontroller_49ee3087348e8d44e1feda1917443987'] = 'Nazwa';
 $_MODULE['<{npsmarketplace}prestashop>admintownscontroller_00d23a76e43b46dae9ec7aa9dcbebb32'] = 'Włączone';
 $_MODULE['<{npsmarketplace}prestashop>admintownscontroller_df8a9a802d691eecd18e3aa402ce0840'] = 'Zarządzaj Miastami';
-$_MODULE['<{npsmarketplace}prestashop>admintownscontroller_2dc22e2d8088bc20b6c84c1126ba3093'] = 'Edycja: $s';
+$_MODULE['<{npsmarketplace}prestashop>admintownscontroller_2dc22e2d8088bc20b6c84c1126ba3093'] = 'Edycja: %s';
 $_MODULE['<{npsmarketplace}prestashop>admintownscontroller_c16dac173aa8377a1c07aed8e0472f7c'] = 'Miasto';
 $_MODULE['<{npsmarketplace}prestashop>admintownscontroller_4d3d769b812b6faa6b76e1a8abaece2d'] = 'Aktywne';
 $_MODULE['<{npsmarketplace}prestashop>admintownscontroller_f0cf572c998a4b23f3fab7abb221468d'] = 'Nieaktywne';

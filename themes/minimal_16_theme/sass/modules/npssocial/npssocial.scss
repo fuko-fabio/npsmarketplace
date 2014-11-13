@@ -55,26 +55,13 @@
         }
       }
       &.blog {
-        background: $light-background;
-        border: 1px solid $base-border-color;
-        width: 130px;
-        border-radius: 0px;
-        margin-right: 10px;
-        // min 768px max 991px
-        @media (min-width: $screen-sm) and (max-width: $screen-sm-max) {
-          width: 100px;
-        }
+        width: 90px;
         a {
-          color: $base-body-color;
-
+          margin-top: 5px;
           span {
             display: inline-block;
             text-transform: uppercase;
             font-family: 'Hammersmith One', sans-serif;
-            margin-top: 6px;
-          }
-          &:hover {
-            color: $primary-color;
           }
         }
       }

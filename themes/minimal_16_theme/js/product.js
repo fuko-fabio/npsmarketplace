@@ -287,7 +287,6 @@ $(document).ready(function () {
         e.preventDefault();
         var option = $("#select_combination_form input[type='radio']:checked");
         var combination = option.val();
-        $('span.combination_info').text(option.prop('title'));
         $.each(combinations, function (key, comb) {
             if (comb['idCombination'] == combination) {
                 $.each(comb['idsAttributes'], function (key, id) {
@@ -358,6 +357,15 @@ function findCombination(firstTime) {
         choice.push(parseInt($(this).val()));
     });
 
+    // update term value
+    var displayTerm = {};
+    $.each(attributesCombinations, function (key, attrComb) {
+        if (in_array(attrComb['id_attribute'], choice)) {
+            displayTerm[attrComb['group']] = attrComb['attribute'];
+        }
+    });
+    $('span.combination_info').text(displayTerm['date'].replace(/_/g , "-") + ' ' + displayTerm['time'].replace(/_/g , ":"));
+
     if (typeof combinations == 'undefined' || !combinations)
         combinations = [];
     //testing every combination to find the conbination's attributes' case of the user
@@ -419,6 +427,7 @@ function findCombination(firstTime) {
     selectedCombination['unavailable'] = true;
     if (typeof(selectedCombination['available_date']) != 'undefined')
         delete selectedCombination['available_date'];
+
     updateDisplay();
 }
 

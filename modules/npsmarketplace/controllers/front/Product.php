@@ -59,6 +59,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             $town = trim(Tools::getValue('town'));
             $district = trim(Tools::getValue('district'));
             $address = trim(Tools::getValue('address'));
+            $video_url = trim(Tools::getValue('video_url'));
             $lat = trim(Tools::getValue('lat'));
             $lng = trim(Tools::getValue('lng'));
             $reference = trim(Tools::getValue('reference'));
@@ -88,7 +89,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                 $this -> errors[] = $nps_instance->l('Product district is required');
             if (empty($town))
                 $this -> errors[] = $nps_instance->l('Product town is required');
-            if (empty($price))
+            if (!isset($price))
                 $this -> errors[] = $nps_instance->l('Product price is required');
             if (!Validate::isFloat($price))
                 $this -> errors[] = $nps_instance->l('Invalid product price');
@@ -169,6 +170,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                     $this->errors[] = $nps_instance->l('Unable to save product.');
                 } else {
                     $this->context->cookie->__unset('form_token');
+                    $this->_product->persistVideoUrl($video_url);
                     StockAvailable::setProductOutOfStock($this->_product->id, 0);
                     $this->saveFeatures($town, $district, $address);
                     $this -> _product->updateCategories($categories);
@@ -263,6 +265,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                 'district' => $this->getFeatureValue($features, 'district'),
                 'categories' => $this->_product->getCategories(),
                 'images' => $images,
+                'video_url' => Product::getVideoUrl($this->_product->id)
             );
         }
         $towns = $this->getActiveTowns((int)$this->context->language->id);

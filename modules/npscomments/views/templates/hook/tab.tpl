@@ -1,0 +1,1 @@
+<li><a href="#seller_comments_tab" data-toggle="tab" class="idTabHrefShort">{l s='Comments' mod='npscomments'}</a></li>
