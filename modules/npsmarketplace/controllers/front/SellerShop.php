@@ -10,8 +10,8 @@ class NpsMarketplaceSellerShopModuleFrontController extends ModuleFrontControlle
         parent::initContent();
         $id_seller = (int)Tools::getValue('id_seller', 0);
         $tpl_seller = array();
+        $seller = new Seller($id_seller);
         if ($id_seller) {
-            $seller = new Seller($id_seller);
             $image = Seller::getImageLink($seller->id, 'medium_default', $this->context);
             $tpl_seller = array(
                 'id' => $seller->id,
@@ -39,7 +39,7 @@ class NpsMarketplaceSellerShopModuleFrontController extends ModuleFrontControlle
 
         $this -> context -> smarty -> assign(array(
             'HOOK_SELLER_TAB' => Hook::exec('sellerTab'),
-            'HOOK_SELLER_TAB_CONTENT' => Hook::exec('sellerTabContent'),
+            'HOOK_SELLER_TAB_CONTENT' => Hook::exec('sellerTabContent', array('seller' => $seller)),
             'seller' => $tpl_seller,
             'current_id_lang' => (int)$this->context->language->id,
             'languages' => Language::getLanguages(),

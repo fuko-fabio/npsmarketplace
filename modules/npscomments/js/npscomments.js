@@ -11,7 +11,7 @@ $(function() {
 		$.fancybox.showLoading();
         // Form element
         $.ajax({
-            url : npscomments_controller_url + '&' + 'action=add_comment&id_seller=' + npscomments_id_seller + '&secure_key=' + npscomments_secure_key + '&rand=' + new Date().getTime(),
+            url : npscomments_controller_url + '&' + 'action=add_comment' + '&secure_key=' + npscomments_secure_key + '&rand=' + new Date().getTime(),
             data : $('#id_new_seller_comment_form').serialize(),
             type : 'POST',
             headers : {

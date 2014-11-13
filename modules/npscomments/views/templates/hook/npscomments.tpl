@@ -8,7 +8,6 @@
         var npscomments_title = '{l s='New comment' mod='npscomments' js=1}';
         var npscomments_ok = '{l s='OK' mod='npscomments' js=1}';
         var npscomments_moderation_active = {$npscomments_moderation_active};
-        var npscomments_id_seller = '{$seller->id}'
     </script>
     <div id="seller_comments_block_tab">
         {if $npscomments}

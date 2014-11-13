@@ -146,13 +146,12 @@ class npscomments extends Module
                  'npscomments_allow_guests' => (int)Configuration::get('NPS_SELLER_COMMENTS_ALLOW_GUESTS'),
                  'npscomments_too_early' => ($customerComment && (strtotime($customerComment['date_add']) + Configuration::get('NPS_SELLER_COMMENTS_MINIMAL_TIME')) > time()),
                  'npscomments_delay' => Configuration::get('NPS_SELLER_COMMENTS_MINIMAL_TIME'),
-                 'id_npscomments_form' => $seller->id,
                  'npscomments_secure_key' => $this->secure_key,
                  'npscomments_cover' => '',
                  'npscomments_cover_image' => $this->getSellerImgLink($seller),
                  'npscomments_mediumSize' => Image::getSize(ImageType::getFormatedName('medium')),
                  'npscomments_nbComments' => (int)SellerComment::getCommentNumber($seller->id),
-                 'npscomments_controller_url' => $this->context->link->getModuleLink('npscomments', 'SellerComments'),
+                 'npscomments_controller_url' => $this->context->link->getModuleLink('npscomments', 'SellerComments', array('id_seller' => $seller->id)),
                  'npscomments_moderation_active' => (int)Configuration::get('NPS_SELLER_COMMENTS_MODERATE'),
                  'current_id_lang' => (int)$this->context->language->id,
             ));
@@ -183,8 +182,7 @@ class npscomments extends Module
     }
 
     public function hookSellerTabContent($params) {
-        $id_seller = Tools::getValue('id_seller');
-        if(isset($id_seller) && $id_seller > 0) {
+        if(isset($params['seller'])) {
             require_once(_PS_MODULE_DIR_.'/npscomments/classes/SellerComment.php');
             require_once(_PS_MODULE_DIR_.'/npscomments/classes/SellerCommentCriterion.php');
 
@@ -193,7 +191,7 @@ class npscomments extends Module
             $this->context->controller->addJS($this->_path.'js/npscomments.js');
             $this->context->controller->addCSS($this->_path.'npscomments.css', 'all');
 
-            $seller = new Seller($id_seller);
+            $seller = $params['seller'];
             $id_guest = (!$id_customer = (int)$this->context->cookie->id_customer) ? (int)$this->context->cookie->id_guest : false;
             $customerComment = SellerComment::getByCustomer($seller->id, (int)$this->context->cookie->id_customer, true, (int)$id_guest);
             $averages = SellerComment::getAveragesBySeller($seller->id, $this->context->language->id);
@@ -214,7 +212,6 @@ class npscomments extends Module
                  'npscomments_allow_guests' => (int)Configuration::get('NPS_SELLER_COMMENTS_ALLOW_GUESTS'),
                  'npscomments_too_early' => ($customerComment && (strtotime($customerComment['date_add']) + Configuration::get('NPS_SELLER_COMMENTS_MINIMAL_TIME')) > time()),
                  'npscomments_delay' => Configuration::get('NPS_SELLER_COMMENTS_MINIMAL_TIME'),
-                 'id_npscomments_form' => $seller->id,
                  'npscomments_secure_key' => $this->secure_key,
                  'npscomments_cover' => '',
                  'npscomments_cover_image' => $this->getSellerImgLink($seller),
