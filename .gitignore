@@ -9,7 +9,7 @@
 /modules/*
 !/modules/npsmailactivation
 !/modules/npsmarketplace
-!/modules/npsmsellercomments
+!/modules/npscomments
 !/modules/npsprzelewy24
 !/modules/npscalendar
 !/modules/npstopmenu

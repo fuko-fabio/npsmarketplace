@@ -76,35 +76,42 @@ class EventsCollector {
         if ($res['total'] > $max_events) {
             $indexes = array_rand($res['result'], $max_events);
             foreach ($indexes as $index) {
-                $events[] = $this->buildCalendarEvent($res['result'][$index], $link);
+                $events[] = $this->buildCalendarEvent($res['result'][$index], $link, $day);
             }
         } else {
             foreach ($res['result'] as $product) {
-                $events[] = $this->buildCalendarEvent($product, $link);
+                $events[] = $this->buildCalendarEvent($product, $link, $day);
             }
         }
         return $this->sortByTime($events);
     }
 
-    private function buildCalendarEvent($product, $link) {
+    private function buildCalendarEvent($product, $link, $day) {
+        $combinations = Product::getStaticAttributeCombinations($product['id_product'], Context::getContext()->language->id);
+        $id_product_attribute = $product['id_product_attribute'];
+        foreach ($combinations as $key => $combination) {
+            if ($combination['attribute_name'] == $day) {
+                $id_product_attribute = $combination['id_product_attribute'];
+                break;
+            }
+        }
+        
         $image = '';
         if (!empty($product['id_image']))
             $image = $link->getImageLink($product['link_rewrite'], $product['id_image'], 'cart_default');
         return array(
             'name' => $product['name'],
-            'time' => $this->getTime($product),
-            'link' => $product['link'],
-            'image' => $image,
-            'all' => $product,
+            'time' => $this->getTime($combinations, $id_product_attribute),
+            'link' => $link->getProductLink($product, null, null, null, null, null, $id_product_attribute),
+            'image' => $image
         );
     }
 
-    private function getTime($product) {
-        $combination = new Combination($product['id_product_attribute']);
-        $attrs = $combination->getAttributesName(Configuration::get('PS_LANG_DEFAULT'));
-        foreach($attrs as $attr)
-            if (preg_match('/^[0-9]{1,2}:[0-9]{2,2}$/', $attr['name']))
-                return $attr['name'];
+    private function getTime($combinations, $id_product_attribute) {
+        foreach($combinations as $key => $combination)
+            if ($combination['id_product_attribute'] == $id_product_attribute
+                && $combination['id_attribute_group'] == Configuration::get('NPS_ATTRIBUTE_TIME_ID'))
+                return $combination['attribute_name'];
         return '';
     }
 

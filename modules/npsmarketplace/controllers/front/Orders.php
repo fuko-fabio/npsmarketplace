@@ -24,8 +24,8 @@ class NpsMarketplaceOrdersModuleFrontController extends ModuleFrontController {
         if ($seller->id == null) 
             Tools::redirect('index.php?controller=my-account');
 
-        $orders = $this -> getOrders($seller);
-        $this -> context -> smarty -> assign(array(
+        $orders = $this->getOrders($seller);
+        $this->context->smarty->assign(array(
             'HOOK_MY_ACCOUNT_COLUMN' => Hook::exec('displayMyAccountColumn'),
             'view_order_link' => $this->context->link->getModuleLink('npsmarketplace', 'Order'),
             'orders' => $orders
@@ -37,9 +37,12 @@ class NpsMarketplaceOrdersModuleFrontController extends ModuleFrontController {
     private function getOrders($seller, $showHiddenStatus = false) {
         $result = array();
         $products = $seller -> getProducts();
-        foreach ($products as $product) {
-            $id_order = Db::getInstance()->getValue('SELECT `id_order` FROM `'._DB_PREFIX_.'order_detail` WHERE `product_id` = '.(int)$product->id);
-            if(isset($id_order) && !empty($id_order)) {
+        $sql = 'SELECT DISTINCT `id_order` FROM `'._DB_PREFIX_.'order_detail` WHERE `product_id` IN (SELECT DISTINCT id_product FROM `'._DB_PREFIX_.'seller_product` WHERE `id_seller` = '.$seller->id.')';
+        $rows = Db::getInstance()->executeS($sql);
+
+        if($rows && !empty($rows)) {
+            foreach ($rows as $row) {
+                $id_order = $row['id_order'];
                 $res = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS('
                 SELECT o.*, (SELECT SUM(od.`product_quantity`) FROM `'._DB_PREFIX_.'order_detail` od WHERE od.`id_order` = o.`id_order`) nb_products
                 FROM `'._DB_PREFIX_.'orders` o
@@ -79,6 +82,7 @@ class NpsMarketplaceOrdersModuleFrontController extends ModuleFrontController {
                     'total_seller_tax_incl' => $seller_total
                 ));
             }
+
         }
         return $result;
     }

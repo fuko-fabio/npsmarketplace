@@ -8,7 +8,7 @@
     <h1 class="page-heading bottom-indent">{l s='Order Details' mod='npsmarketplace'}</h1>
     <div class="row">
         <div class="col-md-6">
-            <h4>{l s='Payment state' mod='npsmarketplace'}</h4>
+            <h4>{l s='State' mod='npsmarketplace'}</h4>
             <div class="table-responsive">
                 <table class="table table-bordered">
                     <tr>
