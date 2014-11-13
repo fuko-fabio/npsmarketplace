@@ -2,6 +2,11 @@
     @author Norbert Pabian <norbert.pabian@gmail.com>
     @copyright 2014 npsoftware
 -->
+<script>
+    $('.sale-event-btn').fancybox({
+        'hideOnContentClick' : false
+    });
+</script>
 {capture name=path}
 <a href="{$link->getPageLink('my-account', true)|escape:'html':'UTF-8'}"> {l s='My account'} </a>
 <span class="navigation-pipe">{$navigationPipe}</span>
@@ -57,6 +62,7 @@
                                     {/if}
                                     {if $product.active == 1}
                                     <li><a href="{$product.edit_combination_url}"> <i class="icon-calendar"></i> {l s='List of Terms' mod='npsmarketplace'}</a></li>
+                                    <li><a class="sale-event-btn" href="#sale_event_box"> <i class="icon-chevron-down"></i> {l s='Sale' mod='npsmarketplace'}</a></li>
                                     <li><a href="{$product.view_url}"> <i class="icon-search"></i> {l s='Preview' mod='npsmarketplace'}</a></li>
                                     {/if}
                                     <li class="divider"></li>
@@ -70,6 +76,22 @@
             </tbody>
         </table>
     </div>
+            <!-- Fancybox -->
+        <div style="display:none">
+            <div id="sale_event_box">
+                <h2 class="page-subheading">
+                    {l s='Sale tickets!' mod='npsmarketplace'}
+                </h2>
+                <form id="sale_event_form" class="row" action="#">
+
+                </form>
+                <p class="submit">
+                    <input class="button ccl" type="button" value="{l s='Cancel' mod='npsmarketplace'}" onclick="$.fancybox.close();"/>
+                    <input class="button" name="submitSaleEvent" type="submit" value="{l s='Save' mod='npsmarketplace'}"/>
+                </p>
+            </div>
+        </div>
+        <!-- End fancybox -->
     {else}
         <p class="alert alert-info">{l s='You have not added any event yet.' mod='npsmarketplace'}</p>
     {/if}

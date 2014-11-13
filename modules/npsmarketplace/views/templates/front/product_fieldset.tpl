@@ -138,6 +138,14 @@
         </div>
         <span class="form_info">{l s='At least one picture is required. Max allowed size 8MB. Recommended min size 512px X 512px' mod='npsmarketplace'}</span>
     </div>
+    <div class="row">
+        <div class="form-group col-xs-12">
+            <label for="video_url">{l s='Video URL' mod='npsmarketplace'}</label>
+            <input class="form-control" type="text" id="video_url" name="video_url"
+                value="{if isset($smarty.post.video_url)}{$smarty.post.video_url}{else}{if isset($product['video_url'])}{$product['video_url']|escape:'html':'UTF-8'}{/if}{/if}"/>
+            <span class="form_info">{l s='Paste video URL (YouTube, Vimeo etc..) to display it on event overview page' mod='npsmarketplace'}</span>
+        </div>
+    </div>
     <div class="form-group">
         <label class="required" for="product_category">{l s='Category' mod='npsmarketplace'}</label>
         <ul class="tree">

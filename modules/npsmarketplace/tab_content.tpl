@@ -1,3 +1,9 @@
+{if $video_url}
+<div class="tab-pane fade" id="product_video_tab">
+    <iframe type="text/html" width="640" height="390" src="{$video_url}" frameborder="0" allowFullScreen></iframe>
+</div>
+{/if}
+
 <div class="tab-pane fade" id="product_map_tab">
     <div id="map-canvas" data-target="{$product_address}"></div>
 </div>

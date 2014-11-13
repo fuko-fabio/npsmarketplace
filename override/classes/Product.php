@@ -269,5 +269,22 @@ class Product extends ProductCore
 
         return $res;
     }
+
+    public static function getVideoUrl($id_product) {
+        if (!isset($id_product))
+            return null;
+        $sql = 'SELECT `url`
+                FROM `'._DB_PREFIX_.'product_video`
+                WHERE `id_product` = '.$id_product;
+        return Db::getInstance()->getValue($sql);
+    }
+
+    public function persistVideoUrl($video_url) {
+        if(!isset($video_url))
+            return false;
+        $insert['id_product'] = $this->id;
+        $insert['url'] = $video_url;
+        return Db::getInstance()->insert('product_video', $insert, true);
+    }
 }
 ?>

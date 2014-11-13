@@ -59,7 +59,7 @@ class NpsTicketDelivery extends Module {
     public function hookActionOrderHistoryAddAfter($params) {
         $order_history = $params['order_history'];
         $id_order_state = Configuration::get('NPS_P24_ORDER_STATE_ACCEPTED');
-        if ($id_order_state == $order_history->id_order_state) {
+        if ($id_order_state == $order_history->id_order_state || $id_order_state == 2) {
             $id_order = $order_history->id_order;
             $cart = Cart::getCartByOrderId($id_order);
             $c_t = CartTicket::getByCartId($cart->id);

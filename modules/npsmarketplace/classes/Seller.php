@@ -254,5 +254,6 @@ class Seller extends ObjectModel
             return $result['id_seller'];
         return isset($result['id_seller']);
     }
+    
 }
 

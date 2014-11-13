@@ -534,7 +534,11 @@
             <div{if (!$allow_oosp && $product->quantity <= 0) || !$product->available_for_order || (isset($restricted_country_mode) && $restricted_country_mode) || $PS_CATALOG_MODE} class="unvisible"{/if}>
                 <p id="add_to_cart">
                     <button type="submit" name="Submit" class="exclusive">
-                        <span><i class="icon-shopping-cart"></i> {l s='Add to cart'}</span>
+                        {if $productPrice > 0}
+                            <span><i class="icon-shopping-cart"></i> {l s='Add to cart'}</span>
+                        {else}
+                            <span><i class="icon-bookmark"></i> {l s='Take part'}</span>
+                        {/if}
                     </button>
                 </p>
             </div>

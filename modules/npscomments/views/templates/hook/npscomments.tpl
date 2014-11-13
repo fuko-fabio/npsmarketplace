@@ -109,12 +109,12 @@
                             </div>
                         {/if}
                         <p class="txt_required">
-                            <sup class="required">*</sup> {l s='Required fields' mod='sendtoafriend'}
+                            <sup class="required">*</sup> {l s='Required fields' mod='npscomments'}
                         </p>
                     </div>
                 </form>
                 <p class="submit">
-                    <input class="button ccl" type="button" value="{l s='Cancel' mod='sendtoafriend'}" onclick="$.fancybox.close();"/>
+                    <input class="button ccl" type="button" value="{l s='Cancel' mod='npscomments'}" onclick="$.fancybox.close();"/>
                     <input id="submitSellerNewMessage" class="button" name="submitSellerMessage" type="submit" value="{l s='Send' mod='npscomments'}"/>
                 </p>
             </div>

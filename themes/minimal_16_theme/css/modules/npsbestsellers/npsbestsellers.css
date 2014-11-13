@@ -7,9 +7,9 @@
 #best-sellers_block_center a {
   color: #fff; }
   #best-sellers_block_center a .new-box {
-    left: 10px; }
+    display: none; }
   #best-sellers_block_center a .sale-box {
-    right: 10px; }
+    display: none; }
   #best-sellers_block_center a .name {
     display: none;
     position: absolute;
