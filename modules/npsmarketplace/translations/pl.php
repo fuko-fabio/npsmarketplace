@@ -304,6 +304,7 @@ $_MODULE['<{npsmarketplace}prestashop>my_account_column_6bc011e375bcee14786bb43a
 $_MODULE['<{npsmarketplace}prestashop>my_account_column_284b47b0bb63ae2df3b29f0e691d6fcf'] = 'Adresy';
 $_MODULE['<{npsmarketplace}prestashop>my_account_column_e45be0a0d4a0b62b15694c1a631e6e62'] = 'Moje adresy';
 $_MODULE['<{npsmarketplace}prestashop>my_account_column_7442e29d7d53e549b78d93c46b8cdcfc'] = 'Zamówienia';
+$_MODULE['<{npsmarketplace}prestashop>my_account_column_782c8b38bce4f2f6975ca7f33ac8189b'] = 'Historia zamówień';
 $_MODULE['<{npsmarketplace}prestashop>my_account_column_e06d7593c1cd6dabef450be6c3da7091'] = 'Zwroty';
 $_MODULE['<{npsmarketplace}prestashop>my_account_column_d1a365ea7809ae5831c6d9f86886630c'] = 'Zwroty';
 $_MODULE['<{npsmarketplace}prestashop>my_account_column_9132bc7bac91dd4e1c453d4e96edf219'] = 'Zwroty';
