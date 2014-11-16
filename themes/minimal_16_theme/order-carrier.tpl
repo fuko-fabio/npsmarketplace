@@ -42,6 +42,37 @@
 	{if isset($virtual_cart) && $virtual_cart}
 		<input id="input_virtual_carrier" class="hidden" type="hidden" name="id_carrier" value="0" />
         {$HOOK_BEFOREVIRTUALCARRIER}
+        {if $giftAllowed}
+            <p class="carrier_title">{l s='Gift'}</p>
+            <p class="checkbox gift">
+                <input type="checkbox" name="gift" id="gift" value="1" {if $cart->gift == 1}checked="checked"{/if} />
+                <label for="gift">
+                    {l s='I would like my order to be gift wrapped.'}
+                    {if $gift_wrapping_price > 0}
+                        &nbsp;<i>({l s='Additional cost of'}
+                        <span class="price" id="gift-price">
+										{if $priceDisplay == 1}
+                                            {convertPrice price=$total_wrapping_tax_exc_cost}
+                                        {else}
+                                            {convertPrice price=$total_wrapping_cost}
+                                        {/if}
+									</span>
+                        {if $use_taxes}
+                            {if $priceDisplay == 1}
+                                {l s='(tax excl.)'}
+                            {else}
+                                {l s='(tax incl.)'}
+                            {/if}
+                        {/if})
+                    </i>
+                    {/if}
+                </label>
+            </p>
+            <p id="gift_div" class="form-group">
+                <label for="gift_message">{l s='If you\'d like, you can add a note to the gift:'}</label>
+                <textarea rows="5" cols="35" id="gift_message" class="form-control" name="gift_message">{$cart->gift_message|escape:'html':'UTF-8'}</textarea>
+            </p>
+        {/if}
     {else}
 		<div id="HOOK_BEFORECARRIER">
 			{if isset($carriers) && isset($HOOK_BEFORECARRIER)}
@@ -204,38 +235,7 @@
 						{/foreach}
 					{/if}
 				</div> <!-- end delivery_options_address -->
-				<div id="extra_carrier" style="display: none;"></div>
-					{if $giftAllowed}
-						<p class="carrier_title">{l s='Gift'}</p>
-						<p class="checkbox gift">
-							<input type="checkbox" name="gift" id="gift" value="1" {if $cart->gift == 1}checked="checked"{/if} />
-							<label for="gift">
-								{l s='I would like my order to be gift wrapped.'}
-								{if $gift_wrapping_price > 0}
-									&nbsp;<i>({l s='Additional cost of'}
-									<span class="price" id="gift-price">
-										{if $priceDisplay == 1}
-											{convertPrice price=$total_wrapping_tax_exc_cost}
-										{else}
-											{convertPrice price=$total_wrapping_cost}
-										{/if}
-									</span>
-									{if $use_taxes}
-										{if $priceDisplay == 1}
-											{l s='(tax excl.)'}
-										{else}
-											{l s='(tax incl.)'}
-										{/if}
-									{/if})
-									</i>
-								{/if}
-							</label>
-						</p>
-						<p id="gift_div" class="form-group">
-							<label for="gift_message">{l s='If you\'d like, you can add a note to the gift:'}</label>
-							<textarea rows="5" cols="35" id="gift_message" class="form-control" name="gift_message">{$cart->gift_message|escape:'html':'UTF-8'}</textarea>
-						</p>
-					{/if}
+				<div id="extra_carrier" ></div>
 				{/if}
 			{/if}
 			{if $conditions AND $cms_id}
@@ -253,7 +253,7 @@
 					<input type="hidden" name="back" value="{$back}" />
 					{if !$is_guest}
 						{if $back}
-							<a 
+							<a  onclick="$.fancybox.showLoading();"
 								href="{$link->getPageLink('order', true, NULL, "step=1&back={$back}&multi-shipping={$multi_shipping}")|escape:'html':'UTF-8'}"
 								title="{l s='Previous'}"
 								class="button-exclusive btn btn-default">
@@ -261,7 +261,7 @@
 								{l s='Continue shopping'}
 							</a>
 						{else}
-							<a
+							<a  onclick="$.fancybox.showLoading();"
 								href="{$link->getPageLink('order', true, NULL, "step=1&multi-shipping={$multi_shipping}")|escape:'html':'UTF-8'}"
 								title="{l s='Previous'}"
 								class="button-exclusive btn btn-default">
@@ -270,7 +270,7 @@
 							</a>
 						{/if}
 					{else}
-						<a
+						<a  onclick="$.fancybox.showLoading();"
 							href="{$link->getPageLink('order', true, NULL, "multi-shipping={$multi_shipping}")|escape:'html':'UTF-8'}"
 							title="{l s='Previous'}"
 							class="button-exclusive btn btn-default">
@@ -279,7 +279,7 @@
 						</a>
 					{/if}
 					{if isset($virtual_cart) && $virtual_cart || (isset($delivery_option_list) && !empty($delivery_option_list))}
-						<button type="submit" name="processCarrier" class="button btn btn-default standard-checkout button-medium">
+						<button onclick="$.fancybox.showLoading();" type="submit" name="processCarrier" class="button btn btn-default standard-checkout button-medium">
 							<span>
 								{l s='Proceed to checkout'}
 								<i class="icon-chevron-right right"></i>

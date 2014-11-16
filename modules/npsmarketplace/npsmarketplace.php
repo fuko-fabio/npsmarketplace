@@ -61,6 +61,7 @@ class NpsMarketplace extends Module {
             || !Configuration::updateValue('NPS_SELLER_GUIDE_URL', $shop_url)
             || !Configuration::updateValue('NPS_PAYMENT_SETTINGS_GUIDE_URL', $shop_url)
             || !Configuration::updateValue('NPS_SELLER_AGREEMENT_URL', $shop_url)
+            || !Configuration::updateValue('NPS_EVENT_VIDEO_GUIDE_URL', $shop_url)
             || !Configuration::updateValue('NPS_MERCHANT_EMAILS', Configuration::get('PS_SHOP_EMAIL'))
             || !$this->_createTables($sql)
             || !$this->_createTab()
@@ -87,6 +88,7 @@ class NpsMarketplace extends Module {
             || !Configuration::deleteByName('NPS_SELLER_GUIDE_URL')
             || !Configuration::deleteByName('NPS_SELLER_AGREEMENT_URL')
             || !Configuration::deleteByName('NPS_PAYMENT_SETTINGS_GUIDE_URL')
+            || !Configuration::deleteByName('NPS_EVENT_VIDEO_GUIDE_URL')
             || !Configuration::deleteByName('NPS_MERCHANT_EMAILS')
             || !Configuration::deleteByName('NPS_FEATURE_TOWN_ID')
             || !Configuration::deleteByName('NPS_FEATURE_DISTRICT_ID')
@@ -249,6 +251,7 @@ class NpsMarketplace extends Module {
             Configuration::updateValue('NPS_PRODUCT_GUIDE_URL', Tools::getValue('NPS_PRODUCT_GUIDE_URL'));
             Configuration::updateValue('NPS_SELLER_GUIDE_URL', Tools::getValue('NPS_SELLER_GUIDE_URL'));
             Configuration::updateValue('NPS_PAYMENT_SETTINGS_GUIDE_URL', Tools::getValue('NPS_PAYMENT_SETTINGS_GUIDE_URL'));
+            Configuration::updateValue('NPS_EVENT_VIDEO_GUIDE_URL', Tools::getValue('NPS_EVENT_VIDEO_GUIDE_URL'));
             $output .= $this->displayConfirmation($this->l('URL\'s settings updated'));
         }
         return $output.$this->displayForm();
@@ -403,6 +406,12 @@ class NpsMarketplace extends Module {
                         'name' => 'NPS_PAYMENT_SETTINGS_GUIDE_URL',
                         'required' => true
                     ),
+                    array(
+                        'type' => 'text',
+                        'label' => $this->l('Adding video URL'),
+                        'name' => 'NPS_EVENT_VIDEO_GUIDE_URL',
+                        'required' => true
+                    ),
                 ),
                 'submit' => array(
                     'title' => $this->l('Save'),
@@ -422,6 +431,7 @@ class NpsMarketplace extends Module {
             'NPS_SELLER_AGREEMENT_URL' => Tools::getValue('NPS_SELLER_AGREEMENT_URL', Configuration::get('NPS_SELLER_AGREEMENT_URL')),
             'NPS_MERCHANT_EMAILS' => Tools::getValue('NPS_MERCHANT_EMAILS', Configuration::get('NPS_MERCHANT_EMAILS')),
             'NPS_PAYMENT_SETTINGS_GUIDE_URL' => Tools::getValue('NPS_PAYMENT_SETTINGS_GUIDE_URL', Configuration::get('NPS_PAYMENT_SETTINGS_GUIDE_URL')),
+            'NPS_EVENT_VIDEO_GUIDE_URL' => Tools::getValue('NPS_EVENT_VIDEO_GUIDE_URL', Configuration::get('NPS_EVENT_VIDEO_GUIDE_URL')),
 
         );
     }

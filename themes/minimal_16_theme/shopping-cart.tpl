@@ -22,7 +22,6 @@
 *  @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *  International Registered Trademark & Property of PrestaShop SA
 *}
-
 {capture name=path}{l s='Your shopping cart'}{/capture}
 
 <h1 id="cart_title" class="page-heading">{l s='Shopping-cart summary'}
@@ -524,14 +523,14 @@
 	<div id="HOOK_SHOPPING_CART">{$HOOK_SHOPPING_CART}</div>
 	<p class="cart_navigation clearfix">
 		{if !$opc}
-			<a
+			<a  onclick="$.fancybox.showLoading();"
 				href="{if $back}{$link->getPageLink('order', true, NULL, 'step=1&amp;back={$back}')|escape:'html':'UTF-8'}{else}{$link->getPageLink('order', true, NULL, 'step=1')|escape:'html':'UTF-8'}{/if}"
 				class="button btn btn-default standard-checkout button-medium"
 				title="{l s='Proceed to checkout'}">
 				<span>{l s='Proceed to checkout'}<i class="icon-chevron-right right"></i></span>
 			</a>
 		{/if}
-		<a
+		<a  onclick="$.fancybox.showLoading();"
 			href="{if (isset($smarty.server.HTTP_REFERER) && strstr($smarty.server.HTTP_REFERER, 'order.php')) || isset($smarty.server.HTTP_REFERER) && strstr($smarty.server.HTTP_REFERER, 'order-opc') || !isset($smarty.server.HTTP_REFERER)}{$link->getPageLink('index')}{else}{$smarty.server.HTTP_REFERER|escape:'html':'UTF-8'|secureReferrer}{/if}"
 			class="button-exclusive btn btn-default"
 			title="{l s='Continue shopping'}">

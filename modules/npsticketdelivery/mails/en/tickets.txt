@@ -7,6 +7,8 @@ W załączniku przezyłamy bilety zakupione w naszym serwisie.
 
 Dziekujemy i zapraszamy ponownie.
 
+{gift_message}
+
 Pozdrawiamy,
 zespół {shop_name}.
 

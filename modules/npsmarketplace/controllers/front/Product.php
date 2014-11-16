@@ -294,7 +294,8 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             'iso' => file_exists(_PS_CORE_DIR_.'/js/tiny_mce/langs/'.$iso.'.js') ? $iso : 'en',
             'path_css' => _THEME_CSS_DIR_,
             'tinymce' => true,
-            'dropzone_url' => Tools::getHttpHost(true).__PS_BASE_URI__.'modules/npsmarketplace/dropzone.php?token='.$form_token
+            'dropzone_url' => Tools::getHttpHost(true).__PS_BASE_URI__.'modules/npsmarketplace/dropzone.php?token='.$form_token,
+            'vide_how_to_url' => Configuration::get('NPS_EVENT_VIDEO_GUIDE_URL')
         ));
 
         $this->setTemplate('product.tpl');
