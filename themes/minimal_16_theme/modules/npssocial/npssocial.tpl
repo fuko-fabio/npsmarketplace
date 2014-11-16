@@ -28,7 +28,7 @@
 	<ul>
         {if $blog_url != ''}
             <li class="blog">
-                <a href="{$blog_url|escape:html:'UTF-8'}">
+                <a target="_blank" href="{$blog_url|escape:html:'UTF-8'}">
                     <span>{l s='Blog' mod='npssocial'}</span>
                 </a>
             </li>
@@ -56,21 +56,21 @@
 		{/if}
         {if $youtube_url != ''}
         	<li class="youtube">
-        		<a href="{$youtube_url|escape:html:'UTF-8'}">
+        		<a target="_blank" href="{$youtube_url|escape:html:'UTF-8'}">
         			<span>{l s='Youtube' mod='npssocial'}</span>
         		</a>
         	</li>
         {/if}
         {if $google_plus_url != ''}
         	<li class="google-plus">
-        		<a href="{$google_plus_url|escape:html:'UTF-8'}">
+        		<a target="_blank" href="{$google_plus_url|escape:html:'UTF-8'}">
         			<span>{l s='Google Plus' mod='npssocial'}</span>
         		</a>
         	</li>
         {/if}
         {if $pinterest_url != ''}
         	<li class="pinterest">
-        		<a href="{$pinterest_url|escape:html:'UTF-8'}">
+        		<a target="_blank" href="{$pinterest_url|escape:html:'UTF-8'}">
         			<span>{l s='Pinterest' mod='npssocial'}</span>
         		</a>
         	</li>

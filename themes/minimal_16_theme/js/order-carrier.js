@@ -35,7 +35,7 @@ $(document).ready(function(){
 		$('p#gift_div').show();
 
 	$(document).on('change', 'input.delivery_option_radio', function(){
-		var key = $(this).data('key');
+		var key = $(this).data('key');d
 		var id_address = parseInt($(this).data('id_address'));
 		if (orderProcess == 'order' && key && id_address)
 			updateExtraCarrier(key, id_address);
@@ -46,17 +46,17 @@ $(document).ready(function(){
 	$(document).on('submit', 'form[name=carrier_area]', function(){
 		return acceptCGV();
 	});
-
 });
 
 function acceptCGV()
 {
 	if ($('#cgv').length && !$('input#cgv:checked').length)
 	{
-        $('.error-terms-of-service').show();
+        $('.error-terms-of-service').show('slow');
+        $.fancybox.hideLoading();
 	}
 	else {
-        $('.error-terms-of-service').hide();
+        $('.error-terms-of-service').hide('slow');
         return true;
     }
 	return false;

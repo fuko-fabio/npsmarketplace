@@ -648,7 +648,8 @@ table.table-product-discounts {
   background: none;
   color: #4b80c3;
   border: 1px solid #4b80c3;
-  margin-left: 5px; }
+  margin-left: 5px;
+  width: 100%; }
   #availability_value:before,
   #last_quantities:before {
     font-family: "FontAwesome";

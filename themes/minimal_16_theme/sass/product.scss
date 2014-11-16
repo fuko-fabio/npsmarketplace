@@ -799,6 +799,7 @@ table.table-product-discounts {
   color: $state-info-border;
   border: 1px solid $state-info-border;
   margin-left: 5px;
+  width: 100%;
   &:before {
     font-family: $font-icon;
     content: "\f05a";

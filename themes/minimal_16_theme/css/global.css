@@ -5312,10 +5312,10 @@ p.info-title {
 p.info-account {
   margin: -4px 0 24px 0; }
 
-p.required {
-  color: red; }
-  p.required sup {
-    font-size: 14px; }
+sup {
+  top: -2px;
+  color: red;
+  font-size: 14px; }
 
 .dark {
   color: #333; }
@@ -5515,7 +5515,7 @@ span.exclusive {
 
 .button.ccl {
   background: #DBDBDB !important; }
-  .button.ccl span:hover {
+  .button.ccl:hover {
     background: #E8E8E8; }
 
 .button.button-small {
@@ -5539,8 +5539,8 @@ span.exclusive {
       .button.button-small span i.right {
         margin-right: 0;
         margin-left: 5px; }
-    .button.button-small span:hover {
-      background: #FFC654; }
+  .button.button-small:hover {
+    background: #FFC654; }
 
 .button.button-medium {
   font-size: 17px;
@@ -5581,7 +5581,7 @@ span.exclusive {
 
 .button.button-medium.exclusive {
   background: #ffaa00; }
-  .button.button-medium.exclusive span:hover {
+  .button.button-medium.exclusive:hover {
     background: #FFC654; }
 
 .link-button {
@@ -6917,9 +6917,6 @@ table#cart_summary .gift-icon {
 .multishipping-cart .cart_address_delivery.form-control {
   width: 198px; }
 
-#order .address_add.submit {
-  margin-bottom: 20px; }
-
 #ordermsg {
   margin-bottom: 30px; }
 
@@ -7004,6 +7001,11 @@ table#cart_summary .gift-icon {
   .order_carrier_content + div {
     padding-bottom: 15px; }
 
+.address_delivery .selector {
+  width: 100% !important; }
+  .address_delivery .selector span {
+    width: auto !important; }
+
 #carrierTable {
   border: 1px solid #999999;
   border-bottom: none;
@@ -7033,7 +7035,6 @@ p.checkbox.gift {
   margin-bottom: 10px; }
 
 #gift_div {
-  display: none;
   margin-top: 5px;
   margin-bottom: 10px; }
 

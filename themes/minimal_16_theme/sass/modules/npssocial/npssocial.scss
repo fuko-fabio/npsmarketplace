@@ -55,13 +55,22 @@
         }
       }
       &.blog {
+        border: 1px solid $base-body-color;
+        background: $light-background;
         width: 90px;
         a {
           margin-top: 5px;
+          color: $base-body-color;
           span {
             display: inline-block;
             text-transform: uppercase;
             font-family: 'Hammersmith One', sans-serif;
+          }
+        }
+        &:hover {
+          border-color: $primary-color;
+          a {
+            color: $primary-color;
           }
         }
       }

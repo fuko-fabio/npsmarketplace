@@ -127,12 +127,10 @@ p.info-account {
   margin: -4px 0 24px 0;
 }
 
-p.required {
+sup {
+  top: -2px;
   color: red;
-
-  sup {
-    font-size: 14px;
-  }
+  font-size: 14px;
 }
 
 .dark {
@@ -368,10 +366,8 @@ span.exclusive {
 }
 .button.ccl {
   background: $btn-color !important;
-  span {
-    &:hover {
-      background: $btn-color-hover;
-    }
+  &:hover {
+    background: $btn-color-hover;
   }
 }
 
@@ -395,9 +391,9 @@ span.exclusive {
         margin-left: 5px;
       }
     }
-    &:hover {
-      background: $btn-primary-color-hover;
-    }
+  }
+  &:hover {
+    background: $btn-primary-color-hover;
   }
 }
 
@@ -447,10 +443,8 @@ span.exclusive {
 
 .button.button-medium.exclusive {
   background: $primary-color;
-  span {
-    &:hover {
-      background: $primary-color-light;
-    }
+  &:hover {
+    background: $primary-color-light;
   }
 }
 
@@ -2198,10 +2192,6 @@ table#cart_summary .gift-icon {
   }
 }
 
-#order .address_add.submit {
-  margin-bottom: 20px;
-}
-
 #ordermsg {
   margin-bottom: 30px;
 }
@@ -2312,6 +2302,15 @@ table#cart_summary .gift-icon {
   }
 }
 
+.address_delivery {
+  .selector {
+    width: 100% !important;
+    span {
+      width: auto !important;
+    }
+  }
+}
+
 #carrierTable {
   border: 1px solid #999999;
   border-bottom: none;
@@ -2347,7 +2346,6 @@ p.checkbox.gift {
 }
 
 #gift_div {
-  display: none;
   margin-top: 5px;
   margin-bottom: 10px;
 }

@@ -282,9 +282,11 @@ class Product extends ProductCore
     public function persistVideoUrl($video_url) {
         if(!isset($video_url))
             return false;
-        $insert['id_product'] = $this->id;
-        $insert['url'] = $video_url;
-        return Db::getInstance()->insert('product_video', $insert, true);
+        if (Product::getVideoUrl($this->id))
+            $sql = 'UPDATE `'._DB_PREFIX_.'product_video` SET url="'.$video_url.'" WHERE id_product='.$this->id;
+        else 
+            $sql = 'INSERT INTO `'._DB_PREFIX_.'product_video` (id_product,url) VALUES('.$this->id.',"'.$video_url.'")';
+        return Db::getInstance()->execute($sql);
     }
 }
 ?>

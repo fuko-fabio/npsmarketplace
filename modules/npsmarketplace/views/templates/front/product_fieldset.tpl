@@ -143,7 +143,7 @@
             <label for="video_url">{l s='Video URL' mod='npsmarketplace'}</label>
             <input class="form-control" type="text" id="video_url" name="video_url"
                 value="{if isset($smarty.post.video_url)}{$smarty.post.video_url}{else}{if isset($product['video_url'])}{$product['video_url']|escape:'html':'UTF-8'}{/if}{/if}"/>
-            <span class="form_info">{l s='Paste video URL (YouTube, Vimeo etc..) to display it on event overview page' mod='npsmarketplace'}</span>
+            <span class="form_info">{l s='Paste embeded video URL (YouTube, Vimeo etc..)' mod='npsmarketplace'} <a href="$vide_how_to_url">{l s='See how to add video' mod='npsmarketplace'}</a></span>
         </div>
     </div>
     <div class="form-group">

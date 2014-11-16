@@ -36,14 +36,25 @@
 	<div id="opc_account" class="opc-main-block">
 		<div id="opc_account-overlay" class="opc-overlay" style="display: none;"></div>
 {/if}
-<div class="addresses clearfix">
-	<div class="row">
+<div class="addresses box clearfix">
+    <div class="row">
+        <div class="form-group col-sm-6">
+            <label>{l s='Invoice'}</label>
+            <div class="checkbox">
+                <label for="attach_invoice">
+                    <input type="checkbox" id="attach_invoice" name="attach_invoice" value="1" {if $attach_invoice == 1}checked="checked"{/if}/>
+                    {l s='Please send me invoice via email'}
+                </label>
+            </div>
+        </div>
+        <p class="address_add submit col-sm-6" style="display: none;">
+            <a href="{$link->getPageLink('address', true, NULL, "back={$back_order_page}?step=1{if $back}&mod={$back}{/if}")|escape:'html':'UTF-8'}" title="{l s='Add'}" class="button button-small btn btn-default pull-right">
+                <span>{l s='Add a new address'}<i class="icon-plus right"></i></span>
+            </a>
+        </p>
+    </div>
+	<div class="row addresses-view" style="display: none;">
 		<div class="col-xs-12 col-sm-4">
-            <p class="address_add submit">
-                <a href="{$link->getPageLink('address', true, NULL, "back={$back_order_page}?step=1{if $back}&mod={$back}{/if}")|escape:'html':'UTF-8'}" title="{l s='Add'}" class="button button-small btn btn-default">
-                    <span>{l s='Add a new address'}<i class="icon-plus right"></i></span>
-                </a>
-            </p>
 			<div class="address_delivery select form-group selector1">
 				<label for="id_address_delivery">{if $cart->isVirtualCart()}{l s='Choose a billing address:'}{else}{l s='Choose a delivery address:'}{/if}</label>
 				<select name="id_address_delivery" id="id_address_delivery" class="address_select form-control">
@@ -104,7 +115,7 @@
 					<i class="icon-chevron-left"></i>
 					{l s='Continue Shopping'}
 				</a>
-				<button type="submit" name="processAddress" class="button btn btn-default button-medium">
+				<button onclick="$.fancybox.showLoading();" type="submit" name="processAddress" class="button btn btn-default button-medium">
 					<span>{l s='Proceed to checkout'}<i class="icon-chevron-right right"></i></span>
 				</button>
 			</p>

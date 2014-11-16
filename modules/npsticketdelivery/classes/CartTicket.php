@@ -6,11 +6,8 @@
 
 class CartTicket extends ObjectModel {
 
-    public $id_customer;
     public $id_cart;
-    public $id_currency;
     public $email;
-    public $gift;
 
     public function __construct($id_cart_ticket = null, $id_cart = null) {
         if (empty($id_cart_ticket) && !empty($id_cart))
@@ -30,11 +27,8 @@ class CartTicket extends ObjectModel {
         'table' => 'cart_ticket',
         'primary' => 'id_cart_ticket',
         'fields' => array(
-            'id_customer' => array('type' => self::TYPE_INT,    'validate' => 'isUnsignedId',  'required' => true),
             'id_cart' =>     array('type' => self::TYPE_INT,    'validate' => 'isUnsignedId',  'required' => true),
-            'id_currency' =>    array('type' => self::TYPE_INT,    'validate' => 'isUnsignedId',  'required' => true),
             'email' =>       array('type' => self::TYPE_STRING, 'validate' => 'isEmail',       'required' => true),
-            'gift' =>        array('type' => self::TYPE_BOOL,   'validate' => 'isBool',        'required' => true),
         ),
     );
 
@@ -51,9 +45,10 @@ class CartTicket extends ObjectModel {
             return null;
         $dbquery = new DbQuery();
         $dbquery->select('*');
-        $dbquery->from('cart_ticket', 'c');
-        $dbquery->leftJoin('ticket', 't', 't.id_cart_ticket = c.id_cart_ticket');
-        $dbquery->where('c.`id_cart_ticket` = '.$id_cart_ticket);
+        $dbquery->from('cart_ticket', 'ct');
+        $dbquery->leftJoin('ticket', 't', 't.id_cart_ticket = ct.id_cart_ticket');
+        $dbquery->leftJoin('cart', 'c', 'ct.id_cart = c.id_cart');
+        $dbquery->where('ct.`id_cart_ticket` = '.$id_cart_ticket);
         
         return Db::getInstance()->executeS($dbquery);
     }
@@ -63,8 +58,9 @@ class CartTicket extends ObjectModel {
             return null;
         $dbquery = new DbQuery();
         $dbquery->select('*');
-        $dbquery->from('cart_ticket', 'c');
-        $dbquery->leftJoin('ticket', 't', 't.id_cart_ticket = c.id_cart_ticket');
+        $dbquery->from('cart_ticket', 'ct');
+        $dbquery->leftJoin('ticket', 't', 't.id_cart_ticket = ct.id_cart_ticket');
+        $dbquery->leftJoin('cart', 'c', 'ct.id_cart = c.id_cart');
         $dbquery->where('c.`id_customer` = '.$id_customer);
         
         return Db::getInstance()->executeS($dbquery);

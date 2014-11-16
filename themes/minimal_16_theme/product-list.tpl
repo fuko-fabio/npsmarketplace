@@ -117,12 +117,19 @@
 							{if ($product.allow_oosp || $product.quantity > 0)}
 								{if isset($static_token)}
 									<a class="btn btn-default button button-medium" href="{$link->getPageLink('cart',false, NULL, "add=1&amp;id_product={$product.id_product|intval}&amp;token={$static_token}", false)|escape:'html':'UTF-8'}" rel="nofollow" title="{l s='Add to cart'}" data-id-product="{$product.id_product|intval}">
-										<span>{l s='Add to cart'} <i class="icon-shopping-cart right"></i></span>
-									</a>
+										{if $product.price <= 0}
+                                            <span>{l s='Take part'} <i class="icon-bookmark right"></i></span>
+                                        {else}
+                                            <span>{l s='Add to cart'} <i class="icon-shopping-cart right"></i></span>
+                                        {/if}
+                                    </a>
 								{else}
 									<a class="btn btn-default button button-medium" href="{$link->getPageLink('cart',false, NULL, 'add=1&amp;id_product={$product.id_product|intval}', false)|escape:'html':'UTF-8'}" rel="nofollow" title="{l s='Add to cart'}" data-id-product="{$product.id_product|intval}">
-										<span>{l s='Add to cart'} <i class="icon-shopping-cart right"></i></span>
-									</a>
+                                        {if $product.price <= 0}
+                                            <span>{l s='Take part'} <i class="icon-bookmark right"></i></span>
+                                        {else}
+                                            <span>{l s='Add to cart'} <i class="icon-shopping-cart right"></i></span>
+                                        {/if}									</a>
 								{/if}						
 							{/if}
 						{/if}

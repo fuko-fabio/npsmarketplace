@@ -67,3 +67,7 @@
 !/tools
 /tools/*
 !/tools/dompdf
+
+!/js
+/js/*
+!/js/validate.js

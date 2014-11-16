@@ -36,6 +36,14 @@ $(document).ready(function(){
 		if (typeof opc !=='undefined' && opc)
 			updateAddressSelection();
 	});
+    $(document).on('click', '#attach_invoice', function(){
+        if($("#attach_invoice").is(':checked'))
+            $('.addresses-view, .address_add').show('slow');
+        else
+            $('.addresses-view, .address_add').hide('slow');
+    });
+    if($("#attach_invoice").is(':checked'))
+        $('.addresses-view, .address_add').show('slow');
 });
 
 //update the display of the addresses

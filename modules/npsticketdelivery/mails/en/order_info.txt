@@ -1,0 +1,36 @@
+
+[{shop_url}] 
+
+Witaj {firstname},
+
+Dokonano zakupów w twoim butiku {name}!
+
+ZAMÓWIENIE: {order_name} Umieszczone na {date}
+
+PŁATNOŚĆ: {payment} 		 
+
+INDEKS
+
+PRODUKT
+
+CENA JEDNOSTKOWA
+
+ILOŚĆ
+
+CENA KOŃCOWA
+
+{products_txt} 
+
+PŁATNOŚĆ: {payment} 		 
+
+{invoice_block_txt} 
+
+Możesz obejrzeć swoje zamówienie w "Zamówienia"
+[{order_history_url}] logując się do konta
+sprzedawcy "Moje konto" [{my_account_url}] w naszym
+sklepie. 
+
+Pozdrawiamy,
+zespół {shop_name} [{shop_url}].
+
+To jest automatyczna wiadomość, prosimy na nią NIE odpowiadać.
