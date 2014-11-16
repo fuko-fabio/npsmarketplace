@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS `PREFIX_cart_ticket` (
   `id_cart` int(10) unsigned NOT NULL,
   `email` varchar(128) NOT NULL,
   PRIMARY KEY (`id_cart_ticket`),
-  KEY `id_cart` (`id_cart`),
+  KEY `id_cart` (`id_cart`)
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `PREFIX_ticket` (
