@@ -56,8 +56,6 @@ class NpsNewProducts extends Module
 			&& $this->registerHook('deleteproduct')
 			&& Configuration::updateValue('NPS_NEW_PRODUCTS_NBR', 5)
 			&& $this->registerHook('displayHome')
-            && $this->registerHook('leftColumn')
-            && $this->registerHook('rightColumn')
 		);
 		$this->_clearCache('*');
 
@@ -105,36 +103,11 @@ class NpsNewProducts extends Module
 		return $newProducts;
 	}
 
-	public function hookRightColumn($params)
-	{
-		if (!$this->isCached('npsnewproducts.tpl', $this->getCacheId()))
-		{
-			if (!isset(NpsNewProducts::$cache_new_products))
-				NpsNewProducts::$cache_new_products = $this->getNewProducts();
-
-			$this->smarty->assign(array(
-				'new_products' => NpsNewProducts::$cache_new_products,
-				'mediumSize' => Image::getSize(ImageType::getFormatedName('medium')),
-				'homeSize' => Image::getSize(ImageType::getFormatedName('home'))
-			));
-		}
-
-		if (NpsNewProducts::$cache_new_products === false)
-			return false;
-
-		return $this->display(__FILE__, 'npsnewproducts.tpl', $this->getCacheId());
-	}
-
 	protected function getCacheId($name = null)
 	{
 		if ($name === null)
 			$name = 'npsnewproducts';
 		return parent::getCacheId($name.'|'.date('Ymd'));
-	}
-
-	public function hookLeftColumn($params)
-	{
-		return $this->hookRightColumn($params);
 	}
 
 	public function hookDisplayHome($params)

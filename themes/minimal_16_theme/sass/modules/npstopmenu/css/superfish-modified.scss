@@ -16,6 +16,7 @@
   width: -webkit-fit-content;
   width: fit-content;
   margin: auto;
+  border-bottom: 1px solid $base-border-color;
   @media (max-width: $screen-xs-max) {
     // max 767px
     display: none;
@@ -28,7 +29,7 @@
 
 .nps-sf-menu > li {
   float: left;
-  border-right: 1px solid $base-border-color;
+  margin-bottom: 10px;
   @media (max-width: $screen-xs-max) {
     // max 767px
     float: none;
@@ -55,14 +56,14 @@
   }
   > a {
     text-transform: uppercase;
-    color: $dark-background;
+    color: $primary-red-color;
     display: block;
     padding: 0px 20px;
   }
   &.sfHover > a,
   > a:hover,
   &.sfHoverForce > a {
-    color: $primary-color;
+    color: $base-text-color;
   }
   &:last-of-type {
     border-right: none;

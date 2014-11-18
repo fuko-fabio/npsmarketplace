@@ -431,8 +431,6 @@
                                 <span><i class="icon-calendar"></i> {l s='Change term'}</span>
                             </a>
                         </p>
-                        {else}
-                        <p class="alert alert-info">{l s='No other terms'}</p>
                         {/if}
                         <div style="display: none;">
                             <div id="select_combination_form">

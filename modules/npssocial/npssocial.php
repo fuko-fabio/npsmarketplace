@@ -92,7 +92,7 @@ class npssocial extends Module
 			$this->_clearCache('npssocial.tpl');
 			Tools::redirectAdmin($this->context->link->getAdminLink('AdminModules').'&configure='.$this->name.'&tab_module='.$this->tab.'&conf=4&module_name='.$this->name);
 		}
-		
+
 		return $output.$this->renderForm();
 	}
 	

@@ -18,6 +18,7 @@
                         <br />
                         <div style="width:100px;text-transform: uppercase;float: left;display: inline-block;">{l s='Term' pdf='true'}</div>: <span style="font-weight: 700;float: left">{$date}</span><br />
                         <br />
+                        <div style="width:100px;text-transform: uppercase;float: left;display: inline-block;">{l s='Person' pdf='true'}</div>: <span style="float: left">{$person}</span><br />
                         <div style="width:100px;text-transform: uppercase;float: left;display: inline-block;">{l s='Address' pdf='true'}</div>: <span style="float: left">{$address}</span><br />
                         <div style="width:100px;text-transform: uppercase;float: left;display: inline-block;">{l s='District' pdf='true'}</div>: <span style="float: left">{$district}</span><br />
                         <div style="width:100px;text-transform: uppercase;float: left;display: inline-block;">{l s='Town' pdf='true'}</div>: <span style="float: left">{$town}</span><br />
@@ -36,7 +37,7 @@
         </table>
         <div style="transform: rotate(-90deg);font-weight:700;position: absolute;top:239px;left: 635px">
             <div style="width: 235px;text-align: center;background: gray;color: white;padding: 10px 5px;font-size: 18px;text-transform: uppercase;">{l s='Buy tickets at' pdf='true'}</div>
-            <div style="width: 235px;text-align: center;background: black;color: white;padding: 10px 5px;font-size: 22px;">labsintown.com</div>
+            <div style="width: 235px;text-align: center;background: black;color: white;padding: 10px 5px;font-size: 22px;">labsintown.pl</div>
         </div>
   </body>
 </html>

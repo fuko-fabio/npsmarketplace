@@ -116,20 +116,21 @@
 						{if ($product.id_product_attribute == 0 || (isset($add_prod_display) && ($add_prod_display == 1))) && $product.available_for_order && !isset($restricted_country_mode) && $product.minimal_quantity <= 1 && $product.customizable != 2 && !$PS_CATALOG_MODE}
 							{if ($product.allow_oosp || $product.quantity > 0)}
 								{if isset($static_token)}
-									<a class="btn btn-default button button-medium" href="{$link->getPageLink('cart',false, NULL, "add=1&amp;id_product={$product.id_product|intval}&amp;token={$static_token}", false)|escape:'html':'UTF-8'}" rel="nofollow" title="{l s='Add to cart'}" data-id-product="{$product.id_product|intval}">
+									<a class="btn btn-default button button-medium" href="{$product.link|escape:'html':'UTF-8'}" title="{l s='Buy'}">
 										{if $product.price <= 0}
                                             <span>{l s='Take part'} <i class="icon-bookmark right"></i></span>
                                         {else}
-                                            <span>{l s='Add to cart'} <i class="icon-shopping-cart right"></i></span>
+                                            <span>{l s='Buy'} <i class="icon-shopping-cart right"></i></span>
                                         {/if}
                                     </a>
 								{else}
-									<a class="btn btn-default button button-medium" href="{$link->getPageLink('cart',false, NULL, 'add=1&amp;id_product={$product.id_product|intval}', false)|escape:'html':'UTF-8'}" rel="nofollow" title="{l s='Add to cart'}" data-id-product="{$product.id_product|intval}">
+                                    <a class="btn btn-default button button-medium" href="{$product.link|escape:'html':'UTF-8'}" title="{l s='Buy'}">
                                         {if $product.price <= 0}
                                             <span>{l s='Take part'} <i class="icon-bookmark right"></i></span>
                                         {else}
-                                            <span>{l s='Add to cart'} <i class="icon-shopping-cart right"></i></span>
-                                        {/if}									</a>
+                                            <span>{l s='Buy'} <i class="icon-shopping-cart right"></i></span>
+                                        {/if}
+                                    </a>
 								{/if}						
 							{/if}
 						{/if}

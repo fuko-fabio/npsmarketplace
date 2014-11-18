@@ -58,12 +58,13 @@ class NpsTicketDelivery extends Module {
 
     public function hookActionOrderHistoryAddAfter($params) {
         $order_history = $params['order_history'];
-        $id_order_state = Configuration::get('NPS_P24_ORDER_STATE_ACCEPTED');
-        if ($id_order_state == $order_history->id_order_state || $order_history->id_order_state == 2) {
+        $id_o_s = Configuration::get('NPS_P24_ORDER_STATE_ACCEPTED');
+        if ($order_history->id_order_state == $id_o_s || $order_history->id_order_state == 2) {
             $info_seller = array();
             $id_order = $order_history->id_order;
             $cart = Cart::getCartByOrderId($id_order);
             $c_t = CartTicket::getByCartId($cart->id);
+            $persons = json_decode($c_t->persons);
             foreach ($cart->getProducts() as $product) {
                 $id_seller = Seller::getSellerByProduct($product['id_product']);
                 if (!$id_seller) {
@@ -94,6 +95,7 @@ class NpsTicketDelivery extends Module {
                     $t->address = $address;
                     $t->town = $town;
                     $t->district = $district;
+                    $t->person = $persons->$product['id_product']->$x;
                     $t->save();
                 }
             }
@@ -107,7 +109,7 @@ class NpsTicketDelivery extends Module {
         $shop_url = Tools::getHttpHost(true).__PS_BASE_URI__;
         $shop_email = Configuration::get('PS_SHOP_EMAIL');
         $order = new Order(Order::getOrderByCartId($cart->id));
-        $sql = 'SELECT invoice FROM '._DB_PREFIX_.'cart WHERE id_cart='.$this->context->cart->id;
+        $sql = 'SELECT invoice FROM '._DB_PREFIX_.'cart WHERE id_cart='.$cart->id;
         $invoice_request = Db::getInstance()->getValue($sql);
         foreach ($info_seller as $data) {
             $seller = $data['seller'];
@@ -235,6 +237,7 @@ class NpsTicketDelivery extends Module {
         $ticket->id_customer = $this->context->customer->id;
         $ticket->email = $params['ticket_email'];
         $ticket->id_currency = $this->context->currency->id;
+        $ticket->persons = json_encode($params['ticket_person']);
         $ticket->save();
     }
 

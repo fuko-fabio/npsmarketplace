@@ -38,6 +38,10 @@ textarea {
   z-index: 5003;
 }
 
+.top-header-container {
+  border-bottom: 1px solid $base-border-color;
+}
+
 .columns-container {
   background: $light-background;
 }
@@ -45,7 +49,6 @@ textarea {
 #columns {
   position: relative;
   padding-bottom: 50px;
-  padding-top: 15px;
 }
 
 #index {
@@ -83,7 +86,6 @@ header {
       position: relative;
     }
     #header_logo {
-      padding-top: 15px;
       @extend .col-sm-4;
       @media (max-width: $screen-md) {
         padding-top: 40px;
@@ -419,7 +421,7 @@ span.exclusive {
       &.left {
         font-size: 24px;
         vertical-align: -2px;
-        margin: -4px 10px 0 0;
+        margin: 0px 10px 0 0;
         display: inline-block;
         // max 480px
         @media (max-width: $screen-xs) {
@@ -428,7 +430,6 @@ span.exclusive {
       }
       &.right {
         margin-right: 0;
-        margin-left: 9px;
         // max 480px
         @media (max-width: $screen-xs) {
           margin-left: 5px;
@@ -491,9 +492,7 @@ span.exclusive {
   line-height: 21px;
   color: $btn-text-color;
   font-weight: bold;
-  background: $btn-color;
   border: none;
-  @include box-shadow(0 2px 8px rgba(0, 0, 0, 0.16));
   span {
     display: block;
     border: none;
@@ -506,7 +505,8 @@ span.exclusive {
     }
   }
   &:hover {
-    background: $btn-color-hover;
+    color: $btn-primary-color;
+    background: none;
   }
 }
 
@@ -675,7 +675,7 @@ table.table_block td {
   background: $product-reduced-price;
   text-transform: uppercase;
   padding: 5px 0;
-  width: 95px;
+  width: 80px;
   text-align: center;
   display: block;
   position: absolute;
@@ -1020,6 +1020,7 @@ ul.footer_links {
       }
     }
     .nbrItemPage {
+      display: none;
       float: left;
       select {
         max-width: 59px;
@@ -1147,6 +1148,7 @@ ul.footer_links {
         font-weight: bold;
         border: 1px solid;
         border-color: #dfdede #d2d0d0 #b0afaf #d2d0d0;
+        color: $base-text-color;
         display: block;
         span {
           border: 1px solid $light-border-color;
@@ -1157,6 +1159,7 @@ ul.footer_links {
       }
       > a:hover {
         span {
+          color: $btn-primary-color;
           background: $pagination-hover-bg;
         }
       }
@@ -1184,6 +1187,9 @@ ul.footer_links {
               font-weight: bold;
             }
           }
+        }
+        a:hover {
+          color: $btn-primary-color;
         }
       }
       &.pagination_previous {
@@ -1467,6 +1473,7 @@ div.star a:hover {
 
 // BREADCRUMB
 .breadcrumb {
+  margin-top: 10px;
   background: $light-background;
   display: inline-block;
   padding: 0 11px;
@@ -1826,7 +1833,6 @@ div.star a:hover {
       font-size: 25px;
       line-height: 25px;
       vertical-align: -4px;
-      margin-left: 6px;
     }
   }
   .button-exclusive {

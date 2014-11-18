@@ -116,6 +116,13 @@
           }
         }
       }
+      &.instagram {
+        a {
+          &:before {
+            content: "\f16d";
+          }
+        }
+      }
     }
   }
   h4 {

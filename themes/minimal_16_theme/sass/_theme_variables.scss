@@ -38,6 +38,7 @@ $description-color: #666;
 $dark-text-color: #353535;
 $primary-color: #ffaa00;
 $primary-color-light: #FFC654;
+$primary-red-color: #cc1010;
 $input-color: $base-text-color;
 $input-border-color: #bbb;
 
@@ -51,10 +52,10 @@ $product-name-color: #3a3939;
 $product-name-hover-color: #515151;
 $price-color: $base-body-color;
 $product-price-color: $dark-background;
-$product-reduced-price: #f00;
+$product-reduced-price: $primary-red-color;
 $product-special-price-color: #f13340;
 $product-old-price-color: #6f6f6f;
-$product-new-color: #28BFFC;
+$product-new-color: $primary-color;
 
 //---------- Buttons
 $button-text-color: $light-text-color;

@@ -32,6 +32,7 @@ class OrderController extends OrderControllerCore {
         Hook::exec('actionPostProcessCarrier', array(
             'id_cart' =>$this->context->cart->id,
             'ticket_email' => Tools::getValue('ticket_destination'),
+            'ticket_person' => $_POST['ticket_person']
         ));
 	}
 
@@ -45,8 +46,12 @@ class OrderController extends OrderControllerCore {
         $result = parent::_checkFreeOrder();
         if ($result) {
             // small hack for free orders :(
-            $order_state = OrderHistoryCore::getLastOrderState(OrderCore::getOrderByCartId($this->context->cart->id));
-            Hook::exec('actionOrderHistoryAddAfter', array('order_history' => $order_state));
+            $id_order = OrderCore::getOrderByCartId($this->context->cart->id);
+            $order_state = OrderHistoryCore::getLastOrderState($id_order);
+            $order_history = new OrderHistory();
+            $order_history->id_order = $id_order;
+            $order_history->id_order_state = $order_state->id;
+            Hook::exec('actionOrderHistoryAddAfter', array('order_history' => $order_history));
         }
         return $result;
     }

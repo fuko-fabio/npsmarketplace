@@ -8,7 +8,7 @@
     {include file="$tpl_dir./errors.tpl"}
     {if !isset($errors)}
     <div class="alert alert-info">
-        <p>{l s='Here short info why we register company in Przelewy24 service' mod='npsprzelewy24'}</p>
+        <p>{l s='You will be not able to edit this informations in future. Please fill form carefully.' mod='npsprzelewy24'}</p>
     </div>
     {/if}
     <form role="form" action="{$request_uri}" method="post">

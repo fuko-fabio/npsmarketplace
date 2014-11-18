@@ -15,6 +15,7 @@ class Ticket extends ObjectModel {
     public $address;
     public $town;
     public $district;
+    public $person;
     public $generated;
 
     /**
@@ -32,6 +33,7 @@ class Ticket extends ObjectModel {
             'address' =>        array('type' => self::TYPE_STRING, 'required' => true),
             'town' =>           array('type' => self::TYPE_STRING, 'validate' => 'isGenericName'),
             'district' =>       array('type' => self::TYPE_STRING, 'validate' => 'isGenericName'),
+            'person' =>         array('type' => self::TYPE_STRING, 'validate' => 'isGenericName'),
             'date' =>           array('type' => self::TYPE_DATE,   'validate' => 'isDateFormat'),
             'generated' =>      array('type' => self::TYPE_DATE,   'validate' => 'isDateFormat'),
         ),
@@ -45,6 +47,7 @@ class Ticket extends ObjectModel {
         $dbquery->from('cart_ticket', 'c');
         $dbquery->leftJoin('ticket', 't', 't.id_cart_ticket = c.id_cart_ticket');
         $dbquery->where('c.`id_customer` = '.$id_customer.' AND t.`id_ticket` = '.$id_ticket);
+
         return Db::getInstance()->getRow($dbquery);
     }
 }

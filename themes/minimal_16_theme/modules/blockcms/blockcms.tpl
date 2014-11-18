@@ -144,7 +144,7 @@
                 Copyright &copy; 2014 <a href="http://labsintown.com" title="LabsInTown">LabsInTown</a>
             </div>
             <div class="pull-right">
-                <a href="http://npsoftware.pl" title="nps software"><span class="cname">nps</span><span class="csoftware"> software</span></a>
+                <a target="_blank" href="http://npsoftware.pl" title="nps software"><span class="cname">nps</span><span class="csoftware"> software</span></a>
             </div>
         </section>
     {/if}

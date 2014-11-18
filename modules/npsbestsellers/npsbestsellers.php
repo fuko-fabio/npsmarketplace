@@ -58,8 +58,6 @@ class NpsBestSellers extends Module
 			|| !$this->registerHook('updateproduct')
 			|| !$this->registerHook('deleteproduct')
 			|| !$this->registerHook('displayHome')
-            || !$this->registerHook('leftColumn')
-            || !$this->registerHook('rightColumn')
             || !ProductSale::fillProductSales()
 		)
 			return false;
@@ -216,30 +214,6 @@ class NpsBestSellers extends Module
 		return $this->display(__FILE__, 'npsbestsellers-home.tpl', $this->getCacheId('npsbestsellers-home'));
 	}
 
-	public function hookRightColumn($params)
-	{
-		if (!$this->isCached('npsbestsellers.tpl', $this->getCacheId('npsbestsellers-col')))
-		{
-			if (!isset(NpsBestSellers::$cache_best_sellers))
-				NpsBestSellers::$cache_best_sellers = $this->getBestSellers($params);
-			$this->smarty->assign(array(
-				'best_sellers' => NpsBestSellers::$cache_best_sellers,
-				'display_link_bestsellers' => Configuration::get('PS_DISPLAY_BEST_SELLERS'),
-				'mediumSize' => Image::getSize(ImageType::getFormatedName('medium')),
-				'smallSize' => Image::getSize(ImageType::getFormatedName('small'))
-			));
-		}
-
-		if (NpsBestSellers::$cache_best_sellers === false)
-			return false;
-
-		return $this->display(__FILE__, 'npsbestsellers.tpl', $this->getCacheId('npsbestsellers-col'));
-	}
-
-	public function hookLeftColumn($params)
-	{
-		return $this->hookRightColumn($params);
-	}
 
 	protected function getBestSellers($params)
 	{

@@ -70,6 +70,8 @@
         content: "\f0d5"; }
       #nps_social_block ul li.pinterest a:before {
         content: "\f0d2"; }
+      #nps_social_block ul li.instagram a:before {
+        content: "\f16d"; }
   #nps_social_block h4 {
     display: none;
     text-align: center; }
