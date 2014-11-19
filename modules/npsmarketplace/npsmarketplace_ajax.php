@@ -47,5 +47,7 @@ if (Tools::getValue('action') == 'sendToSeller' && Tools::getValue('secure_key')
             dirname(__FILE__).'/mails/'))
         die('0');
     die('1');
+} elseif (Tools::isSubmit('changeTown')) {
+    Context::getContext()->cookie->__set('main_town', Tools::getValue('id_town'));
 }
 die('0');

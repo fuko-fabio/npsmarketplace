@@ -26,6 +26,7 @@
 
 if (!defined('_PS_VERSION_'))
 	exit;
+require_once(_PS_MODULE_DIR_.'npsmarketplace/npsmarketplace.php');
 
 class NpsBestSellers extends Module
 {
@@ -199,7 +200,7 @@ class NpsBestSellers extends Module
 
 	public function hookdisplayHome($params)
 	{
-		if (!$this->isCached('npsbestsellers-home.tpl', $this->getCacheId('npsbestsellers-home')))
+		if (!$this->isCached('npsbestsellers-home.tpl', $this->getCacheId($this->name.$this->context->cookie->main_town)))
 		{
 		    NpsBestSellers::$cache_best_sellers = $this->getBestSellers($params);
             $this->smarty->assign(array(
@@ -211,7 +212,7 @@ class NpsBestSellers extends Module
 		if (NpsBestSellers::$cache_best_sellers === false)
 			return false;
 
-		return $this->display(__FILE__, 'npsbestsellers-home.tpl', $this->getCacheId('npsbestsellers-home'));
+		return $this->display(__FILE__, 'npsbestsellers-home.tpl', $this->getCacheId($this->name.$this->context->cookie->main_town));
 	}
 
 
@@ -228,6 +229,6 @@ class NpsBestSellers extends Module
 		foreach ($result as &$row)
 			$row['price'] = Tools::displayPrice(Product::getPriceStatic((int)$row['id_product'], $usetax), $currency);
 
-		return $result;
+		return NpsMarketplace::filterByTown($result);;
 	}
 }

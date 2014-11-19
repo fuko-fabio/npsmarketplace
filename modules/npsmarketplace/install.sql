@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS `PREFIX_seller_product` (
 CREATE TABLE IF NOT EXISTS `PREFIX_town` (
   `id_town` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `active` tinyint(1) NOT NULL,
+  `default` tinyint(1) NOT NULL,
   PRIMARY KEY (`id_town`)
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;
 

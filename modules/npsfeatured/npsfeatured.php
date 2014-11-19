@@ -26,6 +26,7 @@
 
 if (!defined('_PS_VERSION_'))
 	exit;
+require_once(_PS_MODULE_DIR_.'npsmarketplace/npsmarketplace.php');
 
 class NpsFeatured extends Module
 {
@@ -129,11 +130,13 @@ class NpsFeatured extends Module
 		if (NpsFeatured::$cache_products === false || empty(NpsFeatured::$cache_products))
 			return false;
 	}
+    
+
 
 	public function hookDisplayHome($params)
 	{
 
-		if (!$this->isCached('npsfeatured.tpl', $this->getCacheId()))
+		if (!$this->isCached('npsfeatured.tpl', $this->getCacheId($this->name.$this->context->cookie->main_town)))
 		{
 			$this->_cacheProducts();
             
@@ -146,7 +149,7 @@ class NpsFeatured extends Module
 			);
 		}
 
-		return $this->display(__FILE__, 'npsfeatured.tpl', $this->getCacheId());
+		return $this->display(__FILE__, 'npsfeatured.tpl', $this->getCacheId($this->name.$this->context->cookie->main_town));
 	}
 
 	public function hookAddProduct($params)

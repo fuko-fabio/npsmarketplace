@@ -17,6 +17,7 @@ if ( !defined( '_NPS_MAILS_DIR_' ) )
     define('_NPS_MAILS_DIR_', dirname(__FILE__).'/mails/');
 
 require_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
+require_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Town.php');
 require_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24SellerCompany.php');
 
 class NpsMarketplace extends Module {
@@ -103,7 +104,44 @@ class NpsMarketplace extends Module {
     }
 
     public function hookDisplayNav() {
+        if(!isset($this->context->cookie->main_town)) {
+            $this->setCurrentTown();
+        }
+        $this->context->smarty->assign(array(
+            'towns' => Town::getAll($this->context->language->id),
+        ));
         return $this->display(__FILE__, 'views/templates/hook/header_top.tpl');
+    }
+
+    private function setCurrentTown() {
+        //TODO Town based on user location ?
+        $id_town = Town::getDefaultTownId();
+        $this->context->cookie->__set('main_town', $id_town);
+    }
+
+    public static function filterByTown($products) {
+        $id_town = (int)Context::getContext()->cookie->main_town;
+        if ($id_town > 0) {
+            $result = array();
+            $town = new Town($id_town);
+            #d(array($town, $products));
+            foreach ($products as $product) {
+                foreach ($product['features'] as $key => $feature) {
+                    $found = false;
+                    foreach ($town->name as $name) {
+                        if ($feature['value'] == $name) {
+                            $result[] = $product;
+                            $found = true;
+                            break;
+                        }
+                    }
+                    if ($found)
+                        break;
+                }
+            }
+            return $result;
+        }
+        return $products;
     }
 
     public function hookDisplayRightColumnProduct() {
@@ -213,6 +251,7 @@ class NpsMarketplace extends Module {
     }
 
     public function hookHeader() {
+        $this->context->controller->addJS(($this->_path).'js/main_town.js');
         $this->context->controller->addCss(($this->_path).'npsmarketplace.css');
     }
 

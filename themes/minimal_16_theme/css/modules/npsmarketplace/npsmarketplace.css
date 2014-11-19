@@ -132,6 +132,7 @@
   .nps-sellers-list a .name {
     position: absolute;
     top: 0;
+    left: 15px;
     padding: 10px;
     color: #333;
     border: 1px solid transparent; }

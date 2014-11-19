@@ -6,6 +6,7 @@
 
 include_once(_PS_MODULE_DIR_.'npscalendar/npscalendar.php');
 include_once(_PS_MODULE_DIR_.'npscalendar/classes/CalendarItem.php');
+require_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Town.php');
 
 class EventsCollector {
 
@@ -68,8 +69,14 @@ class EventsCollector {
 
     private function searchForDay($day, $link) {
         $events = array();
+        $id_town = Context::getContext()->cookie->main_town;
+        $name = '';
+        if ($id_town > 0) {
+            $t = new Town($id_town);
+            $name = $t->name[Context::getContext()->language->id];
+        }
         $max_search_events = Configuration::get('NPS_EVENTS_SEARCH');
-        $res = Search::find(Context::getContext()->language->id, $day, 1, $max_search_events);
+        $res = Search::find(Context::getContext()->language->id, $day.' '.$name, 1, $max_search_events);
         if (empty($res))
             return $events;
         $max_events = Configuration::get('NPS_EVENTS_PER_DAY');

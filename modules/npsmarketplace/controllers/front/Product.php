@@ -314,15 +314,15 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
 
     private function saveFeatures($town, $district, $address) {
         $feature_id = Configuration::get('NPS_FEATURE_TOWN_ID');
-        $feature_value_id = FeatureValue::addFeatureValueImport($feature_id, $town, $this->_product->id);
+        $feature_value_id = FeatureValue::addFeatureValueImport($feature_id, $town);
         Product::addFeatureProductImport($this->_product->id, $feature_id, $feature_value_id);
 
         $feature_id = Configuration::get('NPS_FEATURE_DISTRICT_ID');
-        $feature_value_id = FeatureValue::addFeatureValueImport($feature_id, $district, $this->_product->id);
+        $feature_value_id = FeatureValue::addFeatureValueImport($feature_id, $district);
         Product::addFeatureProductImport($this->_product->id, $feature_id, $feature_value_id);
 
         $feature_id = Configuration::get('NPS_FEATURE_ADDRESS_ID');
-        $feature_value_id = FeatureValue::addFeatureValueImport($feature_id, $address, $this->_product->id);
+        $feature_value_id = FeatureValue::addFeatureValueImport($feature_id, $address);
         Product::addFeatureProductImport($this->_product->id, $feature_id, $feature_value_id);
 
         return true;
