@@ -84,6 +84,10 @@ class NpsMarketplace extends Module {
             || !$this->unregisterHook('displayMyAccountColumn')
             || !$this->unregisterHook('displayHome')
             || !$this->unregisterHook('displayNav')
+            || !$this->_deleteTab()
+            || !$this->_deleteTables()
+            || !$this->_deleteFeatures()
+            || !$this->_deleteAttributes()
             || !Configuration::deleteByName('NPS_GLOBAL_COMMISION')
             || !Configuration::deleteByName('NPS_PRODUCT_GUIDE_URL')
             || !Configuration::deleteByName('NPS_SELLER_GUIDE_URL')
@@ -99,10 +103,6 @@ class NpsMarketplace extends Module {
             || !Configuration::deleteByName('NPS_FEATURE_TO_ID')
             || !Configuration::deleteByName('NPS_ATTRIBUTE_DATE_ID')
             || !Configuration::deleteByName('NPS_ATTRIBUTE_TIME_ID')
-            || !$this->_deleteTab()
-            || !$this->_deleteTables()
-            || !$this->_deleteFeatures()
-            || !$this->_deleteAttributes()
             || !Tools::deleteDirectory(_NPS_SEL_IMG_DIR_))
             return false;
         return true;
@@ -291,8 +291,11 @@ class NpsMarketplace extends Module {
         if (!isset($in_row) || empty($in_row))
             $in_row = 4;
         $ids = Seller::getSellerProducts($seller->id, $max_items);
-        $products = Product::getProductsByIds($lang->id, $ids, null, null, false, null, null, $this->context);
-        $products = $this->filterByTown($products, $id_town);
+        $products = array();
+        if(!empty($ids)) {
+            $products = Product::getProductsByIds($lang->id, $ids, null, null, false, null, null, $this->context);
+            $products = $this->filterByTown($products, $id_town);
+        }
         $this->context->smarty->assign(
             array(
                 'lang' => $lang->iso_code,
@@ -525,8 +528,7 @@ class NpsMarketplace extends Module {
         );
     }
 
-    public function getConfigFieldsValues()
-    {
+    public function getConfigFieldsValues() {
         return array(
             'NPS_GLOBAL_COMMISION' => Tools::getValue('NPS_GLOBAL_COMMISION', Configuration::get('NPS_GLOBAL_COMMISION')),
             'NPS_PRODUCT_GUIDE_URL' => Tools::getValue('NPS_PRODUCT_GUIDE_URL', Configuration::get('NPS_PRODUCT_GUIDE_URL')),
@@ -539,8 +541,7 @@ class NpsMarketplace extends Module {
         );
     }
 
-    private function _createTab()
-    {
+    private function _createTab() {
         $tab = new Tab();
         $tab->id_parent = 0;
         $tab->position = 1;
@@ -698,9 +699,9 @@ class NpsMarketplace extends Module {
     }
     
     private function _deleteAttributes() {
-        $at = new AttributeGroup(Configuration::get('NPS_ATTRIBUTE_DATE_ID'));
+        $ad = new AttributeGroup(Configuration::get('NPS_ATTRIBUTE_DATE_ID'));
         $at = new AttributeGroup(Configuration::get('NPS_ATTRIBUTE_TIME_ID'));
-        return $at->delete() && $at->delete();
+        return $ad->delete() && $at->delete();
     }
 }
 ?>

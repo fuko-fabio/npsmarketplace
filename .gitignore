@@ -20,6 +20,7 @@
 !/modules/npsfavorite
 !/modules/npssocialsharing
 !/modules/npsticketdelivery
+!/modules/npsfacebooklogin
 !/themes
 /themes/*
 !/themes/minimal_16_theme

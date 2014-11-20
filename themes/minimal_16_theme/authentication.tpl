@@ -77,6 +77,7 @@
 			<form action="{$link->getPageLink('authentication', true)|escape:'html':'UTF-8'}" method="post" id="login_form" class="box">
 				<h3 class="page-subheading">{l s='Already registered?'}</h3>
 				<div class="form_content clearfix">
+                    <p class="alert alert-error npsfacebooklogin" style="display: none">{l s='Facebook log in rejected.'}</p>
 					<div class="form-group">
 						<label for="email">{l s='Email address'}</label>
 						<input class="is_required validate account_input form-control" data-validate="isEmail" type="text" id="email" name="email" value="{if isset($smarty.post.email)}{$smarty.post.email|stripslashes}{/if}" />
@@ -95,6 +96,7 @@
 							</span>
 						</button>
 					</p>
+					{$HOOK_DISPLAY_LOGIN_SOURCE}
 				</div>
 			</form>
 		</div>
