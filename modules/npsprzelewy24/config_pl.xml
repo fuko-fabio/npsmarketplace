@@ -6,7 +6,7 @@
 	<description><![CDATA[nps Marketplace Przelewy24 payment service 1.0]]></description>
 	<author><![CDATA[Norbert Pabian]]></author>
 	<tab><![CDATA[payments_gateways]]></tab>
-	<confirmUninstall><![CDATA[Are you sure you want to uninstall?]]></confirmUninstall>
+	<confirmUninstall><![CDATA[Jesteś pewien że chcesz odinstalować moduł?]]></confirmUninstall>
 	<is_configurable>1</is_configurable>
 	<need_instance>1</need_instance>
 	<limited_countries></limited_countries>
