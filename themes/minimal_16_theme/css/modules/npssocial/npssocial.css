@@ -44,13 +44,20 @@
         #nps_social_block ul li a:hover {
           color: #ffaa00; }
       #nps_social_block ul li.blog {
+        border: 1px solid #777;
+        background: #fff;
         width: 90px; }
         #nps_social_block ul li.blog a {
-          margin-top: 5px; }
+          margin-top: 5px;
+          color: #777; }
           #nps_social_block ul li.blog a span {
             display: inline-block;
             text-transform: uppercase;
             font-family: 'Hammersmith One', sans-serif; }
+        #nps_social_block ul li.blog:hover {
+          border-color: #ffaa00; }
+          #nps_social_block ul li.blog:hover a {
+            color: #ffaa00; }
       #nps_social_block ul li.facebook a:before {
         content: "\f09a"; }
       #nps_social_block ul li.twitter a:before {
@@ -63,6 +70,8 @@
         content: "\f0d5"; }
       #nps_social_block ul li.pinterest a:before {
         content: "\f0d2"; }
+      #nps_social_block ul li.instagram a:before {
+        content: "\f16d"; }
   #nps_social_block h4 {
     display: none;
     text-align: center; }

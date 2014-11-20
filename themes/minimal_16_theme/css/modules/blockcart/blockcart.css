@@ -4,20 +4,18 @@
 #header .shopping_cart {
   position: relative;
   float: right;
-  padding-top: 30px; }
+  padding-top: 20px; }
   #header .shopping_cart > a:first-child:after {
     content: "\f0d7";
     font-family: "FontAwesome";
     display: inline-block;
     float: right;
-    font-size: 18px;
-    padding: 4px 0 0 0; }
+    font-size: 16px; }
   #header .shopping_cart > a:first-child:hover:after {
-    content: "\f0d8";
-    padding: 2px 0px 2px 0px; }
+    content: "\f0d8"; }
 
 .shopping_cart {
-  width: 230px; }
+  width: 140px; }
   @media (max-width: 480px) {
     .shopping_cart {
       padding-top: 20px; } }
@@ -29,10 +27,9 @@
     .shopping_cart {
       width: 100%; } }
   .shopping_cart > a:first-child {
-    padding: 10px;
+    padding: 8px 8px 8px 20px;
     background: #36454f;
     display: block;
-    font-weight: bold;
     color: #fff;
     overflow: hidden; }
     .shopping_cart > a:first-child:hover {
@@ -41,20 +38,21 @@
       display: none !important; }
     .shopping_cart > a:first-child span.ajax_cart_quantity {
       display: inline !important;
-      font: 600 22px/22px "Open Sans", sans-serif;
+      font: 600 16px/16px "Open Sans", sans-serif;
       margin-left: 10px;
       float: right; }
     .shopping_cart > a:first-child b {
-      font: 22px/22px "Open Sans", sans-serif;
+      font: 16px/16px "Open Sans", sans-serif;
       text-transform: uppercase; }
     .shopping_cart > a:first-child .shopping_bag {
-      height: 90px;
-      width: 90px;
+      height: 80px;
+      width: 80px;
       background: url(../../../img/shopping_bag.png);
       display: inline-block;
       background-size: 100%;
       position: absolute;
-      top: 0px; }
+      top: -5px;
+      left: -65px; }
   .shopping_cart .ajax_cart_total {
     display: none !important; }
   .shopping_cart .block_cart_expand:after, .shopping_cart .block_cart_collapse:after {
@@ -66,8 +64,7 @@
     color: #686666;
     padding: 6px 0 0 0; }
   .shopping_cart .block_cart_collapse:after {
-    content: "\f0d8";
-    padding: 4px 0px 2px 0px; }
+    content: "\f0d8"; }
 
 .cart_block .cart_block_list .remove_link {
   position: absolute;

@@ -4,12 +4,6 @@
 					Maintenance Page Styles
 **********************************************************************/
 #maintenance {
-	margin: 50px 0 0 0;
-	@media (min-width: $screen-lg) { // > 1200 
-		margin: 126px 0 0 0;
-		padding: 91px 48px 365px 297px;
-		background: url(../img/bg_maintenance.png) no-repeat;
-	}
 	.logo {
 		margin: 0 0 31px 0;	
 	}

@@ -50,5 +50,5 @@
         padding: 0 10px 0 12px;
         display: block;
         color: #fff; }
-      #languages-block-top ul li.selected, #languages-block-top ul li:hover a {
+      #languages-block-top ul li.selected a, #languages-block-top ul li:hover a {
         color: #ffaa00; }

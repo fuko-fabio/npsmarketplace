@@ -96,7 +96,7 @@
 							</div>
 						</div>
 					</div>
-					<div>
+					<div class="top-header-container">
 						<div class="container">
 							<div class="row">
 								<div id="header_logo">

@@ -11,8 +11,10 @@ class TicketsGenerator {
     public static function generateAndSend($id_cart_ticket) {
         $c_t = new CartTicket($id_cart_ticket);
         $tickets = CartTicket::getAllTickets($id_cart_ticket);
+        $is_gift = Db::getInstance()->executeS('SELECT gift FROM '._DB_PREFIX_.'cart WHERE id_cart='.$c_t->id_cart);
         $attachments = array();
         foreach ($tickets as $ticket) {
+            $ticket['gift'] = $is_gift;
             $t = TicketsGenerator::generateTicket($ticket);
             $attachments[] = array(
                 'content' => $t['content'],
@@ -20,7 +22,7 @@ class TicketsGenerator {
                 'mime' => 'application/pdf'
             );
         }
-        TicketsGenerator::sentTickets($c_t->email, $attachments);
+        TicketsGenerator::sentTickets($c_t, $attachments);
         TicketsGenerator::updateOrdetState($c_t->id_cart);
     }
 
@@ -43,8 +45,10 @@ class TicketsGenerator {
         );
     }
 
-    public static function sentTickets($email, $attachments) {
+    public static function sentTickets($cart_ticket, $attachments) {
+        $gift_msg = Db::getInstance()->executeS('SELECT gift_message FROM '._DB_PREFIX_.'cart WHERE id_cart='.$cart_ticket->id_cart);
         $mail_params = array(
+            '{gift_message}' => $gift_msg,
             '{shop_name}' => Configuration::get('PS_SHOP_NAME'),
             '{shop_url}' => Tools::getHttpHost(true).__PS_BASE_URI__,
         );
@@ -52,7 +56,7 @@ class TicketsGenerator {
             'tickets',
             Mail::l('Tickets from LabsInTown'),
             $mail_params,
-            $email,
+            $cart_ticket->email,
             null,
             strval(Configuration::get('PS_SHOP_EMAIL')),
             strval(Configuration::get('PS_SHOP_NAME')),

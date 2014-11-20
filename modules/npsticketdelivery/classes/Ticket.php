@@ -14,7 +14,10 @@ class Ticket extends ObjectModel {
     public $date;
     public $address;
     public $town;
+    public $type;
+    public $entries;
     public $district;
+    public $person;
     public $generated;
 
     /**
@@ -28,10 +31,13 @@ class Ticket extends ObjectModel {
             'id_seller' =>      array('type' => self::TYPE_INT,    'validate' => 'isUnsignedId',  'required' => true),
             'price' =>          array('type' => self::TYPE_FLOAT,  'validate' => 'isPrice',       'required' => true),
             'tax' =>            array('type' => self::TYPE_INT,    'validate' => 'isUnsignedId'),
+            'type' =>           array('type' => self::TYPE_INT,    'validate' => 'isUnsignedId'),
+            'entries' =>        array('type' => self::TYPE_INT,    'validate' => 'isUnsignedId'),
             'name' =>           array('type' => self::TYPE_STRING, 'validate' => 'isGenericName', 'required' => true),
             'address' =>        array('type' => self::TYPE_STRING, 'required' => true),
             'town' =>           array('type' => self::TYPE_STRING, 'validate' => 'isGenericName'),
             'district' =>       array('type' => self::TYPE_STRING, 'validate' => 'isGenericName'),
+            'person' =>         array('type' => self::TYPE_STRING, 'validate' => 'isGenericName'),
             'date' =>           array('type' => self::TYPE_DATE,   'validate' => 'isDateFormat'),
             'generated' =>      array('type' => self::TYPE_DATE,   'validate' => 'isDateFormat'),
         ),
@@ -45,6 +51,7 @@ class Ticket extends ObjectModel {
         $dbquery->from('cart_ticket', 'c');
         $dbquery->leftJoin('ticket', 't', 't.id_cart_ticket = c.id_cart_ticket');
         $dbquery->where('c.`id_customer` = '.$id_customer.' AND t.`id_ticket` = '.$id_ticket);
+
         return Db::getInstance()->getRow($dbquery);
     }
 }

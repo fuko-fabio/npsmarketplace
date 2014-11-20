@@ -47,5 +47,13 @@ if (Tools::getValue('action') == 'sendToSeller' && Tools::getValue('secure_key')
             dirname(__FILE__).'/mails/'))
         die('0');
     die('1');
+} elseif (Tools::isSubmit('changeTown')) {
+    Context::getContext()->cookie->__set('main_town', Tools::getValue('id_town'));
+} elseif (Tools::isSubmit('specialPrice')) {
+    header('Content-Type: application/json');
+    echo json_encode(Product::addSpecialPrice(Tools::getValue('id_product'), Tools::getValue('reduction')));
+} elseif (Tools::isSubmit('removeSpecialPrice')) {
+    echo json_encode(Product::removeSpecialPrice(Tools::getValue('id_product')));
+} elseif (Tools::isSubmit('getTheCode')) {
+    echo json_encode($module->getIframeCode());
 }
-die('0');

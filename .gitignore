@@ -31,8 +31,10 @@
 /override/*
 !/override/classes
 /override/classes/*
+!/override/classes/Category.php
 !/override/classes/Product.php
 !/override/classes/Validate.php
+!/override/classes/Search.php
 
 !/override/controllers
 /override/controllers/*
@@ -67,3 +69,7 @@
 !/tools
 /tools/*
 !/tools/dompdf
+
+!/js
+/js/*
+!/js/validate.js

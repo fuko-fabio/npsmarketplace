@@ -68,13 +68,11 @@
       width: 145px;
       margin: 0 0 13px 33px;
       text-align: center;
-      height: 202px;
+      border: 1px solid $base-border-color;
       .subcategory-image {
-        padding: 0 0 8px 0;
         a {
           display: block;
-          padding: 9px;
-          border: 1px solid $base-border-color;
+          padding: 0;
           img {
             max-width: 100%;
             vertical-align: top;
@@ -93,12 +91,8 @@
         display: none;
       }
       &:hover {
-        .subcategory-image {
-          a {
-            border: 5px solid $dark-border-color;
-            padding: 5px;
-          }
-        }
+        border-color: $primary-color;
+        @include box-shadow(0 2px 8px rgba(255, 170, 0, 0.8));
       }
     }
   }

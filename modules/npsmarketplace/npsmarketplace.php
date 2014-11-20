@@ -17,6 +17,7 @@ if ( !defined( '_NPS_MAILS_DIR_' ) )
     define('_NPS_MAILS_DIR_', dirname(__FILE__).'/mails/');
 
 require_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
+require_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Town.php');
 require_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24SellerCompany.php');
 
 class NpsMarketplace extends Module {
@@ -61,6 +62,7 @@ class NpsMarketplace extends Module {
             || !Configuration::updateValue('NPS_SELLER_GUIDE_URL', $shop_url)
             || !Configuration::updateValue('NPS_PAYMENT_SETTINGS_GUIDE_URL', $shop_url)
             || !Configuration::updateValue('NPS_SELLER_AGREEMENT_URL', $shop_url)
+            || !Configuration::updateValue('NPS_EVENT_VIDEO_GUIDE_URL', $shop_url)
             || !Configuration::updateValue('NPS_MERCHANT_EMAILS', Configuration::get('PS_SHOP_EMAIL'))
             || !$this->_createTables($sql)
             || !$this->_createTab()
@@ -87,21 +89,64 @@ class NpsMarketplace extends Module {
             || !Configuration::deleteByName('NPS_SELLER_GUIDE_URL')
             || !Configuration::deleteByName('NPS_SELLER_AGREEMENT_URL')
             || !Configuration::deleteByName('NPS_PAYMENT_SETTINGS_GUIDE_URL')
+            || !Configuration::deleteByName('NPS_EVENT_VIDEO_GUIDE_URL')
             || !Configuration::deleteByName('NPS_MERCHANT_EMAILS')
             || !Configuration::deleteByName('NPS_FEATURE_TOWN_ID')
             || !Configuration::deleteByName('NPS_FEATURE_DISTRICT_ID')
             || !Configuration::deleteByName('NPS_FEATURE_ADDRESS_ID')
+            || !Configuration::deleteByName('NPS_FEATURE_ENTRIES_ID')
+            || !Configuration::deleteByName('NPS_FEATURE_FROM_ID')
+            || !Configuration::deleteByName('NPS_FEATURE_TO_ID')
             || !Configuration::deleteByName('NPS_ATTRIBUTE_DATE_ID')
             || !Configuration::deleteByName('NPS_ATTRIBUTE_TIME_ID')
             || !$this->_deleteTab()
             || !$this->_deleteTables()
+            || !$this->_deleteFeatures()
+            || !$this->_deleteAttributes()
             || !Tools::deleteDirectory(_NPS_SEL_IMG_DIR_))
             return false;
         return true;
     }
 
     public function hookDisplayNav() {
+        if(!isset($this->context->cookie->main_town)) {
+            $this->setCurrentTown();
+        }
+        $this->context->smarty->assign(array(
+            'towns' => Town::getAll($this->context->language->id),
+        ));
         return $this->display(__FILE__, 'views/templates/hook/header_top.tpl');
+    }
+
+    private function setCurrentTown() {
+        //TODO Town based on user location ?
+        $id_town = Town::getDefaultTownId();
+        $this->context->cookie->__set('main_town', $id_town);
+    }
+
+    public static function filterByTown($products, $id_town = null) {
+        if (!isset($id_town))
+            $id_town = (int)Context::getContext()->cookie->main_town;
+        if ($id_town > 0) {
+            $result = array();
+            $town = new Town($id_town);
+            foreach ($products as $product) {
+                foreach ($product['features'] as $key => $feature) {
+                    $found = false;
+                    foreach ($town->name as $key => $name) {
+                        if ($feature['value'] == $name) {
+                            $result[] = $product;
+                            $found = true;
+                            break;
+                        }
+                    }
+                    if ($found)
+                        break;
+                }
+            }
+            return $result;
+        }
+        return $products;
     }
 
     public function hookDisplayRightColumnProduct() {
@@ -197,20 +242,78 @@ class NpsMarketplace extends Module {
                 'products_list_link' => $this->context->link->getModuleLink('npsmarketplace', 'ProductsList'),
                 'orders_link' => $this->context->link->getModuleLink('npsmarketplace', 'Orders'),
                 'unlock_account_link' => $this->context->link->getModuleLink('npsmarketplace', 'UnlockAccount'),
-                'seller_profile_link' => $this->context->link->getModuleLink('npsmarketplace', 'SellerAccount', array('id_seller' => $seller->id))
+                'seller_profile_link' => $this->context->link->getModuleLink('npsmarketplace', 'SellerAccount', array('id_seller' => $seller->id)),
+                'marketing_link' => $this->context->link->getModuleLink('npsmarketplace', 'Marketing')
             )
         );
         return $this->display(__FILE__, 'npsmarketplace.tpl');
     }
 
-    public function hookIframe() {
-        $seller = new Seller(Tools::getValue('id'));
-        $products = $seller->getProducts();
+    public function getIframeCode() {
+        $id_seller = Seller::getSellerIdByCustomer($this->context->customer->id);
+        $id_lang = Tools::getValue('id_lang');
+        $id_town = Tools::getValue('id_town');
+        $in_row = Tools::getValue('in_row');
+        $max_events = Tools::getValue('max_events');
+        $shop_url = Tools::getHttpHost(true).__PS_BASE_URI__;
+        $key = Tools::encrypt($this->name.$id_seller.$id_lang,$id_town);
+        
+        $width = 200 * $in_row;
+        $height = (250 * (ceil($max_events / $in_row))) + 20;
+        $this->context->smarty->assign(
+            array(
+                'url' => $shop_url.'modules/npsmarketplace/iframe.php?id_lang='.$id_lang.'&id_town='.$id_town.'&id_seller='.$id_seller.'&max='.$max_events.'&row='.$in_row.'&key='.$key,
+                'id_seller' => $id_seller,
+                'width' => $width,
+                'height' => $height,
+            )
+        );
+        return $this->display(__FILE__, 'views/templates/hook/iframe_template.tpl');
+    }
 
-        return $products;
+    public function hookIframe() {
+        $id_seller = (int)Tools::getValue('id_seller');
+        $id_lang = (int)Tools::getValue('id_lang');
+        $id_town = (int)Tools::getValue('id_town');
+        $max_items = (int)Tools::getValue('max');
+        $in_row = (int)Tools::getValue('row');
+        $key = Tools::getValue('key');
+
+        if ($key != Tools::encrypt($this->name.$id_seller.$id_lang,$id_town))
+            return '';
+        $seller = new Seller($id_seller);
+        if (isset($id_lang) && !empty($id_lang))
+            $lang = new Language($id_lang);
+        else
+            $lang = new Language((int)Configuration::get('PS_LANG_DEFAULT'));
+        if (!isset($max_items) || empty($max_items))
+            $max_items = 4;
+        if (!isset($in_row) || empty($in_row))
+            $in_row = 4;
+        $ids = Seller::getSellerProducts($seller->id, $max_items);
+        $products = Product::getProductsByIds($lang->id, $ids, null, null, false, null, null, $this->context);
+        $products = $this->filterByTown($products, $id_town);
+        $this->context->smarty->assign(
+            array(
+                'lang' => $lang->iso_code,
+                'title' => $this->l('LabsInTown iframe title.'),
+                'description' => $this->l('LabsInTown iframe promotion text.'),
+                'max_items' => $max_items,
+                'in_row' => $in_row,
+                'products' => $products,
+                'shop_url' => Tools::getHttpHost(true).__PS_BASE_URI__,
+                'css_urls' => array(
+                    _THEME_CSS_DIR_.'modules/npsmarketplace/lit.css',
+                    _THEME_CSS_DIR_.'global.css'
+                ),
+            )
+        );
+
+        return $this->display(__FILE__, 'views/templates/hook/iframe.tpl');
     }
 
     public function hookHeader() {
+        $this->context->controller->addJS(($this->_path).'js/main_town.js');
         $this->context->controller->addCss(($this->_path).'npsmarketplace.css');
     }
 
@@ -249,6 +352,7 @@ class NpsMarketplace extends Module {
             Configuration::updateValue('NPS_PRODUCT_GUIDE_URL', Tools::getValue('NPS_PRODUCT_GUIDE_URL'));
             Configuration::updateValue('NPS_SELLER_GUIDE_URL', Tools::getValue('NPS_SELLER_GUIDE_URL'));
             Configuration::updateValue('NPS_PAYMENT_SETTINGS_GUIDE_URL', Tools::getValue('NPS_PAYMENT_SETTINGS_GUIDE_URL'));
+            Configuration::updateValue('NPS_EVENT_VIDEO_GUIDE_URL', Tools::getValue('NPS_EVENT_VIDEO_GUIDE_URL'));
             $output .= $this->displayConfirmation($this->l('URL\'s settings updated'));
         }
         return $output.$this->displayForm();
@@ -259,9 +363,10 @@ class NpsMarketplace extends Module {
         $id_seller = (int)Seller::getSellerByProduct($id_product);
         if(isset($id_seller) && $id_seller > 0) {
             $seller = new Seller($id_seller);
+            $extras = Product::getExtras($id_product);
             $this->context->smarty->assign(array(
                 'show_regulations' => $seller->regulations_active,
-                'video_url' => Product::getVideoUrl($id_product)
+                'video_url' => $extras['url']
             ));
             return ($this->display(__FILE__, '/tab.tpl'));
         }
@@ -284,13 +389,14 @@ class NpsMarketplace extends Module {
                     break;
                 }
             }
+            $extras = Product::getExtras($id_product);
             $seller = new Seller(Seller::getSellerByProduct(Tools::getValue('id_product')));
             $this->context->smarty->assign(array(
                 'current_id_lang' => $lang_id,
                 'regulations' => $seller->regulations,
                 'show_regulations' => $seller->regulations_active,
                 'product_address' => isset($address) ? $address->value[$lang_id] : '',
-                'video_url' => Product::getVideoUrl($id_product)
+                'video_url' => $extras['url']
             ));
             return ($this->display(__FILE__, '/tab_content.tpl'));
         }
@@ -403,6 +509,12 @@ class NpsMarketplace extends Module {
                         'name' => 'NPS_PAYMENT_SETTINGS_GUIDE_URL',
                         'required' => true
                     ),
+                    array(
+                        'type' => 'text',
+                        'label' => $this->l('Adding video URL'),
+                        'name' => 'NPS_EVENT_VIDEO_GUIDE_URL',
+                        'required' => true
+                    ),
                 ),
                 'submit' => array(
                     'title' => $this->l('Save'),
@@ -422,6 +534,7 @@ class NpsMarketplace extends Module {
             'NPS_SELLER_AGREEMENT_URL' => Tools::getValue('NPS_SELLER_AGREEMENT_URL', Configuration::get('NPS_SELLER_AGREEMENT_URL')),
             'NPS_MERCHANT_EMAILS' => Tools::getValue('NPS_MERCHANT_EMAILS', Configuration::get('NPS_MERCHANT_EMAILS')),
             'NPS_PAYMENT_SETTINGS_GUIDE_URL' => Tools::getValue('NPS_PAYMENT_SETTINGS_GUIDE_URL', Configuration::get('NPS_PAYMENT_SETTINGS_GUIDE_URL')),
+            'NPS_EVENT_VIDEO_GUIDE_URL' => Tools::getValue('NPS_EVENT_VIDEO_GUIDE_URL', Configuration::get('NPS_EVENT_VIDEO_GUIDE_URL')),
 
         );
     }
@@ -493,7 +606,7 @@ class NpsMarketplace extends Module {
             if (!Db::getInstance()->execute(trim($query)))
                 return false;
 
-        return $this->_alterImageTypeTable();
+        return $this->_alterTables();
     }
 
     private function _deleteTables() {
@@ -502,33 +615,59 @@ class NpsMarketplace extends Module {
             `'._DB_PREFIX_.'seller`,
             `'._DB_PREFIX_.'seller_lang`,
             `'._DB_PREFIX_.'seller_product`,
+            `'._DB_PREFIX_.'product_attribute_expiry_date`,
+            `'._DB_PREFIX_.'product_video`,
+            `'._DB_PREFIX_.'product_location`,
             `'._DB_PREFIX_.'town`,
             `'._DB_PREFIX_.'town_lang`,
             `'._DB_PREFIX_.'district`')
-            && Db::getInstance()->execute('ALTER TABLE `'._DB_PREFIX_.'image_type` DROP `sellers`');
+            && Db::getInstance()->execute('ALTER TABLE `'._DB_PREFIX_.'image_type` DROP `sellers`')
+            && Db::getInstance()->execute('ALTER TABLE `'._DB_PREFIX_.'product` DROP `type`');
     }
 
-    private function _alterImageTypeTable() {
-        $alterImageType = 'ALTER TABLE  `'._DB_PREFIX_.'image_type` ADD  `sellers` TINYINT(1) NOT NULL AFTER  `stores`';
+    private function _alterTables() {
+        $sql = 'ALTER TABLE  `'._DB_PREFIX_.'image_type` ADD  `sellers` TINYINT(1) NOT NULL AFTER  `stores`';
+        $res = Db::getInstance()->Execute($sql);
 
-        $updateImageType = "UPDATE `"._DB_PREFIX_."image_type` SET  `sellers` =  1 WHERE
+        $sql = "UPDATE `"._DB_PREFIX_."image_type` SET  `sellers` =  1 WHERE
             `"._DB_PREFIX_."image_type`.`name` IN (
                 'cart_default',
                 'small_default',
                 'medium_default',
                 'home_default',
                 'large_default')";
-        $res = Db::getInstance()->Execute($alterImageType);
-        return Db::getInstance()->Execute($updateImageType) && $res;
+        $res = $res && Db::getInstance()->Execute($sql);
+
+        $sql = 'ALTER TABLE  `'._DB_PREFIX_.'product` ADD  `type` TINYINT(1) NOT NULL AFTER  `is_virtual`';
+        $res = Db::getInstance()->Execute($sql);
+        
+        return $res;
     }
     
     private function _createFeatures() {
-        $names = array('Town', 'District', 'Address');
+        $names = array('Town', 'District', 'Address', 'Entries', 'From', 'To');
         foreach ($names as $name) {
             $id = Feature::addFeatureImport($name);
             Configuration::updateValue('NPS_FEATURE_'.strtoupper($name).'_ID', $id);
         }
         return true;
+    }
+    
+    private function _deleteFeatures() {
+        $ids = array(
+            Configuration::get('NPS_FEATURE_TOWN_ID'),
+            Configuration::get('NPS_FEATURE_DISTRICT_ID'),
+            Configuration::get('NPS_FEATURE_ADDRESS_ID'),
+            Configuration::get('NPS_FEATURE_ENTRIES_ID'),
+            Configuration::get('NPS_FEATURE_FROM_ID'),
+            Configuration::get('NPS_FEATURE_TO_ID'),
+        );
+        $result = true;
+        foreach ($ids as $id) {
+            $f = new Feature($id);
+            $result = $result && $f->delete();
+        }
+        return $result;
     }
 
     private function _createAttributes() {
@@ -554,7 +693,14 @@ class NpsMarketplace extends Module {
         $ag->position = -1;
         $ag->save();
         Configuration::updateValue('NPS_ATTRIBUTE_TIME_ID', $ag->id);
+        
         return true;
+    }
+    
+    private function _deleteAttributes() {
+        $at = new AttributeGroup(Configuration::get('NPS_ATTRIBUTE_DATE_ID'));
+        $at = new AttributeGroup(Configuration::get('NPS_ATTRIBUTE_TIME_ID'));
+        return $at->delete() && $at->delete();
     }
 }
 ?>

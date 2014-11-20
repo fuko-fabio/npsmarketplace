@@ -6,6 +6,7 @@
 
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/CategoriesList.php');
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
+include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Town.php');
 include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24SellerCompany.php');
 
 class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
@@ -63,6 +64,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             $lat = trim(Tools::getValue('lat'));
             $lng = trim(Tools::getValue('lng'));
             $reference = trim(Tools::getValue('reference'));
+            $type = (int)Tools::getValue('product_type');
             $categories = array();
             $link_rewrite = array();
             $images = array();
@@ -170,14 +172,14 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                     $this->errors[] = $nps_instance->l('Unable to save product.');
                 } else {
                     $this->context->cookie->__unset('form_token');
-                    $this->_product->persistVideoUrl($video_url);
                     StockAvailable::setProductOutOfStock($this->_product->id, 0);
                     $this->saveFeatures($town, $district, $address);
-                    $this -> _product->updateCategories($categories);
+                    $this->_product->updateCategories($categories);
                     if(empty($current_id_product)) {
                         $this -> _product->newEventCombination($date, $time, (int)$quantity, $expiry_date, $this->context->shop->id);
                         $this->_seller->assignProduct($this->_product->id);
                     }
+                    $this->_product->persistExtraInfo($type, $lat, $lng, $video_url);
                     $this->saveProductImages($images);
                     $this->removeProductImages($removed_images, $current_id_product);
                     Tools::redirect($this->context->link->getModuleLink('npsmarketplace', 'ProductsList'));
@@ -251,7 +253,6 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                     'url' => $this->context->link->getImageLink($this->_product->link_rewrite[$this->context->language->id], $image['id_image'], 'medium_default'),
                     'id_image' => $image['id_image']
                 );
-                
             $tpl_product = array(
                 'id' => $this->_product->id,
                 'name' => $this->_product->name,
@@ -265,10 +266,17 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                 'district' => $this->getFeatureValue($features, 'district'),
                 'categories' => $this->_product->getCategories(),
                 'images' => $images,
-                'video_url' => Product::getVideoUrl($this->_product->id)
             );
+            $extras = Product::getExtras($this->_product->id);
+            if ($extras) {
+                $tpl_product['type'] = $extras['type'];
+                $tpl_product['lat'] = $extras['lat'];
+                $tpl_product['lng'] = $extras['lng'];
+                $tpl_product['video_url'] = $extras['url'];
+            }
+            
         }
-        $towns = $this->getActiveTowns((int)$this->context->language->id);
+        $towns = Town::getActiveTowns((int)$this->context->language->id);
         $districts = $this->getDistricts();
         $categoriesList = new CategoriesList($this->context);
         $form_token = uniqid();
@@ -294,17 +302,11 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             'iso' => file_exists(_PS_CORE_DIR_.'/js/tiny_mce/langs/'.$iso.'.js') ? $iso : 'en',
             'path_css' => _THEME_CSS_DIR_,
             'tinymce' => true,
-            'dropzone_url' => Tools::getHttpHost(true).__PS_BASE_URI__.'modules/npsmarketplace/dropzone.php?token='.$form_token
+            'dropzone_url' => Tools::getHttpHost(true).__PS_BASE_URI__.'modules/npsmarketplace/dropzone.php?token='.$form_token,
+            'vide_how_to_url' => Configuration::get('NPS_EVENT_VIDEO_GUIDE_URL')
         ));
 
         $this->setTemplate('product.tpl');
-    }
-
-    private function getActiveTowns($lang_id) {
-        $sql = 'SELECT `name` from `'._DB_PREFIX_.'town` t
-                LEFT JOIN `'._DB_PREFIX_.'town_lang` tl ON (tl.`id_town` = t.`id_town`)
-                WHERE tl.`id_lang` = '.(int)$lang_id;
-        return Db::getInstance()->ExecuteS($sql);
     }
 
     private function getDistricts() {
@@ -313,15 +315,14 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
 
     private function saveFeatures($town, $district, $address) {
         $feature_id = Configuration::get('NPS_FEATURE_TOWN_ID');
-        $feature_value_id = FeatureValue::addFeatureValueImport($feature_id, $town, $this->_product->id);
-        Product::addFeatureProductImport($this->_product->id, $feature_id, $feature_value_id);
+        Product::addFeatureProductImport($this->_product->id, $feature_id, $town);
 
         $feature_id = Configuration::get('NPS_FEATURE_DISTRICT_ID');
-        $feature_value_id = FeatureValue::addFeatureValueImport($feature_id, $district, $this->_product->id);
+        $feature_value_id = FeatureValue::addFeatureValueImport($feature_id, $district, $this->context->language->id, true);
         Product::addFeatureProductImport($this->_product->id, $feature_id, $feature_value_id);
 
         $feature_id = Configuration::get('NPS_FEATURE_ADDRESS_ID');
-        $feature_value_id = FeatureValue::addFeatureValueImport($feature_id, $address, $this->_product->id);
+        $feature_value_id = FeatureValue::addFeatureValueImport($feature_id, $address, $this->context->language->id, true);
         Product::addFeatureProductImport($this->_product->id, $feature_id, $feature_value_id);
 
         return true;
