@@ -270,23 +270,33 @@ class Product extends ProductCore
         return $res;
     }
 
-    public static function getVideoUrl($id_product) {
+    public static function getExtras($id_product) {
         if (!isset($id_product))
             return null;
-        $sql = 'SELECT `url`
-                FROM `'._DB_PREFIX_.'product_video`
+        $sql = 'SELECT *
+                FROM `'._DB_PREFIX_.'product_extras`
                 WHERE `id_product` = '.$id_product;
-        return Db::getInstance()->getValue($sql);
+        return Db::getInstance()->getRow($sql);
     }
 
-    public function persistVideoUrl($video_url) {
-        if(!isset($video_url))
-            return false;
-        if (Product::getVideoUrl($this->id))
-            $sql = 'UPDATE `'._DB_PREFIX_.'product_video` SET url="'.$video_url.'" WHERE id_product='.$this->id;
-        else 
-            $sql = 'INSERT INTO `'._DB_PREFIX_.'product_video` (id_product,url) VALUES('.$this->id.',"'.$video_url.'")';
-        return Db::getInstance()->execute($sql);
+    public function persistExtraInfo($type, $lat, $lng, $video_url) {
+        if(Db::getInstance()->getRow('SELECT * FROM '._DB_PREFIX_.'product_extras WHERE `id_product` = '.$this->id)) {
+            return Db::getInstance()->insert('product_extras', array(
+                'id_product' => $this->id,
+                'type' => $type,
+                'lng' => $lng,
+                'lat' => $lat,
+                'url' => $video_url
+            ), 'id_product = '.$this->id);
+        } else {
+            return Db::getInstance()->insert('product_extras', array(
+                'id_product' => $this->id,
+                'type' => $type,
+                'lng' => $lng,
+                'lat' => $lat,
+                'url' => $video_url
+            ));
+        }
     }
 }
 ?>

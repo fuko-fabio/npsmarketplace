@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS `PREFIX_seller_product` (
 
 CREATE TABLE IF NOT EXISTS `PREFIX_town` (
   `id_town` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id_feature_value` int(10) unsigned NOT NULL,
   `active` tinyint(1) NOT NULL,
   `default` tinyint(1) NOT NULL,
   PRIMARY KEY (`id_town`)
@@ -61,8 +62,11 @@ CREATE TABLE IF NOT EXISTS `PREFIX_product_attribute_expiry_date` (
   KEY `id_product_attribute` (`id_product_attribute`)
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `PREFIX_product_video` (
+CREATE TABLE IF NOT EXISTS `PREFIX_product_extras` (
   `id_product` int(10) unsigned NOT NULL,
+  `type` tinyint(1) NOT NULL,
+  `lat` decimal(9,6) NOT NULL,
+  `lng` decimal(9,6) NOT NULL,
   `url` varchar(1024) NOT NULL,
   KEY `id_product` (`id_product`)
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;

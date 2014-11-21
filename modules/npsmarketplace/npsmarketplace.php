@@ -124,11 +124,10 @@ class NpsMarketplace extends Module {
         if ($id_town > 0) {
             $result = array();
             $town = new Town($id_town);
-            #d(array($town, $products));
             foreach ($products as $product) {
                 foreach ($product['features'] as $key => $feature) {
                     $found = false;
-                    foreach ($town->name as $name) {
+                    foreach ($town->name as $key => $name) {
                         if ($feature['value'] == $name) {
                             $result[] = $product;
                             $found = true;
@@ -301,9 +300,10 @@ class NpsMarketplace extends Module {
         $id_seller = (int)Seller::getSellerByProduct($id_product);
         if(isset($id_seller) && $id_seller > 0) {
             $seller = new Seller($id_seller);
+            $extras = Product::getExtras($id_product);
             $this->context->smarty->assign(array(
                 'show_regulations' => $seller->regulations_active,
-                'video_url' => Product::getVideoUrl($id_product)
+                'video_url' => $extras['url']
             ));
             return ($this->display(__FILE__, '/tab.tpl'));
         }
@@ -326,13 +326,14 @@ class NpsMarketplace extends Module {
                     break;
                 }
             }
+            $extras = Product::getExtras($id_product);
             $seller = new Seller(Seller::getSellerByProduct(Tools::getValue('id_product')));
             $this->context->smarty->assign(array(
                 'current_id_lang' => $lang_id,
                 'regulations' => $seller->regulations,
                 'show_regulations' => $seller->regulations_active,
                 'product_address' => isset($address) ? $address->value[$lang_id] : '',
-                'video_url' => Product::getVideoUrl($id_product)
+                'video_url' => $extras['url']
             ));
             return ($this->display(__FILE__, '/tab_content.tpl'));
         }
@@ -542,7 +543,7 @@ class NpsMarketplace extends Module {
             if (!Db::getInstance()->execute(trim($query)))
                 return false;
 
-        return $this->_alterImageTypeTable();
+        return $this->_alterTables();
     }
 
     private function _deleteTables() {
@@ -551,24 +552,33 @@ class NpsMarketplace extends Module {
             `'._DB_PREFIX_.'seller`,
             `'._DB_PREFIX_.'seller_lang`,
             `'._DB_PREFIX_.'seller_product`,
+            `'._DB_PREFIX_.'product_attribute_expiry_date`,
+            `'._DB_PREFIX_.'product_video`,
+            `'._DB_PREFIX_.'product_location`,
             `'._DB_PREFIX_.'town`,
             `'._DB_PREFIX_.'town_lang`,
             `'._DB_PREFIX_.'district`')
-            && Db::getInstance()->execute('ALTER TABLE `'._DB_PREFIX_.'image_type` DROP `sellers`');
+            && Db::getInstance()->execute('ALTER TABLE `'._DB_PREFIX_.'image_type` DROP `sellers`')
+            && Db::getInstance()->execute('ALTER TABLE `'._DB_PREFIX_.'product` DROP `type`');
     }
 
-    private function _alterImageTypeTable() {
-        $alterImageType = 'ALTER TABLE  `'._DB_PREFIX_.'image_type` ADD  `sellers` TINYINT(1) NOT NULL AFTER  `stores`';
+    private function _alterTables() {
+        $sql = 'ALTER TABLE  `'._DB_PREFIX_.'image_type` ADD  `sellers` TINYINT(1) NOT NULL AFTER  `stores`';
+        $res = Db::getInstance()->Execute($sql);
 
-        $updateImageType = "UPDATE `"._DB_PREFIX_."image_type` SET  `sellers` =  1 WHERE
+        $sql = "UPDATE `"._DB_PREFIX_."image_type` SET  `sellers` =  1 WHERE
             `"._DB_PREFIX_."image_type`.`name` IN (
                 'cart_default',
                 'small_default',
                 'medium_default',
                 'home_default',
                 'large_default')";
-        $res = Db::getInstance()->Execute($alterImageType);
-        return Db::getInstance()->Execute($updateImageType) && $res;
+        $res = $res && Db::getInstance()->Execute($sql);
+
+        $sql = 'ALTER TABLE  `'._DB_PREFIX_.'product` ADD  `type` TINYINT(1) NOT NULL AFTER  `is_virtual`';
+        $res = Db::getInstance()->Execute($sql);
+        
+        return $res;
     }
     
     private function _createFeatures() {

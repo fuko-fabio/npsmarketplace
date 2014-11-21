@@ -10,6 +10,7 @@ class Town extends ObjectModel
     public $name;
     public $active;
     public $default;
+    public $id_feature_value;
 
     /**
      * @see ObjectModel::$definition
@@ -19,12 +20,34 @@ class Town extends ObjectModel
         'primary' => 'id_town',
         'multilang' => true,
         'fields' => array(
-            'name' =>       array('type' => self::TYPE_STRING, 'validate' => 'isGenericName', 'required' => true, 'lang' => true, 'size' => 64),
-            'active' =>     array('type' => self::TYPE_BOOL, 'validate' => 'isBool'),
-            'default' =>    array('type' => self::TYPE_BOOL, 'validate' => 'isBool'),
+            'name' =>             array('type' => self::TYPE_STRING, 'validate' => 'isGenericName', 'required' => true, 'lang' => true, 'size' => 64),
+            'id_feature_value' => array('type' => self::TYPE_INT, 'validate' => 'isUnsignedId', 'required' => true),
+            'active' =>           array('type' => self::TYPE_BOOL, 'validate' => 'isBool'),
+            'default' =>          array('type' => self::TYPE_BOOL, 'validate' => 'isBool'),
         ),
     );
-    
+
+    public function add($autodate = true, $null_values = false) {
+        $feature_id = Configuration::get('NPS_FEATURE_TOWN_ID');
+        $feature_value = new FeatureValue();
+        $feature_value->id_feature = $feature_id;
+        $feature_value->value = $this->name;
+        if (!$feature_value->save())
+            return false;
+        $this->id_feature_value = $feature_value->id;
+
+        return parent::add($autodate, $null_values);
+    }
+
+    public function update($autodate = true, $null_values = false) {
+        $feature_value = new FeatureValue($this->id_feature_value);
+        $feature_value->value = $this->name;
+        if (!$feature_value->save())
+            return false;
+
+        return parent::update($autodate, $null_values);
+    }
+
     public static function getDefaultTownId() {
         $dbquery = new DbQuery();
         $dbquery->select('id_town')
