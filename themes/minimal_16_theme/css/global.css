@@ -5722,7 +5722,7 @@ table.table_block td {
   font-size: 17px; }
 
 .special-price {
-  color: #f13340; }
+  color: #cc1010; }
 
 .price-percent-reduction {
   background: #f13340;
@@ -7669,3 +7669,15 @@ div.star.star_hover:after {
     border-top-color: #bbb;
     border-left-color: #bbb;
     border-right-color: #bbb; }
+
+.dropdown {
+  background: transparent;
+  border: 1px solid #d6d4d4; }
+  .dropdown a {
+    color: #333;
+    padding: 8px !important; }
+  .dropdown .dropdown-toggle:hover {
+    background: #ffaa00; }
+  .dropdown .dropdown-menu li a:hover {
+    background: #ffaa00;
+    color: #333; }

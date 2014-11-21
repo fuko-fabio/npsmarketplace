@@ -142,10 +142,10 @@
         <label class="required" for="map-address-input">{l s='Address' mod='npsmarketplace'}</label>
         <input id="map-address-input" class="is_required validate form-control" data-validate="isMessage" name="address" type="text" required="" placeholder="{l s='Search adress...' mod='npsmarketplace'}"
             value="{if isset($smarty.post.address)}{$smarty.post.address}{else}{if isset($product['address'])}{$product['address']|escape:'html':'UTF-8'}{/if}{/if}"/>
-        <input id="map-lat-input" class="hide" name="product_lat" type="text"
-            value="{if isset($smarty.post.product_lat)}{$smarty.post.product_lat}{else}{if isset($product['lat'])}{$product['lat']|escape:'html':'UTF-8'}{/if}{/if}">
-        <input id="map-lng-input" class="hide" name="product_lng" type="text"
-            value="{if isset($smarty.post.product_lng)}{$smarty.post.product_lng}{else}{if isset($product['lng'])}{$product['lng']|escape:'html':'UTF-8'}{/if}{/if}">
+        <input id="map-lat-input" class="hide" name="lat" type="text"
+            value="{if isset($smarty.post.lat)}{$smarty.post.lat}{else}{if isset($product['lat'])}{$product['lat']|escape:'html':'UTF-8'}{/if}{/if}">
+        <input id="map-lng-input" class="hide" name="lng" type="text"
+            value="{if isset($smarty.post.lng)}{$smarty.post.lng}{else}{if isset($product['lng'])}{$product['lng']|escape:'html':'UTF-8'}{/if}{/if}">
     </div>
     <div class="form-group">
         <div id="map-canvas"></div>

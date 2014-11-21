@@ -67,6 +67,6 @@ CREATE TABLE IF NOT EXISTS `PREFIX_product_extras` (
   `type` tinyint(1) NOT NULL,
   `lat` decimal(9,6) NOT NULL,
   `lng` decimal(9,6) NOT NULL,
-  `url` varchar(1024) NOT NULL,
+  `url` varchar(1024),
   KEY `id_product` (`id_product`)
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;

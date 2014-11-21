@@ -187,6 +187,7 @@
   .nps-towns-top:hover {
     color: #ffaa00; }
   .nps-towns-top div.current {
+    font-weight: bold;
     padding: 8px 10px 10px 10px;
     line-height: 18px;
     cursor: pointer; }
@@ -229,3 +230,6 @@
         color: #fff; }
       .nps-towns-top ul li.selected a, .nps-towns-top ul li:hover a {
         color: #ffaa00; }
+
+.sale-event-box .row {
+  margin: 0 0 50px 0; }

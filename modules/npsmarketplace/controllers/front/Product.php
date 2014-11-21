@@ -173,7 +173,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                     $this->context->cookie->__unset('form_token');
                     StockAvailable::setProductOutOfStock($this->_product->id, 0);
                     $this->saveFeatures($town, $district, $address);
-                    $this -> _product->updateCategories($categories);
+                    $this->_product->updateCategories($categories);
                     if(empty($current_id_product)) {
                         $this -> _product->newEventCombination($date, $time, (int)$quantity, $expiry_date, $this->context->shop->id);
                         $this->_seller->assignProduct($this->_product->id);

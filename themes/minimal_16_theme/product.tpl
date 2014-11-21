@@ -287,6 +287,15 @@
 
         <div class="box-info-product">
         <div class="content_prices clearfix">
+            {if $extras.type == 0}
+                <p class="product-type ticket">{l s='Ticket'}</p>
+            {/if}
+            {if $extras.type == 1}
+                <p class="product-type carnet">{l s='Carnet'}</p>
+            {/if}
+            {if $extras.type == 2}
+                <p class="product-type ad">{l s='Advertisment'}</p>
+            {/if}
             {if $product->show_price && !isset($restricted_country_mode) && !$PS_CATALOG_MODE}
                 <!-- prices -->
                 <div class="price">
@@ -304,12 +313,6 @@
                             <meta itemprop="priceCurrency" content="{$currency->iso_code}"/>
                         {/if}
                     </p>
-                    <p id="reduction_percent" {if !$product->specificPrice || $product->specificPrice.reduction_type != 'percentage'} style="display:none;"{/if}>
-									<span id="reduction_percent_display">
-										{if $product->specificPrice && $product->specificPrice.reduction_type == 'percentage'}-{$product->specificPrice.reduction*100}%{/if}
-									</span>
-                    </p>
-
                     <p id="old_price"{if (!$product->specificPrice || !$product->specificPrice.reduction) && $group_reduction == 0} class="hidden"{/if}>
                         {if $priceDisplay >= 0 && $priceDisplay <= 2}
                             <span id="old_price_display">{if $productPriceWithoutReduction > $productPrice}{convertPrice price=$productPriceWithoutReduction}{/if}</span>
@@ -325,13 +328,6 @@
                     {/if}
                 </div>
                 <!-- end prices -->
-                <p id="reduction_amount" {if !$product->specificPrice || $product->specificPrice.reduction_type != 'amount' || $product->specificPrice.reduction|floatval ==0} style="display:none"{/if}>
-								<span id="reduction_amount_display">
-								{if $product->specificPrice && $product->specificPrice.reduction_type == 'amount' && $product->specificPrice.reduction|intval !=0}
-                                    -{convertPrice price=$productPriceWithoutReduction-$productPrice|floatval}
-                                {/if}
-								</span>
-                </p>
                 {if $packItems|@count && $productPrice < $product->getNoPackPrice()}
                     <p class="pack_price">{l s='Instead of'} <span
                                 style="text-decoration: line-through;">{convertPrice price=$product->getNoPackPrice()}</span>
@@ -528,6 +524,7 @@
             {/if}
         </div>
         <!-- end product_attributes -->
+        {if $extras.type != 2}
         <div class="box-cart-bottom">
             <div{if (!$allow_oosp && $product->quantity <= 0) || !$product->available_for_order || (isset($restricted_country_mode) && $restricted_country_mode) || $PS_CATALOG_MODE} class="unvisible"{/if}>
                 <p id="add_to_cart">
@@ -543,6 +540,7 @@
             {if isset($HOOK_PRODUCT_ACTIONS) && $HOOK_PRODUCT_ACTIONS}{$HOOK_PRODUCT_ACTIONS}{/if}
             <strong></strong>
         </div>
+        {/if}
         <!-- end box-cart-bottom -->
         </div>
         <!-- end box-info-product -->

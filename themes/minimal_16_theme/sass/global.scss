@@ -3206,3 +3206,22 @@ div.star.star_hover {
     border-right-color: $input-border-color;
   }
 }
+
+.dropdown {
+  background: transparent;
+  border: 1px solid $base-border-color;
+  a {
+    color: $base-text-color;
+    padding: 8px !important;
+  }
+  .dropdown-toggle:hover {
+    background: $primary-color;
+  }
+
+  .dropdown-menu {
+    li a:hover {
+      background: $primary-color;
+      color: $base-text-color;
+    }
+  }
+}

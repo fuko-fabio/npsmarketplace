@@ -17,6 +17,8 @@ class NpsMarketplaceProductsListModuleFrontController extends ModuleFrontControl
         $this->addJqueryPlugin('footable');
         $this->addJqueryPlugin('footable-sort');
         $this->addJqueryPlugin('scrollTo');
+        $this->addCSS (_PS_MODULE_DIR_.'npsmarketplace/npsmarketplace.css');
+        
     }
 
     public function postProcess() {
@@ -41,19 +43,20 @@ class NpsMarketplaceProductsListModuleFrontController extends ModuleFrontControl
             'HOOK_MY_ACCOUNT_COLUMN' => Hook::exec('displayMyAccountColumn'),
             'add_product_link' => $this -> context -> link -> getModuleLink('npsmarketplace', 'Product'),
             'products' => $products,
-            'seler_active' => $seller->active && !$seller->locked
+            'seler_active' => $seller->active && !$seller->locked,
+            'id_currency' => $this->context->currency->id
         ));
 
         $this -> setTemplate('products_list.tpl');
     }
 
-    private function getProducts($seller = null) {
+    private function getProducts($seller) {
         $result = array();
-        $products = $seller -> getProducts();
+        $products = $seller->getProducts();
         foreach ($products as $product) {
             $cover = Product::getCover($product->id);
             $have_image = !empty($cover);
-            $result[] = array(
+            $item = array(
                 'haveImage' => $have_image,
                 'cover' => $have_image ? $this->context->link->getImageLink($product->link_rewrite[$this->context->language->id], $cover['id_image'], 'cart_default') : null,
                 'name' => Product::getProductName($product->id),
@@ -67,6 +70,11 @@ class NpsMarketplaceProductsListModuleFrontController extends ModuleFrontControl
                 'new_combination_url' => $this->context->link->getModuleLink('npsmarketplace', 'ProductCombination', array('id_product' => $product->id)),
                 'edit_combination_url' => $this->context->link->getModuleLink('npsmarketplace', 'ProductCombinationList', array('id_product' => $product->id)),
             );
+            $extras = Product::getExtras($product->id);
+            if (!empty($extras)) 
+                $item = array_merge($item, $extras);
+            $item['on_sale'] = empty(SpecificPrice::getIdsByProductId($product->id)) ? 0 : 1;
+            $result[] = $item;
         }
         return $result;
     }
