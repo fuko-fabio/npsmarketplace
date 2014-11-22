@@ -1,3 +1,7 @@
+{*
+* @author Norbert Pabian <norbert.pabian@gmail.com>
+* @copyright 2014 npsoftware
+*}
 {if $video_url}
 <div class="tab-pane fade" id="product_video_tab">
     <iframe width="100%" height="490" src="{$video_url}" frameborder="0" allowfullscreen></iframe>

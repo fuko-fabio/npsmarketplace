@@ -65,6 +65,7 @@ CREATE TABLE IF NOT EXISTS `PREFIX_product_attribute_expiry_date` (
 CREATE TABLE IF NOT EXISTS `PREFIX_product_extras` (
   `id_product` int(10) unsigned NOT NULL,
   `type` tinyint(1) NOT NULL,
+  `entries` int(10) unsigned,
   `lat` decimal(9,6) NOT NULL,
   `lng` decimal(9,6) NOT NULL,
   `url` varchar(1024),

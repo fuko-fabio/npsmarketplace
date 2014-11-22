@@ -12,13 +12,17 @@ class Product extends ProductCore
     public function delete()
     {
         if(parent::delete())
-            return $this->deleteSellersAssociations();
+            return $this->deleteSellersAssociations() && $this->deleteExtras();
         else
             return false;
     }
 
     public function deleteSellersAssociations() {
         return Db::getInstance()->delete('seller_product', 'id_product = '.(int)$this->id);
+    }
+
+    public function deleteExtras() {
+        return Db::getInstance()->delete('product_extras', 'id_product = '.(int)$this->id);
     }
 
     public function newEventCombination($date, $time, $quantity, $expiry_date, $id_shop = null) {

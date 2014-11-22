@@ -407,7 +407,7 @@
             </p>
             {if isset($groups)}
                 <div id="current_term">
-                <label>{l s='Term:'}</label>
+                <label>{if $extras.type == 1}{l s='First meeting:'}{else}{l s='Term:'}{/if}</label>
                 <div class="term-inputs">
                     {assign var="combination_name" value=""}
                     {foreach from=$groups key=id_attribute_group item=group}

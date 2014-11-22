@@ -94,10 +94,15 @@ class NpsMarketplace extends Module {
             || !Configuration::deleteByName('NPS_FEATURE_TOWN_ID')
             || !Configuration::deleteByName('NPS_FEATURE_DISTRICT_ID')
             || !Configuration::deleteByName('NPS_FEATURE_ADDRESS_ID')
+            || !Configuration::deleteByName('NPS_FEATURE_ENTRIES_ID')
+            || !Configuration::deleteByName('NPS_FEATURE_FROM_ID')
+            || !Configuration::deleteByName('NPS_FEATURE_TO_ID')
             || !Configuration::deleteByName('NPS_ATTRIBUTE_DATE_ID')
             || !Configuration::deleteByName('NPS_ATTRIBUTE_TIME_ID')
             || !$this->_deleteTab()
             || !$this->_deleteTables()
+            || !$this->_deleteFeatures()
+            || !$this->_deleteAttributes()
             || !Tools::deleteDirectory(_NPS_SEL_IMG_DIR_))
             return false;
         return true;
@@ -119,8 +124,9 @@ class NpsMarketplace extends Module {
         $this->context->cookie->__set('main_town', $id_town);
     }
 
-    public static function filterByTown($products) {
-        $id_town = (int)Context::getContext()->cookie->main_town;
+    public static function filterByTown($products, $id_town = null) {
+        if (!isset($id_town))
+            $id_town = (int)Context::getContext()->cookie->main_town;
         if ($id_town > 0) {
             $result = array();
             $town = new Town($id_town);
@@ -236,17 +242,74 @@ class NpsMarketplace extends Module {
                 'products_list_link' => $this->context->link->getModuleLink('npsmarketplace', 'ProductsList'),
                 'orders_link' => $this->context->link->getModuleLink('npsmarketplace', 'Orders'),
                 'unlock_account_link' => $this->context->link->getModuleLink('npsmarketplace', 'UnlockAccount'),
-                'seller_profile_link' => $this->context->link->getModuleLink('npsmarketplace', 'SellerAccount', array('id_seller' => $seller->id))
+                'seller_profile_link' => $this->context->link->getModuleLink('npsmarketplace', 'SellerAccount', array('id_seller' => $seller->id)),
+                'marketing_link' => $this->context->link->getModuleLink('npsmarketplace', 'Marketing')
             )
         );
         return $this->display(__FILE__, 'npsmarketplace.tpl');
     }
 
-    public function hookIframe() {
-        $seller = new Seller(Tools::getValue('id'));
-        $products = $seller->getProducts();
+    public function getIframeCode() {
+        $id_seller = Seller::getSellerIdByCustomer($this->context->customer->id);
+        $id_lang = Tools::getValue('id_lang');
+        $id_town = Tools::getValue('id_town');
+        $in_row = Tools::getValue('in_row');
+        $max_events = Tools::getValue('max_events');
+        $shop_url = Tools::getHttpHost(true).__PS_BASE_URI__;
+        $key = Tools::encrypt($this->name.$id_seller.$id_lang,$id_town);
+        
+        $width = 200 * $in_row;
+        $height = (250 * (ceil($max_events / $in_row))) + 20;
+        $this->context->smarty->assign(
+            array(
+                'url' => $shop_url.'modules/npsmarketplace/iframe.php?id_lang='.$id_lang.'&id_town='.$id_town.'&id_seller='.$id_seller.'&max='.$max_events.'&row='.$in_row.'&key='.$key,
+                'id_seller' => $id_seller,
+                'width' => $width,
+                'height' => $height,
+            )
+        );
+        return $this->display(__FILE__, 'views/templates/hook/iframe_template.tpl');
+    }
 
-        return $products;
+    public function hookIframe() {
+        $id_seller = (int)Tools::getValue('id_seller');
+        $id_lang = (int)Tools::getValue('id_lang');
+        $id_town = (int)Tools::getValue('id_town');
+        $max_items = (int)Tools::getValue('max');
+        $in_row = (int)Tools::getValue('row');
+        $key = Tools::getValue('key');
+
+        if ($key != Tools::encrypt($this->name.$id_seller.$id_lang,$id_town))
+            return '';
+        $seller = new Seller($id_seller);
+        if (isset($id_lang) && !empty($id_lang))
+            $lang = new Language($id_lang);
+        else
+            $lang = new Language((int)Configuration::get('PS_LANG_DEFAULT'));
+        if (!isset($max_items) || empty($max_items))
+            $max_items = 4;
+        if (!isset($in_row) || empty($in_row))
+            $in_row = 4;
+        $ids = Seller::getSellerProducts($seller->id, $max_items);
+        $products = Product::getProductsByIds($lang->id, $ids, null, null, false, null, null, $this->context);
+        $products = $this->filterByTown($products, $id_town);
+        $this->context->smarty->assign(
+            array(
+                'lang' => $lang->iso_code,
+                'title' => $this->l('LabsInTown iframe title.'),
+                'description' => $this->l('LabsInTown iframe promotion text.'),
+                'max_items' => $max_items,
+                'in_row' => $in_row,
+                'products' => $products,
+                'shop_url' => Tools::getHttpHost(true).__PS_BASE_URI__,
+                'css_urls' => array(
+                    _THEME_CSS_DIR_.'modules/npsmarketplace/lit.css',
+                    _THEME_CSS_DIR_.'global.css'
+                ),
+            )
+        );
+
+        return $this->display(__FILE__, 'views/templates/hook/iframe.tpl');
     }
 
     public function hookHeader() {
@@ -582,12 +645,29 @@ class NpsMarketplace extends Module {
     }
     
     private function _createFeatures() {
-        $names = array('Town', 'District', 'Address');
+        $names = array('Town', 'District', 'Address', 'Entries', 'From', 'To');
         foreach ($names as $name) {
             $id = Feature::addFeatureImport($name);
             Configuration::updateValue('NPS_FEATURE_'.strtoupper($name).'_ID', $id);
         }
         return true;
+    }
+    
+    private function _deleteFeatures() {
+        $ids = array(
+            Configuration::get('NPS_FEATURE_TOWN_ID'),
+            Configuration::get('NPS_FEATURE_DISTRICT_ID'),
+            Configuration::get('NPS_FEATURE_ADDRESS_ID'),
+            Configuration::get('NPS_FEATURE_ENTRIES_ID'),
+            Configuration::get('NPS_FEATURE_FROM_ID'),
+            Configuration::get('NPS_FEATURE_TO_ID'),
+        );
+        $result = true;
+        foreach ($ids as $id) {
+            $f = new Feature($id);
+            $result = $result && $f->delete();
+        }
+        return $result;
     }
 
     private function _createAttributes() {
@@ -613,7 +693,14 @@ class NpsMarketplace extends Module {
         $ag->position = -1;
         $ag->save();
         Configuration::updateValue('NPS_ATTRIBUTE_TIME_ID', $ag->id);
+        
         return true;
+    }
+    
+    private function _deleteAttributes() {
+        $at = new AttributeGroup(Configuration::get('NPS_ATTRIBUTE_DATE_ID'));
+        $at = new AttributeGroup(Configuration::get('NPS_ATTRIBUTE_TIME_ID'));
+        return $at->delete() && $at->delete();
     }
 }
 ?>

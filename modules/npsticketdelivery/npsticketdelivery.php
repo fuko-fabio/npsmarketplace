@@ -84,6 +84,7 @@ class NpsTicketDelivery extends Module {
                 $address = $this->getFeatureValue($product['features'], Configuration::get('NPS_FEATURE_ADDRESS_ID'));
                 $town = $this->getFeatureValue($product['features'], Configuration::get('NPS_FEATURE_TOWN_ID'));
                 $district = $this->getFeatureValue($product['features'], Configuration::get('NPS_FEATURE_DISTRICT_ID'));
+                $extras = Product::getExtras($product['id_product']);
                 for ($x=1; $x<=$qty; $x++) {
                     $t = new Ticket();
                     $t->id_cart_ticket = $c_t->id;
@@ -96,6 +97,8 @@ class NpsTicketDelivery extends Module {
                     $t->town = $town;
                     $t->district = $district;
                     $t->person = $persons->$product['id_product']->$x;
+                    $t->type = $extras['type'];
+                    $t->entries = $extras['entries'];
                     $t->save();
                 }
             }

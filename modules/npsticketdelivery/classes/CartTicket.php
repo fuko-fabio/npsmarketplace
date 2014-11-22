@@ -7,6 +7,8 @@
 class CartTicket extends ObjectModel {
 
     public $id_cart;
+    public $id_customer;
+    public $id_currency;
     public $email;
     public $persons;
 
@@ -29,6 +31,8 @@ class CartTicket extends ObjectModel {
         'primary' => 'id_cart_ticket',
         'fields' => array(
             'id_cart' =>     array('type' => self::TYPE_INT,    'validate' => 'isUnsignedId',  'required' => true),
+            'id_customer' => array('type' => self::TYPE_INT,    'validate' => 'isUnsignedId',  'required' => true),
+            'id_currency' => array('type' => self::TYPE_INT,    'validate' => 'isUnsignedId',  'required' => true),
             'email' =>       array('type' => self::TYPE_STRING, 'validate' => 'isEmail',       'required' => true),
             'persons' =>     array('type' => self::TYPE_STRING),
         ),
@@ -53,7 +57,7 @@ class CartTicket extends ObjectModel {
             ->leftJoin('ticket', 't', 't.id_cart_ticket = ct.id_cart_ticket')
             ->leftJoin('cart', 'c', 'ct.id_cart = c.id_cart')
             ->where('ct.`id_cart_ticket` = '.$id_cart_ticket)
-            ->orderBy('generated');
+            ->orderBy('generated DESC');
 
         return Db::getInstance()->executeS($dbquery);
     }
@@ -67,8 +71,7 @@ class CartTicket extends ObjectModel {
             ->leftJoin('ticket', 't', 't.id_cart_ticket = ct.id_cart_ticket')
             ->leftJoin('cart', 'c', 'ct.id_cart = c.id_cart')
             ->where('c.`id_customer` = '.$id_customer)
-            ->orderBy('generated');
-        
+            ->orderBy('generated DESC');
         return Db::getInstance()->executeS($dbquery);
     }    
 }

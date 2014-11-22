@@ -6,6 +6,7 @@
 
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/CategoriesList.php');
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
+include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Town.php');
 include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24SellerCompany.php');
 
 class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
@@ -275,7 +276,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             }
             
         }
-        $towns = $this->getActiveTowns((int)$this->context->language->id);
+        $towns = Town::getActiveTowns((int)$this->context->language->id);
         $districts = $this->getDistricts();
         $categoriesList = new CategoriesList($this->context);
         $form_token = uniqid();
@@ -306,13 +307,6 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
         ));
 
         $this->setTemplate('product.tpl');
-    }
-
-    private function getActiveTowns($lang_id) {
-        $sql = 'SELECT `name`, `id_feature_value` from `'._DB_PREFIX_.'town` t
-                LEFT JOIN `'._DB_PREFIX_.'town_lang` tl ON (tl.`id_town` = t.`id_town`)
-                WHERE tl.`id_lang` = '.(int)$lang_id;
-        return Db::getInstance()->ExecuteS($sql);
     }
 
     private function getDistricts() {

@@ -5,14 +5,23 @@
 
 {if count($towns) > 1}
     <div class="nps-towns-top">
-        {foreach from=$towns key=k item=town name="towns"}
-             {if $cookie->main_town == $town.id_town}
-                <div class="current">
-                    <span>{$town.name}</span>
-                </div>
-            {/if}
-        {/foreach}
+        {if $cookie->main_town == 0}
+            <div class="current">
+                <span>{l s='All' mod='npsmarketplace'}</span>
+            </div>
+        {else}
+            {foreach from=$towns key=k item=town name="towns"}
+                 {if $cookie->main_town == $town.id_town}
+                    <div class="current">
+                        <span>{$town.name}</span>
+                    </div>
+                {/if}
+            {/foreach}
+        {/if}
         <ul class="towns-block_ul toogle_content">
+            <li {if $cookie->main_town == 0}class="selected"{/if}>
+                <a href="#" onclick="changeMainTown(0);">{l s='All' mod='npsmarketplace'}</a>
+            </li>
             {foreach from=$towns key=k item=town name="towns"}
                 <li {if $cookie->main_town == $town.id_town}class="selected"{/if}>
                     <a href="#" onclick="changeMainTown({$town.id_town});">{$town.name}</a>

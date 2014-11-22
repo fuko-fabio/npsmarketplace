@@ -144,6 +144,8 @@ sup {
 }
 
 .alert {
+  padding: 5px;
+  border: none;
   ul, ol {
     padding-left: 15px;
     margin-left: 27px;
@@ -155,7 +157,7 @@ sup {
   &.alert-success {
     background: none;
     color: $state-success-border;
-    border-color: $state-success-border;
+    border: none;
     &:before {
       font-family: $font-icon;
       content: "\f058";
@@ -168,7 +170,7 @@ sup {
   &.alert-error {
     background: none;
     color: $state-danger-border;
-    border-color: $state-danger-border;
+    border: none;
     &:before {
       font-family: $font-icon;
       content: "\f057";
@@ -181,7 +183,7 @@ sup {
   &.alert-info {
     background: none;
     color: $state-info-border;
-    border-color: $state-info-border;
+    border: none;
     &:before {
       font-family: $font-icon;
       content: "\f05a";
@@ -194,7 +196,7 @@ sup {
   &.alert-warning {
     background: none;
     color: $state-warning-border;
-    border-color: $state-warning-border;
+    border: none;
     &:before {
       font-family: $font-icon;
       content: "\f071";
@@ -939,7 +941,7 @@ table.table_block td {
   color: $base-heading-color;
   text-transform: uppercase;
   padding: 0px 0px 17px 0px;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   border-bottom: 1px solid $base-border-color;
   overflow: hidden;
   span.heading-counter {
