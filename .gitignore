@@ -45,6 +45,7 @@
 !/override/controllers/admin/AdminProductsController.php
 !/override/controllers/front
 /override/controllers/front/*
+!/override/controllers/front/AuthController.php
 !/override/controllers/front/AddressController.php
 !/override/controllers/front/AddressesController.php
 !/override/controllers/front/HistoryController.php

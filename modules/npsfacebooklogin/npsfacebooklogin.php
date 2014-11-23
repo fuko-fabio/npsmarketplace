@@ -36,16 +36,17 @@ class NpsFacebookLogin extends Module {
     }
 
     public function hookHeader() {
-        $this->context->controller->addJS(($this->_path).'js/npsfacebooklogin.js');
         $this->context->controller->addCss(($this->_path).'npsfacebooklogin.css');
         $this->context->smarty->assign(array(
             'nps_lang_code' => $this->context->language->language_code,
             'nps_fb_app_id' => Configuration::get('NPS_FB_APP_ID'),
+            'nps_fb_controller' => $this->context->link->getModuleLink('npsfacebooklogin', 'Auth', array('facebookAuth' => true, 'ajax' => true))
         ));
         return $this->display(__FILE__, 'views/templates/hook/header.tpl');
     }
 
     public function hookDisplayLoginSource() {
+        $this->context->controller->addJS(($this->_path).'js/npsfacebooklogin.js');
         return $this->display(__FILE__, 'views/templates/hook/authentication.tpl');
     }
 

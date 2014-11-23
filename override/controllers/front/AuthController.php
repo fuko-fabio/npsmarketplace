@@ -4,11 +4,11 @@
 *  @copyright 2014 npsoftware
 */
 
-class HistoryController extends HistoryControllerCore {
+class AuthController extends AuthControllerCore {
 
     public function initContent() {
         $this->context->smarty->assign(array(
-            'HOOK_MY_ACCOUNT_COLUMN' => Hook::exec('displayMyAccountColumn'),
+            'HOOK_DISPLAY_LOGIN_SOURCE' => Hook::exec('displayLoginSource'),
         ));
         parent::initContent();
     }
