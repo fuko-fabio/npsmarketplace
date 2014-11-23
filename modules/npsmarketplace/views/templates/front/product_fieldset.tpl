@@ -1,9 +1,30 @@
 <fieldset>
     {if $edit_product == 1}
     <div class="alert alert-info">
-        <a class="alert-link" href="{$new_tem_link}">{l s='Click here' mod='npsprzelewy24'}</a> {l s='to add new event term' mod='npsprzelewy24'}
+        <a class="alert-link" href="{$new_tem_link}">{l s='Click here' mod='npsmarketplace'}</a> {l s='to add new event term' mod='npsprzelewy24'}
     </div>
     {/if}
+    <label {if $edit_product == 1}class="hide"{/if}>{l s='Type of advertisement' mod='npsmarketplace'}</label>
+    <div {if $edit_product == 1}class="hide"{/if}>
+        <div class="radio-inline">
+            <label class="top">
+                <input type="radio" name="product_type" {if $edit_product == 1}disabled=""{/if} value="0"{if (isset($smarty.post.product_type) && $smarty.post.product_type == 0) || !isset($smarty.post.product_type)} checked="checked"{/if} />
+                {l s='Ticket' mod='npsmarketplace'}
+            </label>
+        </div>
+        <div class="radio-inline">
+            <label class="top">
+                <input type="radio" name="product_type" {if $edit_product == 1}disabled=""{/if} value="1"{if isset($smarty.post.product_type) && $smarty.post.product_type == 1} checked="checked"{/if} />
+                {l s='Carnet' mod='npsmarketplace'}
+            </label>
+        </div>
+        <div class="radio-inline">
+            <label class="top">
+                <input type="radio" name="product_type" {if $edit_product == 1}disabled=""{/if} value="2"{if isset($smarty.post.product_type) && $smarty.post.product_type == 2} checked="checked"{/if} />
+                {l s='Advertisement' mod='npsmarketplace'}
+            </label>
+        </div>
+    </div>
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
       {foreach from=$languages item=lang}
@@ -102,7 +123,7 @@
             <label class="required" for="product_town">{l s='Town' mod='npsmarketplace'}</label>
             <select class="form-control" id="product_town" name="town">
                 {foreach from=$towns item=town}
-                    <option value="{$town['name']}" {if $product['town'] eq $town['name']}selected{/if}>{$town['name']}</option> 
+                    <option value="{$town['id_feature_value']}" {if $product['town'] eq $town['name']}selected{/if}>{$town['name']}</option> 
                 {/foreach}
             </select>
         </div>
@@ -121,8 +142,10 @@
         <label class="required" for="map-address-input">{l s='Address' mod='npsmarketplace'}</label>
         <input id="map-address-input" class="is_required validate form-control" data-validate="isMessage" name="address" type="text" required="" placeholder="{l s='Search adress...' mod='npsmarketplace'}"
             value="{if isset($smarty.post.address)}{$smarty.post.address}{else}{if isset($product['address'])}{$product['address']|escape:'html':'UTF-8'}{/if}{/if}"/>
-        <input id="map-lat-input" class="hide" name="product_lat" type="text">
-        <input id="map-lng-input" class="hide" name="product_lng" type="text">
+        <input id="map-lat-input" class="hide" name="lat" type="text"
+            value="{if isset($smarty.post.lat)}{$smarty.post.lat}{else}{if isset($product['lat'])}{$product['lat']|escape:'html':'UTF-8'}{/if}{/if}">
+        <input id="map-lng-input" class="hide" name="lng" type="text"
+            value="{if isset($smarty.post.lng)}{$smarty.post.lng}{else}{if isset($product['lng'])}{$product['lng']|escape:'html':'UTF-8'}{/if}{/if}">
     </div>
     <div class="form-group">
         <div id="map-canvas"></div>

@@ -311,7 +311,8 @@ span.view_scroll_spacer {
       font-size: 12px;
       text-align: right; }
     .pb-center-column #buy_block p.price {
-      padding: 0; }
+      padding: 0;
+      margin-top: 5px; }
   .pb-center-column #color_picker p {
     padding-bottom: 5px;
     font-weight: 700; }
@@ -678,6 +679,9 @@ table.table-product-discounts {
 #pQuantityAvailable {
   display: inline-block; }
 
+#availability_statut {
+  width: 100%; }
+
 #pQuantityAvailable span {
   font-weight: 700;
   color: #333; }
@@ -708,8 +712,19 @@ table.table-product-discounts {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff', endColorstr='#fbfbfb', GradientType=0); }
 
 /* prices */
-.content_prices {
-  padding: 13px 19px; }
+.content_prices .product-type {
+  padding: 8px;
+  float: left;
+  font-weight: 700;
+  font-size: 16px;
+  color: #fff; }
+  .content_prices .product-type.ticket {
+    background: #ffaa00;
+    color: #333; }
+  .content_prices .product-type.carnet {
+    background: #36454f; }
+  .content_prices .product-type.ad {
+    background: #3457cb; }
 
 .discount {
   display: none; }
@@ -727,13 +742,11 @@ table.table-product-discounts {
       line-height: 28px; } }
 
 #old_price {
-  padding-bottom: 15px;
   font-size: 17px;
   text-decoration: line-through;
-  display: inline-block;
   font-family: "Montserrat", sans-serif;
-  line-height: 23px;
-  text-align: right; }
+  text-align: right;
+  color: #6f6f6f; }
 
 #reduction_percent,
 #reduction_amount {

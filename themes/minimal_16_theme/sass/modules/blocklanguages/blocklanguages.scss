@@ -63,7 +63,7 @@
         display: block;
         color: $light-text-color;
       }
-      &.selected, &:hover a {
+      &.selected a, &:hover a {
         color: $primary-color;
       }
     }

@@ -163,15 +163,20 @@ class Seller extends ObjectModel
         return null;
     }
 
+    public static function getSellerIdByCustomer($id_customer) {
+        $sql = 'SELECT `id_seller` FROM `'._DB_PREFIX_.'seller` WHERE `id_customer` = '.(int)$id_customer;
+        return Db::getInstance(_PS_USE_SQL_SLAVE_)->getValue($sql);
+    }
+
     /**
      * getProducts return an array of products which this seller belongs to
      *
      * @return array of products objects
      */
-    public function getProducts()
+    public function getProducts($limit = null)
     {
         $products = array();
-        $products_id = $this->getSellerProducts($this->id);
+        $products_id = Seller::getSellerProducts($this->id, $limit);
         foreach ($products_id as $product_id)
             $products[] = new Product($product_id);
         return $products;
@@ -182,15 +187,17 @@ class Seller extends ObjectModel
      *
      * @return array of products
      */
-    public static function getSellerProducts($id_seller = '')
+    public static function getSellerProducts($id_seller, $limit = null)
     {
         $ret = array();
+        if(!isset($id_seller))
+            return $ret;
 
-        $row = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS('
-            SELECT `id_product` FROM `'._DB_PREFIX_.'seller_product`
-            WHERE `id_seller` = '.(int)$id_seller
-        );
-
+        $sql = 'SELECT `id_product` FROM `'._DB_PREFIX_.'seller_product` WHERE `id_seller` = '.(int)$id_seller;
+        if(isset($limit)) {
+            $sql = $sql.' ORDER BY RAND() LIMIT '.$limit;
+        }
+        $row = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS($sql);
         if ($row)
             foreach ($row as $val)
                 $ret[] = $val['id_product'];

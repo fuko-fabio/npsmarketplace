@@ -6,6 +6,7 @@
 
 include_once(_PS_MODULE_DIR_.'npscalendar/npscalendar.php');
 include_once(_PS_MODULE_DIR_.'npscalendar/classes/CalendarItem.php');
+require_once(_PS_MODULE_DIR_.'npsmarketplace/npsmarketplace.php');
 
 class EventsCollector {
 
@@ -70,11 +71,11 @@ class EventsCollector {
         $events = array();
         $max_search_events = Configuration::get('NPS_EVENTS_SEARCH');
         $res = Search::find(Context::getContext()->language->id, $day, 1, $max_search_events);
-        if (empty($res))
+        if ($res['total'] == 0)
             return $events;
         $max_events = Configuration::get('NPS_EVENTS_PER_DAY');
         if ($res['total'] > $max_events) {
-            $indexes = array_rand($res['result'], $max_events);
+            $indexes = array_rand($res['result'] , $max_events);
             foreach ($indexes as $index) {
                 $events[] = $this->buildCalendarEvent($res['result'][$index], $link, $day);
             }

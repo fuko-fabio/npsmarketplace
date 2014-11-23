@@ -20,6 +20,7 @@
 !/modules/npsfavorite
 !/modules/npssocialsharing
 !/modules/npsticketdelivery
+!/modules/npsfacebooklogin
 !/themes
 /themes/*
 !/themes/minimal_16_theme
@@ -31,8 +32,10 @@
 /override/*
 !/override/classes
 /override/classes/*
+!/override/classes/Category.php
 !/override/classes/Product.php
 !/override/classes/Validate.php
+!/override/classes/Search.php
 
 !/override/controllers
 /override/controllers/*
@@ -42,6 +45,7 @@
 !/override/controllers/admin/AdminProductsController.php
 !/override/controllers/front
 /override/controllers/front/*
+!/override/controllers/front/AuthController.php
 !/override/controllers/front/AddressController.php
 !/override/controllers/front/AddressesController.php
 !/override/controllers/front/HistoryController.php

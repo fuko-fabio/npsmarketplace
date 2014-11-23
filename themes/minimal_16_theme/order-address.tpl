@@ -47,13 +47,13 @@
                 </label>
             </div>
         </div>
-        <p class="address_add submit col-sm-6" style="display: none;">
+        <p class="address_add submit col-sm-6">
             <a href="{$link->getPageLink('address', true, NULL, "back={$back_order_page}?step=1{if $back}&mod={$back}{/if}")|escape:'html':'UTF-8'}" title="{l s='Add'}" class="button button-small btn btn-default pull-right">
                 <span>{l s='Add a new address'}<i class="icon-plus right"></i></span>
             </a>
         </p>
     </div>
-	<div class="row addresses-view" style="display: none;">
+	<div class="row addresses-view">
 		<div class="col-xs-12 col-sm-4">
 			<div class="address_delivery select form-group selector1">
 				<label for="id_address_delivery">{if $cart->isVirtualCart()}{l s='Choose a billing address:'}{else}{l s='Choose a delivery address:'}{/if}</label>

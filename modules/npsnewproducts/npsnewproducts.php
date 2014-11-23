@@ -26,6 +26,7 @@
 
 if (!defined('_PS_VERSION_'))
 	exit;
+require_once(_PS_MODULE_DIR_.'npsmarketplace/npsmarketplace.php');
 
 class NpsNewProducts extends Module
 {
@@ -56,8 +57,6 @@ class NpsNewProducts extends Module
 			&& $this->registerHook('deleteproduct')
 			&& Configuration::updateValue('NPS_NEW_PRODUCTS_NBR', 5)
 			&& $this->registerHook('displayHome')
-            && $this->registerHook('leftColumn')
-            && $this->registerHook('rightColumn')
 		);
 		$this->_clearCache('*');
 
@@ -102,27 +101,7 @@ class NpsNewProducts extends Module
 
 		if (!$newProducts && Configuration::get('PS_NPS_NEWPRODUCTS_DISPLAY'))
 			return;
-		return $newProducts;
-	}
-
-	public function hookRightColumn($params)
-	{
-		if (!$this->isCached('npsnewproducts.tpl', $this->getCacheId()))
-		{
-			if (!isset(NpsNewProducts::$cache_new_products))
-				NpsNewProducts::$cache_new_products = $this->getNewProducts();
-
-			$this->smarty->assign(array(
-				'new_products' => NpsNewProducts::$cache_new_products,
-				'mediumSize' => Image::getSize(ImageType::getFormatedName('medium')),
-				'homeSize' => Image::getSize(ImageType::getFormatedName('home'))
-			));
-		}
-
-		if (NpsNewProducts::$cache_new_products === false)
-			return false;
-
-		return $this->display(__FILE__, 'npsnewproducts.tpl', $this->getCacheId());
+		return NpsMarketplace::filterByTown($newProducts);
 	}
 
 	protected function getCacheId($name = null)
@@ -132,17 +111,12 @@ class NpsNewProducts extends Module
 		return parent::getCacheId($name.'|'.date('Ymd'));
 	}
 
-	public function hookLeftColumn($params)
-	{
-		return $this->hookRightColumn($params);
-	}
-
 	public function hookDisplayHome($params)
 	{
 	    if (!isset(NpsNewProducts::$cache_new_products))
             NpsNewProducts::$cache_new_products = $this->getNewProducts();
 
-		if (!$this->isCached('npsnewproducts_home.tpl', $this->getCacheId('npsnewproducts-home')))
+		if (!$this->isCached('npsnewproducts_home.tpl', $this->getCacheId($this->name.$this->context->cookie->main_town)))
 		{
 			$this->smarty->assign(array(
 				'new_products' => NpsNewProducts::$cache_new_products,
@@ -154,7 +128,7 @@ class NpsNewProducts extends Module
 		if (NpsNewProducts::$cache_new_products === false)
 			return false;
 
-		return $this->display(__FILE__, 'npsnewproducts_home.tpl', $this->getCacheId('npsnewproducts-home'));
+		return $this->display(__FILE__, 'npsnewproducts_home.tpl', $this->getCacheId($this->name.$this->context->cookie->main_town));
 	}
 
 	public function hookHeader($params)

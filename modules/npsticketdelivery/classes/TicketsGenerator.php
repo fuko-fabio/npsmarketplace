@@ -11,8 +11,10 @@ class TicketsGenerator {
     public static function generateAndSend($id_cart_ticket) {
         $c_t = new CartTicket($id_cart_ticket);
         $tickets = CartTicket::getAllTickets($id_cart_ticket);
+        $is_gift = Db::getInstance()->executeS('SELECT gift FROM '._DB_PREFIX_.'cart WHERE id_cart='.$c_t->id_cart);
         $attachments = array();
         foreach ($tickets as $ticket) {
+            $ticket['gift'] = $is_gift;
             $t = TicketsGenerator::generateTicket($ticket);
             $attachments[] = array(
                 'content' => $t['content'],

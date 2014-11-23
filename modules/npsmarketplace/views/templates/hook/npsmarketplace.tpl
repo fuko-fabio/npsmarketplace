@@ -16,6 +16,7 @@
     <li><a href="{$add_product_link}"><i class="icon-plus"></i><span>{l s='Add Event' mod='npsmarketplace'}</span></a></li>
     <li><a href="{$products_list_link}"><i class="icon-th-list"></i><span>{l s='My Events' mod='npsmarketplace'}</span></a></li>
     <li><a href="{$orders_link}"><i class="icon-gift"></i><span>{l s='Customers Orders' mod='npsmarketplace'}</span></a></li>
+    <li><a href="{$marketing_link}"><i class="icon-puzzle-piece"></i><span>{l s='Marketing' mod='npsmarketplace'}</span></a></li>
     {/if}
     {if $account_state == 'locked'}
     <li><a href="{$orders_link}"><i class="icon-gift"></i><span>{l s='Customers Orders' mod='npsmarketplace'}</span></a></li>

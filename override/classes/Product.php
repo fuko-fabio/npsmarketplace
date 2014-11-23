@@ -5,19 +5,24 @@
 */
 
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/ProductAttributeExpiryDate.php');
+include_once(_PS_MODULE_DIR_.'npsmarketplace/npsmarketplace.php');
 
 class Product extends ProductCore
 {
     public function delete()
     {
         if(parent::delete())
-            return $this->deleteSellersAssociations();
+            return $this->deleteSellersAssociations() && $this->deleteExtras();
         else
             return false;
     }
 
     public function deleteSellersAssociations() {
         return Db::getInstance()->delete('seller_product', 'id_product = '.(int)$this->id);
+    }
+
+    public function deleteExtras() {
+        return Db::getInstance()->delete('product_extras', 'id_product = '.(int)$this->id);
     }
 
     public function newEventCombination($date, $time, $quantity, $expiry_date, $id_shop = null) {
@@ -270,23 +275,97 @@ class Product extends ProductCore
         return $res;
     }
 
-    public static function getVideoUrl($id_product) {
+    public static function getExtras($id_product) {
         if (!isset($id_product))
             return null;
-        $sql = 'SELECT `url`
-                FROM `'._DB_PREFIX_.'product_video`
+        $sql = 'SELECT *
+                FROM `'._DB_PREFIX_.'product_extras`
                 WHERE `id_product` = '.$id_product;
-        return Db::getInstance()->getValue($sql);
+        return Db::getInstance()->getRow($sql);
     }
 
-    public function persistVideoUrl($video_url) {
-        if(!isset($video_url))
-            return false;
-        if (Product::getVideoUrl($this->id))
-            $sql = 'UPDATE `'._DB_PREFIX_.'product_video` SET url="'.$video_url.'" WHERE id_product='.$this->id;
-        else 
-            $sql = 'INSERT INTO `'._DB_PREFIX_.'product_video` (id_product,url) VALUES('.$this->id.',"'.$video_url.'")';
-        return Db::getInstance()->execute($sql);
+    public function persistExtraInfo($type, $lat, $lng, $video_url) {
+        if(!Db::getInstance()->getRow('SELECT `id_product` FROM '._DB_PREFIX_.'product_extras WHERE `id_product` = '.$this->id)) {
+            return Db::getInstance()->insert('product_extras', array(
+                'id_product' => $this->id,
+                'type' => $type,
+                'lng' => $lng,
+                'lat' => $lat,
+                'url' => $video_url
+            ), 'id_product = '.$this->id);
+        } else {
+            return Db::getInstance()->update('product_extras', array(
+                'id_product' => $this->id,
+                'lng' => $lng,
+                'lat' => $lat,
+                'url' => $video_url
+            ), 'id_product = '.$this->id);
+        }
+    }
+
+    public static function removeSpecialPrice($id_product) {
+        SpecificPrice::deleteByProductId($id_product);
+        $p = new Product($id_product);
+        $p->on_sale = 0;
+        $p->save();
+        return array(
+            'result' => 1,
+            'errors' => array()
+        );
+    }
+    
+    public static function addSpecialPrice($id_product, $reduction) {
+        $id_product_attribute = 0;
+        $id_shop = 0;
+        $id_currency = 0;
+        $id_country = 0;
+        $id_group = 0;
+        $id_customer = 0;
+        $id_combination = 0;
+        $price = -1;
+        $from_quantity = 1;
+        $reduction_type = 'amount';
+        $from = '0000-00-00 00:00:00';
+        $to = '0000-00-00 00:00:00';
+        
+        $nps = new NpsMarketplace();
+        $errors = array();
+        $prices = SpecificPrice::getIdsByProductId($id_product);
+        if ($prices)
+            $errors[] = $nps->l('A specific price already exists for tis event.');
+        elseif ((!isset($price) && !isset($reduction)) || (isset($price) && !Validate::isNegativePrice($price)) || (isset($reduction) && !Validate::isPrice($reduction)))
+            $errors[] = $nps->l('Invalid price/discount amount');
+        elseif ($reduction && !Validate::isReductionType($reduction_type))
+            $errors[] = $nps->l('Please select a discount type (amount or percentage).');
+        elseif (SpecificPrice::exists((int)$id_product, $id_combination, $id_shop, $id_group, $id_country, $id_currency, $id_customer, $from_quantity, $from, $to, false))
+            $errors[] = $nps->l('A specific price already exists for tis event.');
+        else
+
+        if (empty($errors)) {
+            $specificPrice = new SpecificPrice();
+            $specificPrice->id_product = (int)$id_product;
+            $specificPrice->id_product_attribute = (int)$id_product_attribute;
+            $specificPrice->id_shop = (int)$id_shop;
+            $specificPrice->id_currency = (int)($id_currency);
+            $specificPrice->id_country = (int)($id_country);
+            $specificPrice->id_group = (int)($id_group);
+            $specificPrice->id_customer = (int)$id_customer;
+            $specificPrice->price = (float)($price);
+            $specificPrice->from_quantity = (int)($from_quantity);
+            $specificPrice->reduction = (float)($reduction_type == 'percentage' ? $reduction / 100 : $reduction);
+            $specificPrice->reduction_type = $reduction_type;
+            $specificPrice->from = $from;
+            $specificPrice->to = $to;
+            if (!$specificPrice->add())
+                $errors[] = $nps->l('An error occurred while updating the specific price.');
+        }
+        $p = new Product($id_product);
+        $p->on_sale = 1;
+        $p->save();
+        return array(
+            'result' => empty($errors) ? 1 : 0,
+            'errors' => $errors
+        );
     }
 }
 ?>

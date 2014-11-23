@@ -27,8 +27,8 @@ function initialize() {
   });
 
   $('#product_town').on('change', function() {
-    $('#map-address-input').val(this.value);
-    codeAddress(this.value);
+    $('#map-address-input').val(this.text);
+    codeAddress(this.text);
   });
 
   codeAddress($('#' + inputId).val());
@@ -54,6 +54,9 @@ function initialize() {
     bounds.extend(places[0].geometry.location);
     map.fitBounds(bounds);
     map.setZoom(16);
+	var pos = marker.getPosition();
+    $('#map-lat-input').val(pos.lat());
+    $('#map-lng-input').val(pos.lng());
   });
 
   google.maps.event.addListener(marker, 'dragend', function() {

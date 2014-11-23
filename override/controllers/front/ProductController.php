@@ -9,6 +9,7 @@ class ProductController extends ProductControllerCore {
     public function initContent() {
         $this->context->smarty->assign(array(
             'HOOK_EXTRA_PRODUCT_IMAGE' => Hook::exec('displayExtraProductImage'),
+            'extras' => Product::getExtras($this->product->id)
         ));
         parent::initContent();
     }

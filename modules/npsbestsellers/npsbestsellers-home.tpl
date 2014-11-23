@@ -47,9 +47,10 @@
                     </a>
                 </div>
 			{/foreach}
+		    </div>
 		</div>
 	{else}
-		<p class="alert alert-info">{l s='No best sellers' mod='npsbestsellers'}</p>
-	{/if}
+    	<p class="alert alert-info">{l s='No best sellers' mod='npsbestsellers'}</p>
+    {/if}
 </div>
 <!-- /MODULE Home Block best sellers -->

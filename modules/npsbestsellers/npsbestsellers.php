@@ -26,6 +26,7 @@
 
 if (!defined('_PS_VERSION_'))
 	exit;
+require_once(_PS_MODULE_DIR_.'npsmarketplace/npsmarketplace.php');
 
 class NpsBestSellers extends Module
 {
@@ -58,8 +59,6 @@ class NpsBestSellers extends Module
 			|| !$this->registerHook('updateproduct')
 			|| !$this->registerHook('deleteproduct')
 			|| !$this->registerHook('displayHome')
-            || !$this->registerHook('leftColumn')
-            || !$this->registerHook('rightColumn')
             || !ProductSale::fillProductSales()
 		)
 			return false;
@@ -201,7 +200,7 @@ class NpsBestSellers extends Module
 
 	public function hookdisplayHome($params)
 	{
-		if (!$this->isCached('npsbestsellers-home.tpl', $this->getCacheId('npsbestsellers-home')))
+		if (!$this->isCached('npsbestsellers-home.tpl', $this->getCacheId($this->name.$this->context->cookie->main_town)))
 		{
 		    NpsBestSellers::$cache_best_sellers = $this->getBestSellers($params);
             $this->smarty->assign(array(
@@ -213,33 +212,9 @@ class NpsBestSellers extends Module
 		if (NpsBestSellers::$cache_best_sellers === false)
 			return false;
 
-		return $this->display(__FILE__, 'npsbestsellers-home.tpl', $this->getCacheId('npsbestsellers-home'));
+		return $this->display(__FILE__, 'npsbestsellers-home.tpl', $this->getCacheId($this->name.$this->context->cookie->main_town));
 	}
 
-	public function hookRightColumn($params)
-	{
-		if (!$this->isCached('npsbestsellers.tpl', $this->getCacheId('npsbestsellers-col')))
-		{
-			if (!isset(NpsBestSellers::$cache_best_sellers))
-				NpsBestSellers::$cache_best_sellers = $this->getBestSellers($params);
-			$this->smarty->assign(array(
-				'best_sellers' => NpsBestSellers::$cache_best_sellers,
-				'display_link_bestsellers' => Configuration::get('PS_DISPLAY_BEST_SELLERS'),
-				'mediumSize' => Image::getSize(ImageType::getFormatedName('medium')),
-				'smallSize' => Image::getSize(ImageType::getFormatedName('small'))
-			));
-		}
-
-		if (NpsBestSellers::$cache_best_sellers === false)
-			return false;
-
-		return $this->display(__FILE__, 'npsbestsellers.tpl', $this->getCacheId('npsbestsellers-col'));
-	}
-
-	public function hookLeftColumn($params)
-	{
-		return $this->hookRightColumn($params);
-	}
 
 	protected function getBestSellers($params)
 	{
@@ -254,6 +229,6 @@ class NpsBestSellers extends Module
 		foreach ($result as &$row)
 			$row['price'] = Tools::displayPrice(Product::getPriceStatic((int)$row['id_product'], $usetax), $currency);
 
-		return $result;
+		return NpsMarketplace::filterByTown($result);;
 	}
 }

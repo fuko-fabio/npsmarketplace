@@ -51,7 +51,7 @@ table#product_comparison .comparison_availability_statut {
 table#product_comparison .product_discount {
   padding-top: 5px; }
   table#product_comparison .product_discount .reduced-price {
-    color: #f00;
+    color: #cc1010;
     font-weight: 700; }
 table#product_comparison .product_desc {
   padding: 0 0 12px 0; }

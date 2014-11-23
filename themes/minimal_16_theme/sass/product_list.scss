@@ -60,8 +60,8 @@ ul.product_list {
   .functional-buttons {
     display: none;
     position: absolute;
-    top: 45%;
-    left: 42%;
+    bottom: calc(120px);
+    left: calc(50% - 25px);
     .wishlist {
       display: none;
     }
@@ -131,7 +131,8 @@ ul.product_list.grid {
           span {
             color: $light-text-color;
             &.old-price {
-              color: #b1b0b0;
+              color: $primary-red-color;
+              font-weight: 100;
             }
           }
         }
@@ -139,6 +140,9 @@ ul.product_list.grid {
       h5 {
         margin: 0px 5px;
         font-family: $font-hammer;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
       .comments_note {
         @media (min-width: $screen-md) {
@@ -183,7 +187,7 @@ ul.product_list.grid {
           text-align: left;
           color: $light-text-color;
           margin: 5px;
-          height: 65%;
+          height: calc(100% - 95px);
           margin-top: 40px;
           text-align: center;
         }
@@ -197,7 +201,7 @@ ul.product_list.grid {
           }
         }
         @media (min-width: $screen-lg) {
-          height: 82%;
+          height: calc(100% - 60px);
         }
         @media (min-width: $screen-md) {
           // min 1200px
@@ -216,18 +220,6 @@ ul.product_list.grid {
             display: block;
           }
         }
-      }
-    }
-    @media (min-width: $screen-md) {
-      // min 991px
-      &.first-in-line {
-        clear: left;
-      }
-    }
-    @media (min-width: $screen-xs) and (max-width: $screen-sm-max) {
-      // min 480px max 991px
-      &.first-item-of-tablet-line {
-        clear: left;
       }
     }
   }
