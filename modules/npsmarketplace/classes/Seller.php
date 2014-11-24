@@ -173,12 +173,12 @@ class Seller extends ObjectModel
      *
      * @return array of products objects
      */
-    public function getProducts($limit = null)
-    {
+    public function getProducts($limit = null) {
         $products = array();
         $products_id = Seller::getSellerProducts($this->id, $limit);
-        foreach ($products_id as $product_id)
-            $products[] = new Product($product_id);
+        if (!empty($products_id))
+            foreach ($products_id as $product_id)
+                $products[] = new Product($product_id);
         return $products;
     }
 
@@ -187,8 +187,7 @@ class Seller extends ObjectModel
      *
      * @return array of products
      */
-    public static function getSellerProducts($id_seller, $limit = null)
-    {
+    public static function getSellerProducts($id_seller, $limit = null) {
         $ret = array();
         if(!isset($id_seller))
             return $ret;

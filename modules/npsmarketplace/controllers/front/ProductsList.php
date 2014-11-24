@@ -54,6 +54,8 @@ class NpsMarketplaceProductsListModuleFrontController extends ModuleFrontControl
     private function getProducts($seller) {
         $result = array();
         $products = $seller->getProducts();
+        if (empty($products))
+            return $result;
         foreach ($products as $product) {
             $cover = Product::getCover($product->id);
             $have_image = !empty($cover);
@@ -74,7 +76,11 @@ class NpsMarketplaceProductsListModuleFrontController extends ModuleFrontControl
             $extras = Product::getExtras($product->id);
             if (!empty($extras)) 
                 $item = array_merge($item, $extras);
-            $item['on_sale'] = empty(SpecificPrice::getIdsByProductId($product->id)) ? 0 : 1;
+            $sp = SpecificPrice::getIdsByProductId($product->id);
+            if ($sp && !empty($sp))
+                $item['on_sale'] = 1;
+            else
+                $item['on_sale'] = 0;
             $result[] = $item;
         }
         return $result;
