@@ -26,7 +26,8 @@ class NpsMarketplaceMarketingModuleFrontController extends ModuleFrontController
             'HOOK_MY_ACCOUNT_COLUMN' => Hook::exec('displayMyAccountColumn'),
             'languages' => Language::getLanguages(),
             'current_lang_id' => $this->context->language->id,
-            'towns' => Town::getActiveTowns((int)$this->context->language->id)
+            'towns' => Town::getActiveTowns((int)$this->context->language->id),
+            'nps_ajax_url' => $this->context->link->getModuleLink('npsmarketplace', 'Ajax'),
         ));
         $this->setTemplate('marketing.tpl');
     }

@@ -2,6 +2,7 @@
 * @author Norbert Pabian <norbert.pabian@gmail.com>
 * @copyright 2014 npsoftware
 *}
+{addJsDefL name=npsAjaxUrl}{$nps_ajax_url}{/addJsDefL}
 <script type="text/javascript">
 {literal}
 $('document').ready(function(){
@@ -19,7 +20,7 @@ $('document').ready(function(){
         {
             $.fancybox.showLoading();
             $.ajax({
-                {/literal}url: "{$module_dir}npsmarketplace_ajax.php",{literal}
+                url: npsAjaxUrl,
                 type: "POST",
                 headers: {"cache-control": "no-cache"},
                 data: {action: 'sendToSeller', secure_key: '{/literal}{$sts_secure_key}{literal}', question: event_question, email: email, id_product: id_product},{/literal}{literal}

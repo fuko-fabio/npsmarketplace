@@ -2,6 +2,7 @@
     @author Norbert Pabian <norbert.pabian@gmail.com>
     @copyright 2014 npsoftware
 -->
+{addJsDefL name=npsAjaxUrl}{$nps_ajax_url}{/addJsDefL}
 {capture name=path}
 <a href="{$link->getPageLink('my-account', true)|escape:'html':'UTF-8'}"> {l s='My account' mod='npsmarketplace'} </a>
 <span class="navigation-pipe">{$navigationPipe}</span>

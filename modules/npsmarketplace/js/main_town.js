@@ -12,12 +12,16 @@ $(document).ready(function() {
 function changeMainTown(id_town) {
     $.fancybox.showLoading();
     $.ajax({
-        url : "modules/npsmarketplace/npsmarketplace_ajax.php?changeTown=1&id_town=" + id_town,
+        url : npsAjaxUrl,
         type : "POST",
         headers : {
             "cache-control" : "no-cache"
         },
         dataType : "json",
+        data: {
+            action: 'changeTown',
+            id_town: id_town
+        },
         success : function(result) {
             location.reload();
         }

@@ -44,7 +44,8 @@ class NpsMarketplaceProductsListModuleFrontController extends ModuleFrontControl
             'add_product_link' => $this -> context -> link -> getModuleLink('npsmarketplace', 'Product'),
             'products' => $products,
             'seler_active' => $seller->active && !$seller->locked,
-            'id_currency' => $this->context->currency->id
+            'id_currency' => $this->context->currency->id,
+            'nps_ajax_url' => $this->context->link->getModuleLink('npsmarketplace', 'Ajax'),
         ));
 
         $this -> setTemplate('products_list.tpl');

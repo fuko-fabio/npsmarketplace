@@ -114,6 +114,7 @@ class NpsMarketplace extends Module {
         }
         $this->context->smarty->assign(array(
             'towns' => Town::getAll($this->context->language->id),
+            'nps_ajax_url' => $this->context->link->getModuleLink('npsmarketplace', 'Ajax'),
         ));
         return $this->display(__FILE__, 'views/templates/hook/header_top.tpl');
     }
@@ -162,7 +163,7 @@ class NpsMarketplace extends Module {
                 'seller_name' => $seller->name,
                 'sts_secure_key' => $this->secure_key,
                 'sts_product_id' => $product->id,
-                
+                'nps_ajax_url' => $this->context->link->getModuleLink('npsmarketplace', 'Ajax'),
             ));
             return $this->display(__FILE__, 'views/templates/hook/product_seller_info.tpl');
         }

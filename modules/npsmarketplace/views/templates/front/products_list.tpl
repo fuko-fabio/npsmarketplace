@@ -2,6 +2,7 @@
     @author Norbert Pabian <norbert.pabian@gmail.com>
     @copyright 2014 npsoftware
 -->
+{addJsDefL name=npsAjaxUrl}{$nps_ajax_url}{/addJsDefL}
 <script>
 $(document).ready(function(){
     $('.sale-event-btn').fancybox({
@@ -15,10 +16,15 @@ function submitPriceReduction(id_product, reduction) {
     $(selector).html('');
     $.fancybox.showLoading();
     $.ajax({
-        url: "modules/npsmarketplace/npsmarketplace_ajax.php?specialPrice=1&id_product=" + id_product + '&reduction=' + reduction,
+        url: npsAjaxUrl,
         type: "POST",
         headers: {literal}{"cache-control": "no-cache"}{/literal},
         dataType: "json",
+        data: {
+            action: 'specialPrice',
+            id_product: id_product,
+            reduction: reduction
+        },
         success: function(json) {
             if (json.result) {
                 location.reload();
@@ -37,10 +43,14 @@ function submitPriceReduction(id_product, reduction) {
 function removePriceReduction(id_product) {
     $.fancybox.showLoading();
     $.ajax({
-        url: "modules/npsmarketplace/npsmarketplace_ajax.php?removeSpecialPrice=1&id_product=" + id_product,
+        url: npsAjaxUrl,
         type: "POST",
         headers: {literal}{"cache-control": "no-cache"}{/literal},
         dataType: "json",
+        data: {
+            action: 'removeSpecialPrice',
+            id_product: id_product,
+        },
         success: function(json) {
             location.reload();
         }

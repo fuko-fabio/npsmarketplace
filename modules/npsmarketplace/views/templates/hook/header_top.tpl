@@ -2,7 +2,7 @@
 * @author Norbert Pabian <norbert.pabian@gmail.com>
 * @copyright 2014 npsoftware
 *}
-
+{addJsDefL name=npsAjaxUrl}{$nps_ajax_url}{/addJsDefL}
 {if count($towns) > 1}
     <div class="nps-towns-top">
         {if $cookie->main_town == 0}
