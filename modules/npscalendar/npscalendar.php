@@ -49,6 +49,9 @@ class NpsCalendar extends Module {
     public function hookDisplayTopColumn() {
         if (!isset($this->context->controller->php_self) || $this->context->controller->php_self != 'index')
             return;
+        $this->context->smarty->assign(array(
+            'calendar_api_url' => $this->context->link->getModuleLink('npscalendar', 'api')
+        ));
         return $this->display(__FILE__, 'calendar.tpl');
     }
 

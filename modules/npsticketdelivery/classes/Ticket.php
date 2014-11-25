@@ -39,6 +39,8 @@ class Ticket extends ObjectModel {
             'district' =>       array('type' => self::TYPE_STRING, 'validate' => 'isGenericName'),
             'person' =>         array('type' => self::TYPE_STRING, 'validate' => 'isGenericName'),
             'date' =>           array('type' => self::TYPE_DATE,   'validate' => 'isDateFormat'),
+            'from' =>           array('type' => self::TYPE_DATE,   'validate' => 'isDateFormat'),
+            'to' =>             array('type' => self::TYPE_DATE,   'validate' => 'isDateFormat'),
             'generated' =>      array('type' => self::TYPE_DATE,   'validate' => 'isDateFormat'),
         ),
     );

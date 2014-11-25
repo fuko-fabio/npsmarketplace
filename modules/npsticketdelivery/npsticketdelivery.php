@@ -78,13 +78,22 @@ class NpsTicketDelivery extends Module {
                 } else {
                     $info_seller[$seller->id] = array('seller' => $seller, 'products' => array($product));
                 }
-                $attrs = explode(',', $product['attributes_small']);
-                $date = date_create($attrs[0].$attrs[1]);
-                $date = date_format($date, 'Y-m-d H:i:s');
+                $date = null;
+                if (isset($product['attributes_small']) && !empty($product['attributes_small'])) {
+                    $attrs = explode(',', $product['attributes_small']);
+                    $date = date_create($attrs[0].$attrs[1]);
+                    $date = date_format($date, 'Y-m-d H:i:s');
+                }
                 $address = $this->getFeatureValue($product['features'], Configuration::get('NPS_FEATURE_ADDRESS_ID'));
                 $town = $this->getFeatureValue($product['features'], Configuration::get('NPS_FEATURE_TOWN_ID'));
                 $district = $this->getFeatureValue($product['features'], Configuration::get('NPS_FEATURE_DISTRICT_ID'));
                 $extras = Product::getExtras($product['id_product']);
+
+                $entries = $this->getFeatureValue($product['features'], Configuration::get('NPS_FEATURE_ENTRIES_ID'));
+                $d_from = $this->getFeatureValue($product['features'], Configuration::get('NPS_FEATURE_FROM_ID'));
+                $d_to = $this->getFeatureValue($product['features'], Configuration::get('NPS_FEATURE_TO_ID'));
+
+                
                 for ($x=1; $x<=$qty; $x++) {
                     $t = new Ticket();
                     $t->id_cart_ticket = $c_t->id;
@@ -98,7 +107,9 @@ class NpsTicketDelivery extends Module {
                     $t->district = $district;
                     $t->person = $persons->$product['id_product']->$x;
                     $t->type = $extras['type'];
-                    $t->entries = $extras['entries'];
+                    $t->entries = $entries;
+                    $t->to = $d_to;
+                    $t->from = $d_from;
                     $t->save();
                 }
             }

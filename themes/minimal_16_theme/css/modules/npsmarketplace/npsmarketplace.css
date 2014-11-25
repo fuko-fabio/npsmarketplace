@@ -233,3 +233,10 @@
 
 .sale-event-box .row {
   margin: 0 0 50px 0; }
+
+.nps-main-town {
+  font-weight: 700;
+  font-size: 22px;
+  margin-left: 150px;
+  font-family: "Hammersmith One", sans-serif;
+  color: #ffaa00; }

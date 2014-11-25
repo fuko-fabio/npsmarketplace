@@ -17,9 +17,9 @@
     <table class="table table-bordered footab">
         <thead>
             <tr>
-                <th class="first_item" data-sort-ignore="true">{l s='Event name' mod='npsmarketplace'}</th>
-                <th class="item">{l s='Term' mod='npsmarketplace'}</th>
-                <th class="last_item" data-sort-ignore="true">{l s='Person' mod='npsmarketplace'}</th>
+                <th class="first_item" data-sort-ignore="true">{l s='Event name' mod='npsticketdelivery'}</th>
+                <th class="item">{l s='Additional information' mod='npsticketdelivery'}</th>
+                <th class="last_item" data-sort-ignore="true">{l s='Person' mod='npsticketdelivery'}</th>
             </tr>
         </thead>
         <tbody>
@@ -27,7 +27,7 @@
             {for $x=1 to $product.quantity}
             <tr>
                 <td>{$product.name}</td>
-                <td>{$product.attributes}</td>
+                <td>{if isset($product.attributes)}{$product.attributes}{/if}</td>
                 <td><input class="is_required validate form-control" data-validate="isGenericName" type="text" name="ticket_person[{$product.id_product}][{$x}]" value="{$cookie->customer_firstname} {$cookie->customer_lastname}"/></td>
             </tr>
             {/for}

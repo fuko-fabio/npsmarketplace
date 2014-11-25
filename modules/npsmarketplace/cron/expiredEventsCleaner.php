@@ -16,12 +16,19 @@ $sql = 'SELECT * FROM `'._DB_PREFIX_.'product_attribute_expiry_date` WHERE `expi
 
 $rows = Db::getInstance()->executeS($sql);
 $outdated_ids = array();
+$products_ids = array();
 foreach ($rows as $row) {
-    $outdated_ids[] = (int)$row['id_product_attribute'];
+    $attr_id = $row['id_product_attribute'];
+    $p_id = $row['id_product'];
+    if (isset($attr_id) && !empty($attr_id)) {
+        $outdated_ids[] = (int)$attr_id;
+        continue;
+    }
+    if (isset($p_id) && !empty($p_id))
+        $products_ids[] = (int)$p_id;
 }
 
 $outdated_ids = array_unique($outdated_ids);
-$products_ids = array();
 foreach ($outdated_ids as $id) {
     $combination = new Combination($id);
     $products_ids[] = $combination->id_product;

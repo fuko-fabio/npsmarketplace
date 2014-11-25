@@ -2,7 +2,6 @@
 
 global $_MODULE;
 $_MODULE = array();
-$_MODULE['<{npsnewproducts}prestashop>npsnewproducts_home_a0d0ebc37673b9ea77dd7c1a02160e2d'] = 'Nowości';
 $_MODULE['<{npsnewproducts}prestashop>npsnewproducts_552ee8eccec10f486f555a8385e9ac65'] = 'nps Blok nowych produktów';
 $_MODULE['<{npsnewproducts}prestashop>npsnewproducts_d3ee346c7f6560faa13622b6fef26f96'] = 'Wyświetla blok prezentujący nowo dodane produkty.';
 $_MODULE['<{npsnewproducts}prestashop>npsnewproducts_1cd777247f2a6ed79534d4ace72d78ce'] = 'Proszę wypełnić pole \"wyświetlane produkty\".';
@@ -17,7 +16,4 @@ $_MODULE['<{npsnewproducts}prestashop>npsnewproducts_d68e7b860a7dba819fa1c75225c
 $_MODULE['<{npsnewproducts}prestashop>npsnewproducts_00d23a76e43b46dae9ec7aa9dcbebb32'] = 'Włączony';
 $_MODULE['<{npsnewproducts}prestashop>npsnewproducts_b9f5c797ebbf55adccdd8539a65a0241'] = 'Wyłączony';
 $_MODULE['<{npsnewproducts}prestashop>npsnewproducts_c9cc8cce247e49bae79f15173ce97354'] = 'Zapisz';
-$_MODULE['<{npsnewproducts}prestashop>npsnewproducts_9ff0635f5737513b1a6f559ac2bff745'] = 'Nowe produkty';
-$_MODULE['<{npsnewproducts}prestashop>npsnewproducts_43340e6cc4e88197d57f8d6d5ea50a46'] = 'Czytaj więcej';
-$_MODULE['<{npsnewproducts}prestashop>npsnewproducts_60efcc704ef1456678f77eb9ee20847b'] = 'Wszystkie nowe produkty';
-$_MODULE['<{npsnewproducts}prestashop>npsnewproducts_18cc24fb12f89c839ab890f8188febe8'] = 'Brak nowych produktów na tą chwilę';
+$_MODULE['<{npsnewproducts}prestashop>npsnewproducts_home_a0d0ebc37673b9ea77dd7c1a02160e2d'] = 'Nowości';

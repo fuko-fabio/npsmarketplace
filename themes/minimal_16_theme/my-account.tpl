@@ -39,7 +39,17 @@
                     <div class="nps-ticket">
                         <div class="info">
                             <div class="name">{$ticket.name}</div>
-                            <div class="term"><span>{l s='Term'}:</span>{$ticket.date}</div>
+                            {if $ticket.type == 0}
+                                <div class="term"><span>{l s='Term'}:</span>{date_format(date_create($ticket.date), 'Y-m-d H:i')}</div>
+                            {else if $ticket.type == 1}
+                                {if isset($ticket.entries) && ! empty($ticket.entries)}
+                                    <div class="term"><span>{l s='Entries'}:</span>{$ticket.entries}</div>
+                                {else if strtotime($ticket.from) > 0 && strtotime($ticket.to) > 0}
+                                    <div class="term"><span>{l s='Valid'}:</span>{date_format(date_create($ticket.from), 'Y-m-d')} - {date_format(date_create($ticket.to), 'Y-m-d')}</div>
+                                {else}
+                                    <div class="term"><span></span>{l s='Validity not specified'}</div>
+                                {/if}
+                            {/if}
                             <div><span>{l s='Adress'}:</span>{$ticket.address}</div>
                             <div><span>{l s='District'}:</span>{$ticket.district}</div>
                             <div><span>{l s='Town'}:</span>{$ticket.town}</div>

@@ -6,7 +6,12 @@
 var Calendar = Backbone.AssociatedModel.extend({
 
     url: function () {
-        var params = '?';
+        var params;
+        if (calendarApiUrl.indexOf('?') > -1) {
+            params = '&';
+        } else {
+            params = '?';
+        }
         if (this.get('start_date') != null) {
             params += 'start_date=' + this.get('start_date');
             if (this.get('end_date') != null) {
@@ -15,7 +20,7 @@ var Calendar = Backbone.AssociatedModel.extend({
         } else if (this.get('end_date') != null) {
             params += 'end_date=' + this.get('end_date');
         }
-        return '/modules/npscalendar/api/calendar.php' + params;
+        return calendarApiUrl + params;
     },
 
     relations: [

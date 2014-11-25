@@ -11,7 +11,7 @@ class TicketsGenerator {
     public static function generateAndSend($id_cart_ticket) {
         $c_t = new CartTicket($id_cart_ticket);
         $tickets = CartTicket::getAllTickets($id_cart_ticket);
-        $is_gift = Db::getInstance()->executeS('SELECT gift FROM '._DB_PREFIX_.'cart WHERE id_cart='.$c_t->id_cart);
+        $is_gift = Db::getInstance()->getValue('SELECT `gift` FROM '._DB_PREFIX_.'cart WHERE id_cart='.$ticket['id_cart']);
         $attachments = array();
         foreach ($tickets as $ticket) {
             $ticket['gift'] = $is_gift;
@@ -33,9 +33,10 @@ class TicketsGenerator {
         $barcodeobj = new TCPDFBarcode($code, 'C128');
         $ticket['barcode'] = $barcodeobj->getBarcodeHTML(1, 90);
         $ticket['code'] = $code;
-        $smarty =  Context::getContext()->smarty;
+        $ctx = Context::getContext();
+        $smarty =  $ctx->smarty;
         $smarty->assign($ticket);
-        $html = $smarty->fetch(_PS_MODULE_DIR_.'npsticketdelivery/views/templates/pdf/normal_ticket.tpl');
+        $html = $smarty->fetch(_PS_MODULE_DIR_.'npsticketdelivery/views/templates/pdf/ticket_'.$ctx->language->iso_code.'.tpl');
         $dompdf = new DOMPDF();
         $dompdf->load_html($html);
         $dompdf->render();

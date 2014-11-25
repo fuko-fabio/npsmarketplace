@@ -15,7 +15,7 @@ class NpsTicketDeliveryTicketsModuleFrontController extends ModuleFrontControlle
     public function postProcess() {
         if (Tools::isSubmit('id_ticket')) {
             $ticket = Ticket::getForCustomer($this->context->customer->id, Tools::getValue('id_ticket'));
-            $is_gift = Db::getInstance()->executeS('SELECT gift FROM '._DB_PREFIX_.'cart WHERE id_cart='.$ticket['id_cart']);
+            $is_gift = Db::getInstance()->getValue('SELECT `gift` FROM '._DB_PREFIX_.'cart WHERE id_cart='.$ticket['id_cart']);
             $ticket['gift'] = $is_gift;
             if(isset($ticket)) {
                 $g_t = TicketsGenerator::generateTicket($ticket);

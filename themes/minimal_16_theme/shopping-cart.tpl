@@ -43,7 +43,7 @@
 {include file="$tpl_dir./errors.tpl"}
 
 {if isset($empty)}
-	<p class="alert alert-warning">{l s='Your shopping cart is empty.'}</p>
+	<p class="alert alert-info">{l s='Your shopping cart is empty.'}</p>
 {elseif $PS_CATALOG_MODE}
 	<p class="alert alert-warning">{l s='This store has not accepted your new order.'}</p>
 {else}
