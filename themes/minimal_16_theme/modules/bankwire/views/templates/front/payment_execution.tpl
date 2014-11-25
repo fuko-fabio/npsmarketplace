@@ -36,7 +36,9 @@
 
 {if $nbProducts <= 0}
 	<p class="alert alert-warning">
+	    <span class="alert-content">
         {l s='Your shopping cart is empty.' mod='bankwire'}
+        </span>
     </p>
 {else}
     <form action="{$link->getModuleLink('bankwire', 'validation', [], true)|escape:'html':'UTF-8'}" method="post">

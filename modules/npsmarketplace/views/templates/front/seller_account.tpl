@@ -7,12 +7,16 @@
 <h1 class="page-heading bottom-indent">{l s='Shop Profile' mod='npsmarketplace'}</h1>
 {if $seller['account_state'] == 'requested'}
 <p class="alert alert-info">
+    <span class="alert-content">
     {l s='Your account is not activated. Please wait for contact with our administrator. Request has been sent on %s' sprintf=$seller['request_date'] mod='npsmarketplace'}
+    </span>
 </p>
 {/if}
 {if $seller['account_state'] == 'locked'}
 <p class="alert alert-warning">
+    <span class="alert-content">
     {l s='Your account has been locked.' mod='npsmarketplace'}
+    </span>
 </p>
 {/if}
 <div class="block-center" id="block-seller-account">

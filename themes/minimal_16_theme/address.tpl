@@ -26,6 +26,7 @@
 <div>
 	<h1 class="page-subheading">{l s='Your addresses'}</h1>
 	<p class="alert alert-info">
+	    <span class="alert-content">
 		{if isset($id_address) && (isset($smarty.post.alias) || isset($address->alias))}
 			{l s='Modify address'} 
 			{if isset($smarty.post.alias)}
@@ -36,6 +37,7 @@
 		{else}
 			{l s='To add a new address, please fill out the form below.'}
 		{/if}
+		</span>
 	</p>
 	{include file="$tpl_dir./errors.tpl"}
 	<form action="{$link->getPageLink('address', true)|escape:'html':'UTF-8'}" method="post" class="std" id="add_address">

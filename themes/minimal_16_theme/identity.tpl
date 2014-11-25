@@ -43,12 +43,16 @@
     
     {if isset($confirmation) && $confirmation}
         <p class="alert alert-success">
+            <span class="alert-content">
             {l s='Your personal information has been successfully updated.'}
             {if isset($pwd_changed)}<br />{l s='Your password has been sent to your email:'} {$email}{/if}
+            </span>
         </p>
     {else}
         <p class="alert alert-info">
+            <span class="alert-content">
             {l s='Please be sure to update your personal information if it has changed.'}
+            </span>
         </p>
         <form action="{$link->getPageLink('identity', true)|escape:'html':'UTF-8'}" method="post" class="std">
             <fieldset>

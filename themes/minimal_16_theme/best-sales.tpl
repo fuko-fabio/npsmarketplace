@@ -48,5 +48,5 @@
         </div>
 	</div>
 	{else}
-	<p class="alert alert-warning">{l s='No top sellers for the moment.'}</p>
+	<p class="alert alert-warning"><span class="alert-content">{l s='No top sellers for the moment.'}</span></p>
 {/if}

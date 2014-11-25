@@ -27,7 +27,7 @@
     {l s='Customer service'} - {if isset($customerThread) && $customerThread}{l s='Your reply'}{else}{l s='Contact us'}{/if}
 </h1>
 {if isset($confirmation)}
-	<p class="alert alert-success">{l s='Your message has been successfully sent to our team.'}</p>
+	<p class="alert alert-success"><span class="alert-content">{l s='Your message has been successfully sent to our team.'}</span></p>
 	<ul class="footer_links clearfix">
 		<li>
             <a class="btn btn-default button button-small" href="{$base_dir}">
@@ -38,7 +38,7 @@
         </li>
 	</ul>
 {elseif isset($alreadySent)}
-	<p class="alert alert-warning">{l s='Your message has already been sent.'}</p>
+	<p class="alert alert-warning"><span class="alert-content">{l s='Your message has already been sent.'}</span></p>
 	<ul class="footer_links clearfix">
 		<li>
             <a class="btn btn-default button button-small" href="{$base_dir}">

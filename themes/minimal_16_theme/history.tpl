@@ -33,7 +33,7 @@
 <h1 class="page-heading bottom-indent">{l s='Order history'}</h1>
 <p class="info-title">{l s='Here are the orders you\'ve placed since your account was created.'}</p>
 {if $slowValidation}
-	<p class="alert alert-warning">{l s='If you have just placed an order, it may take a few minutes for it to be validated. Please refresh this page if your order is missing.'}</p>
+	<p class="alert alert-warning"><span class="alert-content">{l s='If you have just placed an order, it may take a few minutes for it to be validated. Please refresh this page if your order is missing.'}</span></p>
 {/if}
 <div class="block-center" id="block-history">
 	{if $orders && count($orders)}
@@ -105,6 +105,6 @@
 		</table>
 		<div id="block-order-detail" class="unvisible">&nbsp;</div>
 	{else}
-		<p class="alert alert-warning">{l s='You have not placed any orders.'}</p>
+		<p class="alert alert-warning"><span class="alert-content">{l s='You have not placed any orders.'}</span></p>
 	{/if}
 </div>

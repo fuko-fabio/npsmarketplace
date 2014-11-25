@@ -5333,6 +5333,9 @@ sup {
     .alert ul li, .alert ol li {
       list-style-type: decimal;
       font-weight: normal; }
+  .alert .alert-content {
+    display: block;
+    margin-left: 25px; }
   .alert.alert-success {
     background: none;
     color: #48b151;

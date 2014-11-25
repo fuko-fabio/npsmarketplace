@@ -8,6 +8,8 @@
 
 <div class="block-center" id="block-account-activation-fail">
     <div class="alert alert-error">
+        <span class="alert-content">
         {l s='Error occured while processing activation request, please contact us to resolve your problem.' mod='npsmailactivation'}
+        </span>
     </div>
 </div>

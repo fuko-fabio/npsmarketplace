@@ -12,7 +12,7 @@
 {include file="$tpl_dir./errors.tpl"}
 
 <div class="alert alert-warning">
-    <p>{l s='Unable to finalize transaction. Payment has ben canceled.' mod='npsprzelewy24'}</p>
+    <p class="alert-content">{l s='Unable to finalize transaction. Payment has ben canceled.' mod='npsprzelewy24'}</p>
 </div>
 
 {if $is_guest}

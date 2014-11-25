@@ -28,7 +28,9 @@
 <h1 class="page-heading">{l s='My tickets'}</h1>
 {if isset($account_created)}
 	<p class="alert alert-success">
+	    <span class="alert-content">
 		{l s='Your account has been created.'}
+		</span>
 	</p>
 {/if}
 <div id="nps_tickets_block_account">
@@ -65,6 +67,6 @@
             {/foreach}
         </ul>
     {else}
-        <p class="alert alert-info">{l s='You have not bought tickets yet.'}</p>
+        <p class="alert alert-info"><span class="alert-content">{l s='You have not bought tickets yet.'}</span></p>
     {/if}
 </div>

@@ -58,7 +58,7 @@
 				{/foreach}
 			</div>
 			{else}
-			    <p class="alert alert-info">{l s='Currently there is no events available in my shop.' mod='npsmarketplace'}</p>
+			    <p class="alert alert-info"><span class="alert-content">{l s='Currently there is no events available in my shop.' mod='npsmarketplace'}</span></p>
 			{/if}
     	     <a href="{$shop_url}" class="pull-right shop"><span>Labs In</span> Town</a>
 		</div>

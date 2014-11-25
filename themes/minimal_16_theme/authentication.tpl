@@ -54,7 +54,7 @@
 			<form action="{$link->getPageLink('authentication', true)|escape:'html':'UTF-8'}" method="post" id="create-account_form" class="box">
 				<h3 class="page-subheading">{l s='Create an account'}</h3>
 				<div class="form_content clearfix">
-					<p class="alert alert-info">{l s='Please enter your email address to create an account.'}</p>
+					<p class="alert alert-info"><span class="alert-content">{l s='Please enter your email address to create an account.'}</span></p>
 					<div class="alert alert-danger" id="create_account_error" style="display:none"></div>
 					<div class="form-group">
 						<label for="email_create">{l s='Email address'}</label>
@@ -77,7 +77,7 @@
 			<form action="{$link->getPageLink('authentication', true)|escape:'html':'UTF-8'}" method="post" id="login_form" class="box">
 				<h3 class="page-subheading">{l s='Already registered?'}</h3>
 				<div class="form_content clearfix">
-                    <p class="alert alert-error npsfacebooklogin" style="display: none">{l s='Facebook log in rejected.'}</p>
+                    <p class="alert alert-error npsfacebooklogin" style="display: none"><span class="alert-content">{l s='Facebook log in rejected.'}</span></p>
 					<div class="form-group">
 						<label for="email">{l s='Email address'}</label>
 						<input class="is_required validate account_input form-control" data-validate="isEmail" type="text" id="email" name="email" value="{if isset($smarty.post.email)}{$smarty.post.email|stripslashes}{/if}" />

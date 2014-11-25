@@ -43,7 +43,9 @@
 	</div>
 {else}
 	<p class="alert alert-warning">
+	    <span class="alert-content">
 		{l s='We noticed a problem with your order. If you think this is an error, feel free to contact our' mod='bankwire'} 
 		<a href="{$link->getPageLink('contact', true)|escape:'html':'UTF-8'}">{l s='expert customer support team. ' mod='bankwire'}</a>.
+		</span>
 	</p>
 {/if}

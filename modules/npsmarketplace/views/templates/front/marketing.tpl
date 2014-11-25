@@ -11,8 +11,8 @@
 {include file="$tpl_dir./errors.tpl"}
 <div class="block-center" id="block-seller-marketing-view">
     <h1 class="page-heading bottom-indent">{l s='Marketing' mod='npsmarketplace'}</h1>
-    <p class="alert alert-error code-error" style="display: none">{l s='An error occurred while generating code. Try again or please contact customer service..' mod='npsmarketplace'}</p>
-    <p class="alert alert-info">{l s='Here you can generate code that you can paste on any page. Thanks to this code your events from our store will be visible to other pages.' mod='npsmarketplace'}</p>
+    <p class="alert alert-error code-error" style="display: none"><span class="alert-content">{l s='An error occurred while generating code. Try again or please contact customer service..' mod='npsmarketplace'}</span></p>
+    <p class="alert alert-info"><span class="alert-content">{l s='Here you can generate code that you can paste on any page. Thanks to this code your events from our store will be visible to other pages.' mod='npsmarketplace'}</span></p>
     <form class="marketing-code">
         <div class="row">
             <div class="form-group col-md-6">

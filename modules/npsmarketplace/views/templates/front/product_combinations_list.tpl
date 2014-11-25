@@ -34,6 +34,6 @@
         </table>
     </div>
     {else}
-        <p class="alert alert-info">{l s='No available terms for %s.' sprintf=$name mod='npsmarketplace'}</p>
+        <p class="alert alert-info"><span class="alert-content">{l s='No available terms for %s.' sprintf=$name mod='npsmarketplace'}</span></p>
     {/if}
 </div>

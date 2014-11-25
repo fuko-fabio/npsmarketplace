@@ -429,17 +429,21 @@
 	{/if}
 	{if isset($errors) && $errors}
 		<div class="alert alert-danger">
+		    <span class="alert-content">
 			<p>{if $errors|@count > 1}{l s='There are %d errors' sprintf=$errors|@count}{else}{l s='There is %d error' sprintf=$errors|@count}{/if}</p>
 			<ol>
 			{foreach from=$errors key=k item=error}
 				<li>{$error}</li>
 			{/foreach}
 			</ol>
+			</span>
 		</div>
 	{/if}
 {*	{if isset($message_confirmation) && $message_confirmation}
 	<p class="alert alert-success">
+	    <span class="alert-content">
 		{l s='Message successfully sent'}
+		</span>
 	</p>
 	{/if}
 	<form action="{$link->getPageLink('order-detail', true)|escape:'html':'UTF-8'}" method="post" class="std" id="sendOrderMessage">
@@ -464,6 +468,6 @@
 		</div>
 	</form>*}
 {else}
-<p class="alert alert-info"><i class="icon-info-sign"></i>{l s='You cannot return merchandise with a guest account'}</p>
+<p class="alert alert-info"><span class="alert-content"><i class="icon-info-sign"></i>{l s='You cannot return merchandise with a guest account'}</span></p>
 {/if}
 {/if}
