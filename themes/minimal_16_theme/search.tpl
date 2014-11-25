@@ -48,6 +48,7 @@ class="page-heading {if !isset($instant_search) || (isset($instant_search) && !$
 {include file="$tpl_dir./errors.tpl"}
 {if !$nbProducts}
 	<p class="alert alert-warning">
+	    <span class="alert-content">
 		{if isset($search_query) && $search_query}
 			{l s='No results were found for your search'}&nbsp;"{if isset($search_query)}{$search_query|escape:'html':'UTF-8'}{/if}"
 		{elseif isset($search_tag) && $search_tag}
@@ -55,11 +56,14 @@ class="page-heading {if !isset($instant_search) || (isset($instant_search) && !$
 		{else}
 			{l s='Please enter a search keyword'}
 		{/if}
+		</span>
 	</p>
 {else}
 	{if isset($instant_search) && $instant_search}
         <p class="alert alert-info">
+            <span class="alert-content">
             {if $nbProducts == 1}{l s='%d result has been found.' sprintf=$nbProducts|intval}{else}{l s='%d results have been found.' sprintf=$nbProducts|intval}{/if}
+            </span>
         </p>
     {/if}
     <div class="content_sortPagiBar">

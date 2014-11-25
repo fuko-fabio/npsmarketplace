@@ -1,7 +1,9 @@
 <fieldset>
     {if $edit_product == 1}
     <div class="alert alert-info">
+        <span class="alert-content">
         <a class="alert-link" href="{$new_tem_link}">{l s='Click here' mod='npsmarketplace'}</a> {l s='to add new event term' mod='npsprzelewy24'}
+        </span>
     </div>
     {/if}
     <div class="box">
@@ -67,7 +69,7 @@
         <h3 class="page-heading ad-attributes">{l s='Advertisment' mod='npsmarketplace'}</h3>
 
         <div class="carnet-attributes">
-            <p class="alert alert-info">{l s='You will not be able to change the type of carnet and the specific values for selection.' mod='npsmarketplace'}</p>
+            <p class="alert alert-info"><span class="alert-content">{l s='You will not be able to change the type of carnet and the specific values for selection.' mod='npsmarketplace'}</span></p>
             <label>{l s='Carnet type' mod='npsmarketplace'}</label>
             <div>
                 <div class="radio-inline">

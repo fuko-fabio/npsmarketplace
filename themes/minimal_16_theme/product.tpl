@@ -431,7 +431,7 @@
                                 <h2 class="title">{l s='Select term'}</h2>
 
                                 <div class="select_combination_form_content">
-                                    <p class="alert alert-info">{l s='Please select event term from list below'}</p>
+                                    <p class="alert alert-info"><span class="alert-content">{l s='Please select event term from list below'}</span></p>
                                     <div class="form_container">
                                         <ul>
                                         {foreach from=$combinations key=key item=combination}

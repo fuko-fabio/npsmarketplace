@@ -47,6 +47,6 @@
         </table>
     </div>
     {else}
-        <p class="alert alert-info">{l s='You have no orders.' mod='npsmarketplace'}</p>
+        <p class="alert alert-info"><span class="alert-content">{l s='You have no orders.' mod='npsmarketplace'}</span></p>
     {/if}
 </div>

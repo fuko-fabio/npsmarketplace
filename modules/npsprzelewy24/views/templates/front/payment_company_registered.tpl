@@ -9,12 +9,14 @@
 
     {if !empty($register_link)}
         <div class="alert alert-success">
+            <span class="alert-content">
             {l s='Registration require confirmation' mod='npsprzelewy24'} <a class="alert-link" target="_blank" href="{$register_link}">{l s='Click here' mod='npsprzelewy24'}</a> {l s='to finalize registration' mod='npsprzelewy24'}
+        </span>
         </div>
     {else}
         {if !isset($errors) || empty($errors)}
         <div class="alert alert-info">
-            <p>{l s='Company has been registered in Przelewy24 service on %s' sprintf=$company->registration_date mod='npsprzelewy24'}</p>
+            <p class="alert-content">{l s='Company has been registered in Przelewy24 service on %s' sprintf=$company->registration_date mod='npsprzelewy24'}</p>
         </div>
         {/if}
     {/if}

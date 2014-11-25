@@ -80,7 +80,7 @@
 		</tbody>
 	</table>
 {else}
-	<p class="alert alert-warning">{l s='You do not have any vouchers.'}</p>
+	<p class="alert alert-warning"><span class="alert-content">{l s='You do not have any vouchers.'}</span></p>
 {/if}
 
 <ul class="footer_links clearfix">

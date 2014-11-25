@@ -12,10 +12,10 @@
 {include file="$tpl_dir./errors.tpl"}
 
 {if isset($error)}
-    <p class="alert alert-danger">{$error.message}</p>
+    <p class="alert alert-danger"><span class="alert-content">{$error.message}</span></p>
     <p><b>{l s='Please try to contact the customer support' mod='npsprzelewy24'}</b></p>
 {else}
-    <p class="alert alert-success">{l s='Transaction finalized successfully.' mod='npsprzelewy24'}</p>
+    <p class="alert alert-success"><span class="alert-content">{l s='Transaction finalized successfully.' mod='npsprzelewy24'}</span></p>
 {/if}
 {if isset($order)}
     <p>{l s='Total of the transaction:' mod='npsprzelewy24'} <span class="bold">{$price|escape:'htmlall':'UTF-8'}</span></p>

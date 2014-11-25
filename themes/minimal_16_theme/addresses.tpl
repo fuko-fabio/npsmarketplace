@@ -29,7 +29,7 @@
 <p>{l s='Please configure your default billing and delivery addresses when placing an order. You may also add additional addresses, which can be useful for sending gifts or receiving an order at your office.'}</p>
 {if isset($multipleAddresses) && $multipleAddresses}
 <div class="addresses">
-	<p class="alert alert-info">{l s='Be sure to update your personal information if it has changed.'}</p>
+	<p class="alert alert-info"><span class="alert-content">{l s='Be sure to update your personal information if it has changed.'}</span></p>
 	{assign var="adrs_style" value=$addresses_style}
 	<div class="bloc_adresses row">
 	{foreach from=$multipleAddresses item=address name=myLoop}
@@ -62,5 +62,5 @@
 	</div>
 </div>
 {else}
-	<p class="alert alert-warning">{l s='No addresses are available.'}&nbsp;<a href="{$link->getPageLink('address', true)|escape:'html':'UTF-8'}">{l s='Add a new address'}</a></p>
+	<p class="alert alert-warning"><span class="alert-content">{l s='No addresses are available.'}&nbsp;<a href="{$link->getPageLink('address', true)|escape:'html':'UTF-8'}">{l s='Add a new address'}</a></span></p>
 {/if}

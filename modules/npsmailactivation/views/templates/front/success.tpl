@@ -8,7 +8,9 @@
 
 <div class="block-center" id="block-account-activation">
     <div class="alert alert-success">
-    {l s='Your account was activated successfully.' mod='npsmailactivation'}
+        <span class="alert-content">
+        {l s='Your account was activated successfully.' mod='npsmailactivation'}
+        </span>
     </div>
     <h3><a href="{$link->getPageLink('my-account', true)|escape:'html':'UTF-8'}"> {l s='Sign in' mod='npsmailactivation'} </a></h3>
 </div>

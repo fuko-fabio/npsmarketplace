@@ -36,7 +36,7 @@
 			<div id="opc_delivery_methods" class="opc-main-block">
 				<div id="opc_delivery_methods-overlay" class="opc-overlay" style="display: none;"></div>
 {/if}
-<p class="alert alert-error error-terms-of-service" style="display: none;">{l s='You must agree to the terms of service before continuing.'}</p>
+<p class="alert alert-error error-terms-of-service" style="display: none;"><span class="alert-content">{l s='You must agree to the terms of service before continuing.'}</span></p>
 
 <div class="order_carrier_content box">
 	{if isset($virtual_cart) && $virtual_cart}
@@ -80,7 +80,7 @@
 			{/if}
 		</div>
 		{if isset($isVirtualCart) && $isVirtualCart}
-			<p class="alert alert-warning">{l s='No carrier is needed for this order.'}</p>
+			<p class="alert alert-warning"><span class="alert-content">{l s='No carrier is needed for this order.'}</span></p>
 		{else}
 			{if $recyclablePackAllowed}
 				<div class="checkbox">
@@ -219,6 +219,7 @@
 						</div>
 						{foreachelse}
 							<p class="alert alert-warning" id="noCarrierWarning">
+							    <span class="alert-content">
 								{foreach $cart->getDeliveryAddressesWithoutCarriers(true) as $address}
 									{if empty($address->alias)}
 										{l s='No carriers available.'}
@@ -231,6 +232,7 @@
 								{foreachelse}
 									{l s='No carriers available.'}
 								{/foreach}
+								</span>
 							</p>
 						{/foreach}
 					{/if}

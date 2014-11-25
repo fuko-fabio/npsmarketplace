@@ -48,5 +48,5 @@
         </div>
 	</div>
 	{else}
-	<p class="alert alert-warning">{l s='No new products.'}</p>
+	<p class="alert alert-info"><span class="alert-content">{l s='No new products.'}</span></p>
 {/if}

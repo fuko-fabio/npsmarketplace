@@ -21,6 +21,6 @@
         {/foreach}
     </div>
     {else}
-    <p class="alert alert-info">{l s='No sellers available' mod='npsmarketplace'}</p>
+    <p class="alert alert-info"><span class="alert-content">{l s='No sellers available' mod='npsmarketplace'}</span></p>
     {/if}
 </div>

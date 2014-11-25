@@ -50,7 +50,7 @@
 		    </div>
 		</div>
 	{else}
-    	<p class="alert alert-info">{l s='No best sellers' mod='npsbestsellers'}</p>
+    	<p class="alert alert-info"><span class="alert-content">{l s='No best sellers' mod='npsbestsellers'}</span></p>
     {/if}
 </div>
 <!-- /MODULE Home Block best sellers -->

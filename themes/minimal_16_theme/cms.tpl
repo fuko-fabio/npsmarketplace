@@ -66,7 +66,9 @@
 	</div>
 {else}
 	<div class="alert alert-danger">
+	    <span class="alert-content">
 		{l s='This page does not exist.'}
+		</span>
 	</div>
 {/if}
 <br />

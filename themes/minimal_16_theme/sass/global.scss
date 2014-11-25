@@ -155,6 +155,10 @@ sup {
       font-weight: normal;
     }
   }
+  .alert-content {
+    display: block;
+    margin-left: 25px;
+  }
   &.alert-success {
     background: none;
     color: $state-success-border;

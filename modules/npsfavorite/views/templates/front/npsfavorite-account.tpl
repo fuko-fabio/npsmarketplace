@@ -42,6 +42,6 @@
 			{/foreach}
 		</div>
 	{else}
-		<p class="alert alert-info">{l s='No favorite products have been determined just yet. ' mod='npsfavorite'}</p>
+		<p class="alert alert-info"><span class="alert-content">{l s='No favorite products have been determined just yet. ' mod='npsfavorite'}</span></p>
 	{/if}
 </div>
