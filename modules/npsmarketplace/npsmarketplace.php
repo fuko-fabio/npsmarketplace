@@ -114,7 +114,7 @@ class NpsMarketplace extends Module {
         $id_town = $this->context->cookie->main_town;
         $t = new Town($id_town);
         $this->smarty->assign(array(
-            'town_name' => $id_town == 0 ? $this->l('All') : $t->name[$this->context->language->id],
+            'town_name' => $id_town != 0 ? $t->name[$this->context->language->id] : null,
         ));
 
         return $this->display(__FILE__, 'views/templates/hook/top.tpl');
