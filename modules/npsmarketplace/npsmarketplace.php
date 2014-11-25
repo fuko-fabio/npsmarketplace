@@ -630,8 +630,6 @@ class NpsMarketplace extends Module {
             `'._DB_PREFIX_.'seller_lang`,
             `'._DB_PREFIX_.'seller_product`,
             `'._DB_PREFIX_.'product_attribute_expiry_date`,
-            `'._DB_PREFIX_.'product_video`,
-            `'._DB_PREFIX_.'product_location`,
             `'._DB_PREFIX_.'town`,
             `'._DB_PREFIX_.'town_lang`,
             `'._DB_PREFIX_.'district`')

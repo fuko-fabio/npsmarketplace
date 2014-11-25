@@ -237,6 +237,8 @@
 .nps-main-town {
   font-weight: 700;
   font-size: 22px;
-  margin-left: 150px;
+  position: absolute;
+  top: 90px;
+  left: 110px;
   font-family: "Hammersmith One", sans-serif;
   color: #ffaa00; }
