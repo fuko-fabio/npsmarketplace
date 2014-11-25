@@ -5314,7 +5314,7 @@ p.info-account {
 
 sup {
   top: -2px;
-  color: red;
+  color: #cc1010;
   font-size: 14px; }
 
 .dark {
@@ -5389,7 +5389,7 @@ label {
   color: #333; }
   label.required:before {
     content: "*";
-    color: red;
+    color: #cc1010;
     font-size: 14px;
     position: relative;
     line-height: 12px; }
@@ -7684,3 +7684,10 @@ div.star.star_hover:after {
   .dropdown .dropdown-menu li a:hover {
     background: #ffaa00;
     color: #333; }
+
+.img-thumbnail, .thumbnail, .thumbnail {
+  padding: 0; }
+
+.box .page-heading {
+  margin-top: 0;
+  padding: 0px 0px 5px 0px; }

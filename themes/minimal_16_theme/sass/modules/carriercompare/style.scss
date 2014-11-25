@@ -56,7 +56,7 @@
 	}
 }
 #compare_shipping ul#carriercompare_errors_list {
-	color: red;
+	color: $primary-red-color;
 }
 #compare_shipping_form { padding-bottom:20px;}
 #compare_shipping ul#carriercompare_errors_list li {

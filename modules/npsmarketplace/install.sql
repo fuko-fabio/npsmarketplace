@@ -56,18 +56,9 @@ CREATE TABLE IF NOT EXISTS `PREFIX_district` (
 
 CREATE TABLE IF NOT EXISTS `PREFIX_product_attribute_expiry_date` (
   `id_expiry` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `id_product_attribute` int(10) unsigned NOT NULL,
+  `id_product_attribute` int(10) unsigned NULL,
+  `id_product` int(10) unsigned NULL,
   `expiry_date` datetime,
   PRIMARY KEY (`id_expiry`),
   KEY `id_product_attribute` (`id_product_attribute`)
-) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `PREFIX_product_extras` (
-  `id_product` int(10) unsigned NOT NULL,
-  `type` tinyint(1) NOT NULL,
-  `entries` int(10) unsigned,
-  `lat` decimal(9,6) NOT NULL,
-  `lng` decimal(9,6) NOT NULL,
-  `url` varchar(1024),
-  KEY `id_product` (`id_product`)
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;

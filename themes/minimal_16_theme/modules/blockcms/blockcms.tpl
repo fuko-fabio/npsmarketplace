@@ -136,7 +136,7 @@
     </section>
     <section class="bottom-eu">
         <img src="{$img_dir}kapital_ludzki.png"/>
-        <img class="pull-right" src="{$img_dir}unia.gif"/>
+        <img class="pull-right" src="{$img_dir}unia.png"/>
     </section>
     {if $display_poweredby}
         <section class="bottom-footer">

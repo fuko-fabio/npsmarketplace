@@ -6,6 +6,7 @@
 
 class ProductAttributeExpiryDate extends ObjectModel {
 
+    public $id_product;
     public $id_product_attribute;
     public $expiry_date;
 
@@ -16,14 +17,18 @@ class ProductAttributeExpiryDate extends ObjectModel {
         'table' => 'product_attribute_expiry_date',
         'primary' => 'id_expiry',
         'fields' => array(
-            'id_product_attribute' =>  array('type' => self::TYPE_INT,    'validate' => 'isUnsignedId', 'required' => true),
-            'expiry_date' =>            array('type' => self::TYPE_STRING, 'validate' => 'isDateFormat', 'required' => true),
+            'id_product' =>            array('type' => self::TYPE_INT,    'validate' => 'isUnsignedId'),
+            'id_product_attribute' =>  array('type' => self::TYPE_INT,    'validate' => 'isUnsignedId'),
+            'expiry_date' =>           array('type' => self::TYPE_STRING, 'validate' => 'isDateFormat', 'required' => true),
         ),
     );
 
+    public static function deleteByProductId($id_product) {
+        return Db::getInstance()->delete('product_attribute_expiry_date', 'id_product = '.(int)$id_product);
+    }
+
     public static function deleteByProductAttribute($id_product_attribute) {
-        $sql = 'DELETE FROM `'._DB_PREFIX_.'product_attribute_expiry_date` WHERE `id_product_attribute` = '.$id_product_attribute;
-        return Db::getInstance()->execute($sql);
+        return Db::getInstance()->delete('product_attribute_expiry_date', 'id_product_attribute = '.(int)$id_product_attribute);
     }
 }
 

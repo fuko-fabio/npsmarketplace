@@ -370,7 +370,7 @@ class NpsMarketplace extends Module {
             $extras = Product::getExtras($id_product);
             $this->context->smarty->assign(array(
                 'show_regulations' => $seller->regulations_active,
-                'video_url' => $extras['url']
+                'video_url' => $extras['video']
             ));
             return ($this->display(__FILE__, '/tab.tpl'));
         }
@@ -400,7 +400,7 @@ class NpsMarketplace extends Module {
                 'regulations' => $seller->regulations,
                 'show_regulations' => $seller->regulations_active,
                 'product_address' => isset($address) ? $address->value[$lang_id] : '',
-                'video_url' => $extras['url']
+                'video_url' => $extras['video']
             ));
             return ($this->display(__FILE__, '/tab_content.tpl'));
         }
@@ -624,7 +624,10 @@ class NpsMarketplace extends Module {
             `'._DB_PREFIX_.'town_lang`,
             `'._DB_PREFIX_.'district`')
             && Db::getInstance()->execute('ALTER TABLE `'._DB_PREFIX_.'image_type` DROP `sellers`')
-            && Db::getInstance()->execute('ALTER TABLE `'._DB_PREFIX_.'product` DROP `type`');
+            && Db::getInstance()->execute('ALTER TABLE `'._DB_PREFIX_.'product` DROP `type`')
+            && Db::getInstance()->execute('ALTER TABLE `'._DB_PREFIX_.'product` DROP `video`')
+            && Db::getInstance()->execute('ALTER TABLE `'._DB_PREFIX_.'product` DROP `lat`')
+            && Db::getInstance()->execute('ALTER TABLE `'._DB_PREFIX_.'product` DROP `lng`');
     }
 
     private function _alterTables() {
@@ -641,11 +644,18 @@ class NpsMarketplace extends Module {
         $res = $res && Db::getInstance()->Execute($sql);
 
         $sql = 'ALTER TABLE  `'._DB_PREFIX_.'product` ADD  `type` TINYINT(1) NOT NULL AFTER  `is_virtual`';
-        $res = Db::getInstance()->Execute($sql);
+        $res = $res && Db::getInstance()->Execute($sql);
+
+        $sql = 'ALTER TABLE  `'._DB_PREFIX_.'product` ADD  `video` text NULL AFTER  `type`';
+        $res = $res && Db::getInstance()->Execute($sql);
         
-        return $res;
+        $sql = 'ALTER TABLE  `'._DB_PREFIX_.'product` ADD  `lat` decimal(9,6) NULL AFTER  `video`';
+        $res = $res && Db::getInstance()->Execute($sql);
+
+        $sql = 'ALTER TABLE  `'._DB_PREFIX_.'product` ADD  `lng` decimal(9,6) NULL AFTER  `lat`';
+        return $res && Db::getInstance()->Execute($sql);
     }
-    
+
     private function _createFeatures() {
         $names = array('Town', 'District', 'Address', 'Entries', 'From', 'To');
         foreach ($names as $name) {

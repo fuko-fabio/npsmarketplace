@@ -22,7 +22,15 @@ class Product extends ProductCore
     }
 
     public function deleteExtras() {
-        return Db::getInstance()->delete('product_extras', 'id_product = '.(int)$this->id);
+        $ids = Product::getProductAttributesIds($this->id);
+        if (!empty($ids))
+            foreach ($ids as $key => $value) {
+                ProductAttributeExpiryDate::deleteByProductAttribute($value);
+            }
+        else {
+            ProductAttributeExpiryDate::deleteByProductId($this->id);
+        }
+        return true;
     }
 
     public function newEventCombination($date, $time, $quantity, $expiry_date, $id_shop = null) {
@@ -278,29 +286,19 @@ class Product extends ProductCore
     public static function getExtras($id_product) {
         if (!isset($id_product))
             return null;
-        $sql = 'SELECT *
-                FROM `'._DB_PREFIX_.'product_extras`
+        $sql = 'SELECT `type`, `video`, `lat`, `lng`
+                FROM `'._DB_PREFIX_.'product`
                 WHERE `id_product` = '.$id_product;
         return Db::getInstance()->getRow($sql);
     }
 
     public function persistExtraInfo($type, $lat, $lng, $video_url) {
-        if(!Db::getInstance()->getRow('SELECT `id_product` FROM '._DB_PREFIX_.'product_extras WHERE `id_product` = '.$this->id)) {
-            return Db::getInstance()->insert('product_extras', array(
-                'id_product' => $this->id,
-                'type' => $type,
-                'lng' => $lng,
-                'lat' => $lat,
-                'url' => $video_url
-            ), 'id_product = '.$this->id);
-        } else {
-            return Db::getInstance()->update('product_extras', array(
-                'id_product' => $this->id,
-                'lng' => $lng,
-                'lat' => $lat,
-                'url' => $video_url
-            ), 'id_product = '.$this->id);
-        }
+        return Db::getInstance()->update('product', array(
+            'type' => $type,
+            'lng' => $lng,
+            'lat' => $lat,
+            'video' => $video_url
+        ), 'id_product = '.$this->id);
     }
 
     public static function removeSpecialPrice($id_product) {

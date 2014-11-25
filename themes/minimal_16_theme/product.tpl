@@ -354,7 +354,7 @@
         <!-- end content_prices -->
         <div class="product_attributes clearfix">
             <!-- quantity wanted -->
-            {if !$PS_CATALOG_MODE}
+            {if !$PS_CATALOG_MODE && $extras.type != 2}
                 <div id="quantity_wanted_p"{if (!$allow_oosp && $product->quantity <= 0) || !$product->available_for_order || $PS_CATALOG_MODE} style="display: none;"{/if}>
                     <label>{l s='Quantity:'}</label>
                     <div class="qty-inputs">

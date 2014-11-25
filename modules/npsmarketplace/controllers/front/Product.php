@@ -38,6 +38,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
         $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/bootstrap-datetimepicker.min.js');
         $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/tinymce/tinymce.min.js');
         $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/tinymce_init.js');
+        $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/product.js');
 
         $this->addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/dropzone.css');
         $this->addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/bootstrap-datetimepicker.min.css');
@@ -60,11 +61,14 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             $town = trim(Tools::getValue('town'));
             $district = trim(Tools::getValue('district'));
             $address = trim(Tools::getValue('address'));
-            $video_url = trim(Tools::getValue('video_url'));
+            $video_source = trim(Tools::getValue('video_url'));
             $lat = trim(Tools::getValue('lat'));
             $lng = trim(Tools::getValue('lng'));
             $reference = trim(Tools::getValue('reference'));
             $type = (int)Tools::getValue('product_type');
+            $entries = Tools::getValue('entries');
+            $date_from = Tools::getValue('from');
+            $date_to = Tools::getValue('to');
             $categories = array();
             $link_rewrite = array();
             $images = array();
@@ -78,9 +82,20 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             if(isset($_POST['removed_images']))
                 $removed_images = $_POST['removed_images'];
 
+            if($type == 2) {
+                $quantity = 1;
+            }
+
             if(Tools::getValue('form_token') != $this->context->cookie->__get('form_token')) {
-                $this -> errors[] = $nps_instance->l('This form has been already saved. Go to your profile page and check saved products.');
+                $this -> errors[] = $nps_instance->l('This form has been already saved. Go to your profile page and check list of events.');
                 return;
+            }
+
+            if (substr($video_source, 0, 7 ) === "<iframe") {
+                preg_match('/src="([^"]+)"/', $video_source, $match);
+                $video_url = $match[1];
+            } else {
+                $video_url = $video_source;
             }
 
             if (empty($name[(int)$this->context->language->id]))
@@ -106,16 +121,17 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                 else if (!Validate::isDateFormat($expiry_date))
                     $this -> errors[] = $nps_instance->l('Invalid expiry date format');
     
-                if (empty($date))
-                    $this -> errors[] = $nps_instance->l('Product date is required');
-                else if (!Validate::isDateFormat($date))
-                    $this -> errors[] = $nps_instance->l('Invalid date format');
-    
-                if (empty($time))
-                    $this -> errors[] = $nps_instance->l('Product time is required');
-                else if (!Validate::isTime($time))
-                    $this -> errors[] = $nps_instance->l('Invalid date format');
-    
+                if ($type != 1) {
+                    if(empty($date))
+                        $this -> errors[] = $nps_instance->l('Product date is required');
+                    else if (!Validate::isDateFormat($date))
+                        $this -> errors[] = $nps_instance->l('Invalid date format');
+        
+                    if (empty($time))
+                        $this -> errors[] = $nps_instance->l('Product time is required');
+                    else if (!Validate::isTime($time))
+                        $this -> errors[] = $nps_instance->l('Invalid time format');
+                }
                 if (empty($quantity))
                     $this -> errors[] = $nps_instance->l('Product quantity is required');
                 else if (!Validate::isInt($quantity))
@@ -173,15 +189,25 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                 } else {
                     $this->context->cookie->__unset('form_token');
                     StockAvailable::setProductOutOfStock($this->_product->id, 0);
-                    $this->saveFeatures($town, $district, $address);
+                    $this->saveTicketFeatures($town, $district, $address);
+
                     $this->_product->updateCategories($categories);
                     if(empty($current_id_product)) {
-                        $this -> _product->newEventCombination($date, $time, (int)$quantity, $expiry_date, $this->context->shop->id);
+                        if ($type == 0 || $type == 2)
+                            $this->_product->newEventCombination($date, $time, (int)$quantity, $expiry_date, $this->context->shop->id);
+                        else if ($type == 1) {
+                            $this->saveCarnetFeatures($entries, $date_from, $date_to);
+                            StockAvailable::setQuantity((int) $this->_product->id, null, $quantity);
+                            $expDate = new ProductAttributeExpiryDate();
+                            $expDate->id_product = $this->_product->id;
+                            $expDate->expiry_date = $expiry_date;
+                            $expDate->save();
+                        }
                         $this->_seller->assignProduct($this->_product->id);
                     }
-                    $this->_product->persistExtraInfo($type, $lat, $lng, $video_url);
                     $this->saveProductImages($images);
                     $this->removeProductImages($removed_images, $current_id_product);
+                    $this->_product->persistExtraInfo($type, $lat, $lng, $video_url);
                     Tools::redirect($this->context->link->getModuleLink('npsmarketplace', 'ProductsList'));
                 }
             }
@@ -272,7 +298,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                 $tpl_product['type'] = $extras['type'];
                 $tpl_product['lat'] = $extras['lat'];
                 $tpl_product['lng'] = $extras['lng'];
-                $tpl_product['video_url'] = $extras['url'];
+                $tpl_product['video_url'] = $extras['video'];
             }
             
         }
@@ -313,7 +339,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
         return Db::getInstance()->ExecuteS('SELECT `name` from '._DB_PREFIX_.'district');
     }
 
-    private function saveFeatures($town, $district, $address) {
+    private function saveTicketFeatures($town, $district, $address) {
         $feature_id = Configuration::get('NPS_FEATURE_TOWN_ID');
         Product::addFeatureProductImport($this->_product->id, $feature_id, $town);
 
@@ -325,6 +351,23 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
         $feature_value_id = FeatureValue::addFeatureValueImport($feature_id, $address, $this->context->language->id, true);
         Product::addFeatureProductImport($this->_product->id, $feature_id, $feature_value_id);
 
+        return true;
+    }
+
+    private function saveCarnetFeatures($entries, $date_from, $date_to) {
+        if (isset($entries) && !empty($entries)) {
+            $feature_id = Configuration::get('NPS_FEATURE_ENTRIES_ID');
+            $feature_value_id = FeatureValue::addFeatureValueImport($feature_id, $entries, $this->context->language->id, true);
+            Product::addFeatureProductImport($this->_product->id, $feature_id, $feature_value_id);
+        } else if (isset($date_from) && !empty($date_from) && isset($date_to) && !empty($date_to)) {
+            $feature_id = Configuration::get('NPS_FEATURE_FROM_ID');
+            $feature_value_id = FeatureValue::addFeatureValueImport($feature_id, $date_from, $this->context->language->id, true);
+            Product::addFeatureProductImport($this->_product->id, $feature_id, $feature_value_id);
+
+            $feature_id = Configuration::get('NPS_FEATURE_TO_ID');
+            $feature_value_id = FeatureValue::addFeatureValueImport($feature_id, $date_from, $this->context->language->id, true);
+            Product::addFeatureProductImport($this->_product->id, $feature_id, $feature_value_id);
+        }
         return true;
     }
 

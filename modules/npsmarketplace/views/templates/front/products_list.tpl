@@ -103,12 +103,14 @@ function removePriceReduction(id_product) {
                         {/if}
                     </td>
                     <td>
-                        {if $product.type == 0}
-                            {l s='Ticket' mod='npsmarketplace'}
-                        {else if $product.type == 1}
-                            {l s='Carnet' mod='npsmarketplace'}
-                        {else if $product.type == 2}
-                            {l s='Ad' mod='npsmarketplace'}
+                        {if isset($product.type)}
+                            {if $product.type == 0}
+                                {l s='Ticket' mod='npsmarketplace'}
+                            {else if $product.type == 1}
+                                {l s='Carnet' mod='npsmarketplace'}
+                            {else if $product.type == 2}
+                                {l s='Ad' mod='npsmarketplace'}
+                            {/if}
                         {/if}
                     </td>
                     <td>

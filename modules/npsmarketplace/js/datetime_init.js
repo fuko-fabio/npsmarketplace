@@ -31,8 +31,32 @@ $(document).ready(function(){
         $('#availableDatePicker').datetimepicker('hide');
     });
 
-    $('#available_date_input').on('click', function() {
+    $('#availableDatePicker').on('click', function() {
         $('#availableDatePicker').datetimepicker('show');
+    });
+
+    $('#fromDatePicker').datetimepicker({
+        pickTime: false
+    });
+
+    $('#fromDatePicker').on('changeDate', function(e) {
+        $('#fromDatePicker').datetimepicker('hide');
+    });
+
+    $('#fromDatePicker').on('click', function() {
+        $('#fromDatePicker').datetimepicker('show');
+    });
+
+    $('#toDatePicker').datetimepicker({
+        pickTime: false
+    });
+
+    $('#toDatePicker').on('changeDate', function(e) {
+        $('#toDatePicker').datetimepicker('hide');
+    });
+
+    $('#toDatePicker').on('click', function() {
+        $('#toDatePicker').datetimepicker('show');
     });
 });
 
