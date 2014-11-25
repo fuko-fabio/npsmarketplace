@@ -3,7 +3,7 @@
 	<name>npscalendar</name>
 	<displayName><![CDATA[nps Home page events calendar]]></displayName>
 	<version><![CDATA[1]]></version>
-	<description><![CDATA[Adds calendar with current events on home page]]></description>
+	<description><![CDATA[Dodaje kalendarz na stronie gł&oacute;wnej z wydarzeniami]]></description>
 	<author><![CDATA[Norbert Pabian]]></author>
 	<tab><![CDATA[search_filter]]></tab>
 	<is_configurable>1</is_configurable>
