@@ -183,7 +183,7 @@
                 </p>
                 <div class="form-group">
                     <button type="submit" name="submitIdentity" class="btn btn-default button button-medium pull-right">
-                        <span>{l s='Save'}<i class="icon-save right"></i></span>
+                        <span>{l s='Save'} <i class="icon-save right"></i></span>
                     </button>
                 </div>
             </fieldset>

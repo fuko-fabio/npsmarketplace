@@ -1,7 +1,7 @@
-<!--
-    @author Norbert Pabian <norbert.pabian@gmail.com>
-    @copyright 2014 npsoftware
--->
+{*
+*  @author Norbert Pabian <norbert.pabian@gmail.com>
+*  @copyright 2014 npsoftware
+*}
 {addJsDefL name=npsAjaxUrl}{$nps_ajax_url}{/addJsDefL}
 <script>
 $(document).ready(function(){

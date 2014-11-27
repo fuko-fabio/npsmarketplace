@@ -1,0 +1,41 @@
+@import "compass";
+@import "theme_variables";
+
+.nps-facebook-login {
+  .dropdown {
+    border: none;
+    background: none;
+
+    .head-item {
+      color: $light-text-color;
+      &:after {
+        content: "\f0d7";
+        font-family: $font-icon;
+        font-size: 18px;
+        line-height: 18px;
+        vertical-align: -2px;
+        padding-left: 5px;
+      }
+      &.login:after {
+        content: '';
+      }
+
+      &:hover {
+        color:$primary-color;
+        background: none;
+      }
+    }
+
+    &.open {
+      a {
+        background: none;
+      }
+    }
+  }
+}
+
+.nps-facebook-login-btn {
+  color: $light-text-color !important;
+  background: $fb-color !important;
+  padding: 9px;
+}

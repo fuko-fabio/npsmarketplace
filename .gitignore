@@ -33,6 +33,7 @@
 !/override/classes
 /override/classes/*
 !/override/classes/Category.php
+!/override/classes/Customer.php
 !/override/classes/Product.php
 !/override/classes/Validate.php
 !/override/classes/Search.php
@@ -71,6 +72,7 @@
 !/tools
 /tools/*
 !/tools/dompdf
+!/tools/facebook_sdk
 
 !/js
 /js/*

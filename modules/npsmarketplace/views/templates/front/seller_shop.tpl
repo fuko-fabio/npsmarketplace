@@ -1,3 +1,7 @@
+{*
+*  @author Norbert Pabian <norbert.pabian@gmail.com>
+*  @copyright 2014 npsoftware
+*}
 {capture name=path}
 <span class="navigation-pipe">{$navigationPipe}</span>
 <span class="navigation_page">{l s='Shop %s' mod='npsprzelewy24' sprintf=$seller['name']|escape:'html':'UTF-8'}</span>

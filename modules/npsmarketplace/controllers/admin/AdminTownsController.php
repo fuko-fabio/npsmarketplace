@@ -49,12 +49,35 @@ class AdminTownsController extends AdminController
                 'orderby' => false,
                 'filter_key' => 'a!active'
             ),
+            'default' => array(
+                'title' => $this->l('Default'),
+                'align' => 'text-center',
+                'type' => 'bool',
+                'callback' => 'printIcon',
+                'orderby' => false
+            ),
         );
 
         $this->shopLinkType = 'shop';
         $this->shopShareDatas = Shop::SHARE_CUSTOMER;
 
         parent::__construct();
+    }
+
+    public function printIcon($value, $town) {
+        return '<a class="list-action-enable '.($value ? 'action-enabled' : 'action-disabled').'" href="index.php?tab=AdminTowns&id_town='
+            .(int)$town['id_town'].'&changeDefaultVal&token='.Tools::getAdminTokenLite('AdminTowns').'">
+                '.($value ? '<i class="icon-check"></i>' : '<i class="icon-remove"></i>').
+            '</a>';
+    }
+
+    public function processChangeDefaultVal() {
+        $town = new Town($this->id_object);
+        if (!Validate::isLoadedObject($town))
+            $this->errors[] = Tools::displayError('An error occurred while updating town information.');
+        $town->default = $town->default ? 0 : 1;
+        if (!$town->update())
+            $this->errors[] = Tools::displayError('An error occurred while updating town information.');
     }
 
     public function initToolbarTitle() {
@@ -70,6 +93,17 @@ class AdminTownsController extends AdminController
                 if (($town = $this->loadObject(true)) && Validate::isLoadedObject($town))
                     $this->toolbar_title[] = sprintf($this->l('Editing District: %s'), Tools::substr($town->name, 0, 1));
                 break;
+        }
+    }
+
+    public function initProcess() {
+        parent::initProcess();
+
+        if (Tools::isSubmit('changeDefaultVal') && $this->id_object) {
+            if ($this->tabAccess['edit'] === '1')
+                $this->action = 'change_default_val';
+            else
+                $this->errors[] = Tools::displayError('You do not have permission to edit this.');
         }
     }
 

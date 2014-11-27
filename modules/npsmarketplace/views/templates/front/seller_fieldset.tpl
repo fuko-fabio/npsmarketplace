@@ -1,3 +1,7 @@
+{*
+*  @author Norbert Pabian <norbert.pabian@gmail.com>
+*  @copyright 2014 npsoftware
+*}
 <fieldset id="seller_profile">
     <div class="form-group">
         <label for="">{l s='Company Logo' mod='npsmarketplace'}</label></br>

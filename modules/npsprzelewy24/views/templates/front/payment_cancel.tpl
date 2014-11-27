@@ -1,7 +1,7 @@
-<!--
-    @author Norbert Pabian <norbert.pabian@gmail.com>
-    @copyright 2014 npsoftware
--->
+{*
+*  @author Norbert Pabian <norbert.pabian@gmail.com>
+*  @copyright 2014 npsoftware
+*}
 {capture name=path}{l s='Order confirmation' mod='npsprzelewy24'}{/capture}
 
 <h1>{l s='Order confirmation' mod='npsprzelewy24'}</h1>

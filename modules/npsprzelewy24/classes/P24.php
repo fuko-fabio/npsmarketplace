@@ -48,7 +48,7 @@ class P24 {
         curl_setopt($ch, CURLOPT_HEADER, false); 
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_SSLVERSION, 3);
-        curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'SSLv3');
+        curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'TLSv1');
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     }
 

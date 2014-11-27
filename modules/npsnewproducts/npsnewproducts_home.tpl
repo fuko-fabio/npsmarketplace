@@ -27,6 +27,6 @@
     {if $new_products|@count > 0}
     {include file="$tpl_dir./product-list.tpl" products=$new_products class='npsnewproducts' id='npsnewproducts'}
     {else}
-    <p class="alert alert-info"><span class="alert-content">l s='No new products' mod='npsnewproducts'}</span></p>
+    <p class="alert alert-info"><span class="alert-content">{l s='No new products' mod='npsnewproducts'}</span></p>
     {/if}
 </div>

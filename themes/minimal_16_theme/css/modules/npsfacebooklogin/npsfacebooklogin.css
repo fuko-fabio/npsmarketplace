@@ -1,0 +1,24 @@
+.nps-facebook-login .dropdown {
+  border: none;
+  background: none; }
+  .nps-facebook-login .dropdown .head-item {
+    color: #fff; }
+    .nps-facebook-login .dropdown .head-item:after {
+      content: "\f0d7";
+      font-family: "FontAwesome";
+      font-size: 18px;
+      line-height: 18px;
+      vertical-align: -2px;
+      padding-left: 5px; }
+    .nps-facebook-login .dropdown .head-item.login:after {
+      content: ''; }
+    .nps-facebook-login .dropdown .head-item:hover {
+      color: #ffaa00;
+      background: none; }
+  .nps-facebook-login .dropdown.open a {
+    background: none; }
+
+.nps-facebook-login-btn {
+  color: #fff !important;
+  background: #435f9f !important;
+  padding: 9px; }

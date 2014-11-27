@@ -16,11 +16,10 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
         parent::initContent();
         $this->setTemplate('payment_confirmation.tpl');
 
-        $npsprzelewy24 = new NpsPrzelewy24();
         if(isset($_GET['order_id'])) {
             $cart = Cart::getCartByOrderId($_GET['order_id']);
             if($cart == null) {
-                $this -> errors[] = sprintf($npsprzelewy24->l('Requested order with id %s not exists. Please try to contact the customer support'), $_GET['order_id']);
+                $this -> errors[] = sprintf($this->module->l('Requested order with id %s not exists. Please try to contact the customer support', 'paymentConfirmation'), $_GET['order_id']);
                 return;
             }
         } else {
@@ -29,14 +28,14 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
 
         $payment = P24Payment::getByCartId($cart->id);
         if ($payment != null && $payment->id != null) {
-            $this -> errors[] = $npsprzelewy24->l('Payment already finalized. Go to your account and check orders history.');
+            $this -> errors[] = $this->module->l('Payment already finalized. Go to your account and check orders history.', 'paymentConfirmation');
             return;
         }
 
         $address = new Address((int)$cart->id_address_invoice);
         $customer = new Customer((int)($cart->id_customer));
         $amount = $cart->getOrderTotal(true, Cart::BOTH);
-        $currencies = $npsprzelewy24->getCurrency(intval($cart->id_currency));
+        $currencies = $this->module->getCurrency(intval($cart->id_currency));
         $currency = $currencies[0];
 
         if (isset($currency['decimals']) && $currency['decimals'] == '0') {
@@ -60,9 +59,9 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
 
         $order = Order::getOrderByCartId($cart->id);
         if($order == null) {
-            $s_descr = $this->validatePayment($npsprzelewy24, $cart, $customer, $amount);
+            $s_descr = $this->validatePayment($cart, $customer, $amount);
             if ($s_descr == null) {
-                $this -> errors[] = $npsprzelewy24->l('Unable to verify order. Please contact with customer support');
+                $this -> errors[] = $this->module->l('Unable to verify order. Please contact with customer support', 'paymentConfirmation');
                 return;
             }
         } else {
@@ -71,13 +70,13 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
         $amount = number_format($amount, 2, '.', '') * 100;
 
         if($this->persistP24Payment($session_id, $cart->id, $amount, $currency['iso_code'], $timestamp))
-            $this->transactionRegister($session_id, $cart, $amount, $customer, $currency, $address, $s_descr, $npsprzelewy24);
+            $this->transactionRegister($session_id, $cart, $amount, $customer, $currency, $address, $s_descr);
         else
-            $this -> errors[] = $npsprzelewy24->l('Unable to finalize order. Please contact with customer support.');
+            $this -> errors[] = $this->module->l('Unable to finalize order. Please contact with customer support.', 'paymentConfirmation');
             return;
     }
 
-    private function transactionRegister($session_id, $cart, $amount, $customer, $currency, $address, $s_descr, $module) {
+    private function transactionRegister($session_id, $cart, $amount, $customer, $currency, $address, $s_descr) {
         $p24_id = P24::merchantId();
         $p24_token = Tools::encrypt($session_id); 
         $s_lang = new Country((int)($address->id_country));
@@ -131,7 +130,7 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
                 $history->changeIdOrderState(8, intval($id_order));
                 $history->addWithemail(true);
             }
-            $module->reportError(array(
+            $this->module->reportError(array(
                 'Requested URL: '.P24::url().'/trnRegister',
                 'Request params: '.implode(' | ', $data),
                 'Response: '.implode(' | ', $result)
@@ -140,7 +139,7 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
             if ($payment->id != null) {
                 $payment->delete();
             }
-            $this -> errors[] = $npsprzelewy24->l('Unable to register transaction in Przelewy24 service. Please contact with customer support');
+            $this->errors[] = $this->module->l('Unable to register transaction in Przelewy24 service. Please contact with customer support', 'paymentConfirmation');
         }
     }
 
@@ -163,8 +162,8 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
         return md5($p24_session_id.'|'.$p24_merchant_id.'|'.$p24_amount.'|'.$p24_currency.'|'.Configuration::get('NPS_P24_CRC_KEY'));
     }
 
-    private function validatePayment($npsprzelewy24, $cart, $customer, $amount) {
-        $result = $npsprzelewy24->validateOrder(
+    private function validatePayment($cart, $customer, $amount) {
+        $result = $this->module->validateOrder(
             (int)$cart->id,
             (int)Configuration::get('NPS_P24_ORDER_STATE_AWAITING'),
             $amount,

@@ -7,6 +7,11 @@
 if (!defined('_PS_VERSION_'))
     exit;
 
+require_once(_PS_TOOL_DIR_.'facebook_sdk/autoload.php');
+
+use Facebook\FacebookSession;
+use Facebook\FacebookRedirectLoginHelper;
+
 class NpsFacebookLogin extends Module {
 
     public function __construct() {
@@ -26,27 +31,39 @@ class NpsFacebookLogin extends Module {
     public function install() {
         return parent::install()
             && $this->registerHook('header')
+            && $this->registerHook('displayNav')
             && $this->registerHook('displayLoginSource');
     }
 
     public function uninstall() {
         return parent::uninstall()
             && $this->unregisterHook('header')
+            && $this->unregisterHook('displayNav')
             && $this->unregisterHook('displayLoginSource');
     }
 
     public function hookHeader() {
         $this->context->controller->addCss(($this->_path).'npsfacebooklogin.css');
-        $this->context->smarty->assign(array(
-            'nps_lang_code' => $this->context->language->language_code,
-            'nps_fb_app_id' => Configuration::get('NPS_FB_APP_ID'),
-            'nps_fb_controller' => $this->context->link->getModuleLink('npsfacebooklogin', 'Auth', array('facebookAuth' => true, 'ajax' => true))
+    }
+
+    public function hookDisplayNav($params) {
+        $this->smarty->assign(array(
+            'logged' => $this->context->customer->isLogged(),
+            'customerName' => ($this->context->customer->logged ? $this->context->customer->firstname.' '.$this->context->customer->lastname : false),
+            'firstName' => ($this->context->customer->logged ? $this->context->customer->firstname : false),
+            'lastName' => ($this->context->customer->logged ? $this->context->customer->lastname : false),
+            'fb_img_url' => $this->context->cookie->fb_img_url,
         ));
-        return $this->display(__FILE__, 'views/templates/hook/header.tpl');
+        return $this->display(__FILE__, 'views/templates/hook/nav.tpl');
     }
 
     public function hookDisplayLoginSource() {
-        $this->context->controller->addJS(($this->_path).'js/npsfacebooklogin.js');
+        session_start();
+        FacebookSession::setDefaultApplication(Configuration::get('NPS_FB_APP_ID'), Configuration::get('NPS_FB_APP_SECRET'));
+        $helper = new FacebookRedirectLoginHelper($this->context->link->getModuleLink('npsfacebooklogin', 'auth'));
+        $this->context->smarty->assign(array(
+            'nps_fb_controller' => $helper->getLoginUrl(array('scope' => 'public_profile, email'))
+        ));
         return $this->display(__FILE__, 'views/templates/hook/authentication.tpl');
     }
 
@@ -61,6 +78,12 @@ class NpsFacebookLogin extends Module {
                         'type' => 'text',
                         'label' => $this->l('Facebook app ID'),
                         'name' => 'NPS_FB_APP_ID',
+                        'required' => true
+                    ),
+                    array(
+                        'type' => 'text',
+                        'label' => $this->l('Facebook app secreet code'),
+                        'name' => 'NPS_FB_APP_SECRET',
                         'required' => true
                     )
                 ),
@@ -78,6 +101,7 @@ class NpsFacebookLogin extends Module {
 
         if (Tools::isSubmit('submit')) {
             Configuration::updateValue('NPS_FB_APP_ID', Tools::getValue('NPS_FB_APP_ID'));
+            Configuration::updateValue('NPS_FB_APP_SECRET', Tools::getValue('NPS_FB_APP_SECRET'));
             $output .= $this->displayConfirmation($this->l('Settings updated successfuly'));
         }
         return $output.$this->displayForm();
@@ -86,6 +110,7 @@ class NpsFacebookLogin extends Module {
     public function getConfigFieldsValues() {
         return array(
             'NPS_FB_APP_ID' => Tools::getValue('NPS_FB_APP_ID', Configuration::get('NPS_FB_APP_ID')),
+            'NPS_FB_APP_SECRET' => Tools::getValue('NPS_FB_APP_SECRET', Configuration::get('NPS_FB_APP_SECRET')),
         );
     }
 
