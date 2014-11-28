@@ -18,6 +18,7 @@
             <div class="form-group col-md-6">
                 <label class="required" for="in_row">{l s='Max events in row' mod='npsmarketplace'}</label>
                 <select class="form-control" id="in_row" name="in_row">
+                    <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
                     <option value="4">4</option> 
@@ -26,6 +27,7 @@
             <div class="form-group col-md-6">
                 <label class="required" for="max_events">{l s='Total max events' mod='npsmarketplace'}</label>
                 <select class="form-control" id="max_events" name="max_events">
+                    <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
                     <option value="4">4</option>
@@ -54,6 +56,13 @@
                         <option value="{$lang.id_lang}">{$lang.name}</option> 
                     {/foreach}
                 </select>
+            </div>
+        </div>
+         <div class="row">
+            <div class="form-group col-md-6">
+                <label for="width">{l s='Frame width(px)' mod='npsmarketplace'}</label>
+                <input class="validate form-control" data-validate="isNumber" type="number" id="width" name="width" value="600"/>
+                <span class="form_info">{l s='Recomended minimal width 300px' mod='npsmarketplace'}</span>
             </div>
         </div>
     </form>

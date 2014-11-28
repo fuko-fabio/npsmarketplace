@@ -1,6 +1,12 @@
+.lit-content-body h4 {
+  color: #333;
+  font-weight: 700; }
 .lit-content-body .shop {
   color: #ffaa00;
-  font-weight: 700; }
+  font-weight: 700;
+  right: 0;
+  top: 0;
+  position: absolute; }
   .lit-content-body .shop span {
     color: #333; }
 .lit-content-body .item .item-content {

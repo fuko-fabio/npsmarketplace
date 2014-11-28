@@ -15,17 +15,20 @@
       {foreach from=$css_urls item=css}
       <link rel="stylesheet" href="{$css}">
       {/foreach}
-
+      <base target="_blank" />
       <!--[if lt IE 9]>
       <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
       <![endif]-->
     </head>
-	<body>
+    <body>
         <div class="lit-content-body">
+            <h4>{l s='Shop' mod='npsmarketplace'}</h4><a href="{$shop_url}" class="shop"><span>Labs In</span> Town</a>
             {if $products|@count > 0}
 			<div class="row">
 				{foreach from=$products item=product name=myLoop}
-				{if $in_row == 2}
+                {if $in_row == 1}
+                <div class="item col-xs-12 col-sm-12 col-md-12">
+				{else if $in_row == 2}
 				<div class="item col-xs-6 col-sm-6 col-md-6">
 				{else if $in_row == 3}
 				<div class="item col-xs-4 col-sm-4 col-md-4">
@@ -60,7 +63,6 @@
 			{else}
 			    <p class="alert alert-info"><span class="alert-content">{l s='Currently there is no events available in my shop.' mod='npsmarketplace'}</span></p>
 			{/if}
-    	     <a href="{$shop_url}" class="pull-right shop"><span>Labs In</span> Town</a>
 		</div>
 	</body>
 </html>
