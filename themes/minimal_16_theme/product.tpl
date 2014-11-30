@@ -40,11 +40,12 @@
         </div>
     {/if}
     <div class="product_top">
-        <span class="product_name" itemprop="name">{$product->name|escape:'html':'UTF-8'}</span>
-        <span id="product_reference"{if empty($product->reference) || !$product->reference} style="display: none;"{/if}>
-        <span class="editable"
-              itemprop="sku">{if !isset($groups)}{$product->reference|escape:'html':'UTF-8'}{/if}</span>
-        </span>
+        <h2 class="product_name" itemprop="name">{$product->name|escape:'html':'UTF-8'}
+            <span id="product_reference"{if empty($product->reference) || !$product->reference} style="display: none;"{/if}>
+            <span class="editable"
+                  itemprop="sku">{if !isset($groups)}{$product->reference|escape:'html':'UTF-8'}{/if}</span>
+            </span>
+        </h2>
     </div>
     {if isset($adminActionDisplay) && $adminActionDisplay}
         <div id="admin-action">
@@ -296,7 +297,7 @@
             {if $extras.type == 2}
                 <p class="product-type ad">{l s='Advertisment'}</p>
             {/if}
-            {if $product->show_price && !isset($restricted_country_mode) && !$PS_CATALOG_MODE}
+            {if $product->show_price && !isset($restricted_country_mode) && !$PS_CATALOG_MODE && $extras.type != 2}
                 <!-- prices -->
                 <div class="price">
                     <p class="our_price_display" itemprop="offers" itemscope

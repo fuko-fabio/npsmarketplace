@@ -119,7 +119,7 @@
         </div>
         <hr class="carnet-attributes"/>
         
-        <div class="row">
+        <div class="row price-amount">
             <div class="form-group col-md-6">
                 <label class="required" for="product_price">{l s='Price' mod='npsmarketplace'}</label>
                 <input class="is_required validate form-control" data-validate="isPrice" type="text" id="product_price" name="price" required=""

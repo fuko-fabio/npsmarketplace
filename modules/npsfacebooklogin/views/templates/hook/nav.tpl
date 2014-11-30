@@ -6,7 +6,7 @@
     {if $logged}
     <li class="dropdown pull-right">
         <a href="#" data-toggle="dropdown" class="dropdown-toggle head-item">
-            {if isset($fb_img_url)}
+            {if isset($fb_img_url) && !empty($fb_img_url)}
             <img src="{$fb_img_url}" />
             {else}
             <i class="icon-user"></i>

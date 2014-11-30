@@ -84,6 +84,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
 
             if($type == 2) {
                 $quantity = 1;
+                $price = 0;
             }
 
             if(Tools::getValue('form_token') != $this->context->cookie->__get('form_token')) {
