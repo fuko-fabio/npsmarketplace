@@ -50,9 +50,10 @@ class NpsCalendar extends Module {
         if (!isset($this->context->controller->php_self) || $this->context->controller->php_self != 'index')
             return;
         $this->context->smarty->assign(array(
-            'calendar_api_url' => $this->context->link->getModuleLink('npscalendar', 'api')
+            'calendar_api_url' => $this->context->link->getModuleLink('npscalendar', 'api'),
+            'calendar_page_url' => $this->context->link->getModuleLink('npscalendar', 'calendar')
         ));
-        return $this->display(__FILE__, 'calendar.tpl');
+        return $this->display(__FILE__, 'calendar_home.tpl');
     }
 
     public function hookHeader() {

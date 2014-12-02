@@ -21,6 +21,9 @@
 !/modules/npssocialsharing
 !/modules/npsticketdelivery
 !/modules/npsfacebooklogin
+
+!/modules/lofadvancecustom
+
 !/themes
 /themes/*
 !/themes/minimal_16_theme

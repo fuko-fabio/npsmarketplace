@@ -36,6 +36,7 @@ var Calendar = Backbone.AssociatedModel.extend({
         days       : [],
         start_date : null,
         end_date   : null,
+        page_url   : calendarPageUrl,
     },
 
     fetchPrevious: function() {

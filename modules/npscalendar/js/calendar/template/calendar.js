@@ -6,7 +6,7 @@
 var CalendarTemplate = '\
     <div class="header row">\
         <div class="left col-xs-12 col-sm-6 col-md-6">\
-            <p class="title"><%= title %></p>\
+            <a href="<%= page_url %>" class="title"><%= title %></a>\
         </div>\
         <div class="right col-xs-12 col-sm-6 col-md-6">\
             <div class="nav">\
