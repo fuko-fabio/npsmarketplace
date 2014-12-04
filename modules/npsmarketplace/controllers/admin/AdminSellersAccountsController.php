@@ -155,8 +155,7 @@ class AdminSellersAccountsController extends AdminController
             $mail_params = array(
                 '{lastname}' => $customer->lastname,
                 '{firstname}' => $customer->firstname,
-                '{shop_name}' => Configuration::get('PS_SHOP_NAME'),
-                '{shop_url}' => Tools::getHttpHost(true).__PS_BASE_URI__,
+                '{seller_shop_name}' => $seller->name,
                 '{seller_shop_url}' => $this->context->link->getModuleLink('npsmarketplace', 'SellerShop', array('id_seller' => $seller->id)),
                 '{product_guide_url}' => Configuration::get('NPS_PRODUCT_GUIDE_URL'),
                 '{seller_guide_url}' => Configuration::get('NPS_SELLER_GUIDE_URL'),

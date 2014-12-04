@@ -120,6 +120,25 @@ class NpsMailActivation extends Module {
             'customer',
             array('active' => 1),
             'activation_token = \''.$token.'\'');
-        return $res ? Db::getInstance()->getValue('SELECT `active` FROM `'._DB_PREFIX_.'customer` WHERE `activation_token` = \''.$token.'\'') : false;
+        $res =  $res ? Db::getInstance()->getValue('SELECT `active` FROM `'._DB_PREFIX_.'customer` WHERE `activation_token` = \''.$token.'\'') : false;
+        if ($res) {
+            $id_user = Db::getInstance()->getValue('SELECT `id_customer` FROM `'._DB_PREFIX_.'customer` WHERE `activation_token` = \''.$token.'\'');
+            $customer = new Customer($id_user);
+
+            $data = array(
+                '{firstname}' => $customer->firstname,
+                '{lastname}' => $customer->lastname,
+                '{user_guide_url}' => Configuration::get('NPS_USER_GUIDE_URL'),
+                '{seller_guide_url}' => Configuration::get('NPS_SELLER_GUIDE_URL'),
+            );
+            Mail::Send($this->context->language->id,
+                'account',
+                $this->l('Welcome!'),
+                $data,
+                $customer->email,
+                $customer->firstname.' '.$customer->lastname
+            );
+        }
+        return $res;
     }
 }

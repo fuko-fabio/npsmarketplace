@@ -64,14 +64,14 @@ class NpsCalendar extends Module {
                 ($this->_path).'js/underscore-min.js',
                 ($this->_path).'js/backbone-min.js',
                 ($this->_path).'js/backbone-associations-min.js',
-                ($this->_path).'js/calendar/template/calendar.js',
+                ($this->_path).'js/calendar/template/weekCalendar.js',
                 ($this->_path).'js/calendar/model/event.js',
                 ($this->_path).'js/calendar/collection/events.js',
                 ($this->_path).'js/calendar/model/day.js',
                 ($this->_path).'js/calendar/collection/days.js',
                 ($this->_path).'js/calendar/model/calendar.js',
-                ($this->_path).'js/calendar/view/calendar.js',
-                ($this->_path).'js/calendar/router.js',
+                ($this->_path).'js/calendar/view/weekCalendar.js',
+                ($this->_path).'js/calendar/weekRouter.js',
             ));
         }
     }

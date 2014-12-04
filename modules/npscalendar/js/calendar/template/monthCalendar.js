@@ -3,7 +3,7 @@
 *  @copyright 2014 npsoftware
 */
 
-var CalendarTemplate = '\
+var MonthCalendarTemplate = '\
     <div class="header row">\
         <div class="left col-xs-12 col-sm-6 col-md-6">\
             <a href="<%= page_url %>" class="title"><%= title %></a>\

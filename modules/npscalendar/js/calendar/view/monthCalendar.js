@@ -3,11 +3,11 @@
 *  @copyright 2014 npsoftware
 */
 
-var CalendarView = Backbone.View.extend({
+var MonthCalendarView = Backbone.View.extend({
 
-    el: '.nps-calendar',
+    el: '.nps-month-calendar',
 
-    template: _.template(CalendarTemplate),
+    template: _.template(MonthCalendarTemplate),
 
     events: {
         'click .previous' : 'previousEvt',

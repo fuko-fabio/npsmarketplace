@@ -12,5 +12,5 @@
         {l s='Your account was activated successfully.' mod='npsmailactivation'}
         </span>
     </div>
-    <h3><a href="{$link->getPageLink('my-account', true)|escape:'html':'UTF-8'}"> {l s='Sign in' mod='npsmailactivation'} </a></h3>
+    <a class="btn btn-default button button-medium" href="{$link->getPageLink('my-account', true)|escape:'html':'UTF-8'}"><i class="icon-signin"></i> {l s='Sign in' mod='npsmailactivation'} </a>
 </div>

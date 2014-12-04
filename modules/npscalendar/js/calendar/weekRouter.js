@@ -3,7 +3,7 @@
 *  @copyright 2014 npsoftware
 */
 
-var CalendarRouter = Backbone.Router.extend({
+var WeekCalendarRouter = Backbone.Router.extend({
 
     routes: {
         "" : "displayCalendar"
@@ -12,14 +12,14 @@ var CalendarRouter = Backbone.Router.extend({
     displayCalendar: function() {
         var model = new Calendar();
         model.fetch().done(function () {
-            var calendar = new CalendarView({model: model});
+            var calendar = new WeekCalendarView({model: model});
             calendar.render();
         });
     }
 
 });
 
-var router = new CalendarRouter();
+var router = new WeekCalendarRouter();
 
 $(document).ready(function(){
     Backbone.history.start();
