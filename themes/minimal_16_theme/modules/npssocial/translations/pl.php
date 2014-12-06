@@ -1,0 +1,36 @@
+<?php
+
+global $_MODULE;
+$_MODULE = array();
+$_MODULE['<{npssocial}minimal_16_theme>npssocial_fd90b078520d12bf3409c7cc7f7b5def'] = 'nps Blok społecznościowy';
+$_MODULE['<{npssocial}minimal_16_theme>npssocial_8e0fdaf08d1efc43090a9e073ce8c03f'] = 'Pozwala dodać informację o kontach społecznościowych Twojej marki.';
+$_MODULE['<{npssocial}minimal_16_theme>npssocial_f4f70727dc34561dfde1a3c529b6205c'] = 'Ustawienia';
+$_MODULE['<{npssocial}minimal_16_theme>npssocial_76f8961bb8f4bb2b95c07650f30a7e7b'] = 'URL Facebooka';
+$_MODULE['<{npssocial}minimal_16_theme>npssocial_c162369096f0fe5784f05052ceee6b47'] = 'Twój fanpage na Facebooku.';
+$_MODULE['<{npssocial}minimal_16_theme>npssocial_bcca29e10968edaf6e0154d2339ad556'] = 'URL Twittera';
+$_MODULE['<{npssocial}minimal_16_theme>npssocial_6aadf667dfc3538abc2708ba76861bba'] = 'Twoje oficjalne konto na Twitter';
+$_MODULE['<{npssocial}minimal_16_theme>npssocial_1a530e4877d8d41f810d9d05f065722d'] = 'URL kanału RSS';
+$_MODULE['<{npssocial}minimal_16_theme>npssocial_672f301ddc5372b2477ed3c1d9322949'] = 'wój wybrany kanał RSS (Twój blog, Twój sklep, itp.).';
+$_MODULE['<{npssocial}minimal_16_theme>npssocial_ad7198d676478ac70c3243c1d3446331'] = 'URL kanału YouTube';
+$_MODULE['<{npssocial}minimal_16_theme>npssocial_5817a34292f074f9f596de6cb3607540'] = 'Twój oficjalny kanał na YouTube.';
+$_MODULE['<{npssocial}minimal_16_theme>npssocial_1dd99e363d1bebee81578708c1e8a5e0'] = 'URL Google+';
+$_MODULE['<{npssocial}minimal_16_theme>npssocial_1dd0a74974711190139fa51579765a04'] = 'Twoje oficjalne konto na  Google+';
+$_MODULE['<{npssocial}minimal_16_theme>npssocial_76abe3a162f22f63fae44d60fbe8f11b'] = 'URL Pinterest:';
+$_MODULE['<{npssocial}minimal_16_theme>npssocial_e158a81859319b5e442bc490b0e81af3'] = 'Twoje oficjalne konto na Pinterest.';
+$_MODULE['<{npssocial}minimal_16_theme>npssocial_815f12ace0a25af8c12e036810002683'] = 'URL Vimeo:';
+$_MODULE['<{npssocial}minimal_16_theme>npssocial_cba991994fe165dfcf4f5bd256bbe119'] = 'Twoje oficjalne konto na Vimeo.';
+$_MODULE['<{npssocial}minimal_16_theme>npssocial_130bab903955b2f6047a0db82f460386'] = 'URL Instagrama:';
+$_MODULE['<{npssocial}minimal_16_theme>npssocial_d55a27c3408d38f3137182c89b69a7a7'] = 'Twoje oficjalne konto na Instagram.';
+$_MODULE['<{npssocial}minimal_16_theme>npssocial_29eabec388200f6d412dcb33a16ba586'] = 'URL bloga';
+$_MODULE['<{npssocial}minimal_16_theme>npssocial_70ef203760bc7bcacb7d8cda9247fc2c'] = 'Adres URL oficjalnego bloga';
+$_MODULE['<{npssocial}minimal_16_theme>npssocial_c9cc8cce247e49bae79f15173ce97354'] = 'Zapisz';
+$_MODULE['<{npssocial}minimal_16_theme>npssocial_d918f99442796e88b6fe5ad32c217f76'] = 'Bądź na bieżąco';
+$_MODULE['<{npssocial}minimal_16_theme>npssocial_d85544fce402c7a2a96a48078edaf203'] = 'Facebook';
+$_MODULE['<{npssocial}minimal_16_theme>npssocial_2491bc9c7d8731e1ae33124093bc7026'] = 'Twitter';
+$_MODULE['<{npssocial}minimal_16_theme>npssocial_bf1981220040a8ac147698c85d55334f'] = 'RSS';
+$_MODULE['<{npssocial}minimal_16_theme>npssocial_8dd1bae8da2e2408210d0656fbe6b7d1'] = 'YouTube';
+$_MODULE['<{npssocial}minimal_16_theme>npssocial_5b2c8bfd1bc974966209b7be1cb51a72'] = 'Google+';
+$_MODULE['<{npssocial}minimal_16_theme>npssocial_86709a608bd914b28221164e6680ebf7'] = 'Pinterest';
+$_MODULE['<{npssocial}minimal_16_theme>npssocial_15db599e0119be476d71bfc1fda72217'] = 'Vimeo';
+$_MODULE['<{npssocial}minimal_16_theme>npssocial_55f015a0c5605702f913536afe70cfb0'] = 'Instagram';
+$_MODULE['<{npssocial}minimal_16_theme>npssocial_be8df1f28c0abc85a0ed0c6860e5d832'] = 'Blog';
