@@ -30,12 +30,12 @@
     width: 100%; }
   .lit-content-body .item .item-content h5 {
     margin-top: 0;
-    margin-bottom: 0; }
+    margin-bottom: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; }
     .lit-content-body .item .item-content h5 a {
       color: #333;
       margin: 0px 5px;
       font-family: "Hammersmith One", sans-serif;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
       font-weight: 700; }

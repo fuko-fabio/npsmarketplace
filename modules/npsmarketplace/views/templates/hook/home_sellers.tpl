@@ -11,6 +11,7 @@
                 <a href="{$seller.url}">
                     {if $seller.img != null}
                     <img src="{$seller.img}"/>
+                    <span class="name">{$seller.name}</span>
                     {else}
                     <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D" />
                     <span class="name">{$seller.name}</span>

@@ -72,13 +72,14 @@
       padding: 5px;
       overflow: hidden;
       text-overflow: ellipsis;
-      white-space: nowrap; }
+      white-space: nowrap;
+      background: #ffaa00; }
       .nps-calendar .content .day .top .number {
         font-family: "Montserrat", sans-serif;
-        font-weight: bold;
+        font-weight: 700;
         font-size: 20px;
         line-height: 20px;
-        color: #ffaa00; }
+        color: #fff; }
       .nps-calendar .content .day .top .name {
         font-size: 20px;
         line-height: 20px;
@@ -96,9 +97,9 @@
             font-size: 42px;
             line-height: 42px; } }
       .nps-calendar .content .day .top:hover {
-        background: #ffaa00; }
+        background: transparent; }
         .nps-calendar .content .day .top:hover .number {
-          color: #333; }
+          color: #ffaa00; }
   .nps-calendar .events {
     border: solid 1px #d6d4d4;
     margin: 2px; }
@@ -191,11 +192,15 @@
       background: #ffaa00; }
       .nps-calendar-big .row .item:hover .item-content .number, .nps-calendar-big .row .item.selected .item-content .number {
         color: #333; }
-  .nps-calendar-big .row .week-day-item {
-    padding: 1px;
-    color: #333; }
-    .nps-calendar-big .row .week-day-item .week-day {
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      overflow: hidden;
-      text-align: center; }
+  .nps-calendar-big .row.week-days {
+    background: #36454f;
+    padding: 2px 0px;
+    margin-bottom: 5px; }
+    .nps-calendar-big .row.week-days .week-day-item {
+      padding: 1px;
+      color: #fff; }
+      .nps-calendar-big .row.week-days .week-day-item .week-day {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        text-align: center; }

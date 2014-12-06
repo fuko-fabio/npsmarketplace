@@ -21,7 +21,7 @@
 {if $account_state == 'none'}
 {if isset($add_product) && $add_product}
     <div class="alert alert-info">
-        <p class="alert-content">{l s='To be able add next event you need to register seller account.' mod='npsprzelewy24'}</p>
+        <p class="alert-content">{l s='To be able add event you need to register seller account.' mod='npsprzelewy24'}</p>
     </div>
 {/if}
 <div class="block-center" id="block-seller-account">

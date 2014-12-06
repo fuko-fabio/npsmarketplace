@@ -36,7 +36,7 @@
                         {/if}
                         <br />
                         <div style="width:100px;text-transform: uppercase;float: left;display: inline-block;">Osoba</div>: <span style="float: left;text-overflow: ellipsis;white-space: nowrap;">{$person|truncate:60}</span><br />
-                        <div style="width:100px;text-transform: uppercase;float: left;display: inline-block;">Adres</div>: <span style="float: left;text-overflow: ellipsis;white-space: nowrap;">{$address|truncate:60}</span><br />
+                        <div style="width:100px;text-transform: uppercase;float: left;display: inline-block;">Adres wydarzenia</div>: <span style="float: left;text-overflow: ellipsis;white-space: nowrap;">{$address|truncate:60}</span><br />
                         <div style="width:100px;text-transform: uppercase;float: left;display: inline-block;">Dzielnica</div>: <span style="float: left;text-overflow: ellipsis;white-space: nowrap;">{$district|truncate:60}</span><br />
                         <div style="width:100px;text-transform: uppercase;float: left;display: inline-block;">Miasto</div>: <span style="float: left;text-overflow: ellipsis;white-space: nowrap;">{$town|truncate:60}</span><br />
                     </div>
