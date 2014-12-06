@@ -4,7 +4,7 @@
 *}
 <div class="box">
     <h3>{l s='Pay with Przelewy24' mod='npsprzelewy24'}</h3>
-    <a href="{$p24_payment_url}"  title="{l s='Pay with Przelewy24' mod='npsprzelewy24'}">
+    <a href="{$p24_payment_url}"  title="{l s='Pay with Przelewy24' mod='npsprzelewy24'}" onclick="$.fancybox.showLoading();">
         <img src="{$modules_dir}npsprzelewy24/img/przelewy24_banks.png" alt="{l s='Pay with Przelewy24' mod='npsprzelewy24'}" style="width: 100%;max-height: 100%"/>
     </a>
 </div>

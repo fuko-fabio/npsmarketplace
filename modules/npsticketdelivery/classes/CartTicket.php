@@ -70,7 +70,7 @@ class CartTicket extends ObjectModel {
             ->from('cart_ticket', 'ct')
             ->leftJoin('ticket', 't', 't.id_cart_ticket = ct.id_cart_ticket')
             ->leftJoin('cart', 'c', 'ct.id_cart = c.id_cart')
-            ->where('c.`id_customer` = '.$id_customer)
+            ->where('ct.`id_customer` = '.$id_customer)
             ->orderBy('generated DESC');
         return Db::getInstance()->executeS($dbquery);
     }    

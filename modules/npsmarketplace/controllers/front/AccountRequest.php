@@ -26,7 +26,6 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
             $seller = new Seller(null, $this->context->customer->id);
             if ($seller->id != null) 
                 Tools::redirect('index.php?controller=my-account');
-            $nps_instance = new NpsMarketplace();
 
             $company_name = trim(Tools::getValue('company_name'));
             $name = trim(Tools::getValue('seller_name'));
@@ -41,38 +40,38 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
             $link_rewrite = array();
 
             if (empty($name))
-                $this -> errors[] = $nps_instance->l('Seller name is required');
+                $this -> errors[] = $this->module->l('Seller name is required', 'AccountRequest');
             else if (!Validate::isGenericName($name))
-                $this -> errors[] = $nps_instance->l('Invalid seller name');
+                $this -> errors[] = $this->module->l('Invalid seller name', 'AccountRequest');
             else if (Seller::sellerExists($name))
-                $this -> errors[] = $nps_instance->l('Seller name is not unique');
+                $this -> errors[] = $this->module->l('Seller name is not unique', 'AccountRequest');
 
             if (empty($phone))
-                $this -> errors[] = $nps_instance->l('Phone number is required');
+                $this -> errors[] = $this->module->l('Phone number is required', 'AccountRequest');
             else if (!Validate::isPhoneNumber($phone))
-                $this -> errors[] = $nps_instance->l('Invalid phone number');
+                $this -> errors[] = $this->module->l('Invalid phone number', 'AccountRequest');
 
             if (empty($email))
-                $this -> errors[] = $nps_instance->l('Buisness email is required');
+                $this -> errors[] = $this->module->l('Buisness email is required', 'AccountRequest');
             else if (!Validate::isEmail($email))
-                $this -> errors[] = $nps_instance->l('Invalid email addres');
+                $this -> errors[] = $this->module->l('Invalid email addres', 'AccountRequest');
 
             if (empty($company_name))
-                $this -> errors[] = $nps_instance->l('Company name is required');
+                $this -> errors[] = $this->module->l('Company name is required', 'AccountRequest');
             else if (!Validate::isGenericName($company_name))
-                $this -> errors[] = $nps_instance->l('Invalid company name');
+                $this -> errors[] = $this->module->l('Invalid company name', 'AccountRequest');
 
             if (!empty($nip) && !Validate::isNip($nip))
-                $this -> errors[] = $nps_instance->l('Invalid NIP number');
+                $this -> errors[] = $this->module->l('Invalid NIP number', 'AccountRequest');
 
             if (!empty($regon) && !Validate::isRegon($regon))
-                $this -> errors[] = $nps_instance->l('Invalid REGON number');
+                $this -> errors[] = $this->module->l('Invalid REGON number', 'AccountRequest');
 
             foreach (Language::getLanguages() as $key => $lang) {
                 if (!Validate::isCleanHtml($company_description[$lang['id_lang']]))
-                    $this -> errors[] = $nps_instance->l('Invalid company description');
+                    $this -> errors[] = $this->module->l('Invalid company description', 'AccountRequest');
                 if (!Validate::isCleanHtml($regulations[$lang['id_lang']]))
-                    $this -> errors[] = $nps_instance->l('Invalid regulations content');
+                    $this -> errors[] = $this->module->l('Invalid regulations content', 'AccountRequest');
 
                 $link_rewrite[$lang['id_lang']] = Tools::link_rewrite($name);
             }
@@ -114,7 +113,7 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
         );
         return Mail::Send($this->context->language->id,
             'account_request',
-            Mail::l('Seller account request'),
+            $this->module->l('Seller account request', 'AccountRequest'),
             $mail_params,
             $seller->email,
             null,
@@ -149,7 +148,7 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
 
         return Mail::Send($lang_id,
             'memberalert',
-            Mail::l('New seller registration!'),
+            $this->module->l('New seller registration!', 'AccountRequest'),
             $mail_params,
             explode(self::__MA_MAIL_DELIMITOR__, $emails),
             null,

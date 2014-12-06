@@ -43,8 +43,7 @@ class NpsMarketplaceAjaxModuleFrontController extends ModuleFrontController {
     }
 
     protected function ajaxProcessSendToSeller() {
-        $module = new NpsMarketplace();
-        if (Tools::getValue('secure_key') == $module->secure_key) {
+        if (Tools::getValue('secure_key') == $this->module->secure_key) {
             $question = Tools::getValue('question');
             $email = Tools::getValue('email');
             $id_product = Tools::getValue('id_product');
@@ -98,7 +97,6 @@ class NpsMarketplaceAjaxModuleFrontController extends ModuleFrontController {
     }
 
     protected function ajaxProcessGetTheCode() {
-        $module = new NpsMarketplace();
-       die(Tools::jsonEncode($module->getIframeCode()));
+       die(Tools::jsonEncode($this->module->getIframeCode()));
     }
 }

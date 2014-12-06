@@ -62,7 +62,7 @@ class NpsCalendarApiModuleFrontController extends ModuleFrontController {
         $weeks = array();
         foreach ( $days as $day ) {
             $date = $day->format('Y-m-d');
-            $events = $this->searchForDay($date);
+            $events = $this->searchForDay($date, false, false);
             $datetime = $day->getTimestamp();
             $day_of_the_week = date('w', $datetime);
             $day_name = $this->day($day_of_the_week);
@@ -145,14 +145,14 @@ class NpsCalendarApiModuleFrontController extends ModuleFrontController {
         return $bm == $em ? $bm : $bm.'/'.$em;
     }
 
-    private function searchForDay($day) {
+    private function searchForDay($day, $limit = true, $sort = true) {
         $events = array();
         $max_search_events = Configuration::get('NPS_EVENTS_SEARCH');
         $res = Search::find(Context::getContext()->language->id, $day, 1, $max_search_events);
         if ($res['total'] == 0)
             return $events;
         $max_events = Configuration::get('NPS_EVENTS_PER_DAY');
-        if ($res['total'] > $max_events) {
+        if ($res['total'] > $max_events && $limit) {
             $indexes = array_rand($res['result'] , $max_events);
             foreach ($indexes as $index) {
                 $events[] = $this->buildCalendarEvent($res['result'][$index], $day);
@@ -162,7 +162,7 @@ class NpsCalendarApiModuleFrontController extends ModuleFrontController {
                 $events[] = $this->buildCalendarEvent($product, $day);
             }
         }
-        return $this->sortByTime($events);
+        return $sort ? $this->sortByTime($events) : $events;
     }
 
     private function buildCalendarEvent($product, $day) {

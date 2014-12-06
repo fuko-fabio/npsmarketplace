@@ -394,6 +394,7 @@ span.exclusive {
   span {
     display: block;
     padding: 3px 8px 3px 8px;
+    white-space: nowrap;
     i {
       vertical-align: 0px;
       margin-right: 5px;
@@ -420,6 +421,7 @@ span.exclusive {
   span {
     display: block;
     padding: 5px;
+    white-space: nowrap;
     // max 480px
     @media (max-width: $screen-xs) {
       font-size: 15px;
@@ -506,6 +508,7 @@ span.exclusive {
     display: block;
     border: none;
     padding: 9px 10px 11px 10px;
+    white-space: nowrap;
     // max 480px
     @media (max-width: $screen-xs) {
       font-size: 15px;
@@ -3224,6 +3227,11 @@ div.star.star_hover {
   a {
     color: $base-text-color;
     padding: 8px !important;
+    
+    .caret {
+      border-top-color: $base-text-color;
+      border-bottom-color: $base-text-color;
+    }
   }
   .dropdown-toggle:hover {
     background: $primary-color;

@@ -17,10 +17,11 @@ class NpsMarketplaceProductCombinationModuleFrontController extends ModuleFrontC
 
     public function setMedia() {
         parent::setMedia();
-        $this -> addJS (_PS_MODULE_DIR_.'npsmarketplace/js/datetime_init.js');
-        $this -> addJS (_PS_MODULE_DIR_.'npsmarketplace/js/bootstrap-datetimepicker.min.js');
+        $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/datetime_init.js');
+        $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/bootstrap-datetimepicker.min.js');
+        $this->addJS(_PS_JS_DIR_.'validate.js');
 
-        $this -> addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/bootstrap-datetimepicker.min.css');
+        $this->addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/bootstrap-datetimepicker.min.css');
     }
 
     public function postProcess() {
@@ -31,34 +32,33 @@ class NpsMarketplaceProductCombinationModuleFrontController extends ModuleFrontC
             if ($seller->id == null || !$seller->active || $seller->locked)
                 Tools::redirect('index.php?controller=my-account');
 
-            $module = new NpsMarketplace();
             $date = trim(Tools::getValue('date'));
             $time = trim(Tools::getValue('time'));
             $quantity = trim(Tools::getValue('quantity'));
             $expiry_date = trim(Tools::getValue('expiry_date'));
             
             if (!$this->isUnique($this->_product, $date, $time))
-                $this -> errors[] = $module->l('Event with provided date and time already exists');
+                $this -> errors[] = $this->module->l('Event with provided date and time already exists', 'ProductCombination');
 
             if (empty($expiry_date))
-                $this -> errors[] = $module->l('Product expiry date is required');
+                $this -> errors[] = $this->module->l('Product expiry date is required', 'ProductCombination');
             else if (!Validate::isDateFormat($expiry_date))
-                $this -> errors[] = $module->l('Invalid expiry date format');
+                $this -> errors[] = $this->module->l('Invalid expiry date format', 'ProductCombination');
 
             if (empty($date))
-                $this -> errors[] = $module->l('Product date is required');
+                $this -> errors[] = $this->module->l('Product date is required', 'ProductCombination');
             else if (!Validate::isDateFormat($date))
-                $this -> errors[] = $module->l('Invalid date format');
+                $this -> errors[] = $this->module->l('Invalid date format', 'ProductCombination');
 
             if (empty($time))
-                $this -> errors[] = $module->l('Product time is required');
+                $this -> errors[] = $this->module->l('Product time is required', 'ProductCombination');
             else if (!Validate::isTime($time))
-                $this -> errors[] = $module->l('Invalid date format');
+                $this -> errors[] = $this->module->l('Invalid date format', 'ProductCombination');
 
             if (empty($quantity))
-                $this -> errors[] = $module->l('Product quantity is required');
+                $this -> errors[] = $this->module->l('Product quantity is required', 'ProductCombination');
             else if (!Validate::isInt($quantity))
-                $this -> errors[] = $module->l('Invalid product quantity format');
+                $this -> errors[] = $this->module->l('Invalid product quantity format', 'ProductCombination');
 
             if (empty($this->errors)) {
                 $this->_product->newEventCombination($date, $time, (int)$quantity, $expiry_date, $this->context->shop->id);

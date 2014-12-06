@@ -128,12 +128,12 @@ function removePriceReduction(id_product) {
                             <li class="dropdown">
                                 <a href="#" data-toggle="dropdown" class="dropdown-toggle"><i class="icon-list"></i> {l s='Options' mod='npsmarketplace'}<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="{$product.edit_url}"> <i class="icon-pencil"></i> {l s='Edit' mod='npsmarketplace'}</a></li>
+                                    <li><a href="{$product.edit_url}" onclick="$.fancybox.showLoading();"> <i class="icon-pencil"></i> {l s='Edit' mod='npsmarketplace'}</a></li>
                                     {if $seler_active && $product.type == 0}
-                                        <li><a href="{$product.new_combination_url}"> <i class="icon-calendar"></i> {l s='New Term' mod='npsmarketplace'}</a></li>
+                                        <li><a href="{$product.new_combination_url}" onclick="$.fancybox.showLoading();"> <i class="icon-calendar"></i> {l s='New Term' mod='npsmarketplace'}</a></li>
                                     {/if}
                                     {if $product.type == 0 && $product.active == 1}
-                                        <li><a href="{$product.edit_combination_url}"> <i class="icon-calendar"></i> {l s='List of Terms' mod='npsmarketplace'}</a></li>
+                                        <li><a href="{$product.edit_combination_url}" onclick="$.fancybox.showLoading();"> <i class="icon-calendar"></i> {l s='List of Terms' mod='npsmarketplace'}</a></li>
                                     {/if}
                                     {if $product.active == 1}
                                         {if $product.type != 2}
@@ -165,10 +165,10 @@ function removePriceReduction(id_product) {
                                                 <li><a class="remove-sale-event-btn" href="#" onclick="removePriceReduction({$product.id_product})"><i class="icon-chevron-up"></i> {l s='Remove Sale' mod='npsmarketplace'}</a></li>
                                             {/if}
                                         {/if}
-                                        <li><a href="{$product.view_url}"> <i class="icon-search"></i> {l s='Preview' mod='npsmarketplace'}</a></li>
+                                        <li><a href="{$product.view_url}" onclick="$.fancybox.showLoading();"> <i class="icon-search"></i> {l s='Preview' mod='npsmarketplace'}</a></li>
                                     {/if}
                                     <li class="divider"></li>
-                                    <li><a href="{$product.delete_url}" class="delete"> <i class="icon-trash"></i> {l s='Delete' mod='npsmarketplace'}</a></li>
+                                    <li><a href="{$product.delete_url}" class="delete" onclick="$.fancybox.showLoading();"> <i class="icon-trash"></i> {l s='Delete' mod='npsmarketplace'}</a></li>
                                 </ul>
                             </li>
                         </ul>

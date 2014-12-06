@@ -6,7 +6,7 @@
     {if $edit_product == 1}
     <div class="alert alert-info">
         <span class="alert-content">
-        <a class="alert-link" href="{$new_tem_link}">{l s='Click here' mod='npsmarketplace'}</a> {l s='to add new event term' mod='npsprzelewy24'}
+        <a class="alert-link" href="{$new_tem_link}">{l s='Click here' mod='npsmarketplace'}</a> {l s='to add new event term' mod='npsmarketplace'}
         </span>
     </div>
     {/if}
@@ -93,28 +93,24 @@
         <div class="row carnet-attributes number-entries">
             <div class="form-group col-md-6">
                 <label for="entries">{l s='Number of entries' mod='npsmarketplace'}</label>
-                <input class="validate form-control" data-validate="isNumber" type="number" id="entries" name="entries"
+                <input class="validate form-control" data-validate="isInteger" type="number" id="entries" name="entries"
                     value="{if isset($smarty.post.entries)}{$smarty.post.entries}{else}{if isset($product['entries'])}{$product['entries']|escape:'html':'UTF-8'}{/if}{/if}"/>
             </div>
         </div>
         <div class="row carnet-attributes time-period">
-            <div class="form-group col-md-6">
+            <div id="fromDatePicker" class="form-group col-md-6 input-append">
                 <label for="date_from">{l s='Valid fom' mod='npsmarketplace'}</label>
-                <div id="fromDatePicker" class="input-append">
-                    <input class="form-control" id="date_from" name="from" data-format="yyyy-MM-dd" type="text"
-                        value="{if isset($smarty.post.from)}{$smarty.post.from}{else}{if isset($product['from'])}{$product['from']|escape:'html':'UTF-8'}{/if}{/if}"/>
-                    <span class="form_info">{l s='Format: YYYY-MM-DD' mod='npsmarketplace'}</span>
-                    <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
-                </div>
+                <input class="form-control validate" data-validate="isDate" id="date_from" name="from" data-format="yyyy-MM-dd" type="text"
+                    value="{if isset($smarty.post.from)}{$smarty.post.from}{else}{if isset($product['from'])}{$product['from']|escape:'html':'UTF-8'}{/if}{/if}"/>
+                <span class="form_info">{l s='Format: YYYY-MM-DD' mod='npsmarketplace'}</span>
+                <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
             </div>
-            <div class="form-group col-md-6">
+            <div id="toDatePicker" class="form-group col-md-6 input-append">
                 <label for="date_to">{l s='To' mod='npsmarketplace'}</label>
-                <div id="toDatePicker" class="input-append">
-                    <input class="form-control" id="date_to" name="to" data-format="yyyy-MM-dd" type="text"
-                        value="{if isset($smarty.post.to)}{$smarty.post.to}{else}{if isset($product['to'])}{$product['to']|escape:'html':'UTF-8'}{/if}{/if}"/>
-                    <span class="form_info">{l s='Format: YYYY-MM-DD' mod='npsmarketplace'}</span>
-                    <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
-                </div>
+                <input class="form-control validate" data-validate="isDate" id="date_to" name="to" data-format="yyyy-MM-dd" type="text"
+                    value="{if isset($smarty.post.to)}{$smarty.post.to}{else}{if isset($product['to'])}{$product['to']|escape:'html':'UTF-8'}{/if}{/if}"/>
+                <span class="form_info">{l s='Format: YYYY-MM-DD' mod='npsmarketplace'}</span>
+                <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
             </div>
         </div>
         <hr class="carnet-attributes"/>
@@ -128,39 +124,33 @@
             </div>
             <div class="form-group col-md-6">
                 <label class="required" for="product_amount">{l s='Quantity' mod='npsmarketplace'}</label>
-                <input class="is_required validate form-control" data-validate="isNumber" type="number" id="product_amount" name="quantity" required=""
+                <input class="is_required validate form-control" data-validate="isInteger" type="number" id="product_amount" name="quantity" required=""
                     value="{if isset($smarty.post.quantity)}{$smarty.post.quantity}{else}{if isset($product['quantity'])}{$product['quantity']|escape:'html':'UTF-8'}{/if}{/if}"/>
             </div>
         </div>
         <div class="row ticket-attributes">
-            <div class="form-group col-md-6">
+            <div id="datePicker" class="form-group col-md-6 input-append">
                 <label class="required" for="date_input">{l s='Event date' mod='npsmarketplace'}</label>
-                <div id="datePicker" class="input-append">
-                    <input class="is_required form-control" id="date_input" name="date" data-format="yyyy-MM-dd" type="text" required=""
-                        value="{if isset($smarty.post.date)}{$smarty.post.date}{else}{if isset($product['date'])}{$product['date']|escape:'html':'UTF-8'}{/if}{/if}"/>
-                    <span class="form_info">{l s='Format: YYYY-MM-DD' mod='npsmarketplace'}</span>
-                    <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
-                </div>
+                <input class="is_required validate form-control" data-validate="isDate" id="date_input" name="date" data-format="yyyy-MM-dd" type="text" required=""
+                    value="{if isset($smarty.post.date)}{$smarty.post.date}{else}{if isset($product['date'])}{$product['date']|escape:'html':'UTF-8'}{/if}{/if}"/>
+                <span class="form_info">{l s='Format: YYYY-MM-DD' mod='npsmarketplace'}</span>
+                <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
             </div>
-            <div class="form-group col-md-6">
+            <div id="timePicker" class="form-group col-md-6 input-append">
                 <label class="required" for="time_input">{l s='Event hour' mod='npsmarketplace'}</label>
-                <div id="timePicker" class="input-append">
-                    <input class="is_required form-control" id="time_input" name="time" data-format="hh:mm" type="text" required=""
-                        value="{if isset($smarty.post.time)}{$smarty.post.time}{else}{if isset($product['time'])}{$product['time']|escape:'html':'UTF-8'}{/if}{/if}"/>
-                    <span class="form_info">{l s='Format: HH:MM' mod='npsmarketplace'}</span>
-                    <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
-                </div>
+                <input class="is_required validate form-control" data-validate="isTime" id="time_input" name="time" data-format="hh:mm" type="text" required=""
+                    value="{if isset($smarty.post.time)}{$smarty.post.time}{else}{if isset($product['time'])}{$product['time']|escape:'html':'UTF-8'}{/if}{/if}"/>
+                <span class="form_info">{l s='Format: HH:MM' mod='npsmarketplace'}</span>
+                <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
             </div>
         </div>
         <div class="row">
-            <div class="form-group col-md-6">
+            <div id="availableDatePicker" class="form-group col-md-6 input-append">
                 <label class="required" for="date_input">{l s='Expiration date of announcement' mod='npsmarketplace'}</label>
-                <div id="availableDatePicker" class="input-append">
-                    <input class="is_required form-control" id="expiry_date_input" name="expiry_date" data-format="yyyy-MM-dd" type="text" required=""
-                        value="{if isset($smarty.post.expiry_date)}{$smarty.post.expiry_date}{else}{if isset($product['expiry_date'])}{$product['expiry_date']|escape:'html':'UTF-8'}{/if}{/if}"/>
-                    <span class="form_info">{l s='Format: YYYY-MM-DD' mod='npsmarketplace'}</span>
-                    <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
-                </div>
+                <input class="is_required validate form-control" data-validate="isDate" id="expiry_date_input" name="expiry_date" data-format="yyyy-MM-dd" type="text" required=""
+                    value="{if isset($smarty.post.expiry_date)}{$smarty.post.expiry_date}{else}{if isset($product['expiry_date'])}{$product['expiry_date']|escape:'html':'UTF-8'}{/if}{/if}"/>
+                <span class="form_info">{l s='Format: YYYY-MM-DD' mod='npsmarketplace'}</span>
+                <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
             </div>
             <div class="form-group col-md-6">
                 <label for="product_code">{l s='Ticket reference' mod='npsmarketplace'}</label>

@@ -23,7 +23,6 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
             $seller = new Seller(null, $this->context->customer->id);
             if ($seller->id == null) 
                 Tools::redirect($this->context->link->getModuleLink('npsmarketplace', 'AccountRequest'));
-            $nps_instance = new NpsMarketplace();
 
             $company_name = trim(Tools::getValue('company_name'));
             $name = trim(Tools::getValue('seller_name'));
@@ -38,36 +37,36 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
             $link_rewrite = array();
 
             if (empty($name))
-                $this -> errors[] = $nps_instance->l('Seller name is required');
+                $this -> errors[] = $this->module->l('Seller name is required', 'SellerAccount');
             else if (!Validate::isGenericName($name))
-                $this -> errors[] = $nps_instance->l('Invalid seller name');
+                $this -> errors[] = $this->module->l('Invalid seller name', 'SellerAccount');
 
             if (empty($phone))
-                $this -> errors[] = $nps_instance->l('Phone number is required');
+                $this -> errors[] = $this->module->l('Phone number is required', 'SellerAccount');
             else if (!Validate::isPhoneNumber($phone))
-                $this -> errors[] = $nps_instance->l('Invalid phone number');
+                $this -> errors[] = $this->module->l('Invalid phone number', 'SellerAccount');
 
             if (empty($email))
-                $this -> errors[] = $nps_instance->l('Buisness email is required');
+                $this -> errors[] = $this->module->l('Buisness email is required', 'SellerAccount');
             else if (!Validate::isEmail($email))
-                $this -> errors[] = $nps_instance->l('Invalid email addres');
+                $this -> errors[] = $this->module->l('Invalid email addres', 'SellerAccount');
 
             if (empty($company_name))
-                $this -> errors[] = $nps_instance->l('Company name is required');
+                $this -> errors[] = $this->module->l('Company name is required', 'SellerAccount');
             else if (!Validate::isGenericName($company_name))
-                $this -> errors[] = $nps_instance->l('Invalid company name');
+                $this -> errors[] = $this->module->l('Invalid company name', 'SellerAccount');
 
             if (!empty($nip) && !Validate::isNip($nip))
-                $this -> errors[] = $nps_instance->l('Invalid NIP number');
+                $this -> errors[] = $this->module->l('Invalid NIP number', 'SellerAccount');
 
             if (!empty($regon) && !Validate::isRegon($regon))
-                $this -> errors[] = $nps_instance->l('Invalid REGON number');
+                $this -> errors[] = $this->module->l('Invalid REGON number', 'SellerAccount');
 
             foreach (Language::getLanguages() as $key => $lang) {
                 if (!Validate::isCleanHtml($company_description[$lang['id_lang']]))
-                    $this -> errors[] = $nps_instance->l('Invalid company description');
+                    $this -> errors[] = $this->module->l('Invalid company description', 'SellerAccount');
                 if (!Validate::isCleanHtml($regulations[$lang['id_lang']]))
-                    $this -> errors[] = $nps_instance->l('Invalid regulations content');
+                    $this -> errors[] = $this->module->l('Invalid regulations content', 'SellerAccount');
 
                 $link_rewrite[$lang['id_lang']] = Tools::link_rewrite($name);
             }

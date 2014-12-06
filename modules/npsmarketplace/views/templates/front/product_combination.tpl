@@ -49,45 +49,39 @@
                 </div>
             </div>
             <div class="row">
-                <div class="form-group col-md-6">
+                <div id="datePicker" class="form-group col-md-6 input-append">
                     <label class="required" for="date_input">{l s='Date' mod='npsmarketplace'}</label>
-                    <div id="datePicker" class="input-append">
-                        <input class="is_required form-control" id="date_input" name="date" data-format="yyyy-MM-dd" type="text" readonly="" required=""
-                            value="{if isset($smarty.post.date)}{$smarty.post.date}{else}{if isset($product['date'])}{$product['date']|escape:'html':'UTF-8'}{/if}{/if}"/>
-                        <span class="form_info">{l s='Format: YYYY-MM-DD' mod='npsmarketplace'}</span>
-                        <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
-                    </div>
+                    <input class="is_required validate form-control" data-validate="isDate" id="date_input" name="date" data-format="yyyy-MM-dd" type="text" required=""
+                        value="{if isset($smarty.post.date)}{$smarty.post.date}{else}{if isset($product['date'])}{$product['date']|escape:'html':'UTF-8'}{/if}{/if}"/>
+                    <span class="form_info">{l s='Format: YYYY-MM-DD' mod='npsmarketplace'}</span>
+                    <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
                 </div>
-                <div class="form-group col-md-6">
+                <div id="timePicker" class="form-group col-md-6 input-append">
                     <label class="required" for="time_input">{l s='Time' mod='npsmarketplace'}</label>
-                    <div id="timePicker" class="input-append">
-                        <input class="is_required form-control" id="time_input" name="time" data-format="hh:mm" type="text" readonly="" required=""
-                            value="{if isset($smarty.post.time)}{$smarty.post.time}{else}{if isset($product['time'])}{$product['time']|escape:'html':'UTF-8'}{/if}{/if}"/>
-                        <span class="form_info">{l s='Format: HH:MM' mod='npsmarketplace'}</span>
-                        <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
-                    </div>
+                    <input class="is_required validate form-control" data-validate="isTime" id="time_input" name="time" data-format="hh:mm" type="text" required=""
+                        value="{if isset($smarty.post.time)}{$smarty.post.time}{else}{if isset($product['time'])}{$product['time']|escape:'html':'UTF-8'}{/if}{/if}"/>
+                    <span class="form_info">{l s='Format: HH:MM' mod='npsmarketplace'}</span>
+                    <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
                 </div>
             </div>
             <div class="row">
                 <div class="form-group col-md-6">
                     <label class="required" for="product_amount">{l s='Quantity' mod='npsmarketplace'}</label>
-                    <input class="is_required validate form-control" data-validate="isNumber" type="number" id="product_amount" name="quantity" required=""
+                    <input class="is_required validate form-control" data-validate="isInteger" type="number" id="product_amount" name="quantity" required=""
                         value="{if isset($smarty.post.quantity)}{$smarty.post.quantity}{else}{if isset($product['quantity'])}{$product['quantity']|escape:'html':'UTF-8'}{/if}{/if}"/>
                 </div>
-                <div class="form-group col-md-6">
+                <div id="availableDatePicker" class="form-group col-md-6 input-append">
                     <label class="required" for="date_input">{l s='Available Date' mod='npsmarketplace'}</label>
-                    <div id="availableDatePicker" class="input-append">
-                        <input class="is_required form-control" id="expiry_date_input" name="expiry_date" data-format="yyyy-MM-dd" type="text" readonly="" required=""
-                            value="{if isset($smarty.post.expiry_date)}{$smarty.post.expiry_date}{else}{if isset($product['expiry_date'])}{$product['expiry_date']|escape:'html':'UTF-8'}{/if}{/if}"/>
-                        <span class="form_info">{l s='Format: YYYY-MM-DD' mod='npsmarketplace'}</span>
-                        <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
-                    </div>
+                    <input class="is_required validate form-control" data-validate="isDate" id="expiry_date_input" name="expiry_date" data-format="yyyy-MM-dd" type="text" required=""
+                        value="{if isset($smarty.post.expiry_date)}{$smarty.post.expiry_date}{else}{if isset($product['expiry_date'])}{$product['expiry_date']|escape:'html':'UTF-8'}{/if}{/if}"/>
+                    <span class="form_info">{l s='Format: YYYY-MM-DD' mod='npsmarketplace'}</span>
+                    <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
                 </div>
             </div>
         </fieldset>
         </br>
         <strong>{l s='By clicking "Add" I accept the' mod='npsmarketplace'} <a href="{$user_agreement_url}">{l s='User Agreement.' mod='npsmarketplace'}</a></strong>
         </br>
-        <button type="submit" name="submitCombination" class="btn btn-default button button-medium pull-right"><span>{l s='Add' mod='npsmarketplace'} <i class="icon-plus right"></i></span></button>
+        <button type="submit" name="submitCombination" class="btn btn-default button button-medium pull-right" onclick="$.fancybox.showLoading();"><span>{l s='Add' mod='npsmarketplace'} <i class="icon-plus right"></i></span></button>
     </form>
 </div>

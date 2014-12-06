@@ -5541,7 +5541,8 @@ span.exclusive {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16); }
   .button.button-small span {
     display: block;
-    padding: 3px 8px 3px 8px; }
+    padding: 3px 8px 3px 8px;
+    white-space: nowrap; }
     .button.button-small span i {
       vertical-align: 0px;
       margin-right: 5px; }
@@ -5565,7 +5566,8 @@ span.exclusive {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16); }
   .button.button-medium span {
     display: block;
-    padding: 5px; }
+    padding: 5px;
+    white-space: nowrap; }
     @media (max-width: 480px) {
       .button.button-medium span {
         font-size: 15px;
@@ -5635,7 +5637,8 @@ span.exclusive {
   .button.exclusive-medium span {
     display: block;
     border: none;
-    padding: 9px 10px 11px 10px; }
+    padding: 9px 10px 11px 10px;
+    white-space: nowrap; }
     @media (max-width: 480px) {
       .button.exclusive-medium span {
         font-size: 15px;
@@ -5803,7 +5806,7 @@ table.table_block td {
 .box {
   border: 1px solid #d6d4d4;
   padding: 14px 18px 13px;
-  margin: 0 0 30px 0;
+  margin: 0 0 20px 0;
   line-height: 23px; }
   .box p {
     margin-bottom: 0; }
@@ -7686,6 +7689,9 @@ div.star.star_hover:after {
   .dropdown a {
     color: #333;
     padding: 8px !important; }
+    .dropdown a .caret {
+      border-top-color: #333;
+      border-bottom-color: #333; }
   .dropdown .dropdown-toggle:hover {
     background: #ffaa00; }
   .dropdown .dropdown-menu li a:hover {

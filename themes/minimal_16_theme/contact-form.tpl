@@ -30,7 +30,7 @@
 	<p class="alert alert-success"><span class="alert-content">{l s='Your message has been successfully sent to our team.'}</span></p>
 	<ul class="footer_links clearfix">
 		<li>
-            <a class="btn btn-default button button-small" href="{$base_dir}">
+            <a class="btn btn-default button button-small" href="{$base_dir}" onclick="$.fancybox.showLoading();">
                 <span>
                     <i class="icon-chevron-left"></i>{l s='Home'}
                 </span>
@@ -41,7 +41,7 @@
 	<p class="alert alert-warning"><span class="alert-content">{l s='Your message has already been sent.'}</span></p>
 	<ul class="footer_links clearfix">
 		<li>
-            <a class="btn btn-default button button-small" href="{$base_dir}">
+            <a class="btn btn-default button button-small" href="{$base_dir}" onclick="$.fancybox.showLoading();">
                 <span>
                     <i class="icon-chevron-left"></i>{l s='Home'}
                 </span>
@@ -106,7 +106,7 @@
             </div>
         </div>
         <div class="submit">
-            <button type="submit" name="submitMessage" id="submitMessage" class="button btn btn-default button-medium"><span>{l s='Send'}<i class="icon-chevron-right right"></i></span></button>
+            <button type="submit" name="submitMessage" id="submitMessage" class="button btn btn-default button-medium" onclick="$.fancybox.showLoading();"><span>{l s='Send'}<i class="icon-chevron-right right"></i></span></button>
 		</div>
 	</fieldset>
 </form>

@@ -38,19 +38,22 @@ class NpsCalendarCalendarModuleFrontController extends ModuleFrontController {
             $date = date('Y-m-d');
         }
         $this->productSort();
-        $res = Search::find($this->context->language->id, $date, 1, 10);
-        $nbProducts = count($res['result']);
+        $this->n = abs((int)(Tools::getValue('n', Configuration::get('PS_PRODUCTS_PER_PAGE'))));
+        $this->p = abs((int)(Tools::getValue('p', 1)));
+        $_GET['n'] = $this->n;
+        $_GET['p'] = $this->p;
+        $search = Search::find($this->context->language->id, $date, $this->p, $this->n, $this->orderBy, $this->orderWay);
+        $nbProducts = $search['total'];
         $this->pagination($nbProducts);
 
         $this->context->smarty->assign(array(
-            'products' => $res['result'],
+            'products' => $search['result'],
             'add_prod_display' => Configuration::get('PS_ATTRIBUTE_CATEGORY_DISPLAY'),
-            'nbProducts' => $nbProducts,
             'homeSize' => Image::getSize(ImageType::getFormatedName('home')),
             'comparator_max_item' => Configuration::get('PS_COMPARATOR_MAX_ITEM'),
             'calendar_api_url' => $this->context->link->getModuleLink('npscalendar', 'api'),
             'current_calendar_date' => $date,
-            'HOOK_CALENDAR' => $this->displayCalendar()
+            'HOOK_CALENDAR' => $this->displayCalendar(),
         ));
 
         $this->setTemplate('calendar_page.tpl');
