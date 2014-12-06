@@ -1,0 +1,22 @@
+Witaj {firstname}, 
+
+Nowe zamówienie zostało wygenerowane w Twoim imieniu. 
+
+Przejdź na {order_link} [{order_link}], aby
+sfinalizować płatność. 		 
+
+Pozdrawiamy,
+Zespół Labs in Town!
+
+To jest automatyczna wiadomość. Prosimy na nią NIE odpowiadać
+
+Masz pytania? Napisz do nas: kontakt@labsintown.pl
+
+--
+
+Odwiedź nas:
+Facebook: [https://www.facebook.com/labsintown]
+Blog: [http://labsters.pl]
+
+Treść niniejszej wiadomości wraz z załącznikami przeznaczona jest wyłącznie dla osoby lub podmiotu, do którego jest adresowana i może zawierać informacje o charakterze poufnym lub zastrzeżonym. Nieuprawnione wykorzystanie informacji zawartych w tej wiadomości przez osobę lub podmiot nie będący jej adresatem jest zabronione. Odbiorca korespondencji, który otrzymał ją pomyłkowo, proszony jest o niezwłoczne zawiadomienie nadawcy oraz usunięcie tej wiadomości z poczty elektronicznej.
+

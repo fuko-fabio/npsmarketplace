@@ -5,6 +5,8 @@
 .project
 # Exclude
 
+!/mails
+
 !/modules
 /modules/*
 !/modules/npsmailactivation
