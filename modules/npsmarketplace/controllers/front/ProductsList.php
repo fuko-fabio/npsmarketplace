@@ -46,6 +46,7 @@ class NpsMarketplaceProductsListModuleFrontController extends ModuleFrontControl
             'seler_active' => $seller->active && !$seller->locked,
             'id_currency' => $this->context->currency->id,
             'nps_ajax_url' => $this->context->link->getModuleLink('npsmarketplace', 'Ajax'),
+            'account_requested' => Tools::getValue('not_configured')
         ));
 
         $this -> setTemplate('products_list.tpl');

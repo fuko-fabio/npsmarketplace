@@ -8,9 +8,9 @@ var Calendar = Backbone.AssociatedModel.extend({
     url: function () {
         var params;
         if (calendarApiUrl.indexOf('?') > -1) {
-            params = '&';
+            params = '&actionWeek=1&';
         } else {
-            params = '?';
+            params = '?actionWeek=1&';
         }
         if (this.get('start_date') != null) {
             params += 'start_date=' + this.get('start_date');
@@ -36,6 +36,7 @@ var Calendar = Backbone.AssociatedModel.extend({
         days       : [],
         start_date : null,
         end_date   : null,
+        page_url   : calendarPageUrl,
     },
 
     fetchPrevious: function() {

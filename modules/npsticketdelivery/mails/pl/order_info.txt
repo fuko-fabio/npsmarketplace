@@ -5,13 +5,13 @@ Witaj {firstname},
 
 Dokonano zakupów w twoim butiku {name}!
 
-ZAMÓWIENIE: {order_name} Umieszczone na {date}
+ZAMÓWIENIE: {order_name} dokonane {date}
 
 PŁATNOŚĆ: {payment} 		 
 
 INDEKS
 
-PRODUKT
+Wydarzenie
 
 CENA JEDNOSTKOWA
 

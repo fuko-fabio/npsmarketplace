@@ -8,9 +8,9 @@
 <span class="navigation-pipe">{$navigationPipe}</span>
 <span class="navigation_page">{l s='Marketing' mod='npsmarketplace'}</span>
 {/capture}
-{include file="$tpl_dir./errors.tpl"}
 <div class="block-center" id="block-seller-marketing-view">
     <h1 class="page-heading bottom-indent">{l s='Marketing' mod='npsmarketplace'}</h1>
+    {include file="$tpl_dir./errors.tpl"}
     <p class="alert alert-error code-error" style="display: none"><span class="alert-content">{l s='An error occurred while generating code. Try again or please contact customer service..' mod='npsmarketplace'}</span></p>
     <p class="alert alert-info"><span class="alert-content">{l s='Here you can generate code that you can paste on any page. Thanks to this code your events from our store will be visible to other pages.' mod='npsmarketplace'}</span></p>
     <form class="marketing-code">
@@ -18,6 +18,7 @@
             <div class="form-group col-md-6">
                 <label class="required" for="in_row">{l s='Max events in row' mod='npsmarketplace'}</label>
                 <select class="form-control" id="in_row" name="in_row">
+                    <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
                     <option value="4">4</option> 
@@ -26,6 +27,7 @@
             <div class="form-group col-md-6">
                 <label class="required" for="max_events">{l s='Total max events' mod='npsmarketplace'}</label>
                 <select class="form-control" id="max_events" name="max_events">
+                    <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
                     <option value="4">4</option>
@@ -54,6 +56,13 @@
                         <option value="{$lang.id_lang}">{$lang.name}</option> 
                     {/foreach}
                 </select>
+            </div>
+        </div>
+         <div class="row">
+            <div class="form-group col-md-6">
+                <label for="width">{l s='Frame width(px)' mod='npsmarketplace'}</label>
+                <input class="validate form-control" data-validate="isNumber" type="number" id="width" name="width" value="600"/>
+                <span class="form_info">{l s='Recomended minimal width 300px' mod='npsmarketplace'}</span>
             </div>
         </div>
     </form>

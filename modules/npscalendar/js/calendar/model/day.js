@@ -16,6 +16,7 @@ var Day = Backbone.AssociatedModel.extend({
     defaults: {
         day : null,
         name : null,
+        eventsCount: null,
         events : []
     }
 });

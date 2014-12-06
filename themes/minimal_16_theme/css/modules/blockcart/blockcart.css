@@ -25,7 +25,8 @@
       float: none; } }
   @media (max-width: 767px) {
     .shopping_cart {
-      width: 100%; } }
+      width: 100%;
+      padding-left: 60px; } }
   .shopping_cart > a:first-child {
     padding: 8px 8px 8px 20px;
     background: #36454f;
@@ -53,6 +54,9 @@
       position: absolute;
       top: -5px;
       left: -65px; }
+      @media (max-width: 767px) {
+        .shopping_cart > a:first-child .shopping_bag {
+          left: 0px; } }
   .shopping_cart .ajax_cart_total {
     display: none !important; }
   .shopping_cart .block_cart_expand:after, .shopping_cart .block_cart_collapse:after {

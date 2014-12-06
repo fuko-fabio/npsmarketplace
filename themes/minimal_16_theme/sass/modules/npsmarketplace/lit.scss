@@ -2,9 +2,16 @@
 @import "theme_variables";
 
 .lit-content-body {
+  h4 {
+    color: $base-text-color;
+    font-weight: 700;
+  }
   .shop {
     color: $primary-color;
     font-weight: 700;
+    right: 0;
+    top: 0;
+    position: absolute;
     span {
       color: $base-text-color;
     }

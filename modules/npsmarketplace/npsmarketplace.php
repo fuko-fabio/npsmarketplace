@@ -93,6 +93,7 @@ class NpsMarketplace extends Module {
             || !Configuration::deleteByName('NPS_GLOBAL_COMMISION')
             || !Configuration::deleteByName('NPS_PRODUCT_GUIDE_URL')
             || !Configuration::deleteByName('NPS_SELLER_GUIDE_URL')
+            || !Configuration::deleteByName('NPS_USER_GUIDE_URL')
             || !Configuration::deleteByName('NPS_SELLER_AGREEMENT_URL')
             || !Configuration::deleteByName('NPS_PAYMENT_SETTINGS_GUIDE_URL')
             || !Configuration::deleteByName('NPS_EVENT_VIDEO_GUIDE_URL')
@@ -268,11 +269,12 @@ class NpsMarketplace extends Module {
         $id_town = Tools::getValue('id_town');
         $in_row = Tools::getValue('in_row');
         $max_events = Tools::getValue('max_events');
+        $width = Tools::getValue('width');
         $shop_url = Tools::getHttpHost(true).__PS_BASE_URI__;
         $key = Tools::encrypt($this->name.$id_seller.$id_lang,$id_town);
-        
-        $width = 200 * $in_row;
-        $height = (250 * (ceil($max_events / $in_row))) + 20;
+
+        $item = $width/$in_row;
+        $height = ceil((($item + ($item * 0.25)) * ($max_events / $in_row)) + 20);
         $this->context->smarty->assign(
             array(
                 'url' => $shop_url.'modules/npsmarketplace/iframe.php?id_lang='.$id_lang.'&id_town='.$id_town.'&id_seller='.$id_seller.'&max='.$max_events.'&row='.$in_row.'&key='.$key,
@@ -291,6 +293,7 @@ class NpsMarketplace extends Module {
         $max_items = (int)Tools::getValue('max');
         $in_row = (int)Tools::getValue('row');
         $key = Tools::getValue('key');
+        $width = Tools::getValue('width');
 
         if ($key != Tools::encrypt($this->name.$id_seller.$id_lang,$id_town))
             return '';
@@ -369,6 +372,7 @@ class NpsMarketplace extends Module {
             Configuration::updateValue('NPS_SELLER_GUIDE_URL', Tools::getValue('NPS_SELLER_GUIDE_URL'));
             Configuration::updateValue('NPS_PAYMENT_SETTINGS_GUIDE_URL', Tools::getValue('NPS_PAYMENT_SETTINGS_GUIDE_URL'));
             Configuration::updateValue('NPS_EVENT_VIDEO_GUIDE_URL', Tools::getValue('NPS_EVENT_VIDEO_GUIDE_URL'));
+            Configuration::updateValue('NPS_USER_GUIDE_URL', Tools::getValue('NPS_USER_GUIDE_URL'));
             $output .= $this->displayConfirmation($this->l('URL\'s settings updated'));
         }
         return $output.$this->displayForm();
@@ -509,6 +513,12 @@ class NpsMarketplace extends Module {
                     ),
                     array(
                         'type' => 'text',
+                        'label' => $this->l('User Guide  URL'),
+                        'name' => 'NPS_USER_GUIDE_URL',
+                        'required' => true
+                    ),
+                    array(
+                        'type' => 'text',
                         'label' => $this->l('Seller Guide  URL'),
                         'name' => 'NPS_SELLER_GUIDE_URL',
                         'required' => true
@@ -545,6 +555,7 @@ class NpsMarketplace extends Module {
         return array(
             'NPS_GLOBAL_COMMISION' => Tools::getValue('NPS_GLOBAL_COMMISION', Configuration::get('NPS_GLOBAL_COMMISION')),
             'NPS_PRODUCT_GUIDE_URL' => Tools::getValue('NPS_PRODUCT_GUIDE_URL', Configuration::get('NPS_PRODUCT_GUIDE_URL')),
+            'NPS_USER_GUIDE_URL' => Tools::getValue('NPS_USER_GUIDE_URL', Configuration::get('NPS_USER_GUIDE_URL')),
             'NPS_SELLER_GUIDE_URL' => Tools::getValue('NPS_SELLER_GUIDE_URL', Configuration::get('NPS_SELLER_GUIDE_URL')),
             'NPS_SELLER_AGREEMENT_URL' => Tools::getValue('NPS_SELLER_AGREEMENT_URL', Configuration::get('NPS_SELLER_AGREEMENT_URL')),
             'NPS_MERCHANT_EMAILS' => Tools::getValue('NPS_MERCHANT_EMAILS', Configuration::get('NPS_MERCHANT_EMAILS')),

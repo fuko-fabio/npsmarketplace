@@ -5,6 +5,8 @@
 .project
 # Exclude
 
+!/mails
+
 !/modules
 /modules/*
 !/modules/npsmailactivation
@@ -21,6 +23,9 @@
 !/modules/npssocialsharing
 !/modules/npsticketdelivery
 !/modules/npsfacebooklogin
+
+!/modules/lofadvancecustom
+
 !/themes
 /themes/*
 !/themes/minimal_16_theme

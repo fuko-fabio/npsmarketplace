@@ -7,10 +7,9 @@
 <span class="navigation-pipe">{$navigationPipe}</span>
 <span class="navigation_page">{l s='Customers Orders' mod='npsmarketplace'}</span>
 {/capture}
-{include file="$tpl_dir./errors.tpl"}
 <div class="block-center" id="block-seller-orders">
     <h1 class="page-heading bottom-indent">{l s='Customers Orders' mod='npsmarketplace'}</h1>
-
+    {include file="$tpl_dir./errors.tpl"}
     {if $orders}
     <div class="table-responsive">
         <table class="table table-bordered footab">

@@ -7,8 +7,9 @@
 <span class="navigation-pipe">{$navigationPipe}</span>
 <span class="navigation_page">{l s='Shop Profile'}</span>
 {/capture}
-{include file="$tpl_dir./errors.tpl"}
 <h1 class="page-heading bottom-indent">{l s='Shop Profile' mod='npsmarketplace'}</h1>
+{include file="$tpl_dir./errors.tpl"}
+
 {if $seller['account_state'] == 'requested'}
 <p class="alert alert-info">
     <span class="alert-content">

@@ -521,6 +521,7 @@ span.exclusive {
 .form-control {
   height: 27px;
   border-color: $input-border-color;
+  padding: 6px;
   @include box-shadow(none);
   &.grey {
     background: $base-box-bg;
@@ -2705,7 +2706,6 @@ table.discount {
     margin: 0 auto;
     text-align: center;
     .img-404 {
-      padding: 8px 0 27px 0;
       img {
         max-width: 100%;
       }
@@ -2909,14 +2909,14 @@ div.star.star_hover {
     input, textarea {
       border: 1px solid #f13340;
       color: #f13340;
-      background: url(../img/icon/form-error.png) 98% 5px no-repeat #fff1f2;
+      background: url(../img/icon/form-error.png) 99% 5px no-repeat;
     }
   }
   &.form-ok {
     input, textarea {
       border: 1px solid #46a74e;
       color: #35b33f;
-      background: url(../img/icon/form-ok.png) 98% 5px no-repeat #ddf9e1;
+      background: url(../img/icon/form-ok.png) 99% 5px no-repeat;
     }
   }
   &.form-error, &.form-ok {

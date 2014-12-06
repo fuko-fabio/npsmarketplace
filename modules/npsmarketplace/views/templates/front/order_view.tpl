@@ -7,9 +7,9 @@
 <span class="navigation-pipe">{$navigationPipe}</span>
 <span class="navigation_page">{l s='Order Details' mod='npsmarketplace'}</span>
 {/capture}
-{include file="$tpl_dir./errors.tpl"}
 <div class="block-center" id="block-seller-order-view">
     <h1 class="page-heading bottom-indent">{l s='Order Details' mod='npsmarketplace'}</h1>
+    {include file="$tpl_dir./errors.tpl"}
     <div class="row">
         <div class="col-md-6">
             <h4>{l s='State' mod='npsmarketplace'}</h4>

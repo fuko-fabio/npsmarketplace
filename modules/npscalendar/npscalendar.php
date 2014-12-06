@@ -50,9 +50,10 @@ class NpsCalendar extends Module {
         if (!isset($this->context->controller->php_self) || $this->context->controller->php_self != 'index')
             return;
         $this->context->smarty->assign(array(
-            'calendar_api_url' => $this->context->link->getModuleLink('npscalendar', 'api')
+            'calendar_api_url' => $this->context->link->getModuleLink('npscalendar', 'api'),
+            'calendar_page_url' => $this->context->link->getModuleLink('npscalendar', 'calendar')
         ));
-        return $this->display(__FILE__, 'calendar.tpl');
+        return $this->display(__FILE__, 'calendar_home.tpl');
     }
 
     public function hookHeader() {
@@ -63,14 +64,14 @@ class NpsCalendar extends Module {
                 ($this->_path).'js/underscore-min.js',
                 ($this->_path).'js/backbone-min.js',
                 ($this->_path).'js/backbone-associations-min.js',
-                ($this->_path).'js/calendar/template/calendar.js',
+                ($this->_path).'js/calendar/template/weekCalendar.js',
                 ($this->_path).'js/calendar/model/event.js',
                 ($this->_path).'js/calendar/collection/events.js',
                 ($this->_path).'js/calendar/model/day.js',
                 ($this->_path).'js/calendar/collection/days.js',
                 ($this->_path).'js/calendar/model/calendar.js',
-                ($this->_path).'js/calendar/view/calendar.js',
-                ($this->_path).'js/calendar/router.js',
+                ($this->_path).'js/calendar/view/weekCalendar.js',
+                ($this->_path).'js/calendar/weekRouter.js',
             ));
         }
     }

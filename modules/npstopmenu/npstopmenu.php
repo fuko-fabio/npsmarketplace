@@ -157,7 +157,7 @@ class npstopmenu extends Module
 			Configuration::updateValue('MOD_NPSTOPMENU_SEARCH', (bool)Tools::getValue('search'));
 			$update_cache = true;
 		}
-		else if (Tools::isSubmit('submitNpsktopmenuLinks'))
+		else if (Tools::isSubmit('submitNpstopmenuLinks'))
 		{
 			foreach ($languages as $key => $val)
 			{

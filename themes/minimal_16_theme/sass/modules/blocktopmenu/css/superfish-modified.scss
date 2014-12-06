@@ -3,9 +3,12 @@
 
 /*** ESSENTIAL STYLES ***/
 .sf-contener {
+  padding-top: 5px;
   clear: both;
-  float: left;
   width: 100%;
+  @media (max-width: $screen-xs-max) {
+    float: left;
+  }
 }
 
 .sf-right {
@@ -19,11 +22,15 @@
 }
 
 .sf-menu {
-  position: relative;
-  padding: 0;
-  width: 100%;
+  width: -moz-fit-content;
+  width: -webkit-fit-content;
+  width: fit-content;
+  margin: auto;
   @media (max-width: $screen-xs-max) {
     // max 767px
+    position: relative;
+    padding: 0;
+    width: 100%;
     display: none;
   }
 }
@@ -72,20 +79,22 @@
     }
   }
   > a {
-    border-right: 1px solid $base-border-color;
     text-transform: uppercase;
     font-weight: 700;
     color: $dark-background;
     display: block;
     margin: 10px 0;
     padding: 0 10px;
+    @media (min-width: $screen-xs-max) {
+      border-right: 1px solid $base-border-color;
+    }
   }
   &.sfHover > a,
   > a:hover,
   &.sfHoverForce > a {
     color: $primary-color;
   }
-  &:last-of-type {
+  &:last-of-type a {
     border-right: none;
   }
 }
@@ -237,12 +246,11 @@ ul.sf-menu li li li.sfHover ul {
     color: #484848;
     display: block;
     padding: 17px 20px;
-    border-bottom: 3px solid #e9e9e9;
+    border-bottom: none;
     background: #f6f6f6;
     position: relative;
     &:hover {
       background: $dark-background;
-      border-bottom-color: #666666;
       color: $light-text-color;
     }
     &:after {
