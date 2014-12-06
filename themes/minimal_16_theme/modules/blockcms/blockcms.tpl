@@ -134,19 +134,5 @@
         </ul>
         {$footer_text}
     </section>
-    <section class="bottom-eu">
-        <img src="{$img_dir}kapital_ludzki.png"/>
-        <img class="pull-right" src="{$img_dir}unia.png"/>
-    </section>
-    {if $display_poweredby}
-        <section class="bottom-footer">
-            <div>
-                Copyright &copy; 2014 <a href="http://labsintown.com" title="LabsInTown">LabsInTown</a>
-            </div>
-            <div class="pull-right">
-                <a target="_blank" href="http://npsoftware.pl" title="nps software"><span class="cname">nps</span><span class="csoftware"> software</span></a>
-            </div>
-        </section>
-    {/if}
     <!-- /MODULE Block footer -->
 {/if}
