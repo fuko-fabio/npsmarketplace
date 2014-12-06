@@ -27,12 +27,12 @@
 <span class="navigation_page">{l s='Add Event'}</span>
 {/if}
 {/capture}
-{include file="$tpl_dir./errors.tpl"}
 {if isset($product['id'])}
 <h1 class="page-heading bottom-indent">{l s='Edit Event' mod='npsmarketplace'}</h1>
 {else}
 <h1 class="page-heading bottom-indent">{l s='Add Event' mod='npsmarketplace'}</h1>
 {/if}
+{include file="$tpl_dir./errors.tpl"}
 <div class="block-center" id="block-seller-product">
     <form role="form" action="{$request_uri}" method="post" id="edit-product-form">
         <input type="hidden" name="form_token" value="{$form_token}" />

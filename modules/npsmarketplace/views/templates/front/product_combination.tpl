@@ -9,8 +9,8 @@
     <span class="navigation-pipe">{$navigationPipe}</span>
     <span class="navigation_page">{l s='New Event Term'}</span>
 {/capture}
-{include file="$tpl_dir./errors.tpl"}
 <h1 class="page-heading bottom-indent">{l s='New Event Term' mod='npsmarketplace'}</h1>
+{include file="$tpl_dir./errors.tpl"}
 
 <div class="block-center" id="block-seller-product-combination">
     <form enctype="multipart/form-data" role="form" action="{$request_uri}" method="post" id="formaddproduct">

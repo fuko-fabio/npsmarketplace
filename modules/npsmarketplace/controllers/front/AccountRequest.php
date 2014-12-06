@@ -199,6 +199,7 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
                 'user_agreement_url' =>  Configuration::get('NPS_SELLER_AGREEMENT_URL'),
                 'processing_data_url' => '#',
                 'seller_fieldset_tpl_path' => _PS_MODULE_DIR_.'npsmarketplace/views/templates/front/seller_fieldset.tpl',
+                'add_product' => Tools::getValue('not_configured')
             )
         );
 

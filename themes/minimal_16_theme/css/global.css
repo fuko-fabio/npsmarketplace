@@ -5646,6 +5646,7 @@ span.exclusive {
 .form-control {
   height: 27px;
   border-color: #bbb;
+  padding: 6px;
   -webkit-box-shadow: none;
   box-shadow: none; }
   .form-control.grey {
@@ -7450,11 +7451,11 @@ div.star.star_hover:after {
 .form-group.form-error input, .form-group.form-error textarea {
   border: 1px solid #f13340;
   color: #f13340;
-  background: url(../img/icon/form-error.png) 98% 5px no-repeat #fff1f2; }
+  background: url(../img/icon/form-error.png) 99% 5px no-repeat; }
 .form-group.form-ok input, .form-group.form-ok textarea {
   border: 1px solid #46a74e;
   color: #35b33f;
-  background: url(../img/icon/form-ok.png) 98% 5px no-repeat #ddf9e1; }
+  background: url(../img/icon/form-ok.png) 99% 5px no-repeat; }
 .form-group.form-error .form-control, .form-group.form-ok .form-control {
   padding-right: 30px; }
 

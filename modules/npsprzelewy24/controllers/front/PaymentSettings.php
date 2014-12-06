@@ -23,8 +23,6 @@ class NpsPrzelewy24PaymentSettingsModuleFrontController extends ModuleFrontContr
 
     public function postProcess() {
         if (Tools::isSubmit('submitCompany')) {
-
-            $nps_instance = new NpsPrzelewy24();
             $seller = new Seller(null, $this->context->customer->id);
             $settings = new P24SellerCompany(null, $seller->id);
             if ($settings->id != null && !empty($settings->spid)) {
@@ -43,50 +41,50 @@ class NpsPrzelewy24PaymentSettingsModuleFrontController extends ModuleFrontContr
             $iban = preg_replace('/\s+/', '', trim(Tools::getValue('iban')));
 
             if (empty($company_name))
-                $this -> errors[] = $nps_instance->l('Company name is required');
+                $this -> errors[] = $this->module->l('Company name is required');
             else if (!Validate::isGenericName($company_name))
-                $this -> errors[] = $nps_instance->l('Invalid company name');
+                $this -> errors[] = $this->module->l('Invalid company name');
 
             if (empty($city))
-                $this -> errors[] = $nps_instance->l('City name is required');
+                $this -> errors[] = $this->module->l('City name is required');
             else if (!Validate::isCityName($city))
-                $this -> errors[] = $nps_instance->l('Invalid city name');
+                $this -> errors[] = $this->module->l('Invalid city name');
 
             if (empty($street))
-                $this -> errors[] = $nps_instance->l('Address is required');
+                $this -> errors[] = $this->module->l('Address is required');
             else if (!Validate::isAddress($street))
-                $this -> errors[] = $nps_instance->l('Invalid address');
+                $this -> errors[] = $this->module->l('Invalid address');
 
             if (empty($post_code))
-                $this -> errors[] = $nps_instance->l('Post code is required');
+                $this -> errors[] = $this->module->l('Post code is required');
             else if (!Validate::isPostCode($post_code))
-                $this -> errors[] = $nps_instance->l('Invalid post code');
+                $this -> errors[] = $this->module->l('Invalid post code');
 
             if (empty($person))
-                $this -> errors[] = $nps_instance->l('Person name is required');
+                $this -> errors[] = $this->module->l('Person name is required');
             else if (!Validate::isName($person))
-                $this -> errors[] = $nps_instance->l('Invalid person name');
+                $this -> errors[] = $this->module->l('Invalid person name');
 
             if (empty($email))
-                $this -> errors[] = $nps_instance->l('Buisness email is required');
+                $this -> errors[] = $this->module->l('Buisness email is required');
             else if (!Validate::isEmail($email))
-                $this -> errors[] = $nps_instance->l('Invalid email addres');
+                $this -> errors[] = $this->module->l('Invalid email addres');
 
             if (empty($nip))
-                $this -> errors[] = $nps_instance->l('NIP number is required');
+                $this -> errors[] = $this->module->l('NIP number is required');
             else if (empty($nip) && !Validate::isNip($nip))
-                $this -> errors[] = $nps_instance->l('Invalid NIP number');
+                $this -> errors[] = $this->module->l('Invalid NIP number');
 
             if (!empty($regon) && !Validate::isRegon($regon))
-                $this -> errors[] = $nps_instance->l('Invalid REGON number');
+                $this -> errors[] = $this->module->l('Invalid REGON number');
 
             if(empty($iban))
-                 $this -> errors[] = $nps_instance->l('Bank account number is required');
+                 $this -> errors[] = $this->module->l('Bank account number is required');
             elseif(!Validate::isNrb($iban))
-                 $this -> errors[] = $nps_instance->l('Invalid bank account number');
+                 $this -> errors[] = $this->module->l('Invalid bank account number');
 
             if (!$acceptance)
-                $this -> errors[] = $nps_instance->l('Acceptance of the Przelewy24 regulations is required');
+                $this -> errors[] = $this->module->l('Acceptance of the Przelewy24 regulations is required');
 
             if(empty($this->errors)) {
                 $company = array(
@@ -104,8 +102,8 @@ class NpsPrzelewy24PaymentSettingsModuleFrontController extends ModuleFrontContr
 
                 $res = P24::companyRegister($company);
                 if ($res->error->errorCode) {
-                    $this -> errors[] = $nps_instance->l('Unable register company in Przelewy24 payment service.')
-                        .' '.P24ErrorMessage::get($res->error->errorCode).' '.$nps_instance->l('Please contact with customer service');
+                    $this -> errors[] = $this->module->l('Unable register company in Przelewy24 payment service.')
+                        .' '.P24ErrorMessage::get($res->error->errorCode).' '.$this->module->l('Please contact with customer service');
                 } else {
                     $settings->id_seller = $seller->id;
                     $settings->registration_date = date("Y-m-d H:i:s");
@@ -141,7 +139,8 @@ class NpsPrzelewy24PaymentSettingsModuleFrontController extends ModuleFrontContr
             Tools::redirect($this->context->link->getModuleLink('npsmarketplace', 'UnlockAccount'));
         }
         $this->context->smarty->assign(array(
-            'HOOK_MY_ACCOUNT_COLUMN' => Hook::exec('displayMyAccountColumn')
+            'HOOK_MY_ACCOUNT_COLUMN' => Hook::exec('displayMyAccountColumn'),
+            'add_product' => Tools::getValue('not_configured'),
         ));
         $settings = new P24SellerCompany(null, $seller->id);
         if ($settings->id != null && !empty($settings->spid)) {
@@ -152,23 +151,21 @@ class NpsPrzelewy24PaymentSettingsModuleFrontController extends ModuleFrontContr
             ));
             $this->setTemplate('payment_company_registered.tpl');
         } else {
-            $nps_instance = new NpsPrzelewy24();
-    
             if (!empty($seller->nip)) {
                 $res = P24::checkNIP($seller->nip);
             } else {
                 $res = (object) array('error' => (object) array('errorCode' => 0), 'result' => 0);
             }
             if ($res->error->errorCode) {
-                $this->errors[] = $nps_instance->l('Unable to check company existence in Przelewy24 payment service.')
-                        .' '.P24ErrorMessage::get($res->error->errorCode).' '.$nps_instance->l('Please contact with customer service');
+                $this->errors[] = $this->module->l('Unable to check company existence in Przelewy24 payment service.')
+                        .' '.P24ErrorMessage::get($res->error->errorCode).' '.$this->module->l('Please contact with customer service');
                 $this->context->smarty->assign(array(
                     'company' => array(),
                     'p24_agreement_url' => Configuration::get('NPS_P24_REGULATIONS_URL'))
                 );
                 $this->setTemplate('payment_company_registered.tpl');
             } else if ($res->result) {
-                $this->errors[] = sprintf($nps_instance->l('Your company with NIP "%s" has been already registered in Przelewy24 service. Please contact with customer service.'), $seller->nip);
+                $this->errors[] = sprintf($this->module->l('Your company with NIP "%s" has been already registered in Przelewy24 service. Please contact with customer service.'), $seller->nip);
                 $this->context->smarty->assign(array('company' => array()));
                 $this->setTemplate('payment_company_registered.tpl');
             } else {

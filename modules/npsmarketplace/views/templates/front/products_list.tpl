@@ -62,9 +62,14 @@ function removePriceReduction(id_product) {
 <span class="navigation-pipe">{$navigationPipe}</span>
 <span class="navigation_page">{l s='My events' mod='npsmarketplace'}</span>
 {/capture}
-{include file="$tpl_dir./errors.tpl"}
 <div class="block-center" id="block-seller-products-list">
     <h1 class="page-heading with-button">{l s='My events' mod='npsmarketplace'}{if $seler_active}<a href="{$add_product_link}" class="btn btn-default button button-small pull-right"><i class="icon-plus"></i> {l s='Add Event' mod='npsmarketplace'}</a>{/if}</h1>
+    {include file="$tpl_dir./errors.tpl"}
+    {if isset($account_requested) && $account_requested}
+        <div class="alert alert-info">
+            <p class="alert-content">{l s='Your seller account is not active. Wait for response from our service.' mod='npsprzelewy24'}</p>
+        </div>
+    {/if}
 
     {if $products}
     <div class="table-responsive">
