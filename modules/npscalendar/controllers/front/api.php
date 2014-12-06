@@ -11,13 +11,85 @@ class NpsCalendarApiModuleFrontController extends ModuleFrontController {
 
     public function initContent() {
         parent::initContent();
-        
-        $events = $this->getEvents(Tools::getValue('start_date'), Tools::getValue('end_date'));
-
+        $events = array();
+        if (Tools::isSubmit('actionWeek'))
+            $events = $this->getWeekEvents(Tools::getValue('start_date'), Tools::getValue('end_date'));
+        else if (Tools::isSubmit('actionMonth'))
+            $events = $this->getMonthEvents(
+                Tools::getValue('selected_date'),
+                Tools::getValue('start_date'),
+                Tools::getValue('end_date')
+            );
         die(Tools::jsonEncode($events));
     }
 
-    public function getEvents($start_date = null, $end_date = null) {
+    public function getMonthEvents($selected_date, $start_date = null, $end_date = null) {
+        if ($start_date == null && $end_date == null) {
+            $begin = new DateTime($selected_date);
+            $begin->modify('first day of this month');
+            $end = new DateTime($selected_date);
+            $end->modify('last day of this month');
+        } else {
+            if ($start_date != null && $end_date == null) {
+                $begin = new DateTime($start_date);
+                $begin->modify('+1 day');
+                $end = new DateTime();
+                $end->setTimestamp($begin->getTimestamp());
+                $end->modify('last day of this month');
+            } else if ($start_date == null && $end_date != null) {
+                $end = new DateTime($end_date);
+                $end->modify('-1 day');
+                $begin = new DateTime();
+                $begin->setTimestamp($end->getTimestamp());
+                $begin->modify('first day of this month');
+            }
+        }
+        $interval = DateInterval::createFromDateString('1 day');
+        $end_period = new DateTime();
+        $end_period->setTimestamp($end->getTimestamp());
+        $end_period->modify('+1 day');
+        $days = new DatePeriod($begin, $interval, $end_period);
+
+        $result =array(
+            'title' => $this->module->l('Calendar', 'api'),
+            'month' => $this->getDisplayMonth($begin, $end),
+            'year' => $this->getDisplayYear($begin, $end),
+            'start_date' => date('Y-m-d', $begin->getTimestamp()),
+            'end_date' => date('Y-m-d', $end->getTimestamp()),
+            'weeks' => array()
+        );
+
+        $weeks = array();
+        foreach ( $days as $day ) {
+            $date = $day->format('Y-m-d');
+            $events = $this->searchForDay($date);
+            $datetime = $day->getTimestamp();
+            $day_of_the_week = date('w', $datetime);
+            $day_name = $this->day($day_of_the_week);
+            $day_number = date('j', $datetime);
+            $week_of_the_month = date('W', $datetime);
+            $weeks[$week_of_the_month]['nr'] = $week_of_the_month;
+            $weeks[$week_of_the_month]['days'][] = array(
+                'day' => $day_number,
+                'week_day' => $day_of_the_week,
+                'name' => $day_name,
+                'events' => $events,
+                'events_count' => count($events),
+                'url' => $this->context->link->getModuleLink('npscalendar', 'calendar', array('date' => $date)),
+                'selected' => $date == $selected_date,
+            );
+        }
+        foreach (range(1, 6) as $number) {
+            $result['week_days'][] = $this->day($number);
+        }
+        $result['week_days'][] = $this->day(0);
+        foreach ( $weeks as $key => $week ) {
+            $result['weeks'][] = $week;
+        }
+        return $result;
+    }
+
+    public function getWeekEvents($start_date = null, $end_date = null) {
         if ($start_date == null && $end_date == null) {
             $begin = new DateTime();
             $begin->setTimestamp(time());
@@ -46,16 +118,16 @@ class NpsCalendarApiModuleFrontController extends ModuleFrontController {
             'end_date' => date('Y-m-d', $end->getTimestamp()),
             'days' => array()
         );
-        $link = new Link();
         foreach ( $days as $day ) {
             $date = $day->format('Y-m-d');
-            $events = $this->searchForDay($date, $link);
+            $events = $this->searchForDay($date);
             $day_name = $this->day(date('w', strtotime($date)));
             $day_number = date('j', strtotime($date));
             $result['days'][] = array(
                 'day' => $day_number,
                 'name' => $day_name,
-                'events' => $events
+                'events' => $events,
+                'url' => $this->context->link->getModuleLink('npscalendar', 'calendar', array('date' => $date)),
             );
         }
         return $result;
@@ -73,7 +145,7 @@ class NpsCalendarApiModuleFrontController extends ModuleFrontController {
         return $bm == $em ? $bm : $bm.'/'.$em;
     }
 
-    private function searchForDay($day, $link) {
+    private function searchForDay($day) {
         $events = array();
         $max_search_events = Configuration::get('NPS_EVENTS_SEARCH');
         $res = Search::find(Context::getContext()->language->id, $day, 1, $max_search_events);
@@ -83,17 +155,17 @@ class NpsCalendarApiModuleFrontController extends ModuleFrontController {
         if ($res['total'] > $max_events) {
             $indexes = array_rand($res['result'] , $max_events);
             foreach ($indexes as $index) {
-                $events[] = $this->buildCalendarEvent($res['result'][$index], $link, $day);
+                $events[] = $this->buildCalendarEvent($res['result'][$index], $day);
             }
         } else {
             foreach ($res['result'] as $product) {
-                $events[] = $this->buildCalendarEvent($product, $link, $day);
+                $events[] = $this->buildCalendarEvent($product, $day);
             }
         }
         return $this->sortByTime($events);
     }
 
-    private function buildCalendarEvent($product, $link, $day) {
+    private function buildCalendarEvent($product, $day) {
         $combinations = Product::getStaticAttributeCombinations($product['id_product'], Context::getContext()->language->id);
         $id_product_attribute = $product['id_product_attribute'];
         foreach ($combinations as $key => $combination) {
@@ -105,11 +177,11 @@ class NpsCalendarApiModuleFrontController extends ModuleFrontController {
         
         $image = '';
         if (!empty($product['id_image']))
-            $image = $link->getImageLink($product['link_rewrite'], $product['id_image'], 'cart_default');
+            $image = $this->context->link->getImageLink($product['link_rewrite'], $product['id_image'], 'cart_default');
         return array(
             'name' => $product['name'],
             'time' => $this->getTime($combinations, $id_product_attribute),
-            'link' => $link->getProductLink($product, null, null, null, null, null, $id_product_attribute),
+            'link' => $this->context->link->getProductLink($product, null, null, null, null, null, $id_product_attribute),
             'image' => $image
         );
     }

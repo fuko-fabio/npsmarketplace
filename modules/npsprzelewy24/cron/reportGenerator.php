@@ -26,7 +26,7 @@ $sql = 'SELECT `id_seller` FROM `'._DB_PREFIX_.'seller`';
 $rows = Db::getInstance()->executeS($sql);
 
 $first_day_of_previous_month = date("Y-m-d", mktime(0, 0, 0, date("m")-1, 1, date("Y"))).' 00:00:00';
-$last_day_of_previous_month = date("Y-m-d", mktime(0, 0, 0, date("m"), 0, date("Y" ))).' 23:59:59';
+$last_day_of_previous_month = date("Y-m-d", mktime(0, 0, 0, date("m"), 0, date("Y"))).' 23:59:59';
 
 $ctx = Context::getContext();
 $summary_report_data = array();

@@ -179,27 +179,27 @@ function bindGrid()
 	var view = $.totalStorage('display');
 
 	if (view && view != 'grid')
-		display(view);
+		display(view, true);
 	else
 		$('.display').find('li#grid').addClass('selected');
 	
 	$(document).on('click', '#grid', function(e){
 		e.preventDefault();
-		display('grid');
+		display('grid', true);
 	});
 
 	$(document).on('click', '#list', function(e){
 		e.preventDefault();
-		display('list');
+		display('list', true);
 	});
 }
 
-function display(view)
+function display(view, rememberSelection)
 {
 	if (view == 'list')
 	{
 		$('ul.product_list').removeClass('grid').addClass('list row');
-		$('.product_list > li').removeClass('col-xs-12 col-sm-4 col-md-3').addClass('col-xs-12');
+		$('.product_list > li').removeClass('col-xs-12 col-sm-4 col-md-3 col-sm-6 col-md-4').addClass('col-xs-12');
 		$('.product_list > li').each(function(index, element) {
 			html = '';
 			html = '<div class="product-container"><div class="row">';
@@ -234,7 +234,9 @@ function display(view)
 		});		
 		$('.display').find('li#list').addClass('selected');
 		$('.display').find('li#grid').removeAttr('class');
-		$.totalStorage('display', 'list');
+		if (rememberSelection) {
+		  $.totalStorage('display', 'list');
+		}
 	}
 	else 
 	{
@@ -251,7 +253,9 @@ function display(view)
 					if (rating != null) { 
 						html += '<div itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating" class="comments_note">'+ rating + '</div>';
 					}
+/*
 				html += '<p itemprop="description" class="product-desc">'+ $(element).find('.product-desc').html() + '</p>';
+*/
 				var price = $(element).find('.content_price').html(); // check : catalog mode is enabled
 					if (price != null) { 
 						html += '<div class="content_price">'+ price + '</div>';
@@ -272,7 +276,9 @@ function display(view)
 		});
 		$('.display').find('li#grid').addClass('selected');
 		$('.display').find('li#list').removeAttr('class');
-		$.totalStorage('display', 'grid');
+		if (rememberSelection) {
+		  $.totalStorage('display', 'grid');
+		}
 	}	
 }
 

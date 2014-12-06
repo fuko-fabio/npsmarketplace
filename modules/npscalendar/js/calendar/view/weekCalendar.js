@@ -21,17 +21,21 @@ var WeekCalendarView = Backbone.View.extend({
 
     previousEvt: function (evt) {
         evt.preventDefault();
+        $.fancybox.showLoading();
         var self = this;
         this.model.fetchPrevious().done(function () {
             self.render();
+            $.fancybox.hideLoading();
         });
     },
 
     nextEvt: function (evt) {
         evt.preventDefault();
+        $.fancybox.showLoading();
         var self = this;
         this.model.fetchNext().done(function () {
             self.render();
+            $.fancybox.hideLoading();
         });
     }
 });

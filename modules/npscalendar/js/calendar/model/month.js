@@ -20,6 +20,7 @@ var Month = Backbone.AssociatedModel.extend({
         } else if (this.get('end_date') != null) {
             params += 'end_date=' + this.get('end_date');
         }
+        params += '&selected_date=' + calendarCurrentDate;
         return calendarApiUrl + params;
     },
 
@@ -52,5 +53,25 @@ var Month = Backbone.AssociatedModel.extend({
             'end_date'  : null
         });
         return this.fetch();
+    },
+
+    fetch: function(options) {
+        $.fancybox.showLoading();
+        var promise = Backbone.Model.prototype.fetch.apply(this, options);
+        var self = this;
+        promise.done(function () {
+            self.fillFirstWeek();
+            $.fancybox.hideLoading();
+        });
+        return promise;
+    },
+
+    fillFirstWeek: function() {
+        var firstWeek = this.get('weeks').first();
+        var size = firstWeek.get('days').size();
+        while (size < 7) {
+            firstWeek.get('days').add(new Day(), {at: 0});
+            size = firstWeek.get('days').size();
+        }
     }
 });

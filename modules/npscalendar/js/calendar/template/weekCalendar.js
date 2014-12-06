@@ -23,10 +23,12 @@ var WeekCalendarTemplate = '\
         <% _.each(days, function(day) { %>\
             <div class="col-xs-12 col-sm-1 col-md-1">\
                 <div class="day">\
-                    <div class="top">\
-                        <span class="number"><%= day.day %></span>\
-                        <span class="name"><%= day.name %></span>\
-                    </div>\
+                    <a href="<%= day.url %>">\
+                        <div class="top">\
+                            <span class="number"><%= day.day %></span>\
+                            <span class="name"><%= day.name %></span>\
+                        </div>\
+                    </a>\
                     <div class="events">\
                         <% if (_.isEmpty(day.events)) { %>\
                             <div class="event">\
