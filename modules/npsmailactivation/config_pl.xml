@@ -3,7 +3,7 @@
 	<name>npsmailactivation</name>
 	<displayName><![CDATA[nps Account activation by e-mail]]></displayName>
 	<version><![CDATA[1]]></version>
-	<description><![CDATA[This module allows your shop to validate e-mails by sending activation links]]></description>
+	<description><![CDATA[Moduł pozwala walidować adresy email wysyłając linki aktywacyjne podczas rejestracji]]></description>
 	<author><![CDATA[Norbert Pabian]]></author>
 	<tab><![CDATA[administration]]></tab>
 	<is_configurable>0</is_configurable>
