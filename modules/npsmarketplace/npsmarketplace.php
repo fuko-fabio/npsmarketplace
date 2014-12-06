@@ -177,6 +177,8 @@ class NpsMarketplace extends Module {
                 'sts_secure_key' => $this->secure_key,
                 'sts_product_id' => $product->id,
                 'nps_ajax_url' => $this->context->link->getModuleLink('npsmarketplace', 'Ajax'),
+                'date_id_attribute_group' => Configuration::get('NPS_ATTRIBUTE_DATE_ID'),
+                'time_id_attribute_group' => Configuration::get('NPS_ATTRIBUTE_TIME_ID')
             ));
             return $this->display(__FILE__, 'views/templates/hook/product_seller_info.tpl');
         }

@@ -361,10 +361,10 @@ function findCombination(firstTime) {
     var displayTerm = {};
     $.each(attributesCombinations, function (key, attrComb) {
         if (in_array(attrComb['id_attribute'], choice)) {
-            displayTerm[attrComb['group']] = attrComb['attribute'];
+            displayTerm[attrComb['id_attribute_group']] = attrComb['attribute'];
         }
     });
-    $('span.combination_info').text(displayTerm['date'].replace(/_/g , "-") + ' ' + displayTerm['time'].replace(/_/g , ":"));
+    $('span.combination_info').text(displayTerm[date_id_attribute_group].replace(/_/g , "-") + ' ' + displayTerm[time_id_attribute_group].replace(/_/g , ":"));
 
     if (typeof combinations == 'undefined' || !combinations)
         combinations = [];

@@ -3,6 +3,9 @@
 * @copyright 2014 npsoftware
 *}
 {addJsDefL name=npsAjaxUrl}{$nps_ajax_url}{/addJsDefL}
+{addJsDefL name=time_id_attribute_group}{$time_id_attribute_group}{/addJsDefL}
+{addJsDefL name=date_id_attribute_group}{$date_id_attribute_group}{/addJsDefL}
+
 <script type="text/javascript">
 {literal}
 $('document').ready(function(){
