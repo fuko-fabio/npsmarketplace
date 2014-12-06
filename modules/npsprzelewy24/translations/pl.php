@@ -16,7 +16,7 @@ $_MODULE['<{npsprzelewy24}prestashop>npsprzelewy24_8b0b6c8f897b81339a71f5528df05
 $_MODULE['<{npsprzelewy24}prestashop>npsprzelewy24_518f2e843acff34b295c8db76a5ae93f'] = 'Unikalny klucz sklepu';
 $_MODULE['<{npsprzelewy24}prestashop>npsprzelewy24_df06998a80deb7b3d179d30fc53f2c81'] = 'Unikalny klucz otrzymany od Przelewy24';
 $_MODULE['<{npsprzelewy24}prestashop>npsprzelewy24_50acfb85ed36f150a674228a20a92bef'] = 'klucz CRC sklepu';
-$_MODULE['<{npsprzelewy24}prestashop>p24paymentvalidator_c9cdf71dc32b926d56e09ab5e6095087'] = 'NIe można zweryfikować płatności';
+$_MODULE['<{npsprzelewy24}prestashop>p24paymentvalidator_c9cdf71dc32b926d56e09ab5e6095087'] = 'Nie można zweryfikować płatności';
 $_MODULE['<{npsprzelewy24}prestashop>p24paymentvalidator_8c6942604679e15e97ce7e0d26fc90e2'] = 'Niepoprawny token weryfikacyjny';
 $_MODULE['<{npsprzelewy24}prestashop>p24paymentvalidator_47b5ba3ab6a4d8603699675cf9942308'] = 'Płatność została już zakończona i zweryfikowana';
 $_MODULE['<{npsprzelewy24}prestashop>p24paymentvalidator_8cc1415be2b283104aaadc47ff122a84'] = 'Nie można zweryfikować płatności. Niepoprawne ID sesji.';
@@ -71,8 +71,8 @@ $_MODULE['<{npsprzelewy24}prestashop>adminshopinvoicescontroller_bcd1b68617759b1
 $_MODULE['<{npsprzelewy24}prestashop>adminshopinvoicescontroller_e50b4a3c7145864e13fc03432fee57cf'] = 'Generuj raport';
 $_MODULE['<{npsprzelewy24}prestashop>paymentconfirmation_49ee145aceecd9a38c7d74b4c713c76f'] = 'Zamówienie o ID %s nie istnieje. Proszę o kontakt z obsługą klienta.';
 $_MODULE['<{npsprzelewy24}prestashop>paymentconfirmation_f155196e046f8168fc5a377e8a85c819'] = 'Płatność została już zakończona. Przejdź do swojego konta i sprawdź historię zamówień.';
-$_MODULE['<{npsprzelewy24}prestashop>paymentconfirmation_aeb7b97d4f698f237c49466025f498af'] = 'NIe można zweryfikować płatności. Proszę o kontakt z obsługą klienta.';
-$_MODULE['<{npsprzelewy24}prestashop>paymentconfirmation_1994c65b552844ccc241928a9a4f7068'] = 'NIe można dokończyć zamówienia. Proszę o kontakt z obsługą klienta.';
+$_MODULE['<{npsprzelewy24}prestashop>paymentconfirmation_aeb7b97d4f698f237c49466025f498af'] = 'Nie można zweryfikować płatności. Proszę o kontakt z obsługą klienta.';
+$_MODULE['<{npsprzelewy24}prestashop>paymentconfirmation_1994c65b552844ccc241928a9a4f7068'] = 'Nie można dokończyć zamówienia. Proszę o kontakt z obsługą klienta.';
 $_MODULE['<{npsprzelewy24}prestashop>paymentconfirmation_7a3b10d463ead79457dbe69b18f7d715'] = 'Nie można zarejestrować transakcji w serwisie Przelewy24.  Proszę o kontakt z obsługą klienta.';
 $_MODULE['<{npsprzelewy24}prestashop>paymentsettings_844728e1dc874629bc7450484fa79b73'] = 'Nazwa firmy jest wymagana';
 $_MODULE['<{npsprzelewy24}prestashop>paymentsettings_f518d6efc432b3756ace71fd696d0b65'] = 'Niepoprawna nazwa firmy';
@@ -82,8 +82,8 @@ $_MODULE['<{npsprzelewy24}prestashop>paymentsettings_52bd0196473896c04c13822352a
 $_MODULE['<{npsprzelewy24}prestashop>paymentsettings_9def2dd03cb77a5bf9021d9c03a67c07'] = 'Niepoprawny adres';
 $_MODULE['<{npsprzelewy24}prestashop>paymentsettings_3c19b0b48d46fd89cb720390baf03b15'] = 'Kod pocztowy jest wymagany';
 $_MODULE['<{npsprzelewy24}prestashop>paymentsettings_620cf3c04bf0a56165dd0ed3408f7086'] = 'Niepoprawny kod pocztowy';
-$_MODULE['<{npsprzelewy24}prestashop>paymentsettings_6b948804ef67ebc1cf6e8b8f20db371e'] = 'Osoba jest wymagana';
-$_MODULE['<{npsprzelewy24}prestashop>paymentsettings_9a34b5821f2f27e8d60ebe09d00f0952'] = 'Niepoprawna nazwa osoby';
+$_MODULE['<{npsprzelewy24}prestashop>paymentsettings_6b948804ef67ebc1cf6e8b8f20db371e'] = 'Imię i nazwisko jest wymagane';
+$_MODULE['<{npsprzelewy24}prestashop>paymentsettings_9a34b5821f2f27e8d60ebe09d00f0952'] = 'Niepoprawne imię i nazwisko';
 $_MODULE['<{npsprzelewy24}prestashop>paymentsettings_b7011436e6a0ba0a8975f8e107b6f025'] = 'Adres email jest wymagany';
 $_MODULE['<{npsprzelewy24}prestashop>paymentsettings_e7149857b1dc17238060750d7c993da1'] = 'Niepoprawny adres email';
 $_MODULE['<{npsprzelewy24}prestashop>paymentsettings_4a94e60fdbf65cb2849fcaa0f0257b4c'] = 'NIP jest wymagany';
@@ -123,7 +123,7 @@ $_MODULE['<{npsprzelewy24}prestashop>payment_company_registered_fd836860cf8050bf
 $_MODULE['<{npsprzelewy24}prestashop>payment_company_registered_591971e396d2f5de516587d627a5fb5b'] = 'Firma została zarejestrowana w serwisie Przelewy24 dnia %s';
 $_MODULE['<{npsprzelewy24}prestashop>payment_company_registered_e7b47c58815acf1d3afa59a84b5db7fb'] = 'Nazwa firmy';
 $_MODULE['<{npsprzelewy24}prestashop>payment_company_registered_9016bd2e7f738a4aff659890f1a1d782'] = 'ID sprzedawcy Przelewy24';
-$_MODULE['<{npsprzelewy24}prestashop>payment_company_registered_40bed7cf9b3d4bb3a3d7a7e3eb18c5eb'] = 'Osoba';
+$_MODULE['<{npsprzelewy24}prestashop>payment_company_registered_40bed7cf9b3d4bb3a3d7a7e3eb18c5eb'] = 'Imię i nazwisko';
 $_MODULE['<{npsprzelewy24}prestashop>payment_company_registered_ce8ae9da5b7cd6c3df2929543a9af92d'] = 'Email';
 $_MODULE['<{npsprzelewy24}prestashop>payment_company_registered_dd7bf230fde8d4836917806aff6a6b27'] = 'Adres';
 $_MODULE['<{npsprzelewy24}prestashop>payment_company_registered_fb85dee77167699087f1d6eec1d2fbb7'] = 'Kod pocztowy';
@@ -140,6 +140,7 @@ $_MODULE['<{npsprzelewy24}prestashop>payment_confirmation_4082ea29b4f196c4f60533
 $_MODULE['<{npsprzelewy24}prestashop>payment_confirmation_9390390581f54c65d6acfc8da4e17362'] = 'Powrót do zamówień';
 $_MODULE['<{npsprzelewy24}prestashop>payment_register_company_25f7ba9fc064d9eca1b0e3528cc4699c'] = 'Konfiguracja płatności';
 $_MODULE['<{npsprzelewy24}prestashop>payment_register_company_d5815623c49bc79327917762848902f0'] = 'Ustawienia płatności';
+$_MODULE['<{npsprzelewy24}prestashop>payment_register_company_e9baf9586d5e29df1d21a0194e5aa8dc'] = 'Aby móc dodać kolejne wydarzenie musisz skonfigurawać swoje konto płatności w naszym serwisie.';
 $_MODULE['<{npsprzelewy24}prestashop>payment_register_company_383a72444da8f958df4b4db26f4becbd'] = 'Po zarejestrowaniu firmy nie będzie możliwości edycji tego formularza. Prosimy uważnie wypełnić wszystkie pola.';
 $_MODULE['<{npsprzelewy24}prestashop>payment_register_company_e7b47c58815acf1d3afa59a84b5db7fb'] = 'Nazwa firmy';
 $_MODULE['<{npsprzelewy24}prestashop>payment_register_company_40bed7cf9b3d4bb3a3d7a7e3eb18c5eb'] = 'Imię i Nazwisko';
@@ -155,10 +156,10 @@ $_MODULE['<{npsprzelewy24}prestashop>payment_register_company_cd01fbfbb767c30ef5
 $_MODULE['<{npsprzelewy24}prestashop>payment_register_company_0ba7583639a274c434bbe6ef797115a4'] = 'Wyślij';
 $_MODULE['<{npsprzelewy24}prestashop>payment_return_fb077ecba55e5552916bde26d8b9e794'] = 'Potwierdzenie zamówienia';
 $_MODULE['<{npsprzelewy24}prestashop>payment_return_3fcd6df41c6b47d713f21ea209574bed'] = 'Proszę skontaktować się z obsługą klienta';
-$_MODULE['<{npsprzelewy24}prestashop>payment_return_0e61d8a1f47f88c9f51f997990d60171'] = 'Transakcja zakońcona sukcesem';
+$_MODULE['<{npsprzelewy24}prestashop>payment_return_0e61d8a1f47f88c9f51f997990d60171'] = 'Transakcja zakończna sukcesem';
 $_MODULE['<{npsprzelewy24}prestashop>payment_return_8a16f9617cddf85af32cb3ab7f2c7e54'] = 'Wartość zamówienia';
 $_MODULE['<{npsprzelewy24}prestashop>payment_return_a378cd7a0839cbd4ec3e45bbdeeb69be'] = 'ID zamówienia';
-$_MODULE['<{npsprzelewy24}prestashop>payment_return_0103106e5b047a944d727f065dd10c9c'] = 'ID transakci w systemie Pzelewy24';
+$_MODULE['<{npsprzelewy24}prestashop>payment_return_0103106e5b047a944d727f065dd10c9c'] = 'ID transakcji w systemie Pzelewy24';
 $_MODULE['<{npsprzelewy24}prestashop>payment_return_4082ea29b4f196c4f60533500139725a'] = 'Śledź zamówienie';
 $_MODULE['<{npsprzelewy24}prestashop>payment_return_9390390581f54c65d6acfc8da4e17362'] = 'Powrót do zamówień';
 $_MODULE['<{npsprzelewy24}prestashop>payment_c8ed360cbe1ba919f8c40f07a31125d7'] = 'Zapłać z Przelewy24';
