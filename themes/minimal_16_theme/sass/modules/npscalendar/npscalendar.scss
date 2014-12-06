@@ -124,6 +124,13 @@
           font-family: $font-hammer;
           text-transform: uppercase;
         }
+        .items {
+          position: absolute;
+          top: 10px;
+          right: 20px;
+          font-size: 14px;
+          font-family: monospace;
+        }
         @media (min-width: $screen-md) {
           text-align: center;
           padding-top: 25%;

@@ -27,6 +27,7 @@ var WeekCalendarTemplate = '\
                         <div class="top">\
                             <span class="number"><%= day.day %></span>\
                             <span class="name"><%= day.name %></span>\
+                            <span class="items <% if(day.events_count < 1) { %>hidden<% } %>"><%= day.events_count %></span>\
                         </div>\
                     </a>\
                     <div class="events">\

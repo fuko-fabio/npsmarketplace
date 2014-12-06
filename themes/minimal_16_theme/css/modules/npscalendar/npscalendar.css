@@ -85,6 +85,12 @@
         line-height: 20px;
         font-family: "Hammersmith One", sans-serif;
         text-transform: uppercase; }
+      .nps-calendar .content .day .top .items {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        font-size: 14px;
+        font-family: monospace; }
       @media (min-width: 992px) {
         .nps-calendar .content .day .top {
           text-align: center;
