@@ -15,6 +15,7 @@ $_MODULE['<{npsmarketplace}minimal_16_theme>npsmarketplace_5f83d7408f27018d3c45c
 $_MODULE['<{npsmarketplace}minimal_16_theme>npsmarketplace_f9f9ea92a1c84d1a93af33f64d7ae324'] = 'Aby dodać adresy e-mail kliknij w pole, wpisz tekst i zatwierdź wciskając enter.';
 $_MODULE['<{npsmarketplace}minimal_16_theme>npsmarketplace_43a0cf02192baf87ccea7de85585bc84'] = 'Adres URL przewodnika użytkownika';
 $_MODULE['<{npsmarketplace}minimal_16_theme>npsmarketplace_c586046849c022438832b8bda9263c8e'] = 'Adres URL regulaminu sprzedawcy';
+$_MODULE['<{npsmarketplace}minimal_16_theme>npsmarketplace_cc6b784e02e0be73a401fccdd1ba0e87'] = 'Adres URL przewodnika użytkownika';
 $_MODULE['<{npsmarketplace}minimal_16_theme>npsmarketplace_7687f383a876ab08c86f77d60205b8f0'] = 'Adres URL przewodnika sprzedawcy';
 $_MODULE['<{npsmarketplace}minimal_16_theme>npsmarketplace_85e563ea7a6f37accf3f9766a1f7edc9'] = 'Adres URL przewodnika produktów/wydarzeń';
 $_MODULE['<{npsmarketplace}minimal_16_theme>npsmarketplace_a52517025e4be62f022953176610cc14'] = 'Adres URL ustawień płatności';
@@ -184,6 +185,8 @@ $_MODULE['<{npsmarketplace}minimal_16_theme>marketing_adb18a6030befa81078c06e10b
 $_MODULE['<{npsmarketplace}minimal_16_theme>marketing_cc47dd280ef510c8d4e99f58b599d34d'] = 'Wydarzenia z miasta:';
 $_MODULE['<{npsmarketplace}minimal_16_theme>marketing_b1c94ca2fbc3e78fc30069c8d0f01680'] = 'Wszystkie';
 $_MODULE['<{npsmarketplace}minimal_16_theme>marketing_4994a8ffeba4ac3140beb89e8d41f174'] = 'Język';
+$_MODULE['<{npsmarketplace}minimal_16_theme>marketing_bb22fd2fcc96279c4f79166342b146c1'] = 'Szerokość ramki (px)';
+$_MODULE['<{npsmarketplace}minimal_16_theme>marketing_81dc1e72e23a3ca8132ab3fb1b0c2dca'] = 'Zalecana minimalna szerokość 300px';
 $_MODULE['<{npsmarketplace}minimal_16_theme>marketing_773ad4fbeb0584783f02353b3edccaa7'] = 'Wygeneruj kod';
 $_MODULE['<{npsmarketplace}minimal_16_theme>marketing_30c2b4b5e19ac71fefa1b4d688a7a98f'] = 'Kod do skopiowania';
 $_MODULE['<{npsmarketplace}minimal_16_theme>marketing_31fde7b05ac8952dacf4af8a704074ec'] = 'Podgląd';
@@ -344,6 +347,7 @@ $_MODULE['<{npsmarketplace}minimal_16_theme>header_top_b1c94ca2fbc3e78fc30069c8d
 $_MODULE['<{npsmarketplace}minimal_16_theme>header_top_3068c5a98c003498f1fec0c489212e8b'] = 'Sprzedaj';
 $_MODULE['<{npsmarketplace}minimal_16_theme>home_sellers_4107fcb1113b8396a84ef5f61362ecb1'] = 'Nasze butiki';
 $_MODULE['<{npsmarketplace}minimal_16_theme>home_sellers_85534239e5d90495337964841c7d32bd'] = 'Brak dostępnych sklepów';
+$_MODULE['<{npsmarketplace}minimal_16_theme>iframe_9f82518d468b9fee614fcc92f76bb163'] = 'Sklep';
 $_MODULE['<{npsmarketplace}minimal_16_theme>iframe_ee474be4673c0bfd28c16a19ce7fab38'] = 'Obecnie nie ma dostępnych wydarzeń w moim butiku';
 $_MODULE['<{npsmarketplace}minimal_16_theme>my_account_column_fed561a86e066be5a26232626c4867a2'] = 'Zakupy';
 $_MODULE['<{npsmarketplace}minimal_16_theme>my_account_column_6840b639ff4e57fc80ecb5e1fa8042d4'] = 'Moje bilety';

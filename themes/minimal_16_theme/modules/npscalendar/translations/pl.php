@@ -8,6 +8,7 @@ $_MODULE['<{npscalendar}minimal_16_theme>npscalendar_73bbf438168b3a9283df36c6280
 $_MODULE['<{npscalendar}minimal_16_theme>npscalendar_603143db24977c018fea8f9daf1773b7'] = 'Ilość wydarzeń na dzień';
 $_MODULE['<{npscalendar}minimal_16_theme>npscalendar_1827b6255fe5af0ef7b6e2b2522999dc'] = 'Maksymalna liczba wyszukiwań';
 $_MODULE['<{npscalendar}minimal_16_theme>npscalendar_c9cc8cce247e49bae79f15173ce97354'] = 'Zapisz';
+$_MODULE['<{npscalendar}minimal_16_theme>api_8ff922bbcd8ad41cdfc48d3c5163b2ab'] = 'Kalendarz';
 $_MODULE['<{npscalendar}minimal_16_theme>api_56c7e3e223e70e05140d6ca21ea29458'] = 'Sprawdź kalendarz';
 $_MODULE['<{npscalendar}minimal_16_theme>api_ee210f096a32271ef43ccd1035af27d4'] = 'Brak wydarzeń';
 $_MODULE['<{npscalendar}minimal_16_theme>api_86f5978d9b80124f509bdb71786e929e'] = 'Styczeń';
@@ -29,3 +30,6 @@ $_MODULE['<{npscalendar}minimal_16_theme>api_796c163589f295373e171842f37265d5'] 
 $_MODULE['<{npscalendar}minimal_16_theme>api_78ae6f0cd191d25147e252dc54768238'] = 'Czwartek';
 $_MODULE['<{npscalendar}minimal_16_theme>api_c33b138a163847cdb6caeeb7c9a126b4'] = 'Piątek';
 $_MODULE['<{npscalendar}minimal_16_theme>api_8b7051187b9191cdcdae6ed5a10e5adc'] = 'Sobota';
+$_MODULE['<{npscalendar}minimal_16_theme>calendar_page_6cc24c9dd383fc20fe7bbeac5d0929d9'] = 'Kalendarz wydarzeń';
+$_MODULE['<{npscalendar}minimal_16_theme>calendar_page_87f9f735a1d36793ceaecd4e47124b63'] = 'Wydarzenia';
+$_MODULE['<{npscalendar}minimal_16_theme>calendar_page_ee210f096a32271ef43ccd1035af27d4'] = 'Brak wydarzeń dla wybranego dnia.';
