@@ -33,7 +33,21 @@
 			<!-- Footer -->
 			<div class="footer-container">
 				<footer id="footer"  class="container">
-					<div class="row">{$HOOK_FOOTER}</div>
+					<div class="row">
+					    {$HOOK_FOOTER}
+					<section class="bottom-eu">
+                        <img src="{$img_dir}kapital_ludzki.png"/>
+                        <img class="pull-right" src="{$img_dir}unia.png"/>
+                    </section>
+                        <section class="bottom-footer">
+                            <div>
+                                Copyright &copy; 2014 <a href="http://labsintown.com" title="LabsInTown">LabsInTown</a>
+                            </div>
+                            <div class="pull-right">
+                                <a target="_blank" href="http://npsoftware.pl" title="nps software"><span class="cname">nps</span><span class="csoftware"> software</span></a>
+                            </div>
+                        </section>
+					</div>
 				</footer>
 			</div><!-- #footer -->
 		</div><!-- #page -->
