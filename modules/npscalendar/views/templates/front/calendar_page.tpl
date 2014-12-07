@@ -29,7 +29,7 @@
                 </div>
             </div>
             {else}
-            <p class="alert alert-warning"><span class="alert-content">{l s='No events' mod='npscalendar'}</span></p>
+            <p class="alert alert-info"><span class="alert-content">{l s='No events' mod='npscalendar'}</span></p>
         {/if}
     </div>
 </div>

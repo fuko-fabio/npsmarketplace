@@ -197,4 +197,5 @@
     .nps-calendar-big .row .week-day-item .week-day {
       text-overflow: ellipsis;
       white-space: nowrap;
-      overflow: hidden; }
+      overflow: hidden;
+      text-align: center; }
