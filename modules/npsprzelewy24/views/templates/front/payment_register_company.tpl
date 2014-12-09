@@ -79,6 +79,6 @@
                 {l s='Accept the' mod='npsprzelewy24'} <a href="{$p24_agreement_url}">{l s='“Regulations of Przelewy24”' mod='npsprzelewy24'}</a></label>
             </div>
         </div>
-        <button type="submit" name="submitCompany" class="btn btn-default button button-medium pull-right"><span>{l s='Register' mod='npsprzelewy24'} <i class="icon-save right"></i></span></button>
+        <button type="submit" name="submitCompany" class="btn btn-default button button-medium pull-right" onclick="$.fancybox.showLoading();"><span>{l s='Register' mod='npsprzelewy24'} <i class="icon-save right"></i></span></button>
     </form>
 </div>

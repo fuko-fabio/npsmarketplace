@@ -18,7 +18,7 @@ var MonthCalendarTemplate = '\
             </div>\
         </div>\
     </div>\
-    <div class="row seven-col">\
+    <div class="row seven-col week-days">\
     <% _.each(week_days, function(week_day) { %>\
         <div class="week-day-item col-xs-1 col-sm-1 col-md-1">\
             <div class="week-day"><%= week_day %></div>\

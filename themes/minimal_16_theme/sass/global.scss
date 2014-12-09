@@ -147,6 +147,7 @@ sup {
   padding: 5px;
   border: none;
   font-size: 16px;
+  margin-bottom: 10px;
   ul, ol {
     padding-left: 15px;
     margin-left: 27px;
@@ -169,6 +170,7 @@ sup {
       font-size: 20px;
       vertical-align: -2px;
       padding-right: 7px;
+      float: left;
     }
   }
   &.alert-danger,
@@ -392,6 +394,7 @@ span.exclusive {
   span {
     display: block;
     padding: 3px 8px 3px 8px;
+    white-space: nowrap;
     i {
       vertical-align: 0px;
       margin-right: 5px;
@@ -418,6 +421,7 @@ span.exclusive {
   span {
     display: block;
     padding: 5px;
+    white-space: nowrap;
     // max 480px
     @media (max-width: $screen-xs) {
       font-size: 15px;
@@ -504,6 +508,7 @@ span.exclusive {
     display: block;
     border: none;
     padding: 9px 10px 11px 10px;
+    white-space: nowrap;
     // max 480px
     @media (max-width: $screen-xs) {
       font-size: 15px;
@@ -3222,6 +3227,11 @@ div.star.star_hover {
   a {
     color: $base-text-color;
     padding: 8px !important;
+    
+    .caret {
+      border-top-color: $base-text-color;
+      border-bottom-color: $base-text-color;
+    }
   }
   .dropdown-toggle:hover {
     background: $primary-color;

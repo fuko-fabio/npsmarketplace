@@ -21,7 +21,7 @@
 {if $account_state == 'none'}
 {if isset($add_product) && $add_product}
     <div class="alert alert-info">
-        <p class="alert-content">{l s='To be able add next event you need to register seller account.' mod='npsprzelewy24'}</p>
+        <p class="alert-content">{l s='To be able add event you need to register seller account.' mod='npsprzelewy24'}</p>
     </div>
 {/if}
 <div class="block-center" id="block-seller-account">
@@ -31,7 +31,7 @@
         <br />
         <strong>{l s='By clicking "Submit" I accept the' mod='npsmarketplace'} <a href="{$user_agreement_url}">{l s='User Agreement.' mod='npsmarketplace'}</a></strong>
         <br />
-        <button type="submit" class="btn btn-default button button-medium pull-right" name="submitSeller"><span>{l s='Submit' mod='npsmarketplace'} <i class="icon-share right"></i></span></button>
+        <button type="submit" class="btn btn-default button button-medium pull-right" name="submitSeller" onclick="$.fancybox.showLoading();"><span>{l s='Submit' mod='npsmarketplace'} <i class="icon-share right"></i></span></button>
     </form>
 </div>
 {/if}

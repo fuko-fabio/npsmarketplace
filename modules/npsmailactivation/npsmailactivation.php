@@ -121,6 +121,7 @@ class NpsMailActivation extends Module {
             array('active' => 1),
             'activation_token = \''.$token.'\'');
         $res =  $res ? Db::getInstance()->getValue('SELECT `active` FROM `'._DB_PREFIX_.'customer` WHERE `activation_token` = \''.$token.'\'') : false;
+        $customer = null;
         if ($res) {
             $id_user = Db::getInstance()->getValue('SELECT `id_customer` FROM `'._DB_PREFIX_.'customer` WHERE `activation_token` = \''.$token.'\'');
             $customer = new Customer($id_user);
@@ -139,6 +140,6 @@ class NpsMailActivation extends Module {
                 $customer->firstname.' '.$customer->lastname
             );
         }
-        return $res;
+        return $res ? $customer : false;
     }
 }

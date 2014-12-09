@@ -86,7 +86,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             }
 
             if(Tools::getValue('form_token') != $this->context->cookie->__get('form_token')) {
-                $this -> errors[] = $this->module->l('This form has been already saved. Go to your profile page and check list of events.');
+                $this -> errors[] = $this->module->l('This form has been already saved. Go to your profile page and check list of events.', 'Product');
                 return;
             }
 
@@ -98,54 +98,54 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             }
 
             if (empty($name[(int)$this->context->language->id]))
-                $this -> errors[] = $this->module->l('Product name is required');
+                $this -> errors[] = $this->module->l('Product name is required', 'Product');
             if (empty($address))
-                $this -> errors[] = $this->module->l('Product address is required');
+                $this -> errors[] = $this->module->l('Product address is required', 'Product');
             if (empty($district))
-                $this -> errors[] = $this->module->l('Product district is required');
+                $this -> errors[] = $this->module->l('Product district is required', 'Product');
             if (empty($town))
-                $this -> errors[] = $this->module->l('Product town is required');
+                $this -> errors[] = $this->module->l('Product town is required', 'Product');
             if (!isset($price))
-                $this -> errors[] = $this->module->l('Product price is required');
+                $this -> errors[] = $this->module->l('Product price is required', 'Product');
             if (!Validate::isFloat($price))
-                $this -> errors[] = $this->module->l('Invalid product price');
+                $this -> errors[] = $this->module->l('Invalid product price', 'Product');
             if (!Validate::isMessage($reference))
-                $this -> errors[] = $this->module->l('Invalid product reference');
+                $this -> errors[] = $this->module->l('Invalid product reference', 'Product');
             if (empty($categories))
-                $this -> errors[] = $this->module->l('At least one category must be selected');
+                $this -> errors[] = $this->module->l('At least one category must be selected', 'Product');
 
             if(empty($current_id_product)) {
                 if (empty($expiry_date))
-                    $this -> errors[] = $this->module->l('Product expiry date is required');
+                    $this -> errors[] = $this->module->l('Product expiry date is required', 'Product');
                 else if (!Validate::isDateFormat($expiry_date))
-                    $this -> errors[] = $this->module->l('Invalid expiry date format');
+                    $this -> errors[] = $this->module->l('Invalid expiry date format', 'Product');
     
                 if ($type != 1) {
                     if(empty($date))
-                        $this -> errors[] = $this->module->l('Product date is required');
+                        $this -> errors[] = $this->module->l('Product date is required', 'Product');
                     else if (!Validate::isDateFormat($date))
-                        $this -> errors[] = $this->module->l('Invalid date format');
+                        $this -> errors[] = $this->module->l('Invalid date format', 'Product');
         
                     if (empty($time))
-                        $this -> errors[] = $this->module->l('Product time is required');
+                        $this -> errors[] = $this->module->l('Product time is required', 'Product');
                     else if (!Validate::isTime($time))
-                        $this -> errors[] = $this->module->l('Invalid time format');
+                        $this -> errors[] = $this->module->l('Invalid time format', 'Product');
                 }
                 if (empty($quantity))
-                    $this -> errors[] = $this->module->l('Product quantity is required');
+                    $this -> errors[] = $this->module->l('Product quantity is required', 'Product');
                 else if (!Validate::isInt($quantity))
-                    $this -> errors[] = $this->module->l('Invalid product quantity format');
+                    $this -> errors[] = $this->module->l('Invalid product quantity format', 'Product');
                 if (empty($images))
-                    $this -> errors[] = $this->module->l('At least one picture is required');
+                    $this -> errors[] = $this->module->l('At least one picture is required', 'Product');
                 else if (count($images) > self::MAX_IMAGES)
-                    $this -> errors[] = $this->module->l('You can upload max 4 pictures');
+                    $this -> errors[] = $this->module->l('You can upload max 4 pictures', 'Product');
             } else {
                 $current_images = Image::getImages($this->context->language->id, $current_id_product);
                 $img_sum = count($current_images) - count($removed_images) + count($images);
                 if ($img_sum < 1)
-                    $this -> errors[] = $this->module->l('At least one picture is required');
+                    $this -> errors[] = $this->module->l('At least one picture is required', 'Product');
                 else if ($img_sum > self::MAX_IMAGES)
-                    $this -> errors[] = $this->module->l('You can upload max 4 pictures');
+                    $this -> errors[] = $this->module->l('You can upload max 4 pictures', 'Product');
             }
 
             foreach (Language::getLanguages() as $key => $lang) {
@@ -160,11 +160,11 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                 }
                 $p_name = $name[$lang['id_lang']];
                 if (!Validate::isGenericName($p_name))
-                    $this -> errors[] = $this->module->l('Invalid product name');
+                    $this -> errors[] = $this->module->l('Invalid product name', 'Product');
                 if (!Validate::isCleanHtml($description_short[$lang['id_lang']]))
-                    $this -> errors[] = $this->module->l('Invalid product short description');
+                    $this -> errors[] = $this->module->l('Invalid product short description', 'Product');
                 if (!Validate::isCleanHtml($description[$lang['id_lang']]))
-                    $this -> errors[] = $this->module->l('Invalid product description');
+                    $this -> errors[] = $this->module->l('Invalid product description', 'Product');
 
                 $link_rewrite[$lang['id_lang']] = Tools::link_rewrite($p_name);
             }
@@ -184,7 +184,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                     $this->_product -> active = $this->isSellerAllowedToPublish();
                 }
                 if (!$this->_product->save()) {
-                    $this->errors[] = $this->module->l('Unable to save product.');
+                    $this->errors[] = $this->module->l('Unable to save product.', 'Product');
                 } else {
                     $this->context->cookie->__unset('form_token');
                     StockAvailable::setProductOutOfStock($this->_product->id, 0);
@@ -230,12 +230,12 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
         $this->_seller = new Seller(null, $this->context->customer->id);
         $products = $this->_seller->getSellerProducts($this->_seller->id);
         if ($this->_seller->id == null) 
-            Tools::redirect('index.php?controller=my-account');
+            Tools::redirect($this->context->link->getModuleLink('npsmarketplace', 'AccountRequest', array('not_configured' => 1)));
 
         $id_product = (int)Tools::getValue('id_product', 0);
         if($id_product != 0) {
             if (!in_array($id_product, $products))
-                Tools::redirect($this->context->link->getModuleLink('npsmarketplace', 'ProductsList'));
+                Tools::redirect($this->context->link->getModuleLink('npsmarketplace', 'ProductsList', array('not_found' => 1)));
         }
 
         $state = $this->_seller->getAccountState();
@@ -255,7 +255,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                 if (Tools::isSubmit('delete')) {
                     if ($this->_product->delete())
                         Tools::redirect($this->context->link->getModuleLink('npsmarketplace', 'ProductsList'));
-                    $this->errors[] = $this->module->l('This product cannot be deleted.');
+                    $this->errors[] = $this->module->l('This product cannot be deleted.', 'Product');
                 }
             }
             elseif ($this->ajax)

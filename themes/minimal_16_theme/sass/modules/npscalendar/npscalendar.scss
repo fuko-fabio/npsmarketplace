@@ -109,13 +109,14 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        background: $primary-color;
 
         .number {
           font-family: $font-montser;
-          font-weight: bold;
+          font-weight: 700;
           font-size: 20px;
           line-height: 20px;
-          color: $primary-color;
+          color: $light-text-color;
         }
         .name {
           font-size: 20px;
@@ -137,9 +138,9 @@
           }
         }
         &:hover {
-          background: $primary-color;
+          background: transparent;
           .number {
-            color: $base-text-color;
+            color: $primary-color;
           }
         }
       }
@@ -284,14 +285,20 @@
         }
       }
     }
-    .week-day-item {
-      padding: 1px;
-      color: $base-text-color;
-      .week-day {
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-        text-align: center;
+    &.week-days {
+      background: $dark-background;
+      padding: 2px 0px;
+      margin-bottom: 5px;
+
+      .week-day-item {
+        padding: 1px;
+        color: $light-text-color;
+        .week-day {
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+          text-align: center;
+        }
       }
     }
   }

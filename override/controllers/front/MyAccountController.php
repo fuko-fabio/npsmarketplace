@@ -20,6 +20,8 @@ class MyAccountController extends MyAccountControllerCore {
         $tickets = CartTicket::getCustomerTickets($this->context->customer->id);
         foreach ($tickets as $key => $value) {
             $tickets[$key]['code'] = TicketsGenerator::getCode($value);
+            $tickets[$key]['seller'] = Db::getInstance()->getValue('SELECT name FROM '._DB_PREFIX_.'seller WHERE id_seller='.$value['id_seller']);
+            $tickets[$key]['seller_shop'] = $this->context->link->getModuleLink('npsmarketplace', 'SellerShop', array('id_seller' => $value['id_seller']));
         }
         return $tickets;
     }

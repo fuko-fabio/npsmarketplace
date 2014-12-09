@@ -56,6 +56,7 @@
                             <div><span>{l s='District'}:</span>{$ticket.district}</div>
                             <div><span>{l s='Town'}:</span>{$ticket.town}</div>
                             <div><span>{l s='Price'}:</span>{displayPrice price=$ticket.price currency=$ticket.id_currency}</div>
+                            <div><span>{l s='Seller'}:</span><a href="{$ticket.seller_shop}">{$ticket.seller}</a></div>
                             <div class="code">{$ticket.code}</div>
                         </div>
                         <div class="buttons">

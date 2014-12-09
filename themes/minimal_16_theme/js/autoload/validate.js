@@ -1,3 +1,18 @@
+function validate_isInteger(s) {
+    var reg = /^\+?(0|[1-9]\d*)$/;
+    return reg.test(s);
+}
+
+function validate_isDate(s) {
+    var reg = /^\d{4}-\d{2}-\d{2}$/;
+    return reg.test(s);
+}
+
+function validate_isTime(s) {
+    var reg = /([01]?[0-9]|2[0-3]):[0-5][0-9]/;
+    return reg.test(s);
+}
+
 function validate_isNip(s)
 {
     var reg = /^[0-9]{10}$/;

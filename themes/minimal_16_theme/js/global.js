@@ -212,6 +212,7 @@ function display(view, rememberSelection)
 						html += '<div itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating" class="comments_note">'+ rating + '</div>';
 					}
 					html += '<p class="product-desc">'+ $(element).find('.product-desc').html() + '</p>';
+					$(element).find('.product-desc').addClass('hidden');
 					var colorList = $(element).find('.color-list-container').html();
 					if (colorList != null) {
 						html += '<div class="color-list-container">'+ colorList +'</div>';
@@ -273,6 +274,7 @@ function display(view, rememberSelection)
 			html += '<div class="functional-buttons clearfix">' + $(element).find('.functional-buttons').html() + '</div>';
 		html += '</div>';		
 		$(element).html(html);
+		$(element).find('.product-desc').removeClass('hidden');
 		});
 		$('.display').find('li#grid').addClass('selected');
 		$('.display').find('li#list').removeAttr('class');

@@ -337,24 +337,19 @@
 }
 .dropzone a.dz-remove,
 .dropzone-previews a.dz-remove {
-  background-image: -webkit-linear-gradient(top, #fafafa, #eee);
-  background-image: -moz-linear-gradient(top, #fafafa, #eee);
-  background-image: -o-linear-gradient(top, #fafafa, #eee);
-  background-image: -ms-linear-gradient(top, #fafafa, #eee);
-  background-image: linear-gradient(to bottom, #fafafa, #eee);
-  -webkit-border-radius: 2px;
-  border-radius: 2px;
-  border: 1px solid #eee;
+  background: #ffaa00;
+  border: none;
   text-decoration: none;
   display: block;
   padding: 4px 5px;
   text-align: center;
-  color: #aaa;
+  color: #333;
+  font-weight: 700;
   margin-top: 26px;
 }
 .dropzone a.dz-remove:hover,
 .dropzone-previews a.dz-remove:hover {
-  color: #666;
+  background: #FFC654;
 }
 .dropzone .uploader {
     display: none;
