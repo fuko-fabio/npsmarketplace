@@ -49,7 +49,7 @@ class NpsTicketDelivery extends Module {
             return false;
         return true;
     }
-    public function uninstall() {return $this->registerHook('displayCustomerAccount') && $this->registerHook('displaySellerOrderDetail') && $this->registerHook('displayOrderDetail');
+    public function uninstall() {
         if (!parent::uninstall()
             || !$this->unregisterHook('actionOrderHistoryAddAfter')
             || !$this->unregisterHook('displayBeforeVirtualCarrier')
