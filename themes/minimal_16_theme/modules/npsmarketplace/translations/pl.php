@@ -83,6 +83,7 @@ $_MODULE['<{npsmarketplace}minimal_16_theme>admintownscontroller_e25f0ecd41211b0
 $_MODULE['<{npsmarketplace}minimal_16_theme>admintownscontroller_b718adec73e04ce3ec720dd11a06a308'] = 'ID';
 $_MODULE['<{npsmarketplace}minimal_16_theme>admintownscontroller_49ee3087348e8d44e1feda1917443987'] = 'Nazwa';
 $_MODULE['<{npsmarketplace}minimal_16_theme>admintownscontroller_00d23a76e43b46dae9ec7aa9dcbebb32'] = 'Włączone';
+$_MODULE['<{npsmarketplace}minimal_16_theme>admintownscontroller_7a1920d61156abc05a60135aefe8bc67'] = 'Domyślne';
 $_MODULE['<{npsmarketplace}minimal_16_theme>admintownscontroller_df8a9a802d691eecd18e3aa402ce0840'] = 'Zarządzaj Miastami';
 $_MODULE['<{npsmarketplace}minimal_16_theme>admintownscontroller_2dc22e2d8088bc20b6c84c1126ba3093'] = 'Edycja: %s';
 $_MODULE['<{npsmarketplace}minimal_16_theme>admintownscontroller_c16dac173aa8377a1c07aed8e0472f7c'] = 'Miasto';
@@ -102,6 +103,8 @@ $_MODULE['<{npsmarketplace}minimal_16_theme>accountrequest_1b91c523f25d11290a5d1
 $_MODULE['<{npsmarketplace}minimal_16_theme>accountrequest_6e58f5ad8d68c19d5004b05dbfdd99bd'] = 'Niepoprawny numer REGON';
 $_MODULE['<{npsmarketplace}minimal_16_theme>accountrequest_96a13b2e938aa083bd80d9d332ef790f'] = 'Niepoprawny opis firmy';
 $_MODULE['<{npsmarketplace}minimal_16_theme>accountrequest_6945da7e77bcc349bd2d4ed9f36563e4'] = 'Niedozwolone znaki w regulaminie sprzedawcy';
+$_MODULE['<{npsmarketplace}minimal_16_theme>accountrequest_16bb6cfa96b34bf0651a9c35e4bbe96b'] = 'Aktywacja konta sprzedawcy';
+$_MODULE['<{npsmarketplace}minimal_16_theme>accountrequest_e2ae3a32dd727beb5de326786c49de29'] = 'Zarejestrowano nowego sprzedawcę!';
 $_MODULE['<{npsmarketplace}minimal_16_theme>productcombination_7d46da876cb9a407a1bd415d4448716f'] = 'Wydarzenie w wybranym terminie już istnieje';
 $_MODULE['<{npsmarketplace}minimal_16_theme>productcombination_0232572b7d42b5ed0f20d2f34a753be9'] = 'Data wygaśnięcia wydarzenia jest wymagana';
 $_MODULE['<{npsmarketplace}minimal_16_theme>productcombination_e96b62ce80b992c8ec81a55ab3647ba3'] = 'Niepoprawny format daty wygaśnięcia';
@@ -242,6 +245,7 @@ $_MODULE['<{npsmarketplace}minimal_16_theme>product_combination_e7dc20d7713ca8e8
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_combination_0c58867fe38122907552ade326f584b9'] = 'regulamin';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_combination_ec211f7c20af43e742bf2570c3cb84f9'] = 'Dodaj';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_fieldset_936ccdb97115e9f35a11d35e3d5b5cad'] = 'Kliknij tutaj';
+$_MODULE['<{npsmarketplace}minimal_16_theme>product_fieldset_66e321d982e1a3e6cbd01c4868d5c510'] = 'aby dodać nowy termin wydarzenia';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_fieldset_c4c95c36570d5a8834be5e88e2f0f6b2'] = 'Informacje';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_fieldset_5f23d5b8371ab04f60c88056bd3821f8'] = 'Typ oferty';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_fieldset_c751439d0db3883ac1c8e816327adcab'] = 'Bilet';
@@ -283,6 +287,8 @@ $_MODULE['<{npsmarketplace}minimal_16_theme>product_fieldset_c789b445f7b7db9daf5
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_fieldset_3adbdb3ac060038aa0e6e6c138ef9873'] = 'Kategoria';
 $_MODULE['<{npsmarketplace}minimal_16_theme>products_list_f71c1155aea786fb9dd6e7e7475b264d'] = 'Moje wydarzenia';
 $_MODULE['<{npsmarketplace}minimal_16_theme>products_list_c5a5240b71e77388d00b62f6cd2f3157'] = 'Dodaj wydarzenie';
+$_MODULE['<{npsmarketplace}minimal_16_theme>products_list_5f7347a2f13df1fb88fec47158e6edcf'] = 'Wydarzenie nie istnieje. Proszę wybrać właściwe wydarzenie z listy';
+$_MODULE['<{npsmarketplace}minimal_16_theme>products_list_e8459831123005af9b85927970318cbe'] = 'Twoje konto sprzedawcy nie zostało jeszcze aktywowane. Prosimy cierpliwie czekać na odpowiedź.';
 $_MODULE['<{npsmarketplace}minimal_16_theme>products_list_be53a0541a6d36f6ecb879fa2c584b08'] = 'Zdjęcie';
 $_MODULE['<{npsmarketplace}minimal_16_theme>products_list_49ee3087348e8d44e1feda1917443987'] = 'Nazwa';
 $_MODULE['<{npsmarketplace}minimal_16_theme>products_list_b5a7adde1af5c87d7fd797b6245c2a39'] = 'Opis';
