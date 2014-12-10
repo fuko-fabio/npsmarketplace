@@ -17,7 +17,10 @@ class MyAccountController extends MyAccountControllerCore {
     }
 
     private function getTickets() {
-        $tickets = CartTicket::getCustomerTickets($this->context->customer->id);
+        $nbTickets = CartTicket::getCustomerTickets($this->context->customer->id, 0, 0, true);
+        $this->pagination($nbTickets);
+
+        $tickets = CartTicket::getCustomerTickets($this->context->customer->id, $this->p, $this->n);
         foreach ($tickets as $key => $value) {
             $tickets[$key]['code'] = TicketsGenerator::getCode($value);
             $tickets[$key]['seller'] = Db::getInstance()->getValue('SELECT name FROM '._DB_PREFIX_.'seller WHERE id_seller='.$value['id_seller']);
