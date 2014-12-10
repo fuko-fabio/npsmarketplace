@@ -4,7 +4,7 @@
 *  @copyright 2014 npsoftware
 */
 
-include_once(_PS_MODULE_DIR_.'npsmsellercomments/classes/SellerComment.php');
+include_once(_PS_MODULE_DIR_.'npscomments/classes/SellerComment.php');
 
 class AdminSellersCommentsController extends AdminController {
     protected $delete_mode;

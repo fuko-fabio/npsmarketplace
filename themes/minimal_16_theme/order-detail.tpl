@@ -82,24 +82,6 @@
 <a href="{$followup|escape:'html':'UTF-8'}">{$followup|escape:'html':'UTF-8'}</a>
 {/if}
 
-<div class="adresses_bloc">
-	<div class="row">
-		<div class="col-xs-12 col-sm-12">
-			<ul class="address item {if $order->isVirtual()}full_width{/if} box">
-				<li><h3 class="page-subheading">{l s='Invoice address'} ({$address_invoice->alias})</h3></li>
-				{foreach from=$inv_adr_fields name=inv_loop item=field_item}
-					{if $field_item eq "company" && isset($address_invoice->company)}<li class="address_company">{$address_invoice->company|escape:'html':'UTF-8'}</li>
-					{elseif $field_item eq "address2" && $address_invoice->address2}<li class="address_address2">{$address_invoice->address2|escape:'html':'UTF-8'}</li>
-					{elseif $field_item eq "phone_mobile" && $address_invoice->phone_mobile}<li class="address_phone_mobile">{$address_invoice->phone_mobile|escape:'html':'UTF-8'}</li>
-					{else}
-							{assign var=address_words value=" "|explode:$field_item}
-							<li>{foreach from=$address_words item=word_item name="word_loop"}{if !$smarty.foreach.word_loop.first} {/if}<span class="address_{$word_item|replace:',':''}">{$invoiceAddressFormatedValues[$word_item|replace:',':'']|escape:'html':'UTF-8'}</span>{/foreach}</li>
-					{/if}
-				{/foreach}
-			</ul>
-		</div>
-	</div>
-</div>
 {$HOOK_ORDERDETAILDISPLAYED}
 {if !$is_guest}<form action="{$link->getPageLink('order-follow', true)|escape:'html':'UTF-8'}" method="post">{/if}
 <div id="order-detail-content" class="table_block table-responsive">
@@ -333,6 +315,26 @@
 		</tbody>
 	</table>
 </div>
+
+<div class="adresses_block">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <ul class="address item {if $order->isVirtual()}full_width{/if} box">
+                <li><h3 class="page-subheading">{l s='Invoice address'} ({$address_invoice->alias})</h3></li>
+                {foreach from=$inv_adr_fields name=inv_loop item=field_item}
+                    {if $field_item eq "company" && isset($address_invoice->company)}<li class="address_company">{$address_invoice->company|escape:'html':'UTF-8'}</li>
+                    {elseif $field_item eq "address2" && $address_invoice->address2}<li class="address_address2">{$address_invoice->address2|escape:'html':'UTF-8'}</li>
+                    {elseif $field_item eq "phone_mobile" && $address_invoice->phone_mobile}<li class="address_phone_mobile">{$address_invoice->phone_mobile|escape:'html':'UTF-8'}</li>
+                    {else}
+                            {assign var=address_words value=" "|explode:$field_item}
+                            <li>{foreach from=$address_words item=word_item name="word_loop"}{if !$smarty.foreach.word_loop.first} {/if}<span class="address_{$word_item|replace:',':''}">{$invoiceAddressFormatedValues[$word_item|replace:',':'']|escape:'html':'UTF-8'}</span>{/foreach}</li>
+                    {/if}
+                {/foreach}
+            </ul>
+        </div>
+    </div>
+</div>
+
 {if $return_allowed}
 	<div id="returnOrderMessage">
 		<h3 class="page-heading bottom-indent">{l s='Merchandise return'}</h3>

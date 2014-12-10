@@ -42,20 +42,73 @@ class NpsTicketDelivery extends Module {
             || !$this->registerHook('actionOrderHistoryAddAfter')
             || !$this->registerHook('displayBeforeVirtualCarrier')
             || !$this->registerHook('actionPostProcessCarrier')
+            || !$this->registerHook('displayOrderDetail')
+            || !$this->registerHook('displaySellerOrderDetail')
+            || !$this->registerHook('displayCustomerAccount')
             || !$this->createTables($sql))
             return false;
         return true;
     }
-    public function uninstall() {
+    public function uninstall() {return $this->registerHook('displayCustomerAccount') && $this->registerHook('displaySellerOrderDetail') && $this->registerHook('displayOrderDetail');
         if (!parent::uninstall()
             || !$this->unregisterHook('actionOrderHistoryAddAfter')
             || !$this->unregisterHook('displayBeforeVirtualCarrier')
             || !$this->unregisterHook('actionPostProcessCarrier')
+            || !$this->unregisterHook('displayOrderDetail')
+            || !$this->unregisterHook('displaySellerOrderDetail')
+            || !$this->unregisterHook('displayCustomerAccount')
             || !$this->deleteTables())
             return false;
         return true;
     }
 
+    public function hookDisplayCustomerAccount() {
+        $seller = new Seller(null, $this->context->customer->id);
+       if ($seller->requested == 1 && $seller->active == 1) {
+            $this->context->smarty->assign(array(
+                'tickets_sold_link' => $this->context->link->getModuleLink('npsticketdelivery', 'TicketsSold'),
+            )
+        );
+        return $this->display(__FILE__, 'npsticketsdelivery.tpl');
+       }
+    }
+
+    public function hookDisplayOrderDetail($params) {
+        $order = $params['order'];
+        $id_cart = Cart::getCartIdByOrderId($order->id);
+        if ($id_cart) {
+            $tickets = CartTicket::getAllTicketsByCartId($id_cart);
+            $this->smarty->assign(array(
+                'tickets' => $this->fillTickets($tickets),
+                'is_seller' => true
+            ));
+
+            return $this->display(__FILE__, 'order_details.tpl');
+        }
+    }
+
+    public function hookDisplaySellerOrderDetail($params) {
+        $seller = $params['seller'];
+        if ($seller->id) {
+            $tickets = CartTicket::getAllTicketsBySellerId($seller->id);
+            $this->smarty->assign(array(
+                'tickets' => $this->fillTickets($tickets),
+                'is_seller' => false
+            ));
+
+            return $this->display(__FILE__, 'order_details.tpl');
+        }
+    }
+
+    public function fillTickets($tickets) {
+        foreach ($tickets as $key => $value) {
+            $tickets[$key]['code'] = TicketsGenerator::getCode($value);
+            $tickets[$key]['seller'] = Db::getInstance()->getValue('SELECT name FROM '._DB_PREFIX_.'seller WHERE id_seller='.$value['id_seller']);
+            $tickets[$key]['seller_shop'] = $this->context->link->getModuleLink('npsmarketplace', 'SellerShop', array('id_seller' => $value['id_seller']));
+        }
+        return $tickets;
+    }
+ 
     public function hookActionOrderHistoryAddAfter($params) {
         $order_history = $params['order_history'];
         $id_o_s = Configuration::get('NPS_P24_ORDER_STATE_ACCEPTED');

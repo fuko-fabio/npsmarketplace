@@ -16,7 +16,7 @@ class NpsMarketplaceOrdersModuleFrontController extends ModuleFrontController {
         $this->addJqueryPlugin('footable-sort');
         $this->addJqueryPlugin('scrollTo');
     }
-    
+
     public function initContent() {
         parent::initContent();
 

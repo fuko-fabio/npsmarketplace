@@ -33,8 +33,16 @@
 		</span>
 	</p>
 {/if}
-<div id="nps_tickets_block_account">
+<div id="nps_tickets_block">
     {if $myTickets}
+        <div class="content_sortPagiBar">
+            <div class="sortPagiBar clearfix">
+                {include file="$tpl_dir./nbr-product-page.tpl"}
+            </div>
+            <div class="top-pagination-content clearfix">
+                {include file="$tpl_dir./pagination.tpl"}
+            </div>
+        </div>
         <ul class="grid row">
             {foreach from=$myTickets item=ticket}
                 <li class="col-xs-12 col-sm-12 col-md-6">
@@ -67,6 +75,11 @@
                 </li>
             {/foreach}
         </ul>
+        <div class="content_sortPagiBar">
+            <div class="bottom-pagination-content clearfix">
+                {include file="$tpl_dir./pagination.tpl" paginationId='bottom'}
+            </div>
+        </div>
     {else}
         <p class="alert alert-info"><span class="alert-content">{l s='You have not bought tickets yet.'}</span></p>
     {/if}
