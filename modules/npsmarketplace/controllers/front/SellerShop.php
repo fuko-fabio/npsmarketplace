@@ -12,7 +12,7 @@ class NpsMarketplaceSellerShopModuleFrontController extends ModuleFrontControlle
         $tpl_seller = array();
         $seller = new Seller($id_seller);
         if ($id_seller) {
-            $image = Seller::getImageLink($seller->id, 'medium_default', $this->context);
+            $image = Seller::getImageLink($seller->id, 'home_default', $this->context);
             $tpl_seller = array(
                 'id' => $seller->id,
                 'image' => $image,

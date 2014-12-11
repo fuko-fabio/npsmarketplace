@@ -93,6 +93,8 @@
 .cart_block .cart-images {
   float: left;
   margin-right: 20px; }
+  .cart_block .cart-images img {
+    max-width: 80px; }
 .cart_block .cart-info {
   overflow: hidden;
   position: relative;

@@ -62,6 +62,7 @@ class NpsMarketplaceProductsListModuleFrontController extends ModuleFrontControl
             $cover = Product::getCover($product->id);
             $have_image = !empty($cover);
             $item = array(
+                'id_product' => $product->id,
                 'haveImage' => $have_image,
                 'cover' => $have_image ? $this->context->link->getImageLink($product->link_rewrite[$this->context->language->id], $cover['id_image'], 'cart_default') : null,
                 'name' => Product::getProductName($product->id),

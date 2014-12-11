@@ -12,7 +12,9 @@ function initializeMap() {
     var map_options = {
         center : new google.maps.LatLng(50.0646, 19.9449),
         zoom : 12,
-        mapTypeId : google.maps.MapTypeId.ROADMAP
+        mapTypeId : google.maps.MapTypeId.ROADMAP,
+        zoomControl: true,
+        streetViewControl: true
     };
     map = new google.maps.Map(map_canvas, map_options);
 
@@ -34,7 +36,7 @@ function initializeMap() {
             var currCenter = map.getCenter();
             google.maps.event.trigger(map, "resize");
             map.setCenter(currCenter);
-        }, 200);
+        }, 300);
     });
 }
 

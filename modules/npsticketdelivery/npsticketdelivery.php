@@ -89,8 +89,9 @@ class NpsTicketDelivery extends Module {
 
     public function hookDisplaySellerOrderDetail($params) {
         $seller = $params['seller'];
-        if ($seller->id) {
-            $tickets = CartTicket::getAllTicketsBySellerId($seller->id);
+        $order = $params['order'];
+        if ($seller->id && $order->id) {
+            $tickets = CartTicket::getAllTicketsByCartId(Cart::getCartIdByOrderId($order->id), $seller->id);
             $this->smarty->assign(array(
                 'tickets' => $this->fillTickets($tickets),
                 'is_seller' => false

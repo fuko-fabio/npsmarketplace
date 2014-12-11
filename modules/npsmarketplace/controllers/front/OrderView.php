@@ -34,7 +34,7 @@ class NpsMarketplaceOrderViewModuleFrontController extends ModuleFrontController
             'address' => $this->deliveryAddressForView($order->id_address_delivery),
             'customer' => $this->customerForView($order->id_customer),
             'products' => $products,
-            'HOOK_ORDERDETAILDISPLAYED' => Hook::exec('displaySellerOrderDetail', array('seller' => $seller))
+            'HOOK_ORDERDETAILDISPLAYED' => Hook::exec('displaySellerOrderDetail', array('seller' => $seller, 'order' => $order))
         ));
 
         $this->setTemplate('order_view.tpl');
