@@ -38,7 +38,7 @@ class Validate extends ValidateCore
         return preg_match('/^(?:[01][0-9]|2[0-3]):[0-5][0-9]$/' ,$time);
     }
 
-    function isNrb($nrb)
+    public static function isNrb($nrb)
     {
         if (strlen($nrb)!=26)
             return 0;

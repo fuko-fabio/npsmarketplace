@@ -5,6 +5,9 @@ html, body, #map-canvas {
     margin-bottom: 10px;
     min-height: 300px;
 }
+ #map-canvas img {
+    max-width: none; 
+}
 
 .pac-container {
     font-family: Roboto;

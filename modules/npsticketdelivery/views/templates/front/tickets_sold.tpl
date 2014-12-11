@@ -44,7 +44,12 @@
                     <td>{$ticket.name}</td>
                     <td>{$ticket.code}</td>
                     <td>{displayPrice price=$ticket.price currency=$ticket.id_currency}</td>
-                    <td>{$ticket.gift}</td>
+                    <td>{if $ticket.gift == 1}
+                        <i class="icon-ok"></i>
+                        {else}
+                        <i class="icon-remove"></i>
+                        {/if}
+                    </td>
                     <td>{$ticket.person}</td>
                     <td>{$ticket.address}</td>
                     <td>{$ticket.district}</td>
@@ -58,7 +63,13 @@
                             <td>{l s='Valid' mod='npsticketdelivery'}: {date_format(date_create($ticket.from), 'Y-m-d')} - {date_format(date_create($ticket.to), 'Y-m-d')}</td>
                         {/if}
                     {/if}
-                    <td>{$ticket.type}</td>
+                    <td>
+                        {if $ticket.type == 0}
+                        {l s='Ticket' mod='npsticketdelivery'}
+                        {else if $ticket.type == 1}
+                        {l s='Carnet' mod='npsticketdelivery'}
+                        {/if}
+                    </td>
                     <td>
                         <div class="btn-group">
                             <a href="{$ticket.order_url}" class="edit btn btn-default"><i class="icon-search"></i> {l s='View' mod='npsmarketplace'}</a>

@@ -122,6 +122,10 @@
   .cart-images {
     float: left;
     margin-right: 20px;
+
+    img {
+      max-width: 80px;
+    }
   }
   .cart-info {
     overflow: hidden;

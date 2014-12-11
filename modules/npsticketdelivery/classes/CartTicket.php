@@ -48,7 +48,7 @@ class CartTicket extends ObjectModel {
         return null;
     }
 
-    public static function getAllTicketsByCartId($id_cart) {
+    public static function getAllTicketsByCartId($id_cart, $id_seller = null) {
         if (!isset($id_cart))
             return null;
         $dbquery = new DbQuery();
@@ -56,8 +56,11 @@ class CartTicket extends ObjectModel {
             ->from('cart_ticket', 'ct')
             ->leftJoin('ticket', 't', 't.id_cart_ticket = ct.id_cart_ticket')
             ->leftJoin('cart', 'c', 'ct.id_cart = c.id_cart')
-            ->where('c.`id_cart` = '.$id_cart)
             ->orderBy('generated DESC');
+        if ($id_seller == null)
+            $dbquery->where('c.`id_cart` = '.$id_cart);
+        else
+            $dbquery->where('c.`id_cart` = '.$id_cart.' AND t.`id_seller` = '.$id_seller);
 
         return Db::getInstance()->executeS($dbquery);
     }
