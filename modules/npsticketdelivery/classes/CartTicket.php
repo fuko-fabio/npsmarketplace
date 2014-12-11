@@ -51,6 +51,7 @@ class CartTicket extends ObjectModel {
     public static function getAllTicketsByCartId($id_cart, $id_seller = null) {
         if (!isset($id_cart))
             return null;
+
         $dbquery = new DbQuery();
         $dbquery->select('*')
             ->from('cart_ticket', 'ct')
@@ -58,9 +59,9 @@ class CartTicket extends ObjectModel {
             ->leftJoin('cart', 'c', 'ct.id_cart = c.id_cart')
             ->orderBy('generated DESC');
         if ($id_seller == null)
-            $dbquery->where('c.`id_cart` = '.$id_cart);
+            $dbquery->where('c.`id_cart` = '.$id_cart.' AND (id_ticket <> "")');
         else
-            $dbquery->where('c.`id_cart` = '.$id_cart.' AND t.`id_seller` = '.$id_seller);
+            $dbquery->where('c.`id_cart` = '.$id_cart.' AND t.`id_seller` = '.$id_seller.' AND (id_ticket <> "")');
 
         return Db::getInstance()->executeS($dbquery);
     }
@@ -68,6 +69,7 @@ class CartTicket extends ObjectModel {
     public static function getAllTicketsBySellerId($id_seller, $p, $n, $count = false) {
         if (!isset($id_seller))
             return null;
+
         if ($count)
             return Db::getInstance()->getValue('SELECT count(name) FROM '._DB_PREFIX_.'ticket WHERE id_seller = '.$id_seller);
 
@@ -76,7 +78,7 @@ class CartTicket extends ObjectModel {
             ->from('cart_ticket', 'ct')
             ->leftJoin('ticket', 't', 't.id_cart_ticket = ct.id_cart_ticket')
             ->leftJoin('cart', 'c', 'ct.id_cart = c.id_cart')
-            ->where('t.`id_seller` = '.$id_seller)
+            ->where('t.`id_seller` = '.$id_seller.' AND (id_ticket <> "")')
             ->orderBy('generated DESC');
         if ($n > 0)
             $dbquery->limit($n, (((int)$p - 1) * (int)$n));
@@ -92,7 +94,7 @@ class CartTicket extends ObjectModel {
             ->from('cart_ticket', 'ct')
             ->leftJoin('ticket', 't', 't.id_cart_ticket = ct.id_cart_ticket')
             ->leftJoin('cart', 'c', 'ct.id_cart = c.id_cart')
-            ->where('ct.`id_cart_ticket` = '.$id_cart_ticket)
+            ->where('ct.`id_cart_ticket` = '.$id_cart_ticket.' AND (id_ticket <> "")')
             ->orderBy('generated DESC');
 
         return Db::getInstance()->executeS($dbquery);
@@ -111,11 +113,11 @@ class CartTicket extends ObjectModel {
             ->from('cart_ticket', 'ct')
             ->leftJoin('ticket', 't', 't.id_cart_ticket = ct.id_cart_ticket')
             ->leftJoin('cart', 'c', 'ct.id_cart = c.id_cart')
-            ->where('ct.`id_customer` = '.$id_customer)
+            ->where('ct.`id_customer` = '.$id_customer.' AND (id_ticket <> "")')
             ->orderBy('generated DESC');
         if ($n > 0)
             $dbquery->limit($n, (((int)$p - 1) * (int)$n));
         return Db::getInstance()->executeS($dbquery);
-    }    
+    }
 }
 

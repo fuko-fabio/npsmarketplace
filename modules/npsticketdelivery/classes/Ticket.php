@@ -44,10 +44,11 @@ class Ticket extends ObjectModel {
             'generated' =>      array('type' => self::TYPE_DATE,   'validate' => 'isDateFormat'),
         ),
     );
-    
+
     public static function getForCustomer($id_customer, $id_ticket) {
         if (!isset($id_ticket) || !isset($id_customer))
             return null;
+
         $dbquery = new DbQuery();
         $dbquery->select('*');
         $dbquery->from('cart_ticket', 'c');
