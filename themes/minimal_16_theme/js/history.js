@@ -25,6 +25,7 @@
 //show the order-details with ajax
 function showOrder(mode, var_content, file)
 {
+    $.fancybox.showLoading();
 	$.get(
 		file,
 		((mode === 1) ? {'id_order': var_content, 'ajax': true} : {'id_order_return': var_content, 'ajax': true}),
@@ -95,6 +96,7 @@ function showOrder(mode, var_content, file)
 			$(this).fadeIn('slow', function() {
 				$.scrollTo(this, 1200);
 			});
+			$.fancybox.hideLoading()
 		});
 	});
 }

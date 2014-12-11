@@ -1,6 +1,6 @@
 {foreach $list as $product}
 <tr>
-	<td style="border:1px solid #ffaa00;">
+	<td style="border:1px solid #D6D4D4;">
 		<table class="table">
 			<tr>
 				<td width="10">&nbsp;</td>
@@ -13,7 +13,7 @@
 			</tr>
 		</table>
 	</td>
-	<td style="border:1px solid #ffaa00;">
+	<td style="border:1px solid #D6D4D4;">
 		<table class="table">
 			<tr>
 				<td width="10">&nbsp;</td>
@@ -26,7 +26,7 @@
 			</tr>
 		</table>
 	</td>
-	<td style="border:1px solid #ffaa00;">
+	<td style="border:1px solid #D6D4D4;">
 		<table class="table">
 			<tr>
 				<td width="10">&nbsp;</td>
@@ -39,7 +39,7 @@
 			</tr>
 		</table>
 	</td>
-	<td style="border:1px solid #ffaa00;">
+	<td style="border:1px solid #D6D4D4;">
 		<table class="table">
 			<tr>
 				<td width="10">&nbsp;</td>
@@ -52,7 +52,7 @@
 			</tr>
 		</table>
 	</td>
-	<td style="border:1px solid #ffaa00;">
+	<td style="border:1px solid #D6D4D4;">
 		<table class="table">
 			<tr>
 				<td width="10">&nbsp;</td>
@@ -68,7 +68,7 @@
 </tr>
 	{foreach $product['customization'] as $customization}
 		<tr>
-		<td colspan="2" style="border:1px solid #ffaa00;">
+		<td colspan="2" style="border:1px solid #D6D4D4;">
 			<table class="table">
 				<tr>
 					<td width="10">&nbsp;</td>
@@ -82,7 +82,7 @@
 				</tr>
 			</table>
 		</td>
-		<td style="border:1px solid #ffaa00;">
+		<td style="border:1px solid #D6D4D4;">
 			<table class="table">
 				<tr>
 					<td width="10">&nbsp;</td>
@@ -95,7 +95,7 @@
 				</tr>
 			</table>
 		</td>
-		<td style="border:1px solid #ffaa00;">
+		<td style="border:1px solid #D6D4D4;">
 			<table class="table">
 				<tr>
 					<td width="10">&nbsp;</td>
@@ -108,7 +108,7 @@
 				</tr>
 			</table>
 		</td>
-		<td style="border:1px solid #ffaa00;">
+		<td style="border:1px solid #D6D4D4;">
 			<table class="table">
 				<tr>
 					<td width="10">&nbsp;</td>

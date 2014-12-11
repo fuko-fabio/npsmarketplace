@@ -46,7 +46,7 @@
 					<th data-sort-ignore="true" data-hide="phone,tablet" class="item">{l s='Payment'}</th>
 					<th class="item">{l s='Status'}</th>
 					<th data-sort-ignore="true" data-hide="phone,tablet" class="item">{l s='Invoice'}</th>
-					<th data-sort-ignore="true" data-hide="phone,tablet" class="last_item">&nbsp;</th>
+					<th data-sort-ignore="true"class="last_item">&nbsp;</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -86,17 +86,10 @@
 							{/if}
 						</td>
 						<td class="history_detail">
-							<a class="btn btn-default button button-small" href="javascript:showOrder(1, {$order.id_order|intval}, '{$link->getPageLink('order-detail', true)|escape:'html':'UTF-8'}');">
+							<a class="btn btn-default" href="javascript:showOrder(1, {$order.id_order|intval}, '{$link->getPageLink('order-detail', true)|escape:'html':'UTF-8'}');">
 								<span>
-									{l s='Details'}<i class="icon-chevron-right right"></i>
+									{l s='Details'} <i class="icon-chevron-right right"></i>
 								</span>
-							</a>
-							{if isset($opc) && $opc}
-								<a class="link-button" href="{$link->getPageLink('order-opc', true, NULL, "submitReorder&id_order={$order.id_order}")|escape:'html':'UTF-8'}" title="{l s='Reorder'}">
-							{else}
-								<a class="link-button" href="{$link->getPageLink('order', true, NULL, "submitReorder&id_order={$order.id_order}")|escape:'html':'UTF-8'}" title="{l s='Reorder'}">
-							{/if}
-		                        <i class="icon-refresh"></i>{l s='Reorder'}
 							</a>
 						</td>
 					</tr>
