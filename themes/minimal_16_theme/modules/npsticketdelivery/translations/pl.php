@@ -17,7 +17,10 @@ $_MODULE['<{npsticketdelivery}minimal_16_theme>tickets_sold_a1fa27779242b4902f7a
 $_MODULE['<{npsticketdelivery}minimal_16_theme>tickets_sold_cf5f3091e30dee6597885d8c0e0c357f'] = 'Termin';
 $_MODULE['<{npsticketdelivery}minimal_16_theme>tickets_sold_bc14b0a9c516310fc195a778937cc0a0'] = 'Ilość wejść';
 $_MODULE['<{npsticketdelivery}minimal_16_theme>tickets_sold_3ac705f2acd51a4613f9188c05c91d0d'] = 'Ważny';
+$_MODULE['<{npsticketdelivery}minimal_16_theme>tickets_sold_c751439d0db3883ac1c8e816327adcab'] = 'Bilet';
+$_MODULE['<{npsticketdelivery}minimal_16_theme>tickets_sold_05a79b3e220b02798e20b0f4e1bd1431'] = 'Karnet';
 $_MODULE['<{npsticketdelivery}minimal_16_theme>tickets_sold_8823f7179d52ab4e023618ba47f40721'] = 'Nie sprzedałeś jeszcze żadnych biletów';
+$_MODULE['<{npsticketdelivery}minimal_16_theme>npsticketsdelivery_ad9d96adbede4ac62d27ef7d5baa9a33'] = 'Sprzedane bilety';
 $_MODULE['<{npsticketdelivery}minimal_16_theme>order_details_c1c694bd849d91d0eb34bfef8c2d8894'] = 'Bilety';
 $_MODULE['<{npsticketdelivery}minimal_16_theme>order_details_cf5f3091e30dee6597885d8c0e0c357f'] = 'Termin';
 $_MODULE['<{npsticketdelivery}minimal_16_theme>order_details_bc14b0a9c516310fc195a778937cc0a0'] = 'Ilość wejść';

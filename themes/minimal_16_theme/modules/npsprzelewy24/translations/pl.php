@@ -141,7 +141,7 @@ $_MODULE['<{npsprzelewy24}minimal_16_theme>payment_confirmation_9390390581f54c65
 $_MODULE['<{npsprzelewy24}minimal_16_theme>payment_register_company_25f7ba9fc064d9eca1b0e3528cc4699c'] = 'Konfiguracja płatności';
 $_MODULE['<{npsprzelewy24}minimal_16_theme>payment_register_company_d5815623c49bc79327917762848902f0'] = 'Ustawienia płatności';
 $_MODULE['<{npsprzelewy24}minimal_16_theme>payment_register_company_e9baf9586d5e29df1d21a0194e5aa8dc'] = 'Aby móc dodać kolejne wydarzenie musisz najpierw skonfigurować płatności.';
-$_MODULE['<{npsprzelewy24}minimal_16_theme>payment_register_company_383a72444da8f958df4b4db26f4becbd'] = 'Po zarejestrowaniu firmy nie będzie możliwości edycji tego formularza. Prosimy uważnie wypełnić wszystkie pola.';
+$_MODULE['<{npsprzelewy24}minimal_16_theme>payment_register_company_383a72444da8f958df4b4db26f4becbd'] = 'Tutaj podłączysz system płatności do swojego butiku. Po zarejestrowaniu firmy nie będzie możliwości edycji tego formularza. Prosimy uważnie wypełnić wszystkie pola.';
 $_MODULE['<{npsprzelewy24}minimal_16_theme>payment_register_company_e7b47c58815acf1d3afa59a84b5db7fb'] = 'Nazwa firmy';
 $_MODULE['<{npsprzelewy24}minimal_16_theme>payment_register_company_40bed7cf9b3d4bb3a3d7a7e3eb18c5eb'] = 'Imię i Nazwisko';
 $_MODULE['<{npsprzelewy24}minimal_16_theme>payment_register_company_ce8ae9da5b7cd6c3df2929543a9af92d'] = 'Adres email';
