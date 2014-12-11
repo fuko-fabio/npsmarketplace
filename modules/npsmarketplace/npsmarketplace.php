@@ -374,7 +374,9 @@ class NpsMarketplace extends Module {
             Configuration::updateValue('NPS_SELLER_GUIDE_URL', Tools::getValue('NPS_SELLER_GUIDE_URL'));
             Configuration::updateValue('NPS_PAYMENT_SETTINGS_GUIDE_URL', Tools::getValue('NPS_PAYMENT_SETTINGS_GUIDE_URL'));
             Configuration::updateValue('NPS_EVENT_VIDEO_GUIDE_URL', Tools::getValue('NPS_EVENT_VIDEO_GUIDE_URL'));
+            Configuration::updateValue('NPS_EVENT_DESC_GUIDE_URL', Tools::getValue('NPS_EVENT_DESC_GUIDE_URL'));
             Configuration::updateValue('NPS_USER_GUIDE_URL', Tools::getValue('NPS_USER_GUIDE_URL'));
+            Configuration::updateValue('NPS_EVENT_IMAGE_GUIDE_URL', Tools::getValue('NPS_EVENT_IMAGE_GUIDE_URL'));
             $output .= $this->displayConfirmation($this->l('URL\'s settings updated'));
         }
         return $output.$this->displayForm();
@@ -543,6 +545,18 @@ class NpsMarketplace extends Module {
                         'name' => 'NPS_EVENT_VIDEO_GUIDE_URL',
                         'required' => true
                     ),
+                    array(
+                        'type' => 'text',
+                        'label' => $this->l('Creating description URL'),
+                        'name' => 'NPS_EVENT_DESC_GUIDE_URL',
+                        'required' => true
+                    ),
+                    array(
+                        'type' => 'text',
+                        'label' => $this->l('Creating images URL'),
+                        'name' => 'NPS_EVENT_IMAGE_GUIDE_URL',
+                        'required' => true
+                    ),
                 ),
                 'submit' => array(
                     'title' => $this->l('Save'),
@@ -563,6 +577,8 @@ class NpsMarketplace extends Module {
             'NPS_MERCHANT_EMAILS' => Tools::getValue('NPS_MERCHANT_EMAILS', Configuration::get('NPS_MERCHANT_EMAILS')),
             'NPS_PAYMENT_SETTINGS_GUIDE_URL' => Tools::getValue('NPS_PAYMENT_SETTINGS_GUIDE_URL', Configuration::get('NPS_PAYMENT_SETTINGS_GUIDE_URL')),
             'NPS_EVENT_VIDEO_GUIDE_URL' => Tools::getValue('NPS_EVENT_VIDEO_GUIDE_URL', Configuration::get('NPS_EVENT_VIDEO_GUIDE_URL')),
+            'NPS_EVENT_DESC_GUIDE_URL' => Tools::getValue('NPS_EVENT_DESC_GUIDE_URL', Configuration::get('NPS_EVENT_DESC_GUIDE_URL')),
+            'NPS_EVENT_IMAGE_GUIDE_URL' => Tools::getValue('NPS_EVENT_IMAGE_GUIDE_URL', Configuration::get('NPS_EVENT_IMAGE_GUIDE_URL')),
 
         );
     }

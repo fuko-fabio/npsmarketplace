@@ -1,4 +1,5 @@
-{*
+<?php
+/*
 * 2007-2014 PrestaShop
 *
 * NOTICE OF LICENSE
@@ -21,12 +22,14 @@
 *  @copyright  2007-2014 PrestaShop SA
 *  @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *  International Registered Trademark & Property of PrestaShop SA
-*}
-<meta property="og:title" content="{$meta_title|escape:'html':'UTF-8'}" />
-<meta property="og:url" content="{$request}" />
-<meta property="og:type" content="product" />
-<meta property="og:site_name" content="{$shop_name}" />
-<meta property="og:description" content="{$meta_description|escape:'html':'UTF-8'}" />
-{if isset($link_rewrite) && isset($cover) && isset($cover.id_image)}
-<meta property="og:image:url" content="{$link->getImageLink($link_rewrite, $cover.id_image, large_default)}" />
-{/if}
+*/
+				    	
+header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+header("Last-Modified: ".gmdate("D, d M Y H:i:s")." GMT");
+						
+header("Cache-Control: no-store, no-cache, must-revalidate");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+						
+header("Location: ../");
+exit;

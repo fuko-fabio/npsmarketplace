@@ -336,7 +336,9 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             'path_css' => _THEME_CSS_DIR_,
             'tinymce' => true,
             'dropzone_url' => Tools::getHttpHost(true).__PS_BASE_URI__.'modules/npsmarketplace/dropzone.php?token='.$form_token,
-            'vide_how_to_url' => Configuration::get('NPS_EVENT_VIDEO_GUIDE_URL')
+            'vide_how_to_url' => Configuration::get('NPS_EVENT_VIDEO_GUIDE_URL'),
+            'description_how_to_url' => Configuration::get('NPS_EVENT_DESC_GUIDE_URL'),
+            'images_how_to_url' => Configuration::get('NPS_EVENT_IMAGE_GUIDE_URL'),
         ));
 
         $this->setTemplate('product.tpl');

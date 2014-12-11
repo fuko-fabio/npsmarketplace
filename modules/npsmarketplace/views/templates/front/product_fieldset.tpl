@@ -56,11 +56,12 @@
                     <div class="form-group">
                         <label for="product_short_description_{$lang.id_lang}">{l s='Short Description' mod='npsmarketplace'}</label>
                         <textarea class="tinymce form-control" id="product_short_description_{$lang.id_lang}" name="description_short[{$lang.id_lang}]">{if isset($smarty.post.description_short[{$lang.id_lang}])}{$smarty.post.description_short[{$lang.id_lang}]}{else}{if isset($product['description_short'][{$lang.id_lang}])}{$product['description_short'][{$lang.id_lang}]}{/if}{/if}</textarea>
-                        <span class="form_info">{l s='Short description will be visible on list items' mod='npsmarketplace'}</span>
+                        <span class="form_info">{l s='Add here key informations. Short description will be visible on list items' mod='npsmarketplace'}</span>
                     </div>
                     <div class="form-group">
                         <label for="product_description_{$lang.id_lang}">{l s='Description' mod='npsmarketplace'}</label>
                         <textarea class="tinymce form-control" id="product_description_{$lang.id_lang}" name="description[{$lang.id_lang}]">{if isset($smarty.post.description[{$lang.id_lang}])}{$smarty.post.description[{$lang.id_lang}]}{else}{if isset($product['description'][{$lang.id_lang}])}{$product['description'][{$lang.id_lang}]}{/if}{/if}</textarea>
+                        <span class="form_info"><a href="$description_how_to_url">{l s='How to write interesting description?' mod='npsmarketplace'}</a></span>
                     </div>
                 </div>
             {/foreach}
@@ -120,12 +121,13 @@
                 <label class="required" for="product_price">{l s='Price' mod='npsmarketplace'}</label>
                 <input class="is_required validate form-control" data-validate="isPrice" type="text" id="product_price" name="price" required=""
                     value="{if isset($smarty.post.price)}{$smarty.post.price}{else}{if isset($product['price'])}{$product['price']|escape:'html':'UTF-8'}{/if}{/if}"/>
-                <span class="form_info">{l s='Example: 120.50' mod='npsmarketplace'}</span>
+                <span class="form_info">{l s='Final price visible for customers. Example: 120.50' mod='npsmarketplace'}</span>
             </div>
             <div class="form-group col-md-6">
                 <label class="required" for="product_amount">{l s='Quantity' mod='npsmarketplace'}</label>
                 <input class="is_required validate form-control" data-validate="isInteger" type="number" id="product_amount" name="quantity" required=""
                     value="{if isset($smarty.post.quantity)}{$smarty.post.quantity}{else}{if isset($product['quantity'])}{$product['quantity']|escape:'html':'UTF-8'}{/if}{/if}"/>
+                <span class="form_info">{l s='Warning: Check quantity before submit' mod='npsmarketplace'}</span>
             </div>
         </div>
         <div class="row ticket-attributes">
@@ -156,6 +158,7 @@
                 <label for="product_code">{l s='Ticket reference' mod='npsmarketplace'}</label>
                 <input class="validate form-control" data-validate="isMessage" type="text" id="product_code" name="reference"
                     value="{if isset($smarty.post.reference)}{$smarty.post.reference}{else}{if isset($product['reference'])}{$product['reference']|escape:'html':'UTF-8'}{/if}{/if}"/>
+                <span class="form_info">{l s='You can create your custom event identifier which will be visible for customers. Example: EV001KR' mod='npsmarketplace'}</span>
             </div>
         </div>
     </div>
@@ -204,6 +207,7 @@
             <label class="required" for="map-address-input">{l s='Address' mod='npsmarketplace'}</label>
             <input id="map-address-input" class="is_required validate form-control" data-validate="isMessage" name="address" type="text" required="" placeholder="{l s='Search adress...' mod='npsmarketplace'}"
                 value="{if isset($smarty.post.address)}{$smarty.post.address}{else}{if isset($product['address'])}{$product['address']|escape:'html':'UTF-8'}{/if}{/if}"/>
+            <span class="form_info">{l s='After you specify address please check town and district. This inputs are not adjusted automatically.' mod='npsmarketplace'}</span>
             <input id="map-lat-input" class="hide" name="lat" type="text"
                 value="{if isset($smarty.post.lat)}{$smarty.post.lat}{else}{if isset($product['lat'])}{$product['lat']|escape:'html':'UTF-8'}{/if}{/if}">
             <input id="map-lng-input" class="hide" name="lng" type="text"
@@ -224,19 +228,19 @@
                     <input name="file[]" type="file" multiple />
                 </div>
             </div>
-            <span class="form_info">{l s='At least one picture is required. Max allowed size 8MB. Recommended min size 512px X 512px' mod='npsmarketplace'}</span>
+            <span class="form_info">{l s='First image will be general image.' mod='npsmarketplace'} <a href="$images_how_to_url">{l s='See how to add images.' mod='npsmarketplace'}</a></span>
         </div>
         <div class="row">
             <div class="form-group col-xs-12">
                 <label for="video_url">{l s='Video embeded code/URL' mod='npsmarketplace'}</label>
                <textarea class="form-control textarea-autosize" id="video_url" name="video_url">{if isset($smarty.post.video_url)}{$smarty.post.video_url}{else}{if isset($product['video_url'])}{$product['video_url']|escape:'html':'UTF-8'}{/if}{/if}</textarea>
-
                 <span class="form_info">{l s='Paste embeded video code (YouTube, Vimeo)' mod='npsmarketplace'} <a href="$vide_how_to_url">{l s='See how to add video' mod='npsmarketplace'}</a></span>
             </div>
         </div>
     </div>
     <div class="box">
         <h3 class="page-heading">{l s='Identification' mod='npsmarketplace'}</h3>
+        <p class="alert aler-info"><span class="alert-content">{l s='You can select more than one category.' mod='npsmarketplace'}</span></p>
         <div class="form-group">
             <label class="required" for="product_category">{l s='Category' mod='npsmarketplace'}</label>
             <ul class="tree">

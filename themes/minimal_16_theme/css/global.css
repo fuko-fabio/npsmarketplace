@@ -7013,6 +7013,9 @@ table#cart_summary .gift-icon {
   .order_carrier_content .carrier_title {
     font-weight: bold;
     color: #333; }
+    .order_carrier_content .carrier_title i {
+      color: #cc1010;
+      font-size: 26px; }
   .order_carrier_content .checkbox input {
     margin-top: 2px; }
   .order_carrier_content .delivery_options_address .carrier_title {

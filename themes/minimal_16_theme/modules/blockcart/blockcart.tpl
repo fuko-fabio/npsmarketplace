@@ -319,7 +319,9 @@
 						<span>
 							{l s='Proceed to checkout' mod='blockcart'} <i class="icon-chevron-right right"></i>
 						</span>
-					</a>	
+					</a>
+					<br />
+					{l s='On \'Proceed to checkout\' you will be redirected to payment page' mod='blockcart'}
 				</div>
 			</div>
 		</div>

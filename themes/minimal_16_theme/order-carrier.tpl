@@ -43,7 +43,7 @@
 		<input id="input_virtual_carrier" class="hidden" type="hidden" name="id_carrier" value="0" />
         {$HOOK_BEFOREVIRTUALCARRIER}
         {if $giftAllowed}
-            <p class="carrier_title">{l s='Gift'}</p>
+            <p class="carrier_title"><i class="icon-gift"></i> {l s='Gift'}</p>
             <p class="checkbox gift">
                 <input type="checkbox" name="gift" id="gift" value="1" {if $cart->gift == 1}checked="checked"{/if} />
                 <label for="gift">

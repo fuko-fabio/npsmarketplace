@@ -12,6 +12,7 @@
         <label class="required" for="seller_name">{l s='Seller Name' mod='npsmarketplace'}</label>
         <input class="validate form-control" data-validate="isGenericName" type="text" id="seller_name" name="seller_name" required=""
         value="{if isset($smarty.post.seller_name)}{$smarty.post.seller_name}{else}{if isset($seller['name'])}{$seller['name']|escape:'html':'UTF-8'}{/if}{/if}"/>
+        <span class="form_info">{l s='This name will be visible for our customers' mod='npsmarketplace'}</span>
     </div>
     <div class="form-group">
         <label class="required" for="company_name">{l s='Company Name' mod='npsmarketplace'}</label>
@@ -35,6 +36,7 @@
             </div>
         {/foreach}
     </div>
+    <p class="alert aler-info"><span class="alert-content">{l s='Your email address and phone number will be not visible for our customers' mod='npsmarketplace'}</span></p>
     <div class="row">
         <div class="form-group col-md-6">
             <label class="required" for="seller_phone">{l s='Phone Number' mod='npsmarketplace'}</label>
@@ -62,6 +64,7 @@
     <div class="form-group">
         <label for="regulations_active">{l s='Add Company Regulations' mod='npsmarketplace'}</label>
         <input class="form-control" type="checkbox" id="regulations_active" name="regulations_active" {if $seller['regulations_active'] == 1}checked{/if}/>
+        <span class="form_info">{l s='Add Company Regulations to your shop, important informations, FAQ etc' mod='npsmarketplace'}</span>
     </div>
     <div class="form-group">
         <label>{l s='Regulations' mod='npsmarketplace'}</label>

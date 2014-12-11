@@ -2307,6 +2307,10 @@ table#cart_summary .gift-icon {
   .carrier_title {
     font-weight: bold;
     color: $base-text-color;
+    i {
+      color: $primary-red-color;
+      font-size: 26px;
+    }
   }
   .checkbox {
     input {
