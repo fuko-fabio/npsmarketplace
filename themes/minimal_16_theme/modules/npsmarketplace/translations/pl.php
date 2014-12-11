@@ -213,7 +213,7 @@ $_MODULE['<{npsmarketplace}minimal_16_theme>order_view_04176f095283bc729f1e39269
 $_MODULE['<{npsmarketplace}minimal_16_theme>order_view_dff4bf10409100d989495c6d5486035e'] = 'Nazwisko';
 $_MODULE['<{npsmarketplace}minimal_16_theme>order_view_ce8ae9da5b7cd6c3df2929543a9af92d'] = 'Email';
 $_MODULE['<{npsmarketplace}minimal_16_theme>order_view_2f2f0f119a907c6c67a3c6fcde0193ab'] = 'Adres odbiorcy';
-$_MODULE['<{npsmarketplace}minimal_16_theme>order_view_068f80c7519d0528fb08e82137a72131'] = 'Produkty';
+$_MODULE['<{npsmarketplace}minimal_16_theme>order_view_068f80c7519d0528fb08e82137a72131'] = 'Wydarzenia';
 $_MODULE['<{npsmarketplace}minimal_16_theme>order_view_be53a0541a6d36f6ecb879fa2c584b08'] = 'Zdjęcie';
 $_MODULE['<{npsmarketplace}minimal_16_theme>order_view_49ee3087348e8d44e1feda1917443987'] = 'Imie';
 $_MODULE['<{npsmarketplace}minimal_16_theme>order_view_197101c4a1b1fc503dcd6ebee127aa10'] = 'Cena za sztukę';
