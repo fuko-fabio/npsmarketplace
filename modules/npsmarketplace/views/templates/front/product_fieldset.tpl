@@ -240,7 +240,7 @@
     </div>
     <div class="box">
         <h3 class="page-heading">{l s='Identification' mod='npsmarketplace'}</h3>
-        <p class="alert aler-info"><span class="alert-content">{l s='You can select more than one category.' mod='npsmarketplace'}</span></p>
+        <p class="alert alert-info"><span class="alert-content">{l s='You can select more than one category.' mod='npsmarketplace'}</span></p>
         <div class="form-group">
             <label class="required" for="product_category">{l s='Category' mod='npsmarketplace'}</label>
             <ul class="tree">
