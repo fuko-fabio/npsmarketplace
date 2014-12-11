@@ -36,7 +36,7 @@
             </div>
         {/foreach}
     </div>
-    <p class="alert aler-info"><span class="alert-content">{l s='Your email address and phone number will be not visible for our customers' mod='npsmarketplace'}</span></p>
+    <p class="alert alert-info"><span class="alert-content">{l s='Your email address and phone number will be not visible for our customers' mod='npsmarketplace'}</span></p>
     <div class="row">
         <div class="form-group col-md-6">
             <label class="required" for="seller_phone">{l s='Phone Number' mod='npsmarketplace'}</label>

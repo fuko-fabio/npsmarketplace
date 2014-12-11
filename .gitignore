@@ -7,6 +7,8 @@
 
 !/mails
 
+!/pdf
+
 !/modules
 /modules/*
 !/modules/npsmailactivation
