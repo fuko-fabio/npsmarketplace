@@ -28,6 +28,7 @@
 
 !/modules/lofadvancecustom
 !/modules/sendtoafriend
+!/modules/blockcategories
 
 !/themes
 /themes/*
