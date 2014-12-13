@@ -13,24 +13,11 @@ class P24 {
                 $data['p24_description'] = $sandbox_descr;
             }
         }
-        $ch = curl_init(P24::url().'/trnRegister');
-        P24::setCurlOpts($ch);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data, '', '&'));
-        $output=curl_exec($ch);
-        curl_close($ch);
-
-        parse_str($output, $result);
-        return $result;
+        return P24::callCurl('/trnRegister', $data);
     }
 
     public static function transactionVerify($data) {
-        $ch = curl_init(P24::url().'/trnVerify');
-        P24::setCurlOpts($ch);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data, '', '&'));
-        $output=curl_exec($ch);
-        curl_close($ch);
-
-        parse_str($output, $result);
+        $result = P24::callCurl('/trnVerify', $data);
         if ($result['error'] != 0) {
             $module = new NpsPrzelewy24();
             $module->reportError(array(
@@ -42,14 +29,38 @@ class P24 {
         return $result;
     }
 
-    private static function setCurlOpts($ch) {
+    private static function callCurl($method, $data) {
+        $ch = curl_init(P24::url().$method);
+        if (Configuration::get('NPS_P24_SANDBOX_MODE') == 1) {
+            curl_setopt($ch, CURLOPT_VERBOSE, true);
+            $verbose = fopen('php://temp', 'rw+');
+            curl_setopt($ch, CURLOPT_STDERR, $verbose);
+        }
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION  ,true);
         curl_setopt($ch, CURLOPT_HEADER, false); 
         curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_SSLVERSION, 3);
+        curl_setopt($ch, CURLOPT_SSLVERSION, 4);
         curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'TLSv1');
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data, '', '&'));
+        if ($output = curl_exec($ch)) {
+            $INFO = curl_getinfo($ch);
+            if($INFO["http_code"]!=200) {
+                $result = array("error" => 200, "errorMessage" => "call:Page load error (".$INFO["http_code"].")");
+            } else {
+                parse_str($output, $result);
+            }
+        } else { 
+            $result = array("error" => 203,"errorMessage" => "call:Curl exec error");
+        }
+        curl_close($ch);
+        
+        if (Configuration::get('NPS_P24_SANDBOX_MODE') == 1) {
+            rewind($verbose);
+            $verboseLog = stream_get_contents($verbose);
+        }
+        return $result;
     }
 
     public static function checkNIP($nip) {
