@@ -169,9 +169,9 @@ class Seller extends ObjectModel {
      *
      * @return array of products objects
      */
-    public function getProducts($limit = null) {
+    public function getProducts($limit = null, $not_active = true) {
         $products = array();
-        $products_id = Seller::getSellerProducts($this->id, $limit);
+        $products_id = Seller::getSellerProducts($this->id, $limit, $not_active);
         if (!empty($products_id))
             foreach ($products_id as $product_id)
                 $products[] = new Product($product_id);
@@ -183,14 +183,21 @@ class Seller extends ObjectModel {
      *
      * @return array of products
      */
-    public static function getSellerProducts($id_seller, $limit = null) {
+    public static function getSellerProducts($id_seller, $limit = null, $not_active = true) {
         $ret = array();
         if(!isset($id_seller))
             return $ret;
 
-        $sql = 'SELECT `id_product` FROM `'._DB_PREFIX_.'seller_product` WHERE `id_seller` = '.(int)$id_seller;
-        if(isset($limit)) {
-            $sql = $sql.' ORDER BY RAND() LIMIT '.$limit;
+        if ($not_active) {
+            $sql = 'SELECT `id_product` FROM `'._DB_PREFIX_.'seller_product` WHERE `id_seller` = '.(int)$id_seller;
+            if(isset($limit))
+                $sql = $sql.' ORDER BY RAND() LIMIT '.$limit;
+        } else {
+            $sql = 'SELECT sp.id_product FROM `'._DB_PREFIX_.'seller_product` sp
+                   LEFT JOIN `'._DB_PREFIX_.'product` p ON (sp.`id_product` = p.`id_product`)
+                   WHERE sp.`id_seller` = '.(int)$id_seller.' AND p.`active` = 1';
+            if(isset($limit))
+                $sql = $sql.' ORDER BY RAND() LIMIT '.$limit;
         }
         $row = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS($sql);
         if ($row)

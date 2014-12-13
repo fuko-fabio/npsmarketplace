@@ -196,7 +196,7 @@ class NpsMarketplace extends Module {
     public function hookProductFooter($params) {
         $product = $params['product'];
         $seller = new Seller(Seller::getSellerByProduct($product->id));
-        $products = $seller->getProducts();
+        $products = $seller->getProducts(3, false);
         $p1 = null;
         $p2 = null;
         $p3 = null;

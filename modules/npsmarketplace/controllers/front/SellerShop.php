@@ -39,7 +39,7 @@ class NpsMarketplaceSellerShopModuleFrontController extends ModuleFrontControlle
 
         $this->productSort();
 
-        $ids = Seller::getSellerProducts($id_seller);
+        $ids = Seller::getSellerProducts($id_seller, null, false);
         $this->pagination($this->productsCount($ids));
 
         $this -> context -> smarty -> assign(array(
