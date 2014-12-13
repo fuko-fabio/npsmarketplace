@@ -234,7 +234,7 @@ class npscomments extends Module
             $uri_path = _THEME_SEL_DIR_.$seller->id.'-'.$type.'.jpg';
         else
             $uri_path = _THEME_SEL_DIR_.$seller->id.($type ? '-'.$type : '').'.jpg';
-        return $this->context->link->protocol_content.Tools::getMediaServer($uri_path).$uri_path;
+        return file_exists($uri_path) ? $this->context->link->protocol_content.Tools::getMediaServer($uri_path).$uri_path : null;
     }
 
     private function displayForm()

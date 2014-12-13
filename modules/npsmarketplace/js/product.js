@@ -35,6 +35,9 @@ $(document).ready(function(){
         setCarnetForm();
     else if (type == '2')
         setAddForm();
+
+    CollapsibleLists.apply();
+    $('.collapsibleListClosed').click()
 });
 
 function setTicketForm() {
