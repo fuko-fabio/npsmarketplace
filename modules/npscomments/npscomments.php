@@ -148,7 +148,7 @@ class npscomments extends Module
                  'npscomments_delay' => Configuration::get('NPS_SELLER_COMMENTS_MINIMAL_TIME'),
                  'npscomments_secure_key' => $this->secure_key,
                  'npscomments_cover' => '',
-                 'npscomments_cover_image' => $this->getSellerImgLink($seller),
+                 'npscomments_cover_image' => Seller::getImageLink($seller->id, null, $this->context),
                  'npscomments_mediumSize' => Image::getSize(ImageType::getFormatedName('medium')),
                  'npscomments_nbComments' => (int)SellerComment::getCommentNumber($seller->id),
                  'npscomments_controller_url' => $this->context->link->getModuleLink('npscomments', 'SellerComments', array('id_seller' => $seller->id)),
@@ -214,7 +214,7 @@ class npscomments extends Module
                  'npscomments_delay' => Configuration::get('NPS_SELLER_COMMENTS_MINIMAL_TIME'),
                  'npscomments_secure_key' => $this->secure_key,
                  'npscomments_cover' => '',
-                 'npscomments_cover_image' => $this->getSellerImgLink($seller),
+                 'npscomments_cover_image' => Seller::getImageLink($seller->id, null, $this->context),
                  'npscomments_mediumSize' => Image::getSize(ImageType::getFormatedName('medium')),
                  'npscomments_nbComments' => (int)SellerComment::getCommentNumber($seller->id),
                  'npscomments_controller_url' => $this->context->link->getModuleLink('npscomments', 'SellerComments'),
@@ -226,15 +226,6 @@ class npscomments extends Module
 
             return $this->display(__FILE__, 'views/templates/hook/npscomments.tpl');
         }
-    }
-
-    public function getSellerImgLink($seller, $type = null)
-    {
-        if($type)
-            $uri_path = _THEME_SEL_DIR_.$seller->id.'-'.$type.'.jpg';
-        else
-            $uri_path = _THEME_SEL_DIR_.$seller->id.($type ? '-'.$type : '').'.jpg';
-        return file_exists($uri_path) ? $this->context->link->protocol_content.Tools::getMediaServer($uri_path).$uri_path : null;
     }
 
     private function displayForm()

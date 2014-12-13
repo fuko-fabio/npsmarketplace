@@ -274,8 +274,8 @@ class NpsTicketDelivery extends Module {
                 $data,
                 $seller_customer->email,
                 $seller->name,
-                $shop_email,
-                $shop_name,
+                null,
+                null,
                 null,
                 null,
                 _PS_MODULE_DIR_.'npsticketdelivery/mails/');

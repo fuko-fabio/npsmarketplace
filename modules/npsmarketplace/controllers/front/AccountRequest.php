@@ -189,8 +189,8 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
             $mail_params,
             $this->context->customer->email,
             null,
-            strval(Configuration::get('PS_SHOP_EMAIL')),
-            strval(Configuration::get('PS_SHOP_NAME')),
+            null,
+            null,
             null,
             null,
             _NPS_MAILS_DIR_);
@@ -208,7 +208,7 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
             '{krs_reg}' => $seller->krs_reg,
             '{nip}' => $seller->nip,
             '{regon}' => $seller->regon,
-            '{admin_link}' => Tools::getHttpHost(true).__PS_BASE_URI__.'backoffice/'.$this->context->link->getAdminLink('AdminSellers'),
+            '{admin_link}' => Tools::getHttpHost(true).__PS_BASE_URI__.'backoffice/'.$this->context->link->getAdminLink('AdminSellersAccounts'),
         );
         $merchant_emails = Configuration::get('NPS_MERCHANT_EMAILS');
         if (!is_null($merchant_emails) && !empty($merchant_emails)) 
@@ -222,8 +222,8 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
             $mail_params,
             explode(self::__MA_MAIL_DELIMITOR__, $emails),
             null,
-            strval(Configuration::get('PS_SHOP_EMAIL')),
-            strval(Configuration::get('PS_SHOP_NAME')),
+            null,
+            null,
             null,
             null,
             _NPS_MAILS_DIR_);

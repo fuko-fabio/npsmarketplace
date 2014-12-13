@@ -128,8 +128,8 @@ class AdminSellersAccountsController extends AdminController
             $mail_params,
             $customer->email,
             null,
-            strval(Configuration::get('PS_SHOP_EMAIL')),
-            strval(Configuration::get('PS_SHOP_NAME')),
+            null,
+            null,
             null,
             null,
             _NPS_MAILS_DIR_);
@@ -165,8 +165,8 @@ class AdminSellersAccountsController extends AdminController
                 $mail_params,
                 $customer->email,
                 null,
-                strval(Configuration::get('PS_SHOP_EMAIL')),
-                strval(Configuration::get('PS_SHOP_NAME')),
+                null,
+                null,
                 null,
                 null,
                 _NPS_MAILS_DIR_);

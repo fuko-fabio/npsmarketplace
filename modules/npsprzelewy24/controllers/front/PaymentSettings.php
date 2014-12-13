@@ -186,18 +186,16 @@ class NpsPrzelewy24PaymentSettingsModuleFrontController extends ModuleFrontContr
     private function getRegisterCompanyData($seller) {
         $city = '';
         $post_code = '';
-        $address = '';
+        $street = '';
         $cust = $this->context->customer;
         $address = new Address($seller->id_address);
-        if ($address && $address->id) {
-            $city = $address->city;
-            $post_code = $address->postcode;
-            $address = $address->address1.' '.$address->address2;
-        }
+        $city = $address->city;
+        $post_code = $address->postcode;
+        $street = $address->address1.' '.$address->address2;
         return array(
             "company_name" => $address->company,
             "city" => $city,
-            "street" => $address,
+            "street" => $street,
             "post_code" => $post_code,
             "email" => $cust->email,
             "nip" => $seller->nip,

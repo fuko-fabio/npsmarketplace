@@ -112,6 +112,7 @@
                                 <input id="commentCustomerName" name="customer_name" type="text" value=""/>
                             </div>
                         {/if}
+                        <input type="hidden" name="id_seller" value="{$seller->id}" />
                         <p class="txt_required">
                             <sup class="required">*</sup> {l s='Required fields' mod='npscomments'}
                         </p>

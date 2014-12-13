@@ -283,7 +283,7 @@ class Product extends ProductCore
         return $res;
     }
 
-    public static function getExtras($id_product, $id_lang) {
+    public static function getExtras($id_product, $id_lang, $all = true) {
         if (!isset($id_product))
             return null;
 
@@ -293,7 +293,7 @@ class Product extends ProductCore
         $result = Db::getInstance()->getRow($sql);
 
         $features = Product::getFeaturesStatic((int)$id_product);
-        if ($result['type'] == 1) {
+        if ($all && $result['type'] == 1) {
             foreach($features as $feature) {
                 if ($feature['id_feature'] == Configuration::get('NPS_FEATURE_ENTRIES_ID')) {
                     $entries = new FeatureValue($feature['id_feature_value']);

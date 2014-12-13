@@ -60,8 +60,8 @@ class TicketsGenerator {
             $mail_params,
             explode(',', $cart_ticket->email),
             null,
-            strval(Configuration::get('PS_SHOP_EMAIL')),
-            strval(Configuration::get('PS_SHOP_NAME')),
+            null,
+            null,
             $attachments,
             null,
             _PS_MODULE_DIR_.'npsticketdelivery/mails/');

@@ -129,7 +129,10 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
 
     protected function processSubmitAddress($seller) {
         $address = new Address();
-        $_POST['alias'] = $_POST['company'];
+        if (isset($_POST['company']) && !empty($_POST['company']))
+            $_POST['alias'] = $_POST['company'];
+        else
+            $_POST['alias'] = $this->module->l('Company address');
         $this->errors = $address->validateController();
         $address->id_customer = (int)$this->context->customer->id;
 

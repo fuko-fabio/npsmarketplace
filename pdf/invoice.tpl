@@ -80,6 +80,8 @@
 			<!-- / CUSTOMER INFORMATION -->
 			<br />
 			{l s='Tax included if needed.' pdf='true'}<br />
+			<br />
+            {l s='Payment finalized through the Przelewy 24 service.' pdf='true'}<br />
 		</td>
 		<td style="width: 83%; text-align: right">
 			<table style="width: 100%; font-size: 8pt;">

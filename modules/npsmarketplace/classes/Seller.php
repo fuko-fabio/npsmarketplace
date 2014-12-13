@@ -85,7 +85,7 @@ class Seller extends ObjectModel {
             'active' =>              array('type' => self::TYPE_BOOL,   'validate' => 'isBool',        'required' => true),
             'requested' =>           array('type' => self::TYPE_BOOL,   'validate' => 'isBool',        'required' => true),
             'locked' =>              array('type' => self::TYPE_BOOL,   'validate' => 'isBool',        'required' => true),
-            'krs' =>                 array('type' => self::TYPE_INT,    'validate' => 'isKrs'),
+            'krs' =>                 array('type' => self::TYPE_STRING, 'validate' => 'isKrs'),
             'krs_reg' =>             array('type' => self::TYPE_STRING, 'validate' => 'isCleanHtml'),
             'nip' =>                 array('type' => self::TYPE_STRING, 'validate' => 'isNip',         ),
             'regon' =>               array('type' => self::TYPE_STRING, 'validate' => 'isRegon',       ),
