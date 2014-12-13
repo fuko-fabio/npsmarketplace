@@ -11,6 +11,26 @@
 {include file="$tpl_dir./errors.tpl"}
 <div class="block-center" id="block-seller-account">
     <form action="{$request_uri}" method="post">
-        <button type="submit" class="btn btn-primary btn-lg pull-right"><span>{l s='Send' mod='npsmarketplace'} <i class="icon-send right"></i></span></button>
+         {if $sent}
+         <p class="alert alert-info"><span class="alert-content">{l s='Your message has been sent to us. Please wait for answer.' mod='npsmarketplace'}</span></p>
+         {else}
+         <p class="alert alert-info"><span class="alert-content">{l s='Your accoun has been locked. You should recevie an email from our service with lock cause. Here you can send message directly to us.' mod='npsmarketplace'}</span></p>
+         {/if}
+         <div class="row">
+            <div class="form-group col-md-12">
+                <label class="required" for="seller_phone">{l s='Title' mod='npsmarketplace'}</label>
+                <input class="is_required validate form-control" data-validate="isMessage" name="title" required="" value="{if isset($smarty.post.title)}{$smarty.post.title}{/if}"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-12">
+                <label class="required">{l s='Message' mod='npsmarketplace'}</label>
+                <textarea class="is_required validate form-control textarea-autosize" data-validate="isMessage" name="message">{if isset($smarty.post.message)}{$smarty.post.message}{/if}</textarea>
+            </div>
+        </div>
+        <script type="text/javascript">
+            $(".textarea-autosize").autosize();
+        </script>
+        <button type="submit" class="btn btn-default button button-medium pull-right" name="submitMessage" onclick="$.fancybox.showLoading();"><span>{l s='Send' mod='npsmarketplace'} <i class="icon-share right"></i></span></button>
     </form>
 </div>

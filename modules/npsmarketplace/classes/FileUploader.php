@@ -13,7 +13,7 @@ class FileUploader extends UploaderCore {
             if (isset($dest) && is_dir($dest))
                 $file_path = $dest;
             else
-                $file_path = $this->getFilePath(isset($dest) ? $dest : $this->_token.$file['name']);
+                $file_path = $this->getFilePath(isset($dest) ? $dest : $this->_token.'_'.time());
 
             if ($file['tmp_name'] && is_uploaded_file($file['tmp_name'] ))
                 move_uploaded_file($file['tmp_name'] , $file_path);

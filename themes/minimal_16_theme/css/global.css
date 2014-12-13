@@ -5329,10 +5329,9 @@ sup {
   font-size: 16px;
   margin-bottom: 10px; }
   .alert ul, .alert ol {
-    padding-left: 15px;
-    margin-left: 27px; }
+    padding-left: 15px; }
     .alert ul li, .alert ol li {
-      list-style-type: decimal;
+      list-style-type: none;
       font-weight: normal; }
   .alert .alert-content {
     display: block;
@@ -7661,9 +7660,6 @@ div.star.star_hover:after {
   padding: 10px; }
 #product_comparison #social-share-compare {
   margin-bottom: 50px; }
-
-.detail_step_by_step .label {
-  color: #333; }
 
 .nav-tabs {
   border-color: #bbb; }

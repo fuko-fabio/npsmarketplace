@@ -105,8 +105,6 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
         $mail_params = array(
             '{lastname}' => $customer->lastname,
             '{firstname}' => $customer->firstname,
-            '{shop_name}' => Configuration::get('PS_SHOP_NAME'),
-            '{shop_url}' => Tools::getHttpHost(true).__PS_BASE_URI__,
             '{seller_shop_url}' => $this->context->link->getModuleLink('npsmarketplace', 'SellerShop', array('id_seller' => $seller->id)),
             '{product_guide_url}' => Configuration::get('NPS_PRODUCT_GUIDE_URL'),
             '{seller_guide_url}' => Configuration::get('NPS_SELLER_GUIDE_URL'),
@@ -136,8 +134,6 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
             '{phone}' => $seller->phone,
             '{nip}' => $seller->nip,
             '{regon}' => $seller->regon,
-            '{shop_name}' => Configuration::get('PS_SHOP_NAME'),
-            '{shop_url}' => Tools::getHttpHost(true).__PS_BASE_URI__,
             '{admin_link}' => Tools::getHttpHost(true).__PS_BASE_URI__.'backoffice/'.$this->context->link->getAdminLink('AdminSellers'),
         );
         $merchant_emails = Configuration::get('NPS_MERCHANT_EMAILS');

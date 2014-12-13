@@ -150,9 +150,8 @@ sup {
   margin-bottom: 10px;
   ul, ol {
     padding-left: 15px;
-    margin-left: 27px;
     li {
-      list-style-type: decimal;
+      list-style-type: none;
       font-weight: normal;
     }
   }
@@ -3193,11 +3192,6 @@ div.star.star_hover {
   }
 }
 
-.detail_step_by_step {
-  .label {
-    color: $base-text-color;
-  }
-}
 .nav-tabs {
   border-color: $input-border-color;
 

@@ -81,6 +81,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                     } else
                         $categories[] = $value;
                 }
+                $categories = array_unique($categories);
             }
 
             if(isset($_POST['images']))
@@ -139,6 +140,18 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                         $this -> errors[] = $this->module->l('Product time is required', 'Product');
                     else if (!Validate::isTime($time))
                         $this -> errors[] = $this->module->l('Invalid time format', 'Product');
+                    
+                    if (strtotime($date.' '.$time) < time())
+                        $this -> errors[] = $this->module->l('You are trying to add event in the past. Check event date and time.', 'Product');
+                    if (strtotime($expiry_date) > strtotime($date))
+                        $this -> errors[] = $this->module->l('Expiry date cannot be later than event date.', 'Product');
+                } if ($type == 1) {
+                    if (isset($date_to) && !empty($date_to) && !Validate::isDateFormat($date_to))
+                        $this -> errors[] = $this->module->l('Invalid carnet \'date to\' format', 'Product');
+                    if (isset($date_from) && !empty($date_from) && !Validate::isDateFormat($date_from))
+                        $this -> errors[] = $this->module->l('Invalid carnet \'date from\' format', 'Product');
+                    if (isset($entries) && !empty($entries) && !Validate::isInt($entries))
+                        $this -> errors[] = $this->module->l('Invalid entries value', 'Product');
                 }
                 if (empty($quantity))
                     $this -> errors[] = $this->module->l('Product quantity is required', 'Product');
@@ -232,7 +245,8 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                     } catch(Exception $e) {
                         error_log($e);
                         $this->_product->delete();
-                        $this->errors[] = $this->module->l('Unable to save product. Something went wrong. Please contact with customer support.', 'Product');
+                        $this->_product = new Product();
+                        $this->errors[] = $this->module->l('Unable to save product. Unexpected error occured. Please try again or contact with customer support.', 'Product');
                     }
                 }
             }
