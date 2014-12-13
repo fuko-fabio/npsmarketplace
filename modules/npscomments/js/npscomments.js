@@ -28,10 +28,16 @@ $(function() {
                 } else {
                     $('#new_seller_comment_form_error ul').html('');
                     $.each(data.errors, function(index, value) {
-                        $('#new_seller_comment_form_error ul').append('<li>' + value + '</li>');
+                        $('#new_seller_comment_form_error ul').append('<li>' + npscomments_general_error + '</li>');
                     });
                     $('#new_seller_comment_form_error').slideDown('slow');
                 }
+            },
+            error: function(data) {
+                $.fancybox.hideLoading();
+                $('#new_seller_comment_form_error ul').html('');
+                $('#new_seller_comment_form_error ul').append('<li>' + value + '</li>');
+                $('#new_seller_comment_form_error').slideDown('slow');
             }
         });
         return false;

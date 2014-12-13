@@ -2,6 +2,7 @@
     <script type="text/javascript">
         var npscomments_controller_url = '{$npscomments_controller_url}';
         var npscomments_confirm_report_message = '{l s='Are you sure that you want to report this comment?' mod='npscomments' js=1}';
+        var npscomments_general_error = '{l s='Unable to save your comment. Unknown error. Please contact with customer support' mod='npscomments' js=1}';
         var npscomments_secure_key = '{$npscomments_secure_key}';
         var npscomments_added = '{l s='Your comment has been added!' mod='npscomments' js=1}';
         var npscomments_added_moderation = '{l s='Your comment has been submitted and will be available once approved by a moderator.' mod='npscomments' js=1}';
@@ -112,7 +113,6 @@
                                 <input id="commentCustomerName" name="customer_name" type="text" value=""/>
                             </div>
                         {/if}
-                        <input type="hidden" name="id_seller" value="{$seller->id}" />
                         <p class="txt_required">
                             <sup class="required">*</sup> {l s='Required fields' mod='npscomments'}
                         </p>
