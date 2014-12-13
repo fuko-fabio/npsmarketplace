@@ -141,7 +141,7 @@ class NpsTicketDelivery extends Module {
                 $address = $this->getFeatureValue($product['features'], Configuration::get('NPS_FEATURE_ADDRESS_ID'));
                 $town = $this->getFeatureValue($product['features'], Configuration::get('NPS_FEATURE_TOWN_ID'));
                 $district = $this->getFeatureValue($product['features'], Configuration::get('NPS_FEATURE_DISTRICT_ID'));
-                $extras = Product::getExtras($product['id_product']);
+                $extras = Product::getExtras($product['id_product'], $this->context->language->id);
 
                 $entries = $this->getFeatureValue($product['features'], Configuration::get('NPS_FEATURE_ENTRIES_ID'));
                 $d_from = $this->getFeatureValue($product['features'], Configuration::get('NPS_FEATURE_FROM_ID'));

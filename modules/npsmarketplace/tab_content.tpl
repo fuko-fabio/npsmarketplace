@@ -9,6 +9,26 @@
 {/if}
 
 <div class="tab-pane fade" id="product_map_tab">
+    <table class="table-data-sheet">
+        {if !empty($product_address)}
+        <tr>
+            <td>{l s='Address' mod='npsmarketplace'}</td>
+            <td>{$product_address}</td>
+        </tr>
+        {/if}
+        {if !empty($product_district)}
+        <tr>
+            <td>{l s='District' mod='npsmarketplace'}</td>
+            <td>{$product_district}</td>
+        </tr>
+        {/if}
+        {if !empty($product_town)}
+        <tr>
+            <td>{l s='Town' mod='npsmarketplace'}</td>
+            <td>{$product_town}</td>
+        </tr>
+        {/if}
+    </table>
     <div id="map-canvas" data-target="{$product_address}"></div>
 </div>
 

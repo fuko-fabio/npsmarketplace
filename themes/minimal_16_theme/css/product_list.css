@@ -147,7 +147,8 @@ ul.product_list.grid > li {
         margin: 5px;
         height: calc(100% - 95px);
         margin-top: 40px;
-        text-align: center; }
+        text-align: center;
+        word-wrap: break-word; }
       @media (max-width: 1199px) {
         ul.product_list.grid > li .product-container .button-container {
           height: 78%; }

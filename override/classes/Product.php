@@ -283,13 +283,34 @@ class Product extends ProductCore
         return $res;
     }
 
-    public static function getExtras($id_product) {
+    public static function getExtras($id_product, $id_lang) {
         if (!isset($id_product))
             return null;
+
         $sql = 'SELECT `type`, `video`, `lat`, `lng`
                 FROM `'._DB_PREFIX_.'product`
                 WHERE `id_product` = '.$id_product;
-        return Db::getInstance()->getRow($sql);
+        $result = Db::getInstance()->getRow($sql);
+
+        $features = Product::getFeaturesStatic((int)$id_product);
+        if ($result['type'] == 1) {
+            foreach($features as $feature) {
+                if ($feature['id_feature'] == Configuration::get('NPS_FEATURE_ENTRIES_ID')) {
+                    $entries = new FeatureValue($feature['id_feature_value']);
+                    $result['entries'] = $entries->value[$id_lang];
+                    continue;
+                } else if ($feature['id_feature'] == Configuration::get('NPS_FEATURE_FROM_ID')) {
+                    $from = new FeatureValue($feature['id_feature_value']);
+                    $result['from'] = $from->value[$id_lang];
+                    continue;
+                } else if ($feature['id_feature'] == Configuration::get('NPS_FEATURE_TO_ID')) {
+                    $to = new FeatureValue($feature['id_feature_value']);
+                    $result['to'] = $to->value[$id_lang];
+                    continue;
+                }
+            }
+        }
+        return $result;
     }
 
     public function persistExtraInfo($type, $lat, $lng, $video_url) {

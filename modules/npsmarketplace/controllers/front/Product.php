@@ -300,7 +300,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                 'categories' => $this->_product->getCategories(),
                 'images' => $images,
             );
-            $extras = Product::getExtras($this->_product->id);
+            $extras = Product::getExtras($this->_product->id, $this->context->language->id);
             if ($extras) {
                 $tpl_product['type'] = $extras['type'];
                 $tpl_product['lat'] = $extras['lat'];

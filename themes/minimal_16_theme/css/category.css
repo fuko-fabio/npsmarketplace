@@ -46,17 +46,17 @@
   -moz-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
   -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16); }
-  #subcategories .category-box a {
+  #subcategories .category-box .subcategory-name {
     font-family: "Open Sans", sans-serif;
     font-size: 17px;
     color: #3a3939;
     font-weight: 700;
     padding: 7px;
     display: block; }
-    #subcategories .category-box a:hover {
+    #subcategories .category-box .subcategory-name:hover {
       color: #3a3939; }
-    #subcategories .category-box a img {
-      width: 100%; }
+  #subcategories .category-box .img img {
+    width: 100%; }
   #subcategories .category-box:hover {
     -moz-box-shadow: 0 2px 8px rgba(255, 170, 0, 0.8);
     -webkit-box-shadow: 0 2px 8px rgba(255, 170, 0, 0.8);

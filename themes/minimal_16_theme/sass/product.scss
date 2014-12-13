@@ -369,7 +369,7 @@ span.view_scroll_spacer {
       display: none;
     }
     #short_description_content {
-      padding: 0 0 15px;
+      padding: 0;
       word-wrap: break-word;
       p {
         line-height: 18px;
@@ -1284,7 +1284,22 @@ Quick View Styles
     }
   }
 }
+.carnet-info {
+  font-weight: bold;
+  font-size: 21px;
+  color: $dark-text-color;
+  margin-right: 5px;
+}
+.carnet-info-block {
+  padding: 10px 0;
+  font-weight: bold;
+  font-size: 21px;
+  color: $dark-text-color;
 
+  span {
+    font-size: 12px;
+  }
+}
 /***** IE code ****/
 
 .ie8 {
