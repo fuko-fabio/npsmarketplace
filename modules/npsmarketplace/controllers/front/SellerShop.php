@@ -80,7 +80,7 @@ class NpsMarketplaceSellerShopModuleFrontController extends ModuleFrontControlle
             return (int)Product::getProductsByIds(
                 $this->context->language->id,
                 $ids,
-                (isset($this->p) ? (int)($this->p) - 1 : null),
+                (isset($this->p) ? (int)($this->p) : null),
                 (isset($this->n) ? (int)($this->n) : null),
                 true
             );

@@ -200,18 +200,19 @@
                     <div class="tab-pane fade active in" id="product-more-info">
                         <!-- full description -->
                         <div class="rte">{$product->description}</div>
-                        
+                        {if $extras.type != 2}
                         <h3 class="page-heading">{l s='Delivery'}</h3>
-                        {l s='Darmowa wysyłka na podany w procesie zakupu adres mailowy.'}
+                        {l s='Free shipping on given e-mail address.'}
                         <h3 class="page-heading">{l s='Payment'}</h3>
                         <div class="row">
                             <div class="col-sm-9">
-                                {l s='Szybki przelew obsługiwany przez Przelewy 24.'}
+                                {l s='Quick money transfers with Przelewy 24.'}
                             </div>
                             <div class="col-sm-3">
                                 <a class="pull-right" href="http://www.przelewy24.pl/" target="_blank"><img src="{$img_dir}logo_przelewy24.png"/></a>
                             </div>
                         </div>
+                        {/if}
                     </div>
                     <!--end  More info -->
                     {$HOOK_PRODUCT_TAB_CONTENT}
