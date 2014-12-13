@@ -51,3 +51,4 @@ $_MODULE['<{blockcart}minimal_16_theme>blockcart_1f87346a16cf80c372065de3c54c86d
 $_MODULE['<{blockcart}minimal_16_theme>blockcart_f4e8b53a114e5a17d051ab84d326cae5'] = 'Wysyłka';
 $_MODULE['<{blockcart}minimal_16_theme>blockcart_300225ee958b6350abc51805dab83c24'] = 'Kontynuuj zakupy';
 $_MODULE['<{blockcart}minimal_16_theme>blockcart_7e0bf6d67701868aac3116ade8fea957'] = 'Przejdź do koszyka';
+$_MODULE['<{blockcart}minimal_16_theme>blockcart_46b5f570c1c3c9375a9a6960a952ffc6'] = 'Miło nam widzieć, że znalazłaś/-eś coś dla siebie.';

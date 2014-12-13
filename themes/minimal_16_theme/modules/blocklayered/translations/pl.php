@@ -76,7 +76,7 @@ $_MODULE['<{blocklayered}minimal_16_theme>add_1.6_7d06fc6f3166570e5d8995088066c0
 $_MODULE['<{blocklayered}minimal_16_theme>add_1.6_57d6fd5e5b9c215d6edac66b67e65773'] = 'Cecha: %1$s (wartość %2$d)';
 $_MODULE['<{blocklayered}minimal_16_theme>add_1.6_c9cc8cce247e49bae79f15173ce97354'] = 'Zapisz';
 $_MODULE['<{blocklayered}minimal_16_theme>add_1.6_18c6120643596bd2626f3b0720b1df3a'] = 'Musisz wybrać przynajmniej jedną kategorię';
-$_MODULE['<{blocklayered}minimal_16_theme>add_1.6_dc3f85827350641490287c65c0c4ddf8'] = 'Musisz wybrać przynajmniej jeden filter';
+$_MODULE['<{blocklayered}minimal_16_theme>add_1.6_dc3f85827350641490287c65c0c4ddf8'] = 'Musisz wybrać przynajmniej jeden filtr';
 $_MODULE['<{blocklayered}minimal_16_theme>add_254f642527b45bc260048e30704edb39'] = 'Konfiguracja';
 $_MODULE['<{blocklayered}minimal_16_theme>add_51e17eed0057675de4bde1b34206bb12'] = 'Nowy szablon filtrów';
 $_MODULE['<{blocklayered}minimal_16_theme>add_f8263d99054a4cdb3428196f078fa212'] = 'Nazwa szablonu:';

@@ -16,6 +16,10 @@ $_MODULE['<{npsprzelewy24}minimal_16_theme>npsprzelewy24_8b0b6c8f897b81339a71f55
 $_MODULE['<{npsprzelewy24}minimal_16_theme>npsprzelewy24_518f2e843acff34b295c8db76a5ae93f'] = 'Unikalny klucz sklepu';
 $_MODULE['<{npsprzelewy24}minimal_16_theme>npsprzelewy24_df06998a80deb7b3d179d30fc53f2c81'] = 'Unikalny klucz otrzymany od Przelewy24';
 $_MODULE['<{npsprzelewy24}minimal_16_theme>npsprzelewy24_50acfb85ed36f150a674228a20a92bef'] = 'klucz CRC sklepu';
+$_MODULE['<{npsprzelewy24}minimal_16_theme>npsprzelewy24_a985a34e388054ae43068a6500cab8de'] = 'Regulamin Przelewy 24';
+$_MODULE['<{npsprzelewy24}minimal_16_theme>npsprzelewy24_7e4ed5efc0f056eb2b36609af35177d3'] = 'Tryb testowy Sandbox';
+$_MODULE['<{npsprzelewy24}minimal_16_theme>npsprzelewy24_00d23a76e43b46dae9ec7aa9dcbebb32'] = 'Włączony';
+$_MODULE['<{npsprzelewy24}minimal_16_theme>npsprzelewy24_b9f5c797ebbf55adccdd8539a65a0241'] = 'Wyłączony';
 $_MODULE['<{npsprzelewy24}minimal_16_theme>p24paymentvalidator_c9cdf71dc32b926d56e09ab5e6095087'] = 'NIe można zweryfikować płatności';
 $_MODULE['<{npsprzelewy24}minimal_16_theme>p24paymentvalidator_8c6942604679e15e97ce7e0d26fc90e2'] = 'Niepoprawny token weryfikacyjny';
 $_MODULE['<{npsprzelewy24}minimal_16_theme>p24paymentvalidator_47b5ba3ab6a4d8603699675cf9942308'] = 'Płatność została już zakończona i zweryfikowana';
@@ -101,7 +105,7 @@ $_MODULE['<{npsprzelewy24}minimal_16_theme>generate_report_0d2cda89fb5aed8edc7a6
 $_MODULE['<{npsprzelewy24}minimal_16_theme>generate_report_50d9d560b468ec07f8b4fe721fcae24e'] = 'Data od';
 $_MODULE['<{npsprzelewy24}minimal_16_theme>generate_report_bad39a65b5302bb8628585aae59da36b'] = 'Data do';
 $_MODULE['<{npsprzelewy24}minimal_16_theme>generate_report_32b919d18cfaca89383f6000dcc9c031'] = 'Generuj';
-$_MODULE['<{npsprzelewy24}minimal_16_theme>seller_company_view_8035b6df2ac8fe186f092ca402d1ef02'] = 'SPID';
+$_MODULE['<{npsprzelewy24}minimal_16_theme>seller_company_view_8035b6df2ac8fe186f092ca402d1ef02'] = 'SPID (ID Sprzedawcy)';
 $_MODULE['<{npsprzelewy24}minimal_16_theme>seller_company_view_97ce2ccb5de5849fd94203a375054378'] = 'Data rejestracji';
 $_MODULE['<{npsprzelewy24}minimal_16_theme>seller_company_view_e7b47c58815acf1d3afa59a84b5db7fb'] = 'Nazwa firmy';
 $_MODULE['<{npsprzelewy24}minimal_16_theme>seller_company_view_40bed7cf9b3d4bb3a3d7a7e3eb18c5eb'] = 'Osoba';
@@ -156,12 +160,14 @@ $_MODULE['<{npsprzelewy24}minimal_16_theme>payment_register_company_cd01fbfbb767
 $_MODULE['<{npsprzelewy24}minimal_16_theme>payment_register_company_0ba7583639a274c434bbe6ef797115a4'] = 'Wyślij';
 $_MODULE['<{npsprzelewy24}minimal_16_theme>payment_return_fb077ecba55e5552916bde26d8b9e794'] = 'Potwierdzenie zamówienia';
 $_MODULE['<{npsprzelewy24}minimal_16_theme>payment_return_3fcd6df41c6b47d713f21ea209574bed'] = 'Proszę skontaktować się z obsługą klienta';
-$_MODULE['<{npsprzelewy24}minimal_16_theme>payment_return_0e61d8a1f47f88c9f51f997990d60171'] = 'Transakcja zakońcona sukcesem';
+$_MODULE['<{npsprzelewy24}minimal_16_theme>payment_return_0e61d8a1f47f88c9f51f997990d60171'] = 'Transakcja zakończona sukcesem';
 $_MODULE['<{npsprzelewy24}minimal_16_theme>payment_return_8a16f9617cddf85af32cb3ab7f2c7e54'] = 'Wartość zamówienia';
 $_MODULE['<{npsprzelewy24}minimal_16_theme>payment_return_a378cd7a0839cbd4ec3e45bbdeeb69be'] = 'ID zamówienia';
-$_MODULE['<{npsprzelewy24}minimal_16_theme>payment_return_0103106e5b047a944d727f065dd10c9c'] = 'ID transakci w systemie Pzelewy24';
+$_MODULE['<{npsprzelewy24}minimal_16_theme>payment_return_0103106e5b047a944d727f065dd10c9c'] = 'ID transakcji w systemie Przelewy24';
 $_MODULE['<{npsprzelewy24}minimal_16_theme>payment_return_4082ea29b4f196c4f60533500139725a'] = 'Śledź zamówienie';
+$_MODULE['<{npsprzelewy24}minimal_16_theme>payment_return_96c5eb404f430c8112d23ff37e1c3ee3'] = 'Powrót do \"Moje bilety\"';
 $_MODULE['<{npsprzelewy24}minimal_16_theme>payment_return_9390390581f54c65d6acfc8da4e17362'] = 'Powrót do zamówień';
+$_MODULE['<{npsprzelewy24}minimal_16_theme>npsprzelewy24_d5815623c49bc79327917762848902f0'] = 'Konfiguracja płatności';
 $_MODULE['<{npsprzelewy24}minimal_16_theme>payment_c8ed360cbe1ba919f8c40f07a31125d7'] = 'Zapłać z Przelewy24';
 $_MODULE['<{npsprzelewy24}minimal_16_theme>renew_payment_c453a4b8e8d98e82f35b67f433e3b4da'] = 'Płatność';
 $_MODULE['<{npsprzelewy24}minimal_16_theme>renew_payment_446d1b4378848e7bcef699407f933a56'] = 'Twoja płatność została anulowana bądź nie potwierdzona przez serwis Przelewy24. Jeśli nie dokończyłeś płatności  możesz ponownie dokonać zapłaty klikając \"Zapłać\".';
