@@ -6,8 +6,6 @@
 
 class NpsPrzelewy24PaymentCancelModuleFrontController extends ModuleFrontController {
 
-    public $auth = true;
-    public $authRedirection = 'my-account';
     public $ssl = true;
 
     public function init() {
