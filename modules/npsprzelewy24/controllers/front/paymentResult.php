@@ -16,6 +16,8 @@ class NpsPrzelewy24PaymentResultModuleFrontController extends ModuleFrontControl
         $this->display_column_right = false;
         parent::initContent();
 
+        PrestaShopLogger::addLog('Starting payment validation. GET params: '.implode(' | ', $_GET).' POST params: '.implode(' | ', $_POST));
+
         $p24_error_code = Tools::getValue('p24_error_code');
         $p24_session_id = Tools::getValue('p24_session_id');
 
