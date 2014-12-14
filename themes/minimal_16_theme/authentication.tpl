@@ -199,6 +199,7 @@
 								<input type="text" class="form-control" id="company" name="company" value="{if isset($smarty.post.company)}{$smarty.post.company}{/if}" />
 							</div>
 						{elseif $field_name eq "vat_number"}
+						<div class="hidden">
 							<div id="vat_number" style="display:none;">
 								<div class="form-group">
 									<label for="vat-number">{l s='VAT number'}</label>
@@ -212,6 +213,7 @@
 								<input type="text" name="dni" id="dni" value="{if isset($smarty.post.dni)}{$smarty.post.dni}{/if}" />
 								<span class="form_info">{l s='DNI / NIF / NIE'}</span>
 							</div>
+						</div>
 						{elseif $field_name eq "address1"}
 							<div class="required form-group">
 								<label for="address1">{l s='Address'} <sup>*</sup></label>
@@ -555,12 +557,14 @@
 							</p>
 						{/if}
 					{elseif $field_name eq "vat_number"}
+					<div class="hidden">
 						<div id="vat_number" style="display:none;">
 							<p class="form-group">
 								<label for="vat_number">{l s='VAT number'}</label>
 								<input type="text" class="form-control" name="vat_number" value="{if isset($smarty.post.vat_number)}{$smarty.post.vat_number}{/if}" />
 							</p>
 						</div>
+					</div>
 					{elseif $field_name eq "firstname"}
 						<p class="required form-group">
 							<label for="firstname">{l s='First name'} <sup>*</sup></label>

@@ -18,7 +18,7 @@
 					<input class="form-control validate" data-validate="{$address_validation.$field_name.validate}" type="text" id="company" name="company" value="{if isset($smarty.post.company)}{$smarty.post.company}{else}{if isset($address->company)}{$address->company|escape:'html':'UTF-8'}{/if}{/if}" />
 				</div>
 			{elseif $field_name eq 'vat_number' && $vat_display}
-				<div id="vat_area">
+				<div id="vat_area" class="hidden">
 					<div id="vat_number">
 						<div class="form-group">
 							<label for="vat-number">{l s='VAT number'}</label>

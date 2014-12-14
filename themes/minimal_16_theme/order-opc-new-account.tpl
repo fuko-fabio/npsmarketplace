@@ -153,7 +153,7 @@
 						<input type="text" class="text form-control validate" id="company" name="company" data-validate="isName" value="{if isset($guestInformations) && isset($guestInformations.company) && $guestInformations.company}{$guestInformations.company}{/if}" />
 					</div>
 				{elseif $field_name eq "vat_number"}	
-				<div id="vat_number_block" style="display:none;">
+				<div id="vat_number_block" class="hidden" style="display:none;">
 					<div class="form-group">
 						<label for="vat_number">{l s='VAT number'}</label>
 						<input type="text" class="text form-control" name="vat_number" id="vat_number" value="{if isset($guestInformations) && isset($guestInformations.vat_number) && $guestInformations.vat_number}{$guestInformations.vat_number}{/if}" />

@@ -1,6 +1,14 @@
 Witaj {firstname},
 
-Z powodzeniem założyłeś konto w Labs in Town!
+Z powodzeniem założyłeś konto w Labs in Town poprzez facebook!
+
+Oto twoje dane logowania:
+
+ADRES E-MAIL: {email}
+
+HASŁO: {passwd}
+
+Hasło możesz zmienić logując się na swoje konto w zakładce "Moje konto".
 
 TERAZ MOŻESZ:
 

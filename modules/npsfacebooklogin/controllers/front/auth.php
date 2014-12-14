@@ -204,15 +204,20 @@ class NpsFacebookLoginauthModuleFrontController extends ModuleFrontController {
     protected function sendConfirmationMail(Customer $customer, $passwd) {
         return Mail::Send(
             $this->context->language->id,
-            'account',
-            Mail::l('Welcome!'),
+            'account_info',
+            $this->module->l('Welcome!', 'auth'),
             array(
                 '{firstname}' => $customer->firstname,
                 '{lastname}' => $customer->lastname,
                 '{email}' => $customer->email,
                 '{passwd}' => $passwd),
             $customer->email,
-            $customer->firstname.' '.$customer->lastname
+            null,
+            null,
+            null,
+            null,
+            null,
+            _PS_MODULE_DIR_.'/npsfacebooklogin/mails/'
         );
     }
 }
