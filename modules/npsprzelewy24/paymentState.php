@@ -13,6 +13,7 @@ $p24_error_code = Tools::getValue('p24_error_code');
 $p24_token = Tools::getValue('p24_token'); 
 $p24_session_id = Tools::getValue('p24_session_id');
 $m = new NpsPrzelewy24();
+PrestaShopLogger::addLog('Starting background payment validation. GET params: '.implode(' | ', $_GET).' POST params: '.implode(' | ', $_POST));
 if (isset($p24_session_id) && !empty($p24_session_id)) {
     $session_id_array = explode('|', $p24_session_id);
     $id_cart = $session_id_array[1];
