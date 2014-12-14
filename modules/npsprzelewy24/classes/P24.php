@@ -63,6 +63,13 @@ class P24 {
         return $result;
     }
 
+    public static function testAccess() {
+        $soap = new SoapClient(P24::soapProductionUrl());
+        return $soap->CheckNIP(
+            P24::merchantId(),
+            P24::apiKey());
+    }
+
     public static function checkNIP($nip) {
         $soap = new SoapClient(P24::soapProductionUrl());
         return $soap->CheckNIP(
