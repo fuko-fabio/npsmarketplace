@@ -76,7 +76,7 @@ class NpsMarketplaceProductsListModuleFrontController extends ModuleFrontControl
                 'new_combination_url' => $this->context->link->getModuleLink('npsmarketplace', 'ProductCombination', array('id_product' => $product->id)),
                 'edit_combination_url' => $this->context->link->getModuleLink('npsmarketplace', 'ProductCombinationList', array('id_product' => $product->id)),
             );
-            $extras = Product::getExtras($product->id);
+            $extras = Product::getExtras($product->id, $this->context->language->id);
             if (!empty($extras)) 
                 $item = array_merge($item, $extras);
             $sp = SpecificPrice::getIdsByProductId($product->id);

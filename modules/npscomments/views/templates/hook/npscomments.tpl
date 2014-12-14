@@ -43,11 +43,11 @@
                 {/if}
             {/foreach}
             {if (!$npscomments_too_early AND ($npscomments_logged OR $npscomments_allow_guests))}
-                <a id="new_comment_tab_btn" class="btn btn-default button button-medium" href="#new_seller_comment_form">{l s='Comment' mod='npscomments'} <i class="icon-plus"></i></a>
+                <a id="new_comment_tab_btn" class="btn btn-default button button-medium" href="#new_seller_comment_form">{l s='Comment shop' mod='npscomments'} <i class="icon-plus"></i></a>
             {/if}
         {else}
             {if (!$npscomments_too_early AND ($npscomments_logged OR $npscomments_allow_guests))}
-                 <a id="new_comment_tab_btn" class="btn btn-default button button-medium" href="#new_seller_comment_form">{l s='Comment' mod='npscomments'} <i class="icon-plus"></i></a>
+                 <a id="new_comment_tab_btn" class="btn btn-default button button-medium" href="#new_seller_comment_form">{l s='Comment shop' mod='npscomments'} <i class="icon-plus"></i></a>
             {else}
                 <p class="alert alert-info"><span class="alert-content">
                     {l s='No reviews for the moment.' mod='npscomments'}

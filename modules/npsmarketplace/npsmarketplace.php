@@ -197,18 +197,17 @@ class NpsMarketplace extends Module {
         $product = $params['product'];
         $seller = new Seller(Seller::getSellerByProduct($product->id));
         $products = $seller->getProducts();
-        $count = count($products);
         $p1 = null;
         $p2 = null;
         $p3 = null;
-        if ($count > 0) {
+        if (isset($products[0])) {
             $p1 = $this->getProductObject($products[0]);
         }
-        if ($count > 1) {
-            $p1 = $this->getProductObject($products[1]);
+        if (isset($products[1])) {
+            $p2 = $this->getProductObject($products[1]);
         }
-        if ($count > 2) {
-            $p1 = $this->getProductObject($products[2]);
+        if (isset($products[2])) {
+            $p3 = $this->getProductObject($products[2]);
         }
         $this->context->smarty->assign(array(
             'seller' => $seller,
@@ -387,7 +386,7 @@ class NpsMarketplace extends Module {
         $id_seller = (int)Seller::getSellerByProduct($id_product);
         if(isset($id_seller) && $id_seller > 0) {
             $seller = new Seller($id_seller);
-            $extras = Product::getExtras($id_product);
+            $extras = Product::getExtras($id_product, $this->context->language->id);
             $this->context->smarty->assign(array(
                 'show_regulations' => $seller->regulations_active,
                 'video_url' => $extras['video']
@@ -410,16 +409,24 @@ class NpsMarketplace extends Module {
             foreach($features as $feature) {
                 if ($feature['id_feature'] == Configuration::get('NPS_FEATURE_ADDRESS_ID')) {
                     $address = new FeatureValue($feature['id_feature_value']);
-                    break;
+                    continue;
+                } else if ($feature['id_feature'] == Configuration::get('NPS_FEATURE_TOWN_ID')) {
+                    $town = new FeatureValue($feature['id_feature_value']);
+                    continue;
+                } else if ($feature['id_feature'] == Configuration::get('NPS_FEATURE_DISTRICT_ID')) {
+                    $district = new FeatureValue($feature['id_feature_value']);
+                    continue;
                 }
             }
-            $extras = Product::getExtras($id_product);
+            $extras = Product::getExtras($id_product, $this->context->language->id);
             $seller = new Seller(Seller::getSellerByProduct(Tools::getValue('id_product')));
             $this->context->smarty->assign(array(
                 'current_id_lang' => $lang_id,
                 'regulations' => $seller->regulations,
                 'show_regulations' => $seller->regulations_active,
                 'product_address' => isset($address) ? $address->value[$lang_id] : '',
+                'product_town' => isset($town) ? $town->value[$lang_id] : '',
+                'product_district' => isset($district) ? $district->value[$lang_id] : '',
                 'video_url' => $extras['video']
             ));
             return ($this->display(__FILE__, '/tab_content.tpl'));

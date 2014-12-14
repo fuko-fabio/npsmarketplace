@@ -404,6 +404,16 @@
                 {l s='This product is not sold individually. You must select at least'} <b
                         id="minimal_quantity_label">{$product->minimal_quantity}</b> {l s='quantity for this product.'}
             </p>
+            {if $extras.type == 1}
+                <div class="carnet-info-block">
+                {if isset($extras.entries)}
+                <span>{l s='Number of entries'}:</span> {$extras.entries}
+                {/if}
+                {if isset($extras.from) && isset($extras.to)}
+                <span>{l s='Valid from'}:</span> {$extras.from} <span>{l s='to'}:</span> {$extras.to}
+                {/if}
+                </div>
+            {/if}
             {if isset($groups)}
                 <div id="current_term">
                 <label>{if $extras.type == 1}{l s='First meeting:'}{else}{l s='Term:'}{/if}</label>
@@ -558,6 +568,22 @@
             {if $have_image && !$jqZoomEnabled}{/if}
         </ul>
     {/if}
+{*
+    <!-- Data sheet -->
+    {if isset($features) && $features}
+            <table class="table-data-sheet">
+                {foreach from=$features item=feature}
+                    <tr class="{cycle values="odd,even"}">
+                        {if isset($feature.value)}
+                            <td>{$feature.name|escape:'html':'UTF-8'}</td>
+                            <td>{$feature.value|escape:'html':'UTF-8'}</td>
+                        {/if}
+                    </tr>
+                {/foreach}
+            </table>
+    {/if}
+    <!--end Data sheet -->
+*}
     {if $product->online_only}
         <p class="online_only">{l s='Online only'}</p>
     {/if}
@@ -584,20 +610,7 @@
         </div>
         <!-- end short_description_block -->
     {/if}
-    <!-- Data sheet -->
-    {if isset($features) && $features}
-            <table class="table-data-sheet">
-                {foreach from=$features item=feature}
-                    <tr class="{cycle values="odd,even"}">
-                        {if isset($feature.value)}
-                            <td>{$feature.name|escape:'html':'UTF-8'}</td>
-                            <td>{$feature.value|escape:'html':'UTF-8'}</td>
-                        {/if}
-                    </tr>
-                {/foreach}
-            </table>
-    {/if}
-    <!--end Data sheet -->
+
     {if isset($HOOK_PRODUCT_FOOTER) && $HOOK_PRODUCT_FOOTER}{$HOOK_PRODUCT_FOOTER}{/if}
 
     </div>

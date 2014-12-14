@@ -190,6 +190,7 @@ ul.product_list.grid {
           height: calc(100% - 95px);
           margin-top: 40px;
           text-align: center;
+          word-wrap: break-word;
         }
         @media (max-width: $screen-lg - 1) {
           height: 78%;

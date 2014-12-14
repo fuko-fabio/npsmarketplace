@@ -93,8 +93,40 @@
                             </div>
                         </div>
                     </div>
+                    {if $subcount >= 4}
                     <div class="row">
-                        {if $subcount >= 1}
+                        <div class="col-sm-6">
+                            <div class="category-box">
+                                <a href="{$link->getCategoryLink($subcategories[4].id_category, $subcategories[4].link_rewrite)|escape:'html':'UTF-8'}" title="{$subcategories[4].name|escape:'html':'UTF-8'}" class="img">
+                                {if $subcategories[4].id_image}
+                                    <img class="replace-2x" src="{$link->getCatImageLink($subcategories[4].link_rewrite, $subcategories[4].id_image, 'large_default')|escape:'html':'UTF-8'}" alt="" />
+                                {else}
+                                    <img class="replace-2x" src="{$img_cat_dir}default-large_default.jpg" alt="" />
+                                {/if}
+                                </a>
+                                <a class="subcategory-name" href="{$link->getCategoryLink($subcategories[4].id_category, $subcategories[4].link_rewrite)|escape:'html':'UTF-8'}">{$subcategories[4].name|truncate:25:'...'|escape:'html':'UTF-8'}</a>
+                            </div>
+                        </div>
+                        {if $subcount >= 5}
+                        <div class="col-sm-6">
+                            <div class="category-box">
+                                <a href="{$link->getCategoryLink($subcategories[5].id_category, $subcategories[5].link_rewrite)|escape:'html':'UTF-8'}" title="{$subcategories[5].name|escape:'html':'UTF-8'}" class="img">
+                                {if $subcategories[5].id_image}
+                                    <img class="replace-2x" src="{$link->getCatImageLink($subcategories[5].link_rewrite, $subcategories[5].id_image, 'large_default')|escape:'html':'UTF-8'}" alt="" />
+                                {else}
+                                    <img class="replace-2x" src="{$img_cat_dir}default-large_default.jpg" alt="" />
+                                {/if}
+                                </a>
+                                <a class="subcategory-name" href="{$link->getCategoryLink($subcategories[5].id_category, $subcategories[5].link_rewrite)|escape:'html':'UTF-8'}">{$subcategories[5].name|truncate:25:'...'|escape:'html':'UTF-8'}</a>
+                            </div>
+                        </div>
+                        {/if}
+                    </div>
+                    {/if}
+                </div>
+                {if $subcount >= 1}
+                <div class="col-sm-6">
+                    <div class="row">
                         <div class="col-sm-6">
                             <div class="category-box">
                                 <a href="{$link->getCategoryLink($subcategories[1].id_category, $subcategories[1].link_rewrite)|escape:'html':'UTF-8'}" title="{$subcategories[1].name|escape:'html':'UTF-8'}" class="img">
@@ -107,7 +139,6 @@
                                 <a class="subcategory-name" href="{$link->getCategoryLink($subcategories[1].id_category, $subcategories[1].link_rewrite)|escape:'html':'UTF-8'}">{$subcategories[1].name|truncate:25:'...'|escape:'html':'UTF-8'}</a>
                             </div>
                         </div>
-                        {/if}
                         {if $subcount >= 2}
                         <div class="col-sm-6">
                             <div class="category-box">
@@ -123,11 +154,9 @@
                         </div>
                         {/if}
                     </div>
-                </div>
-                {if $subcount >= 3}
-                <div class="col-sm-6">
-                    <div class="row">
-                        <div class="col-sm-6">
+                    {if $subcount >= 3}
+                     <div class="row">
+                        <div class="col-sm-12">
                             <div class="category-box">
                                 <a href="{$link->getCategoryLink($subcategories[3].id_category, $subcategories[3].link_rewrite)|escape:'html':'UTF-8'}" title="{$subcategories[3].name|escape:'html':'UTF-8'}" class="img">
                                 {if $subcategories[3].id_image}
@@ -139,40 +168,11 @@
                                 <a class="subcategory-name" href="{$link->getCategoryLink($subcategories[3].id_category, $subcategories[3].link_rewrite)|escape:'html':'UTF-8'}">{$subcategories[3].name|truncate:25:'...'|escape:'html':'UTF-8'}</a>
                             </div>
                         </div>
-                        {if $subcount >= 4}
-                        <div class="col-sm-6">
-                            <div class="category-box">
-                                <a href="{$link->getCategoryLink($subcategories[4].id_category, $subcategories[4].link_rewrite)|escape:'html':'UTF-8'}" title="{$subcategories[4].name|escape:'html':'UTF-8'}" class="img">
-                                {if $subcategories[4].id_image}
-                                    <img class="replace-2x" src="{$link->getCatImageLink($subcategories[4].link_rewrite, $subcategories[4].id_image, 'large_default')|escape:'html':'UTF-8'}" alt="" />
-                                {else}
-                                    <img class="replace-2x" src="{$img_cat_dir}default-large_default.jpg" alt="" />
-                                {/if}
-                                </a>
-                                <a class="subcategory-name" href="{$link->getCategoryLink($subcategories[4].id_category, $subcategories[4].link_rewrite)|escape:'html':'UTF-8'}">{$subcategories[4].name|truncate:25:'...'|escape:'html':'UTF-8'}</a>
-                            </div>
-                        </div>
-                        {/if}
-                    </div>
-                    {if $subcount >= 5}
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="category-box">
-                                <a href="{$link->getCategoryLink($subcategories[5].id_category, $subcategories[5].link_rewrite)|escape:'html':'UTF-8'}" title="{$subcategories[5].name|escape:'html':'UTF-8'}" class="img">
-                                {if $subcategories[5].id_image}
-                                    <img class="replace-2x" src="{$link->getCatImageLink($subcategories[5].link_rewrite, $subcategories[5].id_image, 'large_default')|escape:'html':'UTF-8'}" alt="" />
-                                {else}
-                                    <img class="replace-2x" src="{$img_cat_dir}default-large_default.jpg" alt="" />
-                                {/if}
-                                </a>
-                                <a class="subcategory-name" href="{$link->getCategoryLink($subcategories[5].id_category, $subcategories[5].link_rewrite)|escape:'html':'UTF-8'}">{$subcategories[5].name|truncate:25:'...'|escape:'html':'UTF-8'}</a>
-                            </div>
-                        </div>
                     </div>
                     {/if}
                 </div>
+                {/if}
             </div>
-            {/if}
             {if $subcount >= 6}
             <div class="row">
                 <div class="col-sm-3">
@@ -187,7 +187,6 @@
                         <a class="subcategory-name" href="{$link->getCategoryLink($subcategories[6].id_category, $subcategories[6].link_rewrite)|escape:'html':'UTF-8'}">{$subcategories[6].name|truncate:25:'...'|escape:'html':'UTF-8'}</a>
                     </div>
                 </div>
-                   
                 {if $subcount >= 7}
                 <div class="col-sm-3">
                     <div class="category-box">

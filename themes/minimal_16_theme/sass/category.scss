@@ -65,7 +65,7 @@
     border: 1px solid $base-border-color;
     @include box-shadow(0 2px 8px rgba(0, 0, 0, 0.16));
 
-    a {
+    .subcategory-name {
       font-family: $font-custom;
       font-size: 17px;
       color: $product-name-color;
@@ -75,6 +75,9 @@
       &:hover {
         color: $product-name-color;
       }
+    }
+    
+    .img {
       img {
         width: 100%;
       }
