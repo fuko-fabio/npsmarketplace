@@ -20,7 +20,7 @@ class NpsPrzelewy24PaymentResultModuleFrontController extends ModuleFrontControl
         $p24_error_code = Tools::getValue('p24_error_code');
         $p24_session_id = Tools::getValue('p24_session_id');
 
-        if (empty($p24_error_code) && isset($p24_session_id)) {
+        if (empty($p24_error_code) && isset($p24_session_id) && !empty($p24_session_id)) {
             $session_id_array = explode('|', $p24_session_id);
             $id_cart = $session_id_array[1];
             $p24_amount = Tools::getValue('p24_amount');
@@ -61,12 +61,12 @@ class NpsPrzelewy24PaymentResultModuleFrontController extends ModuleFrontControl
                 ));
             }
         } else {
-            $this->persistPaymentError($p24_session_id);
             $this->module->reportError(array(
                 'Requested URL: '.$this->context->link->getModuleLink('npsprzelewy24', 'paymentResult'),
                 'GET params: '.implode(' | ', $_GET),
                 'POST params: '.implode(' | ', $_POST),
             ));
+            $this->persistPaymentError($p24_session_id);
             $this->context->smarty->assign(array(
                 'error' => array(
                     'code' => $p24_error_code,
@@ -77,14 +77,16 @@ class NpsPrzelewy24PaymentResultModuleFrontController extends ModuleFrontControl
     }
 
     private function persistPaymentError($p24_session_id) {
-        $session_id_array = explode('|', $p24_session_id);
-        $id_cart = $session_id_array[1];
-        $id_order = Order::getOrderByCartId($id_cart);
-        if(isset($id_order)) {
-            $history = new OrderHistory();
-            $history->id_order = intval($id_order);
-            $history->changeIdOrderState(8, intval($id_order));
-            $history->addWithemail(true);
+        if (isset($p24_session_id) && !empty($p24_session_id)) {
+            $session_id_array = explode('|', $p24_session_id);
+            $id_cart = $session_id_array[1];
+            $id_order = Order::getOrderByCartId($id_cart);
+            if(isset($id_order)) {
+                $history = new OrderHistory();
+                $history->id_order = intval($id_order);
+                $history->changeIdOrderState(8, intval($id_order));
+                $history->addWithemail(true);
+            }
         }
     }
 }

@@ -13,7 +13,7 @@ $p24_error_code = Tools::getValue('p24_error_code');
 $p24_token = Tools::getValue('p24_token'); 
 $p24_session_id = Tools::getValue('p24_session_id');
 $m = new NpsPrzelewy24();
-if (!empty($p24_session_id)) {
+if (isset($p24_session_id) && !empty($p24_session_id)) {
     $session_id_array = explode('|', $p24_session_id);
     $id_cart = $session_id_array[1];
     $id_order = Order::getOrderByCartId($id_cart);
@@ -45,7 +45,7 @@ if (!empty($p24_session_id)) {
         $history->addWithemail(true);
         $m->reportError(array(
             'Background payment. Unabe to verify payment. Error code: '.$p24_error_code,
-            'Requested URL: '.$this->context->link->getModuleLink('npsprzelewy24', 'paymentState'),
+            'Requested URL: '.Context::getContext()->link->getModuleLink('npsprzelewy24', 'paymentState'),
             'GET params: '.implode(' | ', $_GET),
             'POST params: '.implode(' | ', $_POST),
         ));
@@ -53,7 +53,7 @@ if (!empty($p24_session_id)) {
 } else {
     $m->reportError(array(
         'Background payment. Unabe to verify payment. Missing session ID.',
-        'Requested URL: '.$this->context->link->getModuleLink('npsprzelewy24', 'paymentState'),
+        'Requested URL: '.Context::getContext()->link->getModuleLink('npsprzelewy24', 'paymentState'),
         'GET params: '.implode(' | ', $_GET),
         'POST params: '.implode(' | ', $_POST),
     ));
