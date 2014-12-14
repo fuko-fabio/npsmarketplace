@@ -8,7 +8,7 @@ include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24PaymentValidator.php');
 include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24ErrorMessage.php');
 include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24TransactionDispatcher.php');
 
-class NpsPrzelewy24PaymentReturnModuleFrontController extends ModuleFrontController {
+class NpsPrzelewy24PaymentResultModuleFrontController extends ModuleFrontController {
 
     public $auth = true;
     public $php_self = 'order-follow';
@@ -66,7 +66,7 @@ class NpsPrzelewy24PaymentReturnModuleFrontController extends ModuleFrontControl
         } else {
             $this->persistPaymentError($p24_session_id);
             $this->module->reportError(array(
-                'Requested URL: '.$this->context->link->getModuleLink('npsprzelewy24', 'paymentReturn'),
+                'Requested URL: '.$this->context->link->getModuleLink('npsprzelewy24', 'paymentResult'),
                 'GET params: '.implode(' | ', $_GET),
                 'POST params: '.implode(' | ', $_POST),
             ));

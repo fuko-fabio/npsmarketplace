@@ -100,7 +100,7 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
             'p24_phone' => $phone,
             'p24_language' => strtolower($s_lang->iso_code),
             'p24_url_cancel' => $this->context->link->getModuleLink('npsprzelewy24', 'paymentCancel', array('p24_token' => $p24_token)),
-            'p24_url_return' => $this->context->link->getModuleLink('npsprzelewy24', 'paymentReturn', array('p24_token' => $p24_token)),
+            'p24_url_return' => $this->context->link->getModuleLink('npsprzelewy24', 'paymentResult', array('p24_token' => $p24_token)),
             'p24_url_status' => Tools::getHttpHost(true).__PS_BASE_URI__.'modules/npsprzelewy24/paymentState.php?p24_token='.$p24_token,
             'p24_shipping' => $cart->getTotalShippingCost(),
             'p24_sign' => $this->generateSign($session_id, $p24_id, $amount, $currency['iso_code']),
