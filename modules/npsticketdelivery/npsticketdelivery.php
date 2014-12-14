@@ -270,7 +270,7 @@ class NpsTicketDelivery extends Module {
 
             Mail::Send(Context::getContext()->language->id,
                 'order_info',
-                Mail::l('New order'),
+                $this->l('New order'),
                 $data,
                 $seller_customer->email,
                 $seller->name,

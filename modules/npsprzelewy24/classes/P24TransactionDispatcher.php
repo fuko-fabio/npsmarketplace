@@ -31,10 +31,6 @@ class P24TransactionDispatcher {
 
         $total = $this->cart->getOrderTotal() * 100;
 
-        $available_funds = $this->checkFunds($total);
-        if($available_funds == null)
-            return false;
-
         $merchant_amount = $total;
         $currencies = $this->module->getCurrency(intval($this->cart->id_currency));
         $date_now = date("Y-m-d H:i:s");
@@ -91,6 +87,23 @@ class P24TransactionDispatcher {
         foreach($result as $key => $value)
             $sellers_amount = $sellers_amount + $value;
 
+        $history = new P24DispatchHistory(null, $this->payment_summary['id_payment']);
+
+        $available_funds = $this->checkFunds($total);
+        if($available_funds == null) {
+            if ($history->id == null) {
+                $history->total_amount = $total;
+                $history->sellers_amount = $sellers_amount;
+                $history->sellers_number = $sellers_number;
+                $history->date = $date_now;
+                $history->id_payment = $this->payment_summary['id_payment'];
+                $history->status = false;
+                $history->error = $this->module->errorMsg('intErr00');
+                $history->save();
+            }
+            return false;
+        }
+
         $p24_amount = $total - $available_funds;
 
         $merchant_amount = $merchant_amount - $p24_amount;
@@ -125,7 +138,6 @@ class P24TransactionDispatcher {
 
         $success = $res->error->errorCode ? false : true;
 
-        $history = new P24DispatchHistory(null, $this->payment_summary['id_payment']);
         $history->sellers_amount = $sellers_amount;
         $history->sellers_number = $sellers_number;
         $history->p24_amount = $p24_amount;

@@ -56,7 +56,7 @@ class TicketsGenerator {
         );
         Mail::Send(Context::getContext()->language->id,
             'tickets',
-            Mail::l('Tickets from LabsInTown'),
+            Mail::l('Tickets'),
             $mail_params,
             explode(',', $cart_ticket->email),
             null,
@@ -66,7 +66,7 @@ class TicketsGenerator {
             null,
             _PS_MODULE_DIR_.'npsticketdelivery/mails/');
     }
-    
+
     public static function getCode($ticket) {
         $code = (int)$ticket['id_seller'] * 1000000;
         $code = $code + (int)$ticket['id_ticket'];

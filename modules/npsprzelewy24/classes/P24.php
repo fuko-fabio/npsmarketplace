@@ -122,8 +122,9 @@ class P24 {
     }
 
     private static function soapUrl() {
-        if (Configuration::get('NPS_P24_SANDBOX_MODE') == 1)
+        if (Configuration::get('NPS_P24_SANDBOX_MODE') == 1) {
             return P24::soapSandboxUrl();
+        }
         return P24::soapProductionUrl();
     }
 

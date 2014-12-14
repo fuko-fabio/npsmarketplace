@@ -3,6 +3,25 @@
 *  @copyright 2014 npsoftware
 *}
 <div class="panel">
+    {if !$history->status}
+    <div class="alert alert-danger">
+        {l s='Distribution of money for sellers ended with an error. Please try again to send money or contact your system administrator' mod=npsprzelewy24}
+        {if !empty($history->error)}
+        <ul>
+            <li>{$history->error}</li>
+        </ul>
+        {/if}
+    </div>
+    {else}
+        <div class="alert alert-info">
+            {l s='Distribution of money for the sellers completed successfully' mod=npsprzelewy24}
+            {if !empty($history->error)}
+            <ul>
+                <li>{$history->error}</li>
+            </ul>
+            {/if}
+        </div>
+    {/if}
     <div class="row">
         <div class="col-lg-12">
             <form class="container-command-top-spacing">
@@ -76,7 +95,7 @@
                         </table>
                     </div>
                 </div>
-                {if $available_funds != 0}
+                {if !$history->status}
                     <a class="btn btn-primary pull-right" href="{$link->getAdminLink('AdminDispatchHistory')}&retryDispatch&viewp24_dispatch_history&id_cart={$cart->id}&id_p24_dispatch_history={$history->id}">
                         <i class="icon-money"></i>
                         {l s='Retry' mod='npsprzelewy24'}

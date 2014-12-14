@@ -438,7 +438,7 @@ class NpsPrzelewy24 extends PaymentModule {
 
         Mail::Send($id_lang,
             'error_reporting',
-            Mail::l('Error reporting from your Przelewy24 module',
+            $this->l('Error reporting from your Przelewy24 module',
             (int)$this->context->language->id),
             array('{logs}' => implode('<br />', $logs)),
             Configuration::get('PS_SHOP_EMAIL'),
@@ -559,5 +559,63 @@ class NpsPrzelewy24 extends PaymentModule {
         $os->delete();
         $os = new OrderState(Configuration::get('NPS_P24_ORDER_STATE_ACCEPTED'));
         $os->delete();
+    }
+
+    public function errorMsg($errorCode) {
+        $result = null;
+        $messages = array(
+            'err00' => $this->l('Incorrect call.'),
+            'err01' => $this->l('Authorization answer confirmation was not received.'),
+            'err02' => $this->l('Authorization answer was not received.'),
+            'err03' => $this->l('This query has been already processed.'),
+            'err04' => $this->l('Authorization query incomplete or incorrect.'),
+            'err05' => $this->l('Store configuration cannot be read.'),
+            'err06' => $this->l('Saving of authorization query failed.'),
+            'err07' => $this->l('Another payment is being concluded.'),
+            'err08' => $this->l('Undetermined store connection status.'),
+            'err09' => $this->l('Permitted corrections amount has been exceeded.'),
+            'err10' => $this->l('Incorrect transaction value!'),
+            'err49' => $this->l('To high transaction risk factor.'),
+            'err51' => $this->l('Incorrect reference method.'),
+            'err52' => $this->l('Incorrect feedback on session information!'),
+            'err53' => $this->l('Transaction error!'),
+            'err54' => $this->l('Incorrect transaction value!'),
+            'err55' => $this->l('Incorrect transaction id!'),
+            'err56' => $this->l('Incorrect card.'),
+            'err57' => $this->l('Incompatibility of TEST flag!'),
+            'err58' => $this->l('Incorrect sequence number!'),
+            'err101' => $this->l('Incorrect call.'),
+            'err102' => $this->l('Allowed transaction time has expired.'),
+            'err103' => $this->l('Incorrect transfer value.'),
+            'err104' => $this->l('Transaction awaits confirmation.'),
+            'err105' => $this->l('Transaction finished after allowed time.'),
+            'err106' => $this->l('Transaction result verification error.'),
+            'err161' => $this->l('Transaction request terminated by user.'),
+            'err162' => $this->l('Transaction request terminated by user.'),
+
+            // Web service errors
+            '1' => $this->l('Access denied.'),
+            '500' => $this->l('Missing required data: Company Name, City, PostCode, Street, E-mail or NIP.'),
+            '501' => $this->l('Incorrect format for NIP.'),
+            '502' => $this->l('Incorrect format for e-mail.'),
+            '503' => $this->l('Incorrect IBAN number.'),
+            '510' => $this->l('Company already exists!'),
+            '511' => $this->l('Company already exists, but not active.'),
+            '600' => $this->l('Repeated batch number!'),
+            '601' => $this->l('Empty refund list!'),
+            '610' => $this->l('Transaction not found.'),
+            '699' => $this->l('Errors in refund list. Refunds rejected.'),
+            '10000' => $this->l('Unknown error.'),
+            
+            #Internal errors
+            'intErr00' => $this->l('Internal validation failed. Unable to check available funds.'),
+            'intErr01' => $this->l('Unable to verifi payment'),
+            'intErr02' => $this->l('Inalid verification token'),
+            'intErr03' => $this->l('Payment has been already finalized and verified'),
+            'intErr04' => $this->l('Unable to verifi payment. Invalid session ID'),
+        );
+        if (array_key_exists($errorCode, $messages))
+            $result = $messages[$errorCode];
+        return $result != null ? $result : $this->l('Unknown error occured.');
     }
 }

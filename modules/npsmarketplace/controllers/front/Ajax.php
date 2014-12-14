@@ -69,7 +69,7 @@ class NpsMarketplaceAjaxModuleFrontController extends ModuleFrontController {
             /* Email sending */
             if (!Mail::Send((int)$this->context->language->id,
                     'question_to_seller',
-                    sprintf(Mail::l('Question about %1$s', (int)$this->context->language->id), $product->name),
+                    sprintf($this->module->l('Question about %1$s', (int)$this->context->language->id), $product->name),
                     $templateVars,
                     $customer->email,
                     $seller->name,

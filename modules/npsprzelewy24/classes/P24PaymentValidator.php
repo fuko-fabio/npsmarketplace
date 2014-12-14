@@ -52,32 +52,32 @@ class P24PaymentValodator {
         if($background)
             $prefix = 'Background ';
 
-        $npsprzelewy24 = new NpsPrzelewy24();
+        $module = new NpsPrzelewy24();
         if (isset($this->session_id) && $this->verifySign()) {
             $session_id_array = explode('|', $this->session_id);
             $id_cart = $session_id_array[1];
             $p24_payment = P24Payment::getBySessionId($this->session_id);
             if ($p24_payment == null) {
-                 $npsprzelewy24->reportError(array(
+                 $module->reportError(array(
                     $prefix.'P24PaymentValodator:',
                     ' Unabe to verify payment. Could not find database payment entry for session ID: '.$this->session_id
                 ));
-                return array('error' => 1, 'errorMessage' => $npsprzelewy24->l('Unable to verifi payment'));
+                return array('error' => 1, 'errorMessage' => $module->errorMsg('intErr01'));
             }
 
             if($p24_payment->id != null) {
                 if($p24_payment->token != $p24_token) {
-                    $npsprzelewy24->reportError(array(
+                    $module->reportError(array(
                         $prefix.'P24PaymentValodator:',
                         'Unabe to verify payment. Invalid p24 token value',
                         'Expected: '.$p24_payment->token,
                         'Current: '.$p24_token
                     ));
-                    return array('error' => 1, 'errorMessage' => $npsprzelewy24->l('Inalid verification token'));
+                    return array('error' => 1, 'errorMessage' => $module->errorMsg('intErr02'));
                 }
                 $ps = new P24PaymentStatement(null, $p24_payment->id);
                 if($ps->id != null) {
-                    return array('error' => -1, 'errorMessage' => $npsprzelewy24->l('Payment has been already finalized and verified'));
+                    return array('error' => -1, 'errorMessage' => $module->errorMsg('intErr03'));
                 }
                 
                 $result = $this->transactionVerify();
@@ -86,7 +86,7 @@ class P24PaymentValodator {
                     $this->updateOrdetState($id_cart);
                     return array('error' => 0);
                 } else {
-                    $npsprzelewy24->reportError(array(
+                    $module->reportError(array(
                         $prefix.'P24PaymentValodator:',
                         'Unabe to verify payment. Error code: '.$result['error'],
                         'Received message: '.$result['errorMessage']
@@ -94,21 +94,21 @@ class P24PaymentValodator {
                     return $result;
                 }
             } else {
-                $npsprzelewy24->reportError(array(
+                $module->reportError(array(
                     $prefix.'P24PaymentValodator:',
                     ' Unabe to verify payment. Invalid Przelewy24 response data',
                     implode("&", $_POST)
                 ));
-                return array('error' => 1, 'errorMessage' => $npsprzelewy24->l('Unable to verifi payment'));
+                return array('error' => 1, 'errorMessage' => $module->errorMsg('intErr01'));
             }
         } else {
-            $npsprzelewy24->reportError(array(
+            $module->reportError(array(
                 $prefix.'P24PaymentValodator:',
                 'Unabe to verify payment. Invalid session ID',
                 'Current: '.$this->session_id,
                 'Expected: '.$this->generateSign()
             ));
-            return array('error' => 1, 'errorMessage' => $npsprzelewy24->l('Unable to verifi payment. Invalid session ID'));
+            return array('error' => 1, 'errorMessage' => $module->errorMsg('intErr04'));
         }
     }
 

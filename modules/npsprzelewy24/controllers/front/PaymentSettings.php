@@ -5,7 +5,6 @@
 */
 include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/iban/php-iban.php');
 include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24SellerCompany.php');
-include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24ErrorMessage.php');
 include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24.php');
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
 
@@ -103,7 +102,7 @@ class NpsPrzelewy24PaymentSettingsModuleFrontController extends ModuleFrontContr
                 $res = P24::companyRegister($company);
                 if ($res->error->errorCode) {
                     $this -> errors[] = $this->module->l('Unable register company in Przelewy24 payment service.')
-                        .' '.P24ErrorMessage::get($res->error->errorCode).' '.$this->module->l('Please contact with customer service');
+                        .' '.$this->module->errorMsg($res->error->errorCode).' '.$this->module->l('Please contact with customer service');
                 } else {
                     $settings->id_seller = $seller->id;
                     $settings->registration_date = date("Y-m-d H:i:s");
@@ -163,7 +162,7 @@ class NpsPrzelewy24PaymentSettingsModuleFrontController extends ModuleFrontContr
             }
             if ($res->error->errorCode) {
                 $this->errors[] = $this->module->l('Unable to check company existence in Przelewy24 payment service.')
-                        .' '.P24ErrorMessage::get($res->error->errorCode).' '.$this->module->l('Please contact with customer service');
+                        .' '.$this->module->errorMsg($res->error->errorCode).' '.$this->module->l('Please contact with customer service');
                 $this->context->smarty->assign(array(
                     'company' => array(),
                     'p24_agreement_url' => Configuration::get('NPS_P24_REGULATIONS_URL'))

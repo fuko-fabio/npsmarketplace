@@ -5,7 +5,6 @@
 */
 
 include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24PaymentValidator.php');
-include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24ErrorMessage.php');
 include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24TransactionDispatcher.php');
 
 class NpsPrzelewy24PaymentResultModuleFrontController extends ModuleFrontController {
@@ -70,7 +69,7 @@ class NpsPrzelewy24PaymentResultModuleFrontController extends ModuleFrontControl
             $this->context->smarty->assign(array(
                 'error' => array(
                     'code' => $p24_error_code,
-                    'message' => P24ErrorMessage::get($p24_error_code)),
+                    'message' => $this->module->errorMsg($p24_error_code)),
             ));
         }
         $this->setTemplate('payment_return.tpl');

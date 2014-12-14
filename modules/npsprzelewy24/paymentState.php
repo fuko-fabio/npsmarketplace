@@ -31,7 +31,7 @@ if (isset($p24_session_id) && !empty($p24_session_id)) {
         );
         $result = $validator->validate($p24_token, true);
         if ($result['error'] == 0) {
-            PrestaShopLogger::addLog('Background payment. Verification success. Session ID: '.$p24_session_id);
+            PrestaShopLogger::addLog('Background payment. Verification success. Session ID: '.$p24_session_id.' Dispatching money.');
             $dispatcher = new P24TransactionDispatcher($id_cart);
             $dispatcher->dispatchMoney();
         } else {
