@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <module>
 	<name>npssocialsharing</name>
-	<displayName><![CDATA[nps Social sharing]]></displayName>
+	<displayName><![CDATA[nps Podziel się z innymi]]></displayName>
 	<version><![CDATA[1.2.7]]></version>
-	<description><![CDATA[Displays social sharing buttons (Twitter, Facebook, Google+ and Pinterest) on every product page.]]></description>
+	<description><![CDATA[Wyświetla przyciski udostępniania społecznego (Twitter, Facebook, Google+ i Pinterest) na każdej stronie produktu.]]></description>
 	<author><![CDATA[PrestaShop]]></author>
 	<tab><![CDATA[advertising_marketing]]></tab>
 	<is_configurable>1</is_configurable>

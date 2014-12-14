@@ -53,32 +53,52 @@
 									Sub Categories Styles
 ************************************************************************************************ */
 
+
 #subcategories {
-  border-top: 1px solid $base-border-color;
-  padding: 15px 0 0px 0;
-  p.subcategory-heading {
-    font-weight: bold;
-    color: $base-text-color;
-    margin: 0 0 15px 0;
+  
+  .col-sm-3,
+  .col-sm-6,
+  .col-sm-12 {
+    padding-bottom: 20px;
   }
+  .category-box {
+    border: 1px solid $base-border-color;
+    @include box-shadow(0 2px 8px rgba(0, 0, 0, 0.16));
+
+    a {
+      font-family: $font-custom;
+      font-size: 17px;
+      color: $product-name-color;
+      font-weight: 700;
+      padding: 7px;
+      display: block;
+      &:hover {
+        color: $product-name-color;
+      }
+      img {
+        width: 100%;
+      }
+    }
+
+    &:hover {
+        @include box-shadow(0 2px 8px rgba(255, 170, 0, 0.8));
+        border: 1px solid $primary-color;
+      }
+  }
+  
   ul {
-    margin: 0 0 0 -20px;
     li {
       float: left;
-      width: 145px;
-      margin: 0 0 13px 33px;
-      text-align: center;
-      border: 1px solid $base-border-color;
+      padding-bottom: 10px;
       .subcategory-image {
+        border: 1px solid $base-border-color;
         a {
-          display: block;
-          padding: 0;
           img {
-            max-width: 100%;
-            vertical-align: top;
+            width: 100%;
           }
         }
       }
+      
       .subcategory-name {
         font: 600 18px/22px $font-custom;
         color: $base-heading-color;
@@ -87,9 +107,7 @@
           color: $link-hover-color;
         }
       }
-      .cat_desc {
-        display: none;
-      }
+
       &:hover {
         border-color: $primary-color;
         @include box-shadow(0 2px 8px rgba(255, 170, 0, 0.8));
