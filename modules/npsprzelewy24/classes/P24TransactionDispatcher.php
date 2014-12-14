@@ -91,16 +91,14 @@ class P24TransactionDispatcher {
 
         $available_funds = $this->checkFunds($total);
         if($available_funds == null) {
-            if ($history->id == null) {
-                $history->total_amount = $total;
-                $history->sellers_amount = $sellers_amount;
-                $history->sellers_number = $sellers_number;
-                $history->date = $date_now;
-                $history->id_payment = $this->payment_summary['id_payment'];
-                $history->status = false;
-                $history->error = $this->module->errorMsg('intErr00');
-                $history->save();
-            }
+            $history->total_amount = $total;
+            $history->sellers_amount = $sellers_amount;
+            $history->sellers_number = $sellers_number;
+            $history->date = $date_now;
+            $history->id_payment = $this->payment_summary['id_payment'];
+            $history->status = false;
+            $history->error = $this->module->errorMsg('intErr00');
+            $history->save();
             return false;
         }
 
