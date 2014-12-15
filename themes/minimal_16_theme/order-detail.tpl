@@ -25,6 +25,7 @@
 {*
 <div class="box box-small clearfix">
 *}
+<h1 class="page-heading">{l s='Order details'}</h1>
 {if isset($order)}
 {*<form id="submitReorder" action="{if isset($opc) && $opc}{$link->getPageLink('order-opc', true)}{else}{$link->getPageLink('order', true)}{/if}" method="post" class="submit">
 		<input type="hidden" value="{$order->id}" name="id_order"/>
@@ -84,6 +85,7 @@
 
 {$HOOK_ORDERDETAILDISPLAYED}
 {if !$is_guest}<form action="{$link->getPageLink('order-follow', true)|escape:'html':'UTF-8'}" method="post">{/if}
+<h3 class="page-heading bottom-indent">{l s='Ordered events'}</h3>
 <div id="order-detail-content" class="table_block table-responsive">
 	<table class="table table-bordered">
 		<thead>
@@ -319,8 +321,8 @@
 <div class="adresses_block">
     <div class="row">
         <div class="col-xs-12 col-sm-12">
+            <h3 class="page-subheading">{l s='Invoice address'} ({$address_invoice->alias})</h3>
             <ul class="address item {if $order->isVirtual()}full_width{/if} box">
-                <li><h3 class="page-subheading">{l s='Invoice address'} ({$address_invoice->alias})</h3></li>
                 {foreach from=$inv_adr_fields name=inv_loop item=field_item}
                     {if $field_item eq "company" && isset($address_invoice->company)}<li class="address_company">{$address_invoice->company|escape:'html':'UTF-8'}</li>
                     {elseif $field_item eq "address2" && $address_invoice->address2}<li class="address_address2">{$address_invoice->address2|escape:'html':'UTF-8'}</li>

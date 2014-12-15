@@ -13,6 +13,7 @@ if ( !defined( '_NPS_SELLER_REPORTS_DIR_' ) )
     define('_NPS_SELLER_REPORTS_DIR_', _NPS_REPORTS_DIR_.'sellers/');
 
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
+include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24PaymentStatement.php');
 
 class NpsPrzelewy24 extends PaymentModule {
 
@@ -417,14 +418,27 @@ class NpsPrzelewy24 extends PaymentModule {
         $order = $params['order'];
         $result = Db::getInstance()->executeS('SELECT id_order_state FROM `'._DB_PREFIX_.'order_history` WHERE `id_order`="'.$order->id.'"');
 
-        foreach ($result as $key => $value)
-            if ($value['id_order_state'] == Configuration::get('NPS_P24_ORDER_STATE_ACCEPTED'))
-                return;
-
-        $this->context->smarty->assign(
-            'p24_retryPaymentUrl', $this->context->link->getModuleLink('npsprzelewy24', 'paymentConfirmation', array('order_id' => $order->id, 'renew' => true))
-        );
-        return $this->display(__FILE__, 'renew_payment.tpl');
+        $can_retry = true;
+        foreach ($result as $key => $value) {
+            if ($value['id_order_state'] == Configuration::get('NPS_P24_ORDER_STATE_ACCEPTED')) {
+                $can_retry = false;
+                break;
+            }
+        }
+        if ($can_retry) {
+            $this->context->smarty->assign(
+                'p24_retryPaymentUrl', $this->context->link->getModuleLink('npsprzelewy24', 'paymentConfirmation', array('order_id' => $order->id, 'renew' => true))
+            );
+        } else {
+            $id_cart = CartCore::getCartIdByOrderId($order->id);
+            $summary = P24PaymentStatement::getSummaryByCartId($id_cart);
+            if ($summary && $summary['id_payment_statement']) {
+                $this->context->smarty->assign(array(
+                    'statement' => $summary['statement']
+                ));
+            }
+        }
+        return $this->display(__FILE__, 'order_detail.tpl');
     }
 
     public function reportError($logs = array()) {

@@ -3,8 +3,8 @@
 *  @copyright 2014 npsoftware
 *}
 {if $tickets}
+<h1 class="page-heading">{l s='Tickets' mod='npsticketdelivery'}</h1>
 <div id="nps_tickets_block" class="box">
-    <h1 class="page-heading">{l s='Tickets' mod='npsticketdelivery'}</h1>
     <ul class="grid row">
         {foreach from=$tickets item=ticket}
             <li class="col-xs-12 col-sm-12 col-md-6">
