@@ -992,28 +992,6 @@ table.table-product-discounts {
   }
 }
 
-#new_seller_comment_form {
-  overflow: hidden;
-  width: 555px;
-  @media (max-width: $screen-xs-max) {
-    // max 767px
-    width: 280px;
-  }
-  #id_new_seller_comment_form {
-    margin-bottom: 50px;
-
-    .seller {
-      img {
-        display: block;
-        margin-bottom: 10px;
-      }
-      strong {
-        margin-bottom: 10px;
-      }
-    }
-  }
-}
-
 /* PERSONNALISATION ##################################################################### */
 
 p.infoCustomizable {

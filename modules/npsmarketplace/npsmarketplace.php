@@ -366,6 +366,9 @@ class NpsMarketplace extends Module {
         if (Tools::isSubmit('submitConfiguration')) {
             Configuration::updateValue('NPS_GLOBAL_COMMISION', Tools::getValue('NPS_GLOBAL_COMMISION'));
             Configuration::updateValue('NPS_MERCHANT_EMAILS', Tools::getValue('NPS_MERCHANT_EMAILS'));
+            Configuration::updateValue('NPS_SPECIAL_CATEGORIES', Tools::getValue('NPS_SPECIAL_CATEGORIES'));
+            Configuration::updateValue('NPS_INVISIBLE_CATEGORIES', Tools::getValue('NPS_INVISIBLE_CATEGORIES'));
+            Configuration::updateValue('NPS_FREE_CATEGORY_ID', Tools::getValue('NPS_FREE_CATEGORY_ID'));
             $output .= $this->displayConfirmation($this->l('General settings updated'));
         } elseif (Tools::isSubmit('submitUrls')) {
             Configuration::updateValue('NPS_SELLER_AGREEMENT_URL', Tools::getValue('NPS_SELLER_AGREEMENT_URL'));
@@ -499,6 +502,24 @@ class NpsMarketplace extends Module {
                         'lang' => false,
                         'hint' => $this->l('To add "emails," click in the field, write something, and then press "Enter."'),
                     ),
+                    array(
+                        'type' => 'tags',
+                        'label' => $this->l('Special categories ID\'s'),
+                        'name' => 'NPS_SPECIAL_CATEGORIES',
+                        'lang' => false,
+                    ),
+                    array(
+                        'type' => 'tags',
+                        'label' => $this->l('Invisible categories IS\'s'),
+                        'name' => 'NPS_INVISIBLE_CATEGORIES',
+                        'lang' => false,
+                    ),
+                    array(
+                        'type' => 'text',
+                        'label' => $this->l('Free category ID'),
+                        'name' => 'NPS_FREE_CATEGORY_ID',
+                        'required' => false
+                    ),
                 ),
                 'submit' => array(
                     'title' => $this->l('Save'),
@@ -586,7 +607,9 @@ class NpsMarketplace extends Module {
             'NPS_EVENT_VIDEO_GUIDE_URL' => Tools::getValue('NPS_EVENT_VIDEO_GUIDE_URL', Configuration::get('NPS_EVENT_VIDEO_GUIDE_URL')),
             'NPS_EVENT_DESC_GUIDE_URL' => Tools::getValue('NPS_EVENT_DESC_GUIDE_URL', Configuration::get('NPS_EVENT_DESC_GUIDE_URL')),
             'NPS_EVENT_IMAGE_GUIDE_URL' => Tools::getValue('NPS_EVENT_IMAGE_GUIDE_URL', Configuration::get('NPS_EVENT_IMAGE_GUIDE_URL')),
-
+            'NPS_SPECIAL_CATEGORIES' => Tools::getValue('NPS_SPECIAL_CATEGORIES', Configuration::get('NPS_SPECIAL_CATEGORIES')),
+            'NPS_INVISIBLE_CATEGORIES' => Tools::getValue('NPS_INVISIBLE_CATEGORIES', Configuration::get('NPS_INVISIBLE_CATEGORIES')),
+            'NPS_FREE_CATEGORY_ID' => Tools::getValue('NPS_FREE_CATEGORY_ID', Configuration::get('NPS_FREE_CATEGORY_ID')),
         );
     }
 

@@ -7732,3 +7732,40 @@ div.star.star_hover:after {
     font-weight: 700; }
 #nps_tickets_block .content_sortPagiBar .sortPagiBar {
   border: none; }
+
+#new_seller_comment_form {
+  overflow: hidden;
+  width: 555px; }
+  @media (max-width: 767px) {
+    #new_seller_comment_form {
+      width: 280px; } }
+  #new_seller_comment_form #id_new_seller_comment_form {
+    margin-bottom: 50px; }
+    #new_seller_comment_form #id_new_seller_comment_form .seller img {
+      display: block;
+      margin-bottom: 10px; }
+    #new_seller_comment_form #id_new_seller_comment_form .seller strong {
+      margin-bottom: 10px; }
+
+.collapsibleList .checkbox {
+  min-height: 23px;
+  margin-top: 0px; }
+.collapsibleList li {
+  margin: 0;
+  padding: 0;
+  background: none no-repeat top left;
+  list-style: none;
+  cursor: auto; }
+  .collapsibleList li.collapsibleListOpen {
+    list-style-image: url(../img/button-open.png);
+    cursor: pointer;
+    list-style-position: inside; }
+  .collapsibleList li.collapsibleListClosed {
+    list-style-image: url(../img/button-closed.png);
+    cursor: pointer;
+    list-style-position: inside; }
+  .collapsibleList li:last-of-type {
+    background-image: url(../img/list-item-last.png); }
+  .collapsibleList li li {
+    background-image: url(../img/list-item.png);
+    padding-left: 35px; }

@@ -66,9 +66,13 @@
                 </h2>
                 <form id="id_new_seller_comment_form" class="row" action="#">
                     <div class="clearfix col-xs-12 col-sm-6 seller">
+                        {if isset($npscomments_cover_image) && !empty($npscomments_cover_image)}
                             <img src="{$npscomments_cover_image}" height="{$npscomments_mediumSize.height}" width="{$npscomments_mediumSize.width}" alt="{$seller->company_name[{$current_id_lang}]|escape:html:'UTF-8'}"/>
-                            <strong>{$seller->company_name}</strong><br />
-                            {$seller->company_description[{$current_id_lang}]}
+                        {else}
+                            <img src="{$img_prod_dir}{$lang_iso}-default-medium_default.jpg" height="{$npscomments_mediumSize.height}" width="{$npscomments_mediumSize.width}"/>
+                        {/if}
+                        <strong>{$seller->company_name}</strong><br />
+                        {$seller->company_description[{$current_id_lang}]}
                     </div>
                     <div class="clearfix col-xs-12 col-sm-6 seller">
                         <div id="new_seller_comment_form_error" class="alert alert-error" style="display:none;padding:15px 25px">

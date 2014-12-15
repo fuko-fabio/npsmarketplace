@@ -39,7 +39,8 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
         $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/tinymce/tinymce.min.js');
         $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/tinymce_init.js');
         $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/product.js');
-
+        $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/CollapsibleLists.compressed.js');
+        
         $this->addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/dropzone.css');
         $this->addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/bootstrap-datetimepicker.min.css');
         $this->addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/map.css');
@@ -83,6 +84,17 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             if($type == 2) {
                 $quantity = 1;
                 $price = 0;
+            }
+
+            $free_cat_id = Configuration::get('NPS_FREE_CATEGORY_ID');
+            if (isset($free_cat_id) && !empty($free_cat_id)){
+                if ($price == 0) {
+                        $categories[] = $free_cat_id;
+                } else {
+                    if (in_array($free_cat_id, $categories)) {
+                        $categories = array_diff($categories, $free_cat_id);
+                    }
+                }
             }
 
             if(Tools::getValue('form_token') != $this->context->cookie->__get('form_token')) {
@@ -312,16 +324,22 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
         $towns = Town::getActiveTowns((int)$this->context->language->id);
         $districts = $this->getDistricts();
         $categoriesList = new CategoriesList($this->context);
+        $specialCategoriesIds = explode(',', Configuration::get('NPS_SPECIAL_CATEGORIES'));
+        $invisibleCategoriesIds = explode(',', Configuration::get('NPS_INVISIBLE_CATEGORIES'));
         $form_token = uniqid();
         $this->context->cookie->__set('form_token', $form_token);
         $iso = $this->context->language->iso_code;
+        $cat = $categoriesList->getTree(array_merge($specialCategoriesIds, $invisibleCategoriesIds));
+        $s_cat = $categoriesList->getList($specialCategoriesIds);
 
         $this -> context -> smarty -> assign(array(
             'HOOK_MY_ACCOUNT_COLUMN' => Hook::exec('displayMyAccountColumn'),
             'user_agreement_url' =>'#',
-            'categories_tree' => $categoriesList -> getTree(),
+            'categories_tree' => $cat,
+            'special_categories_tree' => $s_cat,
             'category_partial_tpl_path' =>_PS_MODULE_DIR_.'npsmarketplace/views/templates/front/category_tree_partial.tpl',
             'product_fieldset_tpl_path'=> _PS_MODULE_DIR_.'npsmarketplace/views/templates/front/product_fieldset.tpl',
+            'free_category_id' => Configuration::get('NPS_FREE_CATEGORY_ID'),
             'product' => $tpl_product,
             'edit_product' => array_key_exists('id', $tpl_product),
             'current_id_lang' => (int)$this->context->language->id,

@@ -3297,3 +3297,63 @@ div.star.star_hover {
     }
   }
 }
+
+#new_seller_comment_form {
+  overflow: hidden;
+  width: 555px;
+  @media (max-width: $screen-xs-max) {
+    // max 767px
+    width: 280px;
+  }
+  #id_new_seller_comment_form {
+    margin-bottom: 50px;
+
+    .seller {
+      img {
+        display: block;
+        margin-bottom: 10px;
+      }
+      strong {
+        margin-bottom: 10px;
+      }
+    }
+  }
+}
+
+.categories-tree {
+}
+
+.collapsibleList {
+
+  .checkbox {
+    min-height: 23px;
+    margin-top: 0px;
+  }
+
+  li {
+    margin: 0;
+    padding: 0;
+    background: none no-repeat top left;
+    list-style: none;
+    cursor: auto;
+
+    &.collapsibleListOpen{
+      list-style-image:url(../img/button-open.png);
+      cursor:pointer;
+      list-style-position: inside;
+    }
+
+    &.collapsibleListClosed{
+      list-style-image:url(../img/button-closed.png);
+      cursor:pointer;
+      list-style-position: inside;
+    }
+    &:last-of-type {
+      background-image: url(../img/list-item-last.png);
+    }
+    li {
+      background-image: url(../img/list-item.png);
+      padding-left: 35px;
+    }
+  }
+}

@@ -241,25 +241,52 @@
     <div class="box">
         <h3 class="page-heading">{l s='Identification' mod='npsmarketplace'}</h3>
         <p class="alert alert-info"><span class="alert-content">{l s='You can select more than one category.' mod='npsmarketplace'}</span></p>
-        <div class="form-group">
-            <label class="required" for="product_category">{l s='Category' mod='npsmarketplace'}</label>
-            <ul class="tree">
-                {foreach from=$categories_tree.children item=child name=categories_tree}
-                {if $smarty.foreach.categories_tree.last}
-                {include file="$category_partial_tpl_path" node=$child last='true'}
-                {else}
-                {include file="$category_partial_tpl_path" node=$child}
+        <div class="row">
+            <div class="form-group col-md-6">
+                <div class="form-group">
+                    <label class="required" for="product_category">{l s='Category' mod='npsmarketplace'}</label>
+                    <ul class="categories-tree tree collapsibleList">
+                        {foreach from=$categories_tree.children item=child name=categories_tree}
+                        {if $smarty.foreach.categories_tree.last}
+                        {include file="$category_partial_tpl_path" node=$child last='true'}
+                        {else}
+                        {include file="$category_partial_tpl_path" node=$child}
+                        {/if}
+                        {/foreach}
+                        <!-- Home category -->
+                        {if in_array(2, $product['categories'])}
+                        <li class="category_2 unvisible">
+                            <p class="checkbox">
+                                <input type="checkbox" name="category[]" id="category_2" value="2" checked=""/>
+                            </p>
+                        </li>
+                        {/if}
+                        {if isset($free_category_id) && !empty($free_category_id) && in_array($free_category_id, $product['categories'])}
+                        <li class="category_{$free_category_id} unvisible">
+                            <p class="checkbox">
+                                <input type="checkbox" name="category[]" id="category_{$free_category_id}" value="{$free_category_id}" checked=""/>
+                            </p>
+                        </li>
+                        {/if}
+                    </ul>
+                </div>
+            </div>
+            <div class="form-group col-md-6">
+                {if $special_categories_tree|@count > 0}
+                <div class="form-group">
+                    <label for="product_category">{l s='Special category' mod='npsmarketplace'}</label>
+                    <ul class="categories-tree tree">
+                        {foreach from=$special_categories_tree item=child name=special_categories_tree}
+                        {if $smarty.foreach.special_categories_tree.last}
+                        {include file="$category_partial_tpl_path" node=$child last='true'}
+                        {else}
+                        {include file="$category_partial_tpl_path" node=$child}
+                        {/if}
+                        {/foreach}
+                    </ul>
+                </div>
                 {/if}
-                {/foreach}
-                <!-- Home category -->
-                {if in_array(2, $product['categories'])}
-                <li class="category_2 unvisible">
-                    <p class="checkbox">
-                        <input type="checkbox" name="category[]" id="category_2" value="2" checked=""/>
-                    </p>
-                </li>
-                {/if}
-            </ul>
+            </div>
         </div>
     </div>
 </fieldset>

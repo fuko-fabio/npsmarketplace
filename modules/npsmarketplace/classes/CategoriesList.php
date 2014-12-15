@@ -4,37 +4,59 @@
 *  @copyright 2014 npsoftware
 */
 
-class CategoriesList
-{
+class CategoriesList {
     public $context;
-    
-    public function __construct($context = null)
-    {
+
+    public function __construct($context = null) {
         $this->context = $context;
     }
 
-    public function getTree()
-    {
+    public function getList($wanted_ids = null) {
+        $categories = $this->getCategories();
+        $res = array();
+        if ($wanted_ids) {
+            foreach ($categories as $key => $item) {
+                if (in_array($item['id_category'], $wanted_ids)) {
+                    $res[$key] = $item;
+                }
+            }
+        } else {
+            $res = $categories;
+        }
+        $result = array();
+        foreach ($res as $key => $item) {
+            $result[] = array(
+                'id' => $item['id_category'],
+                'link' => $this->context->link->getCategoryLink($item['id_category'], $item['link_rewrite']),
+                'name' =>  $item['name'],
+                'desc'=>  $item['description'],
+                'children' => array()
+            );
+        }
+        return $result;
+    }
+
+    public function getTree($excluded_ids = null) {
         $resultIds = array();
         $resultParents = array();
-        $result = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS('
-        SELECT c.id_parent, c.id_category, cl.name, cl.description, cl.link_rewrite
-        FROM `'._DB_PREFIX_.'category` c
-        INNER JOIN `'._DB_PREFIX_.'category_lang` cl ON (c.`id_category` = cl.`id_category` AND cl.`id_lang` = '.(int)$this->context->language->id.Shop::addSqlRestrictionOnLang('cl').')
-        INNER JOIN `'._DB_PREFIX_.'category_shop` cs ON (cs.`id_category` = c.`id_category` AND cs.`id_shop` = '.(int)$this->context->shop->id.')
-        WHERE (c.`active` = 1 OR c.`id_category` = '.(int)Configuration::get('PS_HOME_CATEGORY').')
-        AND c.`id_category` != '.(int)Configuration::get('PS_ROOT_CATEGORY').'
-        AND c.id_category IN (
-            SELECT id_category
-            FROM `'._DB_PREFIX_.'category_group`
-            WHERE `id_group` IN ('.pSQL(implode(', ', Customer::getGroupsStatic((int)$this->context->customer->id))).')
-        )
-        ORDER BY `level_depth` ASC, cs.`position` ASC');
-        foreach ($result as &$row)
-        {
+        $result = $this->getCategories();
+
+        $res = array();
+        if ($excluded_ids) {
+            foreach ($result as $key => $item) {
+                if (!in_array($item['id_category'], $excluded_ids)) {
+                    $res[$key] = $item;
+                }
+            }
+        } else {
+            $res = $result;
+        }
+
+        foreach ($res as &$row) {
             $resultParents[$row['id_parent']][] = &$row;
             $resultIds[$row['id_category']] = &$row;
         }
+
         $blockCategTree = $this->getCategoriesTree($resultParents, $resultIds);
 
         return $blockCategTree;
@@ -62,6 +84,22 @@ class CategoriesList
         );
 
         return $return;
+    }
+    
+    private function getCategories() {
+        return Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS('
+            SELECT c.id_parent, c.id_category, cl.name, cl.description, cl.link_rewrite
+            FROM `'._DB_PREFIX_.'category` c
+            INNER JOIN `'._DB_PREFIX_.'category_lang` cl ON (c.`id_category` = cl.`id_category` AND cl.`id_lang` = '.(int)$this->context->language->id.Shop::addSqlRestrictionOnLang('cl').')
+            INNER JOIN `'._DB_PREFIX_.'category_shop` cs ON (cs.`id_category` = c.`id_category` AND cs.`id_shop` = '.(int)$this->context->shop->id.')
+            WHERE (c.`active` = 1 OR c.`id_category` = '.(int)Configuration::get('PS_HOME_CATEGORY').')
+            AND c.`id_category` != '.(int)Configuration::get('PS_ROOT_CATEGORY').'
+            AND c.id_category IN (
+                SELECT id_category
+                FROM `'._DB_PREFIX_.'category_group`
+                WHERE `id_group` IN ('.pSQL(implode(', ', Customer::getGroupsStatic((int)$this->context->customer->id))).')
+            )
+            ORDER BY `level_depth` ASC, cs.`position` ASC');
     }
 }
 ?>
