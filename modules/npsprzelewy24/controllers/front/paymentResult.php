@@ -23,7 +23,8 @@ class NpsPrzelewy24PaymentResultModuleFrontController extends ModuleFrontControl
             $order = new Order($id_order);
             $this->context->smarty->assign(array(
                 'price' => $order->getTotalPaid($this->context->currency),
-                'reference_order' => $order->getUniqReference(),
+                'order_reference' => $order->getUniqReference(),
+                'order_url' => $this->context->link->getPageLink('order-detail', null, null, array('id_order' => $id_order)),
                 'currency' => $this->context->currency,
             ));
             $payment_summary = P24PaymentStatement::getSummaryByCartId($id_cart);

@@ -28,7 +28,7 @@
 
 {if isset($price) && isset($reference_order)}
     <p>{l s='Total of the transaction:' mod='npsprzelewy24'} <span class="bold">{displayPrice price=$price currency=$currency->id}</span></p>
-    <p>{l s='Your order ID is :' mod='npsprzelewy24'} <span class="bold">{$reference_order}</span></p>
+    <p>{l s='Your order ID is :' mod='npsprzelewy24'} <a href="{order_url}"><span class="bold">{$order_reference}</span></a></p>
 {/if}
 <br />
 {if $is_guest}
