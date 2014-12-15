@@ -50,9 +50,8 @@
 #seller_comments_block_tab div.comment .star_content {margin: 0 0 0 5px}
 #seller_comments_block_tab div.star,
 #seller_comments_block_tab div.star_on {
-    background: url(img/star.gif) no-repeat 0 0 transparent
+    background: none no-repeat 0 0 transparent
 }
-#seller_comments_block_tab div.star_on {background-position: 0 -12px}
 #seller_comments_block_tab .comment_author_infos {clear:both}
 #seller_comments_block_tab .comment_author_infos em {color:#999}
 

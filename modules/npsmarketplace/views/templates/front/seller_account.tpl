@@ -7,7 +7,7 @@
 <span class="navigation-pipe">{$navigationPipe}</span>
 <span class="navigation_page">{l s='Shop Profile' mod='npsmarketplace'}</span>
 {/capture}
-<h1 class="page-heading with-button">{l s='Shop Profile' mod='npsmarketplace'}<a href="{$my_shop_link}" class="btn btn-default button button-small pull-right"><i class="icon-search"></i> {l s='Shop preview' mod='npsmarketplace'}</a></h1>
+<h1 class="page-heading with-button">{l s='Shop Profile' mod='npsmarketplace'}<a href="{$my_shop_link}" onclick="$.fancybox.showLoading();" class="btn btn-default button button-small pull-right"><i class="icon-search"></i> {l s='Shop preview' mod='npsmarketplace'}</a></h1>
 
 {include file="$tpl_dir./errors.tpl"}
 
