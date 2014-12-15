@@ -66,6 +66,7 @@
 !/override/controllers/front/OrderDetailController.php
 !/override/controllers/front/ProductController.php
 !/override/controllers/front/MyAccountController.php
+!/override/controllers/front/FrontController.php
 
 !/override/controllers/admin/templates
 /override/controllers/admin/templates/*
