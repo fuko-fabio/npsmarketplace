@@ -423,6 +423,8 @@ class NpsPrzelewy24 extends PaymentModule {
             if ($value['id_order_state'] == Configuration::get('NPS_P24_ORDER_STATE_ACCEPTED')) {
                 $can_retry = false;
                 break;
+            } else if ($value['id_order_state'] == 2) {
+                return;
             }
         }
         if ($can_retry) {
