@@ -251,7 +251,7 @@ class NpsMarketplace extends Module {
             array(
                 'account_state' => $account_state,
                 'payment_configured' => $payment_configured,
-                'products_count' => count($seller->getSellerProducts($seller->id)),
+                'products_count' => count(Seller::getSellerProducts($seller->id)),
                 'seller_request_link' => $this->context->link->getModuleLink('npsmarketplace', 'AccountRequest'),
                 'add_product_link' => $this->context->link->getModuleLink('npsmarketplace', 'Product'),
                 'products_list_link' => $this->context->link->getModuleLink('npsmarketplace', 'ProductsList'),
@@ -307,7 +307,7 @@ class NpsMarketplace extends Module {
             $max_items = 4;
         if (!isset($in_row) || empty($in_row))
             $in_row = 4;
-        $ids = Seller::getSellerProducts($seller->id, $max_items);
+        $ids = Seller::getSellerProducts($seller->id, 0, $max_items, true, true);
         $products = array();
         if(!empty($ids)) {
             $products = Product::getProductsByIds($lang->id, $ids, null, null, false, null, null, $this->context);

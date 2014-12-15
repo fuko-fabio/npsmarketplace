@@ -93,6 +93,7 @@ class NpsPrzelewy24 extends PaymentModule {
             Configuration::updateValue('NPS_P24_URL', Tools::getValue('NPS_P24_URL'));
             Configuration::updateValue('NPS_P24_WEB_SERVICE_URL', Tools::getValue('NPS_P24_WEB_SERVICE_URL'));
             Configuration::updateValue('NPS_P24_REGULATIONS_URL', Tools::getValue('NPS_P24_REGULATIONS_URL'));
+            Configuration::updateValue('NPS_P24_USER_ACCESS_URL', Tools::getValue('NPS_P24_USER_ACCESS_URL'));
             $output .= $this->displayConfirmation($this->l('Przelewy24 URL\'s updated sucessfully'));
         }else if (Tools::isSubmit('submitSandbox')) {
             Configuration::updateValue('NPS_P24_SANDBOX_URL', Tools::getValue('NPS_P24_SANDBOX_URL'));
@@ -264,6 +265,12 @@ class NpsPrzelewy24 extends PaymentModule {
                 'input' => array(
                     array(
                         'type' => 'text',
+                        'label' => $this->l('End user Przelewy24 account access URL (Leave emty to disable)'),
+                        'name' => 'NPS_P24_USER_ACCESS_URL',
+                        'required' => false
+                    ),
+                    array(
+                        'type' => 'text',
                         'label' => $this->l('Regulations of Przelewy24 URL'),
                         'name' => 'NPS_P24_REGULATIONS_URL',
                         'required' => true
@@ -381,6 +388,7 @@ class NpsPrzelewy24 extends PaymentModule {
             'NPS_P24_SANDBOX_ERROR' => Tools::getValue('NPS_P24_SANDBOX_ERROR', Configuration::get('NPS_P24_SANDBOX_ERROR')),
             'NPS_P24_SANDBOX_WEB_SERVICE_URL' => Tools::getValue('NPS_P24_SANDBOX_WEB_SERVICE_URL', Configuration::get('NPS_P24_SANDBOX_WEB_SERVICE_URL')),
             'NPS_P24_REGULATIONS_URL' => Tools::getValue('NPS_P24_REGULATIONS_URL', Configuration::get('NPS_P24_REGULATIONS_URL')),
+            'NPS_P24_USER_ACCESS_URL' => Tools::getValue('NPS_P24_USER_ACCESS_URL', Configuration::get('NPS_P24_USER_ACCESS_URL')),
             'NPS_P24_COMMISION' => Tools::getValue('NPS_P24_COMMISION', Configuration::get('NPS_P24_COMMISION')),
             'NPS_P24_API_KEY' => Tools::getValue('NPS_P24_API_KEY', Configuration::get('NPS_P24_API_KEY')),
             'NPS_P24_MERCHANT_SPID' => Tools::getValue('NPS_P24_MERCHANT_SPID', Configuration::get('NPS_P24_MERCHANT_SPID')),
@@ -392,6 +400,7 @@ class NpsPrzelewy24 extends PaymentModule {
        if ($seller->requested == 1 && $seller->active == 1 && $seller->locked == 0) {
             $this->context->smarty->assign(array(
                 'payment_settings_link' => $this->context->link->getModuleLink('npsprzelewy24', 'PaymentSettings'),
+                'p24_access_url' => Configuration::get('NPS_P24_USER_ACCESS_URL'),
             )
         );
         return $this->display(__FILE__, 'npsprzelewy24.tpl');

@@ -47,27 +47,26 @@
         <div class="tab-content">
             <div class="tab-pane fade active in" id="seller_events">
                 {if $products}
-                <div class="content_sortPagiBar clearfix">
-                    <div class="sortPagiBar clearfix">
-                        {include file="$tpl_dir./product-sort.tpl"}
-                        {include file="$tpl_dir./nbr-product-page.tpl"}
+                    <div class="content_sortPagiBar">
+                        <div class="sortPagiBar clearfix">
+                            {include file="$tpl_dir./product-sort.tpl"}
+                            {include file="$tpl_dir./nbr-product-page.tpl"}
+                        </div>
+                        <div class="top-pagination-content clearfix">
+                            {include file="$tpl_dir./pagination.tpl"}
+                        </div>
                     </div>
-                    <div class="top-pagination-content clearfix">
-                        {include file="$tpl_dir./product-compare.tpl"}
-                        {include file="$tpl_dir./pagination.tpl"}
+                    {include file="$tpl_dir./product-list.tpl" products=$products}
+                    <div class="content_sortPagiBar">
+                        <div class="bottom-pagination-content clearfix">
+                            {include file="$tpl_dir./pagination.tpl" paginationId='bottom'}
+                        </div>
                     </div>
-                </div>
-                {include file="$tpl_dir./product-list.tpl" products=$products}
-                <div class="content_sortPagiBar">
-                    <div class="bottom-pagination-content clearfix">
-                        {include file="$tpl_dir./product-compare.tpl" paginationId='bottom'}
-                        {include file="$tpl_dir./pagination.tpl" paginationId='bottom'}
-                    </div>
-                </div>
                 {/if}
             </div>
+
             <div class="tab-pane fade" id="seller_company">
-                <table class="table-data-sheet">
+                <table class="table table-bordered table-hover">
                     {if !empty($seller.company)}
                     <tr>
                         <td>{l s='Company Name' mod='npsmarketplace'}</td>
@@ -102,6 +101,25 @@
                     <tr>
                         <td>{l s='NIP' mod='npsmarketplace'}</td>
                         <td>{$seller.nip}</td>
+                    </tr>
+                    {/if}
+                    {if !empty($seller.email)}
+                    <tr>
+                        <td>{l s='E-mail' mod='npsmarketplace'}</td>
+                        <td><a href="mailto:{$seller.email}"><i class="icon-envelope"></i>  {$seller.email}</a>
+                    </td>
+                    </tr>
+                    {/if}
+                    {if !empty($seller.phone)}
+                    <tr>
+                        <td>{l s='Phone' mod='npsmarketplace'}</td>
+                        <td><a href="tel:{$seller.phone}"><i class="icon-phone"></i>  {$seller.phone}</a></td>
+                    </tr>
+                    {/if}
+                    {if !empty($seller.mobilephone)}
+                    <tr>
+                        <td>{l s='Mobilephone' mod='npsmarketplace'}</td>
+                        <td><a href="tel:{$seller.mobilephone}"><i class="icon-phone"></i>  {$seller.mobilephone}</a></td>
                     </tr>
                     {/if}
                 </table>

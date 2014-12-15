@@ -22,6 +22,16 @@
 *  @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *  International Registered Trademark & Property of PrestaShop SA
 *}
+<script>
+$(document).ready(function() {
+    $('.languages-block').hover(function() {
+      $(this).find('.toogle_content').stop(true, true).delay(200).fadeIn(200);
+    }, function() {
+      $(this).find('.toogle_content').stop(true, true).delay(200).fadeOut(200);
+    });
+});
+
+</script>
 <!-- Block languages module -->
 {if count($languages) > 1}
 	<div id="languages-block-top" class="languages-block">

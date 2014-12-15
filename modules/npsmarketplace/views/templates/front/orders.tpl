@@ -12,7 +12,7 @@
     {include file="$tpl_dir./errors.tpl"}
     {if $orders}
     <div class="table-responsive">
-        <table class="table table-bordered footab">
+        <table class="table table-bordered footab table-hover">
             <thead>
                 <tr>
                     <th class="first_item" data-sort-ignore="true">{l s='Reference' mod='npsmarketplace'}</th>

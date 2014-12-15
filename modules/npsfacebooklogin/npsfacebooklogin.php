@@ -8,6 +8,7 @@ if (!defined('_PS_VERSION_'))
     exit;
 
 require_once(_PS_TOOL_DIR_.'facebook_sdk/autoload.php');
+require_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
 
 use Facebook\FacebookSession;
 use Facebook\FacebookRedirectLoginHelper;
@@ -53,6 +54,7 @@ class NpsFacebookLogin extends Module {
             'firstName' => ($this->context->customer->logged ? $this->context->customer->firstname : false),
             'lastName' => ($this->context->customer->logged ? $this->context->customer->lastname : false),
             'fb_img_url' => $this->context->cookie->fb_img_url,
+            'is_seller' => Seller::isRegistered($this->context->customer->id)
         ));
         return $this->display(__FILE__, 'views/templates/hook/nav.tpl');
     }

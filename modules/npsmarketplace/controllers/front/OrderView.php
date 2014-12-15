@@ -86,7 +86,7 @@ class NpsMarketplaceOrderViewModuleFrontController extends ModuleFrontController
         $result = array();
         $pd = $order->getProductsDetail();
 
-        foreach ($seller->getSellerProducts($seller->id) as $product_id) {
+        foreach (Seller::getSellerProducts($seller->id) as $product_id) {
             foreach ($pd as $product_detail) {
                 if($product_detail['id_product'] == $product_id) {
                     $cover = Product::getCover($product_id);

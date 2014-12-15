@@ -43,7 +43,10 @@ class NpsMarketplaceProductsListModuleFrontController extends ModuleFrontControl
         if ($seller->id == null) 
             Tools::redirect('index.php?controller=my-account');
 
-        $products = $this -> getProducts($seller);
+        $products_id = Seller::getSellerProducts($seller->id);
+        $this->pagination(count($products_id));
+        $products = $this->getProducts($seller);
+
         $this -> context -> smarty -> assign(array(
             'HOOK_MY_ACCOUNT_COLUMN' => Hook::exec('displayMyAccountColumn'),
             'add_product_link' => $this -> context -> link -> getModuleLink('npsmarketplace', 'Product'),
@@ -60,7 +63,7 @@ class NpsMarketplaceProductsListModuleFrontController extends ModuleFrontControl
 
     private function getProducts($seller) {
         $result = array();
-        $products = $seller->getProducts();
+        $products = $seller->getProducts(((int)($this->p) - 1) * (int)($this->n), (int)($this->n));
         if (empty($products))
             return $result;
         foreach ($products as $product) {

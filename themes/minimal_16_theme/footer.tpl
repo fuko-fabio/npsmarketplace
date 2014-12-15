@@ -44,8 +44,8 @@
                         <p class="clearfix">{l s="Projekt współfinansowany przez Unię Europejską w ramach Europejskiego Funduszu Społecznego"}</p>
                     </section>
                         <section class="bottom-footer">
-                            <div>
-                                Copyright &copy; 2014 <a href="http://labsintown.com" title="LabsInTown">Labs in Town</a>
+                            <div class="copyright">
+                                Copyright &copy; 2014 <a href="http://labsintown.com" title="Labs In Town"><span>Labs</span> in Town</a>
                             </div>
                             <div class="pull-right">
                                 <a target="_blank" href="http://npsoftware.pl" title="nps software"><span class="cname">nps</span><span class="csoftware"> software</span></a>

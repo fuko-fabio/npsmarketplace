@@ -20,7 +20,7 @@
         </div>
     </div>
     <div class="table-responsive">
-        <table class="table table-bordered footab">
+        <table class="table table-bordered footab table-hover">
             <thead>
                 <tr>
                     <th class="first_item" data-sort-ignore="true">{l s='ID' mod='npsticketdelivery'}</th>

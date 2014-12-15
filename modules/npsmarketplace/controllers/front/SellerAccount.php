@@ -117,6 +117,7 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
             'seller' => $tpl_seller,
             'current_id_lang' => (int)$this -> context -> language -> id,
             'languages' => Language::getLanguages(),
+            'my_shop_link' => $this->context->link->getModuleLink('npsmarketplace', 'SellerShop', array('id_seller' => $seller->id)),
             'seller_fieldset_tpl_path' => _PS_MODULE_DIR_.'npsmarketplace/views/templates/front/seller_fieldset.tpl',
             'address_tpl_path' =>_PS_MODULE_DIR_.'npsmarketplace/views/templates/front/address.tpl',
             

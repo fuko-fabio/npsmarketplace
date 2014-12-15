@@ -37,7 +37,7 @@
 {/if}
 <div class="block-center" id="block-history">
 	{if $orders && count($orders)}
-		<table id="order-list" class="table table-bordered footab">
+		<table id="order-list" class="table table-bordered footab table-hover">
 			<thead>
 				<tr>
 					<th class="first_item" data-sort-ignore="true">{l s='Order reference'}</th>

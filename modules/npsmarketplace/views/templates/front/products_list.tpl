@@ -24,8 +24,16 @@
     {/if}
 
     {if $products}
+    <div class="content_sortPagiBar">
+        <div class="sortPagiBar clearfix">
+            {include file="$tpl_dir./nbr-product-page.tpl"}
+        </div>
+        <div class="top-pagination-content clearfix">
+            {include file="$tpl_dir./pagination.tpl"}
+        </div>
+    </div>
     <div class="table-responsive">
-        <table class="table table-bordered footab">
+        <table class="table table-bordered footab table-hover">
             <thead>
                 <tr>
                     <th class="first_item" data-sort-ignore="true">{l s='Image' mod='npsmarketplace'}</th>
@@ -124,6 +132,11 @@
                 {/foreach}
             </tbody>
         </table>
+    </div>
+    <div class="content_sortPagiBar">
+        <div class="bottom-pagination-content clearfix">
+            {include file="$tpl_dir./pagination.tpl" paginationId='bottom'}
+        </div>
     </div>
     {else}
         <p class="alert alert-info"><span class="alert-content">{l s='You have not added any event yet.' mod='npsmarketplace'}</span></p>

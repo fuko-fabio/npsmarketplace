@@ -22,7 +22,7 @@
     </head>
     <body>
         <div class="lit-content-body">
-            <h4>{l s='Shop' mod='npsmarketplace'}</h4><a href="{$shop_url}" class="shop"><span>Labs In</span> Town</a>
+            <h4>{l s='Shop' mod='npsmarketplace'}</h4><a href="{$shop_url}" class="shop"><span>Labs </span>In Town</a>
             {if $products|@count > 0}
 			<div class="row">
 				{foreach from=$products item=product name=myLoop}

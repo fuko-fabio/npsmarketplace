@@ -6257,7 +6257,7 @@ ul.footer_links {
         clear: both; } }
   .top-pagination-content .product-count,
   .bottom-pagination-content .product-count {
-    padding: 11px 0 0 0;
+    padding: 0;
     float: left; }
     @media (max-width: 991px) {
       .top-pagination-content .product-count,
@@ -6473,7 +6473,7 @@ div.star a:hover {
       height: 25px; }
       .breadcrumb a.home i {
         display: none; }
-      .breadcrumb a.home span:last-of-type {
+      .breadcrumb a.home span:first-of-type {
         color: #ffaa00; }
       .breadcrumb a.home:before {
         border: none; }
@@ -6660,6 +6660,8 @@ div.star a:hover {
       .footer-container #footer .bottom-footer div {
         padding: 15px 0 0 0;
         float: left; }
+      .footer-container #footer .bottom-footer .copyright a span {
+        color: #ffaa00; }
       .footer-container #footer .bottom-footer .cname {
         font-family: "Danube", sans-serif; }
       .footer-container #footer .bottom-footer .csoftware {
@@ -7705,6 +7707,10 @@ div.star.star_hover:after {
   margin-top: 0;
   padding: 0px 0px 5px 0px; }
 
+#block-seller-products-list .content_sortPagiBar .sortPagiBar,
+#nps_tickets_block .content_sortPagiBar .sortPagiBar {
+  border: none; }
+
 #nps_tickets_block .nps-ticket {
   border: 1px solid #d6d4d4;
   margin-bottom: 10px;
@@ -7731,8 +7737,6 @@ div.star.star_hover:after {
   #nps_tickets_block .nps-ticket .code {
     margin-top: 10px;
     font-weight: 700; }
-#nps_tickets_block .content_sortPagiBar .sortPagiBar {
-  border: none; }
 
 #new_seller_comment_form {
   overflow: hidden;
@@ -7773,3 +7777,7 @@ div.star.star_hover:after {
 
 .table-responsive span {
   font-weight: normal; }
+
+.nav li a:hover,
+.nav li a:focus {
+  background: none; }

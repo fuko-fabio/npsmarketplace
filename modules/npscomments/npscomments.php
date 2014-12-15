@@ -150,13 +150,10 @@ class npscomments extends Module
                  'npscomments_cover' => '',
                  'npscomments_cover_image' => Seller::getImageLink($seller->id, null, $this->context),
                  'npscomments_mediumSize' => Image::getSize(ImageType::getFormatedName('medium')),
-                 'npscomments_nbComments' => (int)SellerComment::getCommentNumber($seller->id),
                  'npscomments_controller_url' => $this->context->link->getModuleLink('npscomments', 'SellerComments', array('id_seller' => $seller->id)),
                  'npscomments_moderation_active' => (int)Configuration::get('NPS_SELLER_COMMENTS_MODERATE'),
                  'current_id_lang' => (int)$this->context->language->id,
             ));
-    
-            $this->context->controller->pagination((int)SellerComment::getCommentNumber($seller->id));
 
             return $this->display(__FILE__, 'views/templates/hook/npscomments.tpl');
         }
@@ -216,13 +213,10 @@ class npscomments extends Module
                  'npscomments_cover' => '',
                  'npscomments_cover_image' => Seller::getImageLink($seller->id, null, $this->context),
                  'npscomments_mediumSize' => Image::getSize(ImageType::getFormatedName('medium')),
-                 'npscomments_nbComments' => (int)SellerComment::getCommentNumber($seller->id),
                  'npscomments_controller_url' => $this->context->link->getModuleLink('npscomments', 'SellerComments', array('id_seller' => $seller->id)),
                  'npscomments_moderation_active' => (int)Configuration::get('NPS_SELLER_COMMENTS_MODERATE'),
                  'current_id_lang' => (int)$this->context->language->id,
             ));
-
-            $this->context->controller->pagination((int)SellerComment::getCommentNumber($seller->id));
 
             return $this->display(__FILE__, 'views/templates/hook/npscomments.tpl');
         }

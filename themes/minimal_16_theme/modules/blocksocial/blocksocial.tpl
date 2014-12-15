@@ -25,7 +25,7 @@
 *}
 
 <section id="social_block">
-    <h4>{l s='Stay updated with' mod='blocksocial'} Labs in <span>Town</span>!</h4>
+    <h4>{l s='Stay updated with' mod='blocksocial'} <span>Labs</span> in Town!</h4>
     <ul>
 		{if $facebook_url != ''}
 			<li class="facebook">

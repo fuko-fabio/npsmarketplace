@@ -2,6 +2,15 @@
 *  @author Norbert Pabian <norbert.pabian@gmail.com>
 *  @copyright 2014 npsoftware
 *}
+<script>
+$(document).ready(function(){
+    $('.nps-facebook-login').hover(function() {
+      $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(200);
+    }, function() {
+      $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(200);
+    });
+});
+</script>
 <ul class="nav nav-pills nps-facebook-login pull-right">
     {if $logged}
     <li class="dropdown pull-right">
@@ -23,11 +32,18 @@
             <li>
                 <a href="{$link->getPageLink('identity', true)|escape:'html'}" onclick="$.fancybox.showLoading();"><i class="icon-user"></i> {l s='Settings' mod='npsfacebooklogin'}</a>
             </li>
+            {if $is_seller}
             <li class="divider"></li>
             <li>
                 <a href="{$link->getModuleLink('npsmarketplace', 'Product')|escape:'html'}" onclick="$.fancybox.showLoading();"><i class="icon-dollar"></i> {l s='Sell' mod='npsfacebooklogin'}</a>
             </li>
-
+            <li>
+                <a href="{$link->getModuleLink('npsmarketplace', 'ProductsList')|escape:'html'}" onclick="$.fancybox.showLoading();"><i class="icon-th-list"></i> {l s='My events' mod='npsfacebooklogin'}</a>
+            </li>
+            <li>
+                <a href="{$link->getModuleLink('npsticketdelivery', 'TicketsSold')|escape:'html'}" onclick="$.fancybox.showLoading();"><i class="icon-ticket"></i> {l s='Sold tickets' mod='npsfacebooklogin'}</a>
+            </li>
+            {/if}
             <li class="divider"></li>
             <li>
                 <a href="{$link->getPageLink('index', true, NULL, 'mylogout')|escape:'html'}" onclick="$.fancybox.showLoading();"><i class="icon-signout"></i> {l s='Log out' mod='npsfacebooklogin'}</a>

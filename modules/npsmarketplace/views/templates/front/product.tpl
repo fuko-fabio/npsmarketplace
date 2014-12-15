@@ -40,14 +40,11 @@
     <form role="form" action="{$request_uri}" method="post" id="edit-product-form">
         <input type="hidden" name="form_token" value="{$form_token}" />
         {include file="$product_fieldset_tpl_path" categories_tree=$categories_tree category_partial_tpl_path=$category_partial_tpl_path}
-        </br>
-        <strong>{l s='By clicking "Add" I accept the' mod='npsmarketplace'} <a href="{$user_agreement_url}">{l s='User Agreement.' mod='npsmarketplace'}</a></strong>
-        </br>
+        {l s='By clicking "Add" I accept the' mod='npsmarketplace'} <a href="{$user_agreement_url}">{l s='User Agreement.' mod='npsmarketplace'}</a>
         {if isset($product['id'])}
             <button type="submit" class="btn btn-default button button-medium pull-right" name="saveProduct"><span>{l s='Save' mod='npsmarketplace'} <i class="icon-save right"></i></span></button>
         {else}
             <button id="save-product-btn" type="submit" class="btn btn-default button button-medium pull-right" name="saveProduct"><span>{l s='Add' mod='npsmarketplace'} <i class="icon-plus right"></i></span></button>
         {/if}
-        </p>
     </form>
 </div>

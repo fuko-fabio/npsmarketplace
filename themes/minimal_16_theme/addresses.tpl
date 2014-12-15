@@ -26,7 +26,7 @@
 <h1 class="page-heading with-button">{l s='My addresses'}
     <a href="{$link->getPageLink('address', true)|escape:'html':'UTF-8'}" title="{l s='Add an address'}" class="btn btn-default button button-small pull-right" onclick="$.fancybox.showLoading();"><span>{l s='Add a new address'} <i class="icon-plus right"></i></span></a>
 </h1>
-<p>{l s='Please configure your default billing and delivery addresses when placing an order. You may also add additional addresses, which can be useful for sending gifts or receiving an order at your office.'}</p>
+{*<p>{l s='Please configure your default billing and delivery addresses when placing an order. You may also add additional addresses, which can be useful for sending gifts or receiving an order at your office.'}</p>*}
 {if isset($multipleAddresses) && $multipleAddresses}
 <div class="addresses">
 	<p class="alert alert-info"><span class="alert-content">{l s='Be sure to update your personal information if it has changed.'}</span></p>

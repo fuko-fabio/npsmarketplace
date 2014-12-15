@@ -23,7 +23,8 @@ class NpsMarketplaceSellerShopModuleFrontController extends ModuleFrontControlle
                 'company' => $address->company,
                 'person' => $address->firstname.' '.$address->lastname,
                 'address' => $address->address1.' '.$address->address2,
-                'phone' => $address->phone.' '.$address->phone_mobile,
+                'phone' => $address->phone,
+                'mobilephone' => $address->phone_mobile, 
                 'email' => $customer->email,
                 'nip' => $seller->nip,
                 'krs' => $seller->krs,
@@ -38,11 +39,10 @@ class NpsMarketplaceSellerShopModuleFrontController extends ModuleFrontControlle
         }
 
         $this->productSort();
+        $ids = Seller::getSellerProducts($id_seller, 0, 0, true);
+        $this->pagination(count($ids));
 
-        $ids = Seller::getSellerProducts($id_seller, null, false);
-        $this->pagination($this->productsCount($ids));
-
-        $this -> context -> smarty -> assign(array(
+        $this->context->smarty->assign(array(
             'HOOK_SELLER_TAB' => Hook::exec('sellerTab'),
             'HOOK_SELLER_TAB_CONTENT' => Hook::exec('sellerTabContent', array('seller' => $seller)),
             'seller' => $tpl_seller,
@@ -50,39 +50,24 @@ class NpsMarketplaceSellerShopModuleFrontController extends ModuleFrontControlle
             'languages' => Language::getLanguages(),
             'have_image' => $image != null,
             'largeSize' => Image::getSize(ImageType::getFormatedName('large')),
-            'products' =>  $this->productsList($ids),
+            'products' =>  $this->productsList($id_seller),
         ));
 
         $this->setTemplate('seller_shop.tpl');
     }
 
-    private function productsList($ids) {
-        if (empty($ids))
-            return array();
-        else
-            return Product::getProductsByIds(
-                $this->context->language->id,
-                $ids,
-                (isset($this->p) ? (int)($this->p) - 1 : null),
-                (isset($this->n) ? (int)($this->n) : null),
-                false,
-                $this->orderBy,
-                $this->orderWay,
-                $this->context
-            );
-            
-    }
+    private function productsList($id_seller) {
+        $ids = Seller::getSellerProducts($id_seller, ((int)($this->p) - 1) * (int)($this->n), (int)($this->n), true);
 
-    private function productsCount($ids) {
-        if (empty($ids))
-            return 0;
-        else
-            return (int)Product::getProductsByIds(
-                $this->context->language->id,
-                $ids,
-                (isset($this->p) ? (int)($this->p) : null),
-                (isset($this->n) ? (int)($this->n) : null),
-                true
-            );
+        return Product::getProductsByIds(
+            $this->context->language->id,
+            $ids,
+            null,
+            null,
+            false,
+            $this->orderBy,
+            $this->orderWay,
+            $this->context
+        );
     }
 }

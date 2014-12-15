@@ -31,6 +31,18 @@
         background: none;
       }
     }
+    .dropdown-menu {
+      background: $dark-background;
+      
+      a {
+        color: $light-text-color;
+        
+        &:hover {
+          color: $primary-color;
+          background: none;
+        }
+      }
+    }
   }
 }
 

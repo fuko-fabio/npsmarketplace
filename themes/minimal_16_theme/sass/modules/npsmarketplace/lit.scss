@@ -7,13 +7,13 @@
     font-weight: 700;
   }
   .shop {
-    color: $primary-color;
+    color: $base-text-color;
     font-weight: 700;
     right: 0;
     top: 0;
     position: absolute;
     span {
-      color: $base-text-color;
+      color: $primary-color;
     }
   }
   .item {

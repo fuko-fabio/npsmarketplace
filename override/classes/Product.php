@@ -94,6 +94,7 @@ class Product extends ProductCore
         $combination->setAttributes(array($date_attr->id, $time_attr->id));
         StockAvailable::setQuantity((int)$this->id, (int)$id_product_attribute, $quantity, $id_shop);
         $this->saveExpiryDate($id_product_attribute, $expiry_date);
+        Db::getInstance()->execute('UPDATE '._DB_PREFIX_.'product SET date_add = NOW() WHERE id_product = '.$this->id);
         Search::indexation(false, $this->id);
     }
 

@@ -17,6 +17,13 @@
       background: none; }
   .nps-facebook-login .dropdown.open a {
     background: none; }
+  .nps-facebook-login .dropdown .dropdown-menu {
+    background: #36454f; }
+    .nps-facebook-login .dropdown .dropdown-menu a {
+      color: #fff; }
+      .nps-facebook-login .dropdown .dropdown-menu a:hover {
+        color: #ffaa00;
+        background: none; }
 
 .nps-facebook-login-btn {
   color: #fff !important;

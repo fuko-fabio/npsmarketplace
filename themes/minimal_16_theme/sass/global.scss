@@ -1228,7 +1228,7 @@ ul.footer_links {
     }
   }
   .product-count {
-    padding: 11px 0 0 0;
+    padding: 0;
     float: left;
     // max 991px
     @media (max-width: $screen-sm-max) {
@@ -1518,7 +1518,7 @@ div.star a:hover {
       i {
         display: none;
       }
-      span:last-of-type {
+      span:first-of-type {
         color: $primary-color;
       }
       &:before {
@@ -1786,6 +1786,13 @@ div.star a:hover {
       div {
         padding: 15px 0 0 0;
         float: left;
+      }
+      .copyright {
+        a {
+          span {
+            color: $primary-color;
+          }
+        }
       }
       .cname {
         font-family: $font-danube;
@@ -3256,6 +3263,15 @@ div.star.star_hover {
   }
 }
 
+#block-seller-products-list,
+#nps_tickets_block {
+  .content_sortPagiBar {
+    .sortPagiBar {
+      border: none;
+    }
+  }
+}
+
 #nps_tickets_block {
   .nps-ticket {
     border: 1px solid $base-border-color;
@@ -3290,11 +3306,6 @@ div.star.star_hover {
     .code {
       margin-top: 10px;
       font-weight: 700;
-    }
-  }
-  .content_sortPagiBar {
-    .sortPagiBar {
-      border: none;
     }
   }
 }
@@ -3362,5 +3373,14 @@ div.star.star_hover {
 .table-responsive {
   span {
     font-weight: normal;
+  }
+}
+
+.nav {
+  li {
+    a:hover,
+    a:focus {
+      background: none;
+    }
   }
 }

@@ -269,11 +269,12 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
         parent::init();
 
         $this->_seller = new Seller(null, $this->context->customer->id);
-        $products = $this->_seller->getSellerProducts($this->_seller->id);
         if ($this->_seller->id == null) 
             Tools::redirect($this->context->link->getModuleLink('npsmarketplace', 'AccountRequest', array('not_configured' => 1)));
 
         $id_product = (int)Tools::getValue('id_product', 0);
+        $products = Seller::getSellerProducts($this->_seller->id);
+
         if($id_product != 0) {
             if (!in_array($id_product, $products))
                 Tools::redirect($this->context->link->getModuleLink('npsmarketplace', 'ProductsList', array('not_found' => 1)));

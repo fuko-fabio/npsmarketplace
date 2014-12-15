@@ -1,11 +1,8 @@
 $(document).ready(function() {
-    $(".towns").mouseover(function() {
-        $(this).addClass("towns_hover");
-        $(".towns_ul").addClass("towns_ul_hover");
-    });
-    $(".towns").mouseout(function() {
-        $(this).removeClass("towns_hover");
-        $(".towns_ul").removeClass("towns_ul_hover");
+    $('.nps-towns-top').hover(function() {
+      $(this).find('.toogle_content').stop(true, true).delay(200).fadeIn(200);
+    }, function() {
+      $(this).find('.toogle_content').stop(true, true).delay(200).fadeOut(200);
     });
 });
 

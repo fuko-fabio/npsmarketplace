@@ -30,7 +30,6 @@
         </ul>
     </div>
  {/if}
- 
 <div class="nps-header-sell">
     <a href="{$link->getModuleLink('npsmarketplace', 'Product')}"><i class="icon-dollar"></i> {l s='Sell' mod='npsmarketplace'}</a>
 </div>
