@@ -103,6 +103,7 @@
 									<a href="{$base_dir}" title="{$shop_name|escape:'html':'UTF-8'}">
 										<img class="logo img-responsive" src="{$logo_url}" alt="{$shop_name|escape:'html':'UTF-8'}"{if $logo_image_width} width="{$logo_image_width}"{/if}{if $logo_image_height} height="{$logo_image_height}"{/if}/>
 									</a>
+									{if isset($HOOK_EXTRA_LOGO)}{$HOOK_EXTRA_LOGO}{/if}
 								</div>
 								{if isset($HOOK_TOP)}{$HOOK_TOP}{/if}
 							</div>

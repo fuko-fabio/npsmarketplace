@@ -58,7 +58,6 @@ class NpsMarketplaceSellerShopModuleFrontController extends ModuleFrontControlle
 
     private function productsList($id_seller) {
         $ids = Seller::getSellerProducts($id_seller, ((int)($this->p) - 1) * (int)($this->n), (int)($this->n), true);
-
         return Product::getProductsByIds(
             $this->context->language->id,
             $ids,

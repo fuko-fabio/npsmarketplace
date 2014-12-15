@@ -62,6 +62,8 @@
                             {include file="$tpl_dir./pagination.tpl" paginationId='bottom'}
                         </div>
                     </div>
+                {else}
+                    <p class="alert alert-info"><span class="alert-content">{l s='No products in this shop.' mod='npsmarketplace'}</span></p>
                 {/if}
             </div>
 
@@ -125,7 +127,11 @@
                 </table>
             </div>
             <div class="tab-pane fade" id="seller_regulations">
-                <div class="rte">{$seller['regulations'][$current_id_lang]}</div>
+                {if empty($seller['regulations'][$current_id_lang])}
+                    <p class="alert alert-warning"><span class="alert-content">{l s='Company Privacy Policy has not been completed.' mod='npsmarketplace'}</span></p>
+                {else}
+                    <div class="rte">{$seller['regulations'][$current_id_lang]}</div>
+                {/if}
             </div>
             {$HOOK_SELLER_TAB_CONTENT}
         </div><!-- tab content -->

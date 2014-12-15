@@ -117,10 +117,10 @@ class AdminSellersAccountsController extends AdminController
         );
         if ($seller->locked) {
             $template = 'account_locked';
-            $title = $this->module->l('Your account has been locked');
+            $title = $this->l('Your account has been locked');
         } else {
             $template = 'account_unlocked';
-            $title = $this->module->l('Your account has been unlocked');
+            $title = $this->l('Your account has been unlocked');
         }
         Mail::Send($this->context->language->id,
             $template,
@@ -161,7 +161,7 @@ class AdminSellersAccountsController extends AdminController
             );
             Mail::Send($this->context->language->id,
                 'account_active',
-                $this->module->l('Seller account activated'),
+                $this->l('Seller account activated'),
                 $mail_params,
                 $customer->email,
                 null,

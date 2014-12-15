@@ -57,7 +57,7 @@ class NpsMarketplace extends Module {
             || !$this->registerHook('displayMyAccountColumn')
             || !$this->registerHook('displayHome')
             || !$this->registerHook('displayNav')
-            || !$this->registerHook('top')
+            || !$this->registerHook('extraLogo')
             || !Configuration::updateValue('NPS_GLOBAL_COMMISION', 3)
             || !Configuration::updateValue('NPS_PRODUCT_GUIDE_URL', $shop_url)
             || !Configuration::updateValue('NPS_SELLER_GUIDE_URL', $shop_url)
@@ -75,6 +75,7 @@ class NpsMarketplace extends Module {
     }
 
     public function uninstall() {
+        return $this->registerHook('extraLogo');
         if (!parent::uninstall()
             || !$this->unregisterHook('header')
             || !$this->unregisterHook('displayCustomerAccount')
@@ -85,7 +86,7 @@ class NpsMarketplace extends Module {
             || !$this->unregisterHook('displayMyAccountColumn')
             || !$this->unregisterHook('displayHome')
             || !$this->unregisterHook('displayNav')
-            || !$this->unregisterHook('top')
+            || !$this->unregisterHook('extraLogo')
             || !$this->_deleteTab()
             || !$this->_deleteTables()
             || !$this->_deleteFeatures()
@@ -111,13 +112,12 @@ class NpsMarketplace extends Module {
         return true;
     }
 
-    public function hookTop() {
+    public function hookExtraLogo() {
         $id_town = $this->context->cookie->main_town;
         $t = new Town($id_town);
         $this->smarty->assign(array(
             'town_name' => $id_town != 0 ? $t->name[$this->context->language->id] : null,
         ));
-
         return $this->display(__FILE__, 'views/templates/hook/top.tpl');
     }
 

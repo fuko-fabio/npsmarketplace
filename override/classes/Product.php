@@ -135,6 +135,9 @@ class Product extends ProductCore
     * @return array New products
     */
     public static function getProductsByIds($id_lang, $ids = array(), $page_number = 0, $nb_products = 10, $count = false, $order_by = null, $order_way = null, Context $context = null) {
+        if(empty($ids))
+            return array();
+
         if (!$context)
             $context = Context::getContext();
 
