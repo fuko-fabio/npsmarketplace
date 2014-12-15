@@ -3,7 +3,7 @@
 *  @copyright 2014 npsoftware
 *}
 {capture name=path}
-<a href="{$link->getPageLink('my-account', true)|escape:'html':'UTF-8'}"> {l s='My account'} </a>
+<a href="{$link->getPageLink('my-account', true)|escape:'html':'UTF-8'}"> {l s='My account' mod='npsprzelewy24'} </a>
 <span class="navigation-pipe">{$navigationPipe}</span>
 <span class="navigation_page">{l s='Payment Settings' mod='npsprzelewy24'}</span>
 {/capture}

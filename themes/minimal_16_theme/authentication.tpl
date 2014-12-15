@@ -68,7 +68,7 @@
 								{l s='Create an account'}
 							</span>
 						</button>
-						<input type="hidden" class="hidden" name="SubmitCreate" value="{l s='Create an account'}" onclick="$.fancybox.showLoading();"/>
+						<input type="hidden" class="hidden" name="SubmitCreate" value="{l s='Create an account'}"/>
 					</div>
 				</div>
 			</form>

@@ -2,29 +2,32 @@
 *  @author Norbert Pabian <norbert.pabian@gmail.com>
 *  @copyright 2014 npsoftware
 *}
-<script type="text/javascript">
-    var dictDefaultMessage = "{l s='Drop files here to upload' mod='npsmarketplace' js=1}";
-    var dictFallbackMessage = "{l s='Your browser does not support drag\'n\'drop file uploads.' mod='npsmarketplace' js=1}";
-    var dictFallbackText = "{l s='Please use the fallback form below to upload your files like in the olden days.' mod='npsmarketplace' js=1}";
-    var dictFileTooBig = "{l s='File is too big ({{filesize}}MiB). Max filesize: {{maxFilesize}}MiB.' mod='npsmarketplace' js=1}";
-    var dictInvalidFileType = "{l s='You can\'t upload files of this type.' mod='npsmarketplace' js=1}";
-    var dictResponseError = "{l s='Server responded with {{statusCode}} code.' mod='npsmarketplace' js=1}";
-    var dictCancelUpload = "{l s='Cancel upload' mod='npsmarketplace' js=1}";
-    var dictCancelUploadConfirmation = "{l s='Are you sure you want to cancel this upload?' mod='npsmarketplace' js=1}";
-    var dictRemoveFile = "{l s='Remove' mod='npsmarketplace' js=1}";
-    var dictMaxFilesExceeded = "{l s='You can not upload more than %s files.' mod='npsmarketplace' js=1 sprintf=$max_images}";
+
+{addJsDefL name=dictDefaultMessage}{l s='Drop files here to upload' mod='npsmarketplace' js=1}{/addJsDefL}
+{addJsDefL name=dictFallbackMessage}{l s='Your browser does not support drag\'n\'drop file uploads.' mod='npsmarketplace' js=1}{/addJsDefL}
+{addJsDefL name=dictFallbackText}{l s='Please use the fallback form below to upload your files like in the olden days.' mod='npsmarketplace' js=1}{/addJsDefL}
+{addJsDefL name=dictFileTooBig}{l s='File is too big ({{filesize}}MiB). Max filesize: {{maxFilesize}}MiB.' mod='npsmarketplace' js=1}{/addJsDefL}
+{addJsDefL name=dictInvalidFileType}{l s='You can\'t upload files of this type.' mod='npsmarketplace' js=1}{/addJsDefL}
+{addJsDefL name=dictResponseError}{l s='Server responded with {{statusCode}} code.' mod='npsmarketplace' js=1}{/addJsDefL}
+{addJsDefL name=dictCancelUpload}{l s='Cancel upload' mod='npsmarketplace' js=1}{/addJsDefL}
+{addJsDefL name=dictCancelUploadConfirmation}{l s='Are you sure you want to cancel this upload?' mod='npsmarketplace' js=1}{/addJsDefL}
+{addJsDefL name=dictRemoveFile}{l s='Remove' mod='npsmarketplace' js=1}{/addJsDefL}
+{addJsDefL name=dictMaxFilesExceeded}{l s='You can not upload more than %s files.' mod='npsmarketplace' js=1 sprintf=$max_images}{/addJsDefL}
+{addJsDefL name=maxImages}{$max_images}{/addJsDefL}
+{addJsDefL name=maxImageSize}{$max_image_size}{/addJsDefL}
+{addJsDefL name=dropzoneServerUrl}{$dropzone_url}{/addJsDefL}
+
+<script>
     var dropzoneImages = {$product['images']|json_encode};
-    var maxImages = {$max_images};
-    var maxImageSize = {$max_image_size};
-    var dropzoneServerUrl = '{$dropzone_url}';
 </script>
+
 {capture name=path}
-<a href="{$link->getPageLink('my-account', true)|escape:'html':'UTF-8'}"> {l s='My account'} </a>
+<a href="{$link->getPageLink('my-account', true)|escape:'html':'UTF-8'}"> {l s='My account' mod='npsmarketplace'} </a>
 <span class="navigation-pipe">{$navigationPipe}</span>
 {if isset($product['id'])}
-<span class="navigation_page">{l s='Edit Event'}</span>
+<span class="navigation_page">{l s='Edit Event' mod='npsmarketplace'}</span>
 {else}
-<span class="navigation_page">{l s='Add Event'}</span>
+<span class="navigation_page">{l s='Add Event' mod='npsmarketplace'}</span>
 {/if}
 {/capture}
 {if isset($product['id'])}

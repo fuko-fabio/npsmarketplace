@@ -4,10 +4,10 @@
 *}
 {capture name=path}
     <a href="{$link->getPageLink('my-account', true)|escape:'html':'UTF-8'}">
-        {l s='My account'}
+        {l s='My account' mod='npsmarketplace'}
     </a>
     <span class="navigation-pipe">{$navigationPipe}</span>
-    <span class="navigation_page">{l s='New Event Term'}</span>
+    <span class="navigation_page">{l s='New Event Term' mod='npsmarketplace'}</span>
 {/capture}
 <h1 class="page-heading bottom-indent">{l s='New Event Term' mod='npsmarketplace'}</h1>
 {include file="$tpl_dir./errors.tpl"}
@@ -82,6 +82,6 @@
         </br>
         <strong>{l s='By clicking "Add" I accept the' mod='npsmarketplace'} <a href="{$user_agreement_url}">{l s='User Agreement.' mod='npsmarketplace'}</a></strong>
         </br>
-        <button type="submit" name="submitCombination" class="btn btn-default button button-medium pull-right" onclick="$.fancybox.showLoading();"><span>{l s='Add' mod='npsmarketplace'} <i class="icon-plus right"></i></span></button>
+        <button type="submit" name="submitCombination" class="btn btn-default button button-medium pull-right"><span>{l s='Add' mod='npsmarketplace'} <i class="icon-plus right"></i></span></button>
     </form>
 </div>

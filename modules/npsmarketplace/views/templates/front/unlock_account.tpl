@@ -3,11 +3,11 @@
 *  @copyright 2014 npsoftware
 *}
 {capture name=path}
-<a href="{$link->getPageLink('my-account', true)|escape:'html':'UTF-8'}"> {l s='My account'} </a>
+<a href="{$link->getPageLink('my-account', true)|escape:'html':'UTF-8'}"> {l s='My account' mod='npsmarketplace'} </a>
 <span class="navigation-pipe">{$navigationPipe}</span>
-<span class="navigation_page">{l s='Unlock Account'}</span>
+<span class="navigation_page">{l s='Unlock Account' mod='npsmarketplace'}</span>
 {/capture}
-<h1 class="page-heading bottom-indent">{l s='Unlock Account'}</h1>
+<h1 class="page-heading bottom-indent">{l s='Unlock Account' mod='npsmarketplace'}</h1>
 {include file="$tpl_dir./errors.tpl"}
 <div class="block-center" id="block-seller-account">
     <form action="{$request_uri}" method="post">
@@ -31,6 +31,6 @@
         <script type="text/javascript">
             $(".textarea-autosize").autosize();
         </script>
-        <button type="submit" class="btn btn-default button button-medium pull-right" name="submitMessage" onclick="$.fancybox.showLoading();"><span>{l s='Send' mod='npsmarketplace'} <i class="icon-share right"></i></span></button>
+        <button type="submit" class="btn btn-default button button-medium pull-right" name="submitMessage"><span>{l s='Send' mod='npsmarketplace'} <i class="icon-share right"></i></span></button>
     </form>
 </div>

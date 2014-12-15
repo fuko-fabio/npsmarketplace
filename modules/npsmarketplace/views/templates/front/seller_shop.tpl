@@ -4,7 +4,7 @@
 *}
 {capture name=path}
 <span class="navigation-pipe">{$navigationPipe}</span>
-<span class="navigation_page">{l s='Shop %s' mod='npsprzelewy24' sprintf=$seller['name']|escape:'html':'UTF-8'}</span>
+<span class="navigation_page">{l s='Shop %s' mod='npsprzelewy24' sprintf=$seller['name']|escape:'html':'UTF-8' mod='npsmarketplace'}</span>
 {/capture}
 <div class="nps-seller-shop">
     <div class="primary_block row">

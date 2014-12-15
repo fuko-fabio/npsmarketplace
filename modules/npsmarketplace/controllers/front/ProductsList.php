@@ -17,8 +17,8 @@ class NpsMarketplaceProductsListModuleFrontController extends ModuleFrontControl
         $this->addJqueryPlugin('footable');
         $this->addJqueryPlugin('footable-sort');
         $this->addJqueryPlugin('scrollTo');
+        $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/product_list.js');
         $this->addCSS (_PS_MODULE_DIR_.'npsmarketplace/npsmarketplace.css');
-        
     }
 
     public function postProcess() {

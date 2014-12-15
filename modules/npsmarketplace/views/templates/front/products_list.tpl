@@ -3,64 +3,11 @@
 *  @copyright 2014 npsoftware
 *}
 {addJsDefL name=npsAjaxUrl}{$nps_ajax_url}{/addJsDefL}
-<script>
-$(document).ready(function(){
-    $('.sale-event-btn').fancybox({
-        'hideOnContentClick' : false
-    });
-});
 
-function submitPriceReduction(id_product, reduction) {
-    var selector = '#sale_error_' + id_product;
-    $(selector).hide('slow');
-    $(selector).html('');
-    $.fancybox.showLoading();
-    $.ajax({
-        url: npsAjaxUrl,
-        type: "POST",
-        headers: {literal}{"cache-control": "no-cache"}{/literal},
-        dataType: "json",
-        data: {
-            action: 'specialPrice',
-            id_product: id_product,
-            reduction: reduction
-        },
-        success: function(json) {
-            if (json.result) {
-                location.reload();
-            } else {
-                $.fancybox.hideLoading();
-                $(selector).append('<ul></ul>');
-                $.each(json.errors, function(index, value) {
-                    $(selector + ' ul').append('<li>' + value + '</li>');
-                });
-                $(selector).slideDown('slow');
-            }
-        }
-    });  
-};
-
-function removePriceReduction(id_product) {
-    $.fancybox.showLoading();
-    $.ajax({
-        url: npsAjaxUrl,
-        type: "POST",
-        headers: {literal}{"cache-control": "no-cache"}{/literal},
-        dataType: "json",
-        data: {
-            action: 'removeSpecialPrice',
-            id_product: id_product,
-        },
-        success: function(json) {
-            location.reload();
-        }
-    });  
-};
-</script>
 {capture name=path}
-<a href="{$link->getPageLink('my-account', true)|escape:'html':'UTF-8'}"> {l s='My account'} </a>
+<a href="{$link->getPageLink('my-account', true)|escape:'html':'UTF-8'}"> {l s='My account' mod='npsmarketplace'} </a>
 <span class="navigation-pipe">{$navigationPipe}</span>
-<span class="navigation_page">{l s='My events' mod='npsmarketplace'}</span>
+<span class="navigation_page">{l s='My events' mod='npsmarketplace' mod='npsmarketplace'}</span>
 {/capture}
 <div class="block-center" id="block-seller-products-list">
     <h1 class="page-heading with-button">{l s='My events' mod='npsmarketplace'}{if $seler_active}<a href="{$add_product_link}" class="btn btn-default button button-small pull-right"><i class="icon-plus"></i> {l s='Add Event' mod='npsmarketplace'}</a>{/if}</h1>
