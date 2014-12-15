@@ -561,7 +561,7 @@ class NpsPrzelewy24 extends PaymentModule {
         $os->delete();
     }
 
-    public function errorMsg($errorCode) {
+    public function errorMsg($errorCode = null) {
         $result = null;
         $messages = array(
             'err00' => $this->l('Incorrect call.'),
@@ -614,7 +614,7 @@ class NpsPrzelewy24 extends PaymentModule {
             'intErr03' => $this->l('Payment has been already finalized and verified'),
             'intErr04' => $this->l('Unable to verifi payment. Invalid session ID'),
         );
-        if (array_key_exists($errorCode, $messages))
+        if ($errorCode && array_key_exists($errorCode, $messages))
             $result = $messages[$errorCode];
         return $result != null ? $result : $this->l('Unknown error occured.');
     }
