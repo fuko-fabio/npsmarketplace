@@ -6,7 +6,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     </head>
-    <body style="font-family: verdana, sans-serif;">
+    <body style="font-family: arial, DejaVu;">
         <div style="transform: rotate(-90deg);position: absolute;top:227px;left: 10px">
             {$barcode}
             <div style="display: block;font-weight:700;font-size: 16px;">{$code}</div>
@@ -26,7 +26,6 @@
                             {/if}
                         </div>
                         <div style="font-weight:700;font-size:22px;text-overflow: ellipsis;white-space: nowrap;">{$name|truncate:40}</div>
-                        <br />
                         {if $type == 0 && isset($date)}
                         <div style="font-size: 10px;width:100px;text-transform: uppercase;float: left;display: inline-block;">Termin</div>: <span style="font-weight: 700;float: left">{date_format(date_create($date), 'Y-m-d H:i')}</span><br />
                         {else if $type == 1 && isset($entries) && $entries > 0}
@@ -34,7 +33,6 @@
                         {else if $type == 1 && strtotime($from) > 0 && strtotime($to) > 0}
                         <div style="font-size: 10px;width:100px;text-transform: uppercase;float: left;display: inline-block;">Ważność</div>: <span style="font-weight: 700;float: left">{date_format(date_create($from), 'Y-m-d')} - {date_format(date_create($to), 'Y-m-d')}</span><br />
                         {/if}
-                        <br />
                         <div style="font-size: 10px;width:100px;text-transform: uppercase;float: left;display: inline-block;">Osoba</div>: <span style="float: left;text-overflow: ellipsis;white-space: nowrap;">{$person|truncate:60}</span><br />
                         <div style="font-size: 10px;width:100px;text-transform: uppercase;float: left;display: inline-block;">Adres wydarzenia</div>: <span style="float: left;text-overflow: ellipsis;white-space: nowrap;">{$address|truncate:60}</span><br />
                         <div style="font-size: 10px;width:100px;text-transform: uppercase;float: left;display: inline-block;">Dzielnica</div>: <span style="float: left;text-overflow: ellipsis;white-space: nowrap;">{$district|truncate:60}</span><br />
@@ -45,13 +43,13 @@
                     </div>
                     <br />
                     {if $gift}
-                    <div style="display: inline-block;width:120px;float: left;text-transform: uppercase;text-align: center;">Prezent</div>
+                    <div style="display: inline-block;width:120px;float: left;text-transform: uppercase;text-align: center;font-size: 10px;">Prezent</div>
                     {else}
-                    <div style="display: inline-block;width:120px;float: left;text-transform: uppercase;text-align: center;">Cena<br />{displayPrice price=$price currency=$id_currency}{if $tax}<br />({$tax}% {l s='tax incl.' mod='npsticketdelivery'}){/if}</div>
+                    <div style="display: inline-block;width:120px;float: left;text-transform: uppercase;text-align: center;font-size: 10px;">Cena<br />{displayPrice price=$price currency=$id_currency}{if $tax}<br />({$tax}% {l s='tax incl.' mod='npsticketdelivery'}){/if}</div>
                     {/if}
-                    <div style="display: inline-block;width:120px;float: left;text-transform: uppercase;text-align: center;border-left: 1px solid black;">{l s='SID' mod='npsticketdelivery'}<br />{$id_seller}</div>
-                    <div style="display: inline-block;width:120px;float: left;text-transform: uppercase;text-align: center;border-left: 1px solid black;">{l s='NO' mod='npsticketdelivery'}<br />{$id_ticket}</div>
-                    <div style="display: inline-block;width:120px;float: left;text-transform: uppercase;text-align: center;border-left: 1px solid black;">{l s='GEN' mod='npsticketdelivery'}<br />{$generated}</div>
+                    <div style="display: inline-block;width:120px;float: left;text-transform: uppercase;text-align: center;border-left: 1px solid black;font-size: 10px;">{l s='SID' mod='npsticketdelivery'}<br />{$id_seller}</div>
+                    <div style="display: inline-block;width:120px;float: left;text-transform: uppercase;text-align: center;border-left: 1px solid black;font-size: 10px;">{l s='NO' mod='npsticketdelivery'}<br />{$id_ticket}</div>
+                    <div style="display: inline-block;width:120px;float: left;text-transform: uppercase;text-align: center;border-left: 1px solid black;font-size: 10px;">{l s='GEN' mod='npsticketdelivery'}<br />{$generated}</div>
                 </td>
             </tr>
         </table>

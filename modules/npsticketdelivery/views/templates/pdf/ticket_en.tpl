@@ -6,7 +6,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     </head>
-    <body style="font-family: verdana, sans-serif;">
+    <body style="font-family: arial, DejaVu;">
         <div style="transform: rotate(-90deg);position: absolute;top:227px;left: 10px">
             {$barcode}
             <div style="display: block;font-weight:700;font-size: 16px;">{$code}</div>
@@ -26,7 +26,6 @@
                             {/if}
                         </div>
                         <div style="font-weight:700;font-size:22px;text-overflow: ellipsis;white-space: nowrap;">{$name|truncate:40}</div>
-                        <br />
                         {if $type == 0 && isset($date)}
                         <div style="font-size: 10px;width:100px;text-transform: uppercase;float: left;display: inline-block;">{l s='Term' mod='npsticketdelivery'}</div>: <span style="font-weight: 700;float: left">{date_format(date_create($date), 'Y-m-d H:i')}</span><br />
                         {else if $type == 1 && isset($entries) && $entries > 0}
@@ -34,7 +33,6 @@
                         {else if $type == 1 && strtotime($from) > 0 && strtotime($to) > 0}
                         <div style="font-size: 10px;width:100px;text-transform: uppercase;float: left;display: inline-block;">{l s='Valid' mod='npsticketdelivery'}</div>: <span style="font-weight: 700;float: left">{date_format(date_create($from), 'Y-m-d')} - {date_format(date_create($to), 'Y-m-d')}</span><br />
                         {/if}
-                        <br />
                         <div style="font-size: 10px;width:100px;text-transform: uppercase;float: left;display: inline-block;">Person</div>: <span style="float: left;text-overflow: ellipsis;white-space: nowrap;">{$person|truncate:60}</span><br />
                         <div style="font-size: 10px;width:100px;text-transform: uppercase;float: left;display: inline-block;">Address</div>: <span style="float: left;text-overflow: ellipsis;white-space: nowrap;">{$address|truncate:60}</span><br />
                         <div style="font-size: 10px;width:100px;text-transform: uppercase;float: left;display: inline-block;">District</div>: <span style="float: left;text-overflow: ellipsis;white-space: nowrap;">{$district|truncate:60}</span><br />
