@@ -20,6 +20,7 @@ class AdminSellerCompanyController extends AdminController {
         $this->explicitSelect = true;
         $this->allow_export = true;
         $this->addRowAction('view');
+        $this->addRowAction('edit');
         $this->deleted = false;
         $this->base_tpl_view = 'seller_company_view.tpl';
 

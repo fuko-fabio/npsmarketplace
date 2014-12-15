@@ -107,7 +107,7 @@
                     {/if}
                     {if !empty($seller.email)}
                     <tr>
-                        <td>{l s='E-mail' mod='npsmarketplace'}</td>
+                        <td style="width: 30%;">{l s='E-mail' mod='npsmarketplace'}</td>
                         <td><a href="mailto:{$seller.email}"><i class="icon-envelope"></i>  {$seller.email}</a>
                     </td>
                     </tr>
