@@ -7,8 +7,8 @@ require_once(_PS_MODULE_DIR_.'npsticketdelivery/classes/CartTicket.php');
 require_once(_PS_MODULE_DIR_.'npsticketdelivery/classes/Ticket.php');
 
 class TicketsGenerator {
-    
-    public static function generateAndSend($id_cart_ticket) {
+
+    public static function generateAndSend($id_cart_ticket, $context = null) {
         $c_t = new CartTicket($id_cart_ticket);
         $tickets = CartTicket::getAllTickets($id_cart_ticket);
         $is_gift = Db::getInstance()->getValue('SELECT `gift` FROM '._DB_PREFIX_.'cart WHERE id_cart='.$c_t->id_cart);
@@ -16,28 +16,30 @@ class TicketsGenerator {
         foreach ($tickets as $ticket) {
             $ticket['gift'] = $is_gift;
             $ticket['seller_name'] = Db::getInstance()->getValue('SELECT `name` FROM '._DB_PREFIX_.'seller WHERE id_seller='.$ticket['id_seller']);
-            $t = TicketsGenerator::generateTicket($ticket);
+            $t = TicketsGenerator::generateTicket($ticket, $context);
             $attachments[] = array(
                 'content' => $t['content'],
                 'name' => $t['code'].'.pdf',
                 'mime' => 'application/pdf'
             );
         }
-        TicketsGenerator::sentTickets($c_t, $attachments);
+        TicketsGenerator::sentTickets($c_t, $attachments, $context);
         TicketsGenerator::updateOrdetState($c_t->id_cart);
     }
 
-    public static function generateTicket($ticket) {
+    public static function generateTicket($ticket, $context = null) {
         require_once(_PS_TCPDF_PATH_.'/barcodes.php');
         require_once(_PS_TOOL_DIR_.'dompdf/dompdf_config.inc.php');
         $code = TicketsGenerator::getCode($ticket);
         $barcodeobj = new TCPDFBarcode($code, 'C128');
         $ticket['barcode'] = $barcodeobj->getBarcodeHTML(1, 90);
         $ticket['code'] = $code;
-        $ctx = Context::getContext();
-        $smarty =  $ctx->smarty;
+        if ($context == null) {
+            $context = Context::getContext();
+        }
+        $smarty =  $context->smarty;
         $smarty->assign($ticket);
-        $html = $smarty->fetch(_PS_MODULE_DIR_.'npsticketdelivery/views/templates/pdf/ticket_'.$ctx->language->iso_code.'.tpl');
+        $html = $smarty->fetch(_PS_MODULE_DIR_.'npsticketdelivery/views/templates/pdf/ticket.tpl');
         $dompdf = new DOMPDF();
         $dompdf->load_html($html);
         $dompdf->render();
@@ -47,14 +49,17 @@ class TicketsGenerator {
         );
     }
 
-    public static function sentTickets($cart_ticket, $attachments) {
+    public static function sentTickets($cart_ticket, $attachments, $context = null) {
         $gift_msg = Db::getInstance()->executeS('SELECT gift_message FROM '._DB_PREFIX_.'cart WHERE id_cart='.$cart_ticket->id_cart);
         $mail_params = array(
             '{gift_message}' => $gift_msg,
             '{shop_name}' => Configuration::get('PS_SHOP_NAME'),
             '{shop_url}' => Tools::getHttpHost(true).__PS_BASE_URI__,
         );
-        Mail::Send(Context::getContext()->language->id,
+        if ($context == null) {
+            $context = Context::getContext();
+        }
+        Mail::Send($context->language->id,
             'tickets',
             Mail::l('Tickets'),
             $mail_params,

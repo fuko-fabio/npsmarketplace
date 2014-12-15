@@ -167,7 +167,7 @@ class NpsTicketDelivery extends Module {
                     $t->save();
                 }
             }
-            TicketsGenerator::generateAndSend($c_t->id);
+            TicketsGenerator::generateAndSend($c_t->id, $this->context);
             $this->sendInfoToSellers($cart, $c_t, $info_seller);
         }
     }

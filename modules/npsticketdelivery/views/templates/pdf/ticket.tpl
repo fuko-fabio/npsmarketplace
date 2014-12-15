@@ -11,18 +11,16 @@
             {$barcode}
             <div style="display: block;font-weight:700;font-size: 16px;">{$code}</div>
         </div>
-        <table>
+        <table style="position: absolute; left: 0px">
             <tr>
-                <td style="border: 1px dashed black;border-right: 1px solid black;padding: 0;width: 130px;height: 240px;">
-        
-                </td>
-                <td style="font-size: 14px;border-top: 1px dashed black;border-bottom: 1px dashed black;width: 500px">
+                <td><div style="border-left: 1px dashed black;border-right: 1px solid black;padding: 0;width: 130px;height: 240px;"></div></td>
+                <td style="padding-left:130px; font-size: 14px;border-top: 1px dashed black;border-bottom: 1px dashed black;width: 500px">
                     <div style="margin-left: 10px">
-                        <div style="font-weight:700;text-transform: uppercase;position:absolute;top:5px;right:90px;padding:5px;border:1px solid black;background: white">
+                        <div style="font-weight:700;text-transform: uppercase;position:absolute;top:5px;right:10px;padding:5px;border:1px solid black;background: white">
                             {if $type == 0}
-                            {l s='Ticket' mod='npsticketdelivery'}
+                                {l s='Ticket' mod='npsticketdelivery'}
                             {else if $type == 1}
-                            {l s='Carnet' mod='npsticketdelivery'}
+                                {l s='Carnet' mod='npsticketdelivery'}
                             {/if}
                         </div>
                         <div style="font-weight:700;font-size:22px;text-overflow: ellipsis;white-space: nowrap;">{$name|truncate:40}</div>
@@ -43,13 +41,13 @@
                     </div>
                     <br />
                     {if $gift}
-                    <div style="display: inline-block;width:120px;float: left;text-transform: uppercase;text-align: center;">{l s='Gift' mod='npsticketdelivery'}</div>
+                    <div style="display: inline-block;width:120px;float: left;text-transform: uppercase;text-align: center;font-size: 10px;">{l s='Gift' mod='npsticketdelivery'}</div>
                     {else}
-                    <div style="display: inline-block;width:120px;float: left;text-transform: uppercase;text-align: center;">{l s='Price' mod='npsticketdelivery'}<br />{displayPrice price=$price currency=$id_currency}{if $tax}<br />({$tax}% {l s='tax incl.' mod='npsticketdelivery'}){/if}</div>
+                    <div style="display: inline-block;width:120px;float: left;text-transform: uppercase;text-align: center;font-size: 10px;">{l s='Price' mod='npsticketdelivery'}<br />{displayPrice price=$price currency=$id_currency}{if $tax}<br />({$tax}% {l s='tax incl.' mod='npsticketdelivery'}){/if}</div>
                     {/if}
-                    <div style="display: inline-block;width:120px;float: left;text-transform: uppercase;text-align: center;border-left: 1px solid black;">{l s='Seller' mod='npsticketdelivery'}<br />{$id_seller}</div>
-                    <div style="display: inline-block;width:120px;float: left;text-transform: uppercase;text-align: center;border-left: 1px solid black;">{l s='NO' mod='npsticketdelivery'}<br />{$id_ticket}</div>
-                    <div style="display: inline-block;width:120px;float: left;text-transform: uppercase;text-align: center;border-left: 1px solid black;">{l s='Generated' mod='npsticketdelivery'}<br />{$generated}</div>
+                    <div style="display: inline-block;width:120px;float: left;text-transform: uppercase;text-align: center;border-left: 1px solid black;font-size: 10px;">{l s='SID' mod='npsticketdelivery'}<br />{$id_seller}</div>
+                    <div style="display: inline-block;width:120px;float: left;text-transform: uppercase;text-align: center;border-left: 1px solid black;font-size: 10px;">{l s='NO' mod='npsticketdelivery'}<br />{$id_ticket}</div>
+                    <div style="display: inline-block;width:120px;float: left;text-transform: uppercase;text-align: center;border-left: 1px solid black;font-size: 10px;">{l s='GEN' mod='npsticketdelivery'}<br />{$generated}</div>
                 </td>
             </tr>
         </table>

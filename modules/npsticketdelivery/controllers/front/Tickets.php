@@ -19,7 +19,7 @@ class NpsTicketDeliveryTicketsModuleFrontController extends ModuleFrontControlle
                 $ticket['gift'] = Db::getInstance()->getValue('SELECT `gift` FROM '._DB_PREFIX_.'cart WHERE id_cart='.$ticket['id_cart']);
                 $ticket['seller_name'] = Db::getInstance()->getValue('SELECT `name` FROM '._DB_PREFIX_.'seller WHERE id_seller='.$ticket['id_seller']);
 
-                $g_t = TicketsGenerator::generateTicket($ticket);
+                $g_t = TicketsGenerator::generateTicket($ticket, $this->context);
                 header('Content-Description: File Transfer');
                 header('Cache-Control: private, must-revalidate, post-check=0, pre-check=0, max-age=1');
                 header('Pragma: public');
