@@ -401,7 +401,21 @@
                 <!-- availability -->
                 <p id="availability_statut"{if ($product->quantity <= 0 && !$product->available_later && $allow_oosp) || ($product->quantity > 0 && !$product->available_now) || !$product->available_for_order || $PS_CATALOG_MODE} style="display: none;"{/if}>
                     {*<span id="availability_label">{l s='Availability:'}</span>*}
-                    <span id="availability_value"{if $product->quantity <= 0} class="warning_inline"{/if}>{if $product->quantity <= 0}{if $allow_oosp}{$product->available_later}{else}{l s='This product is no longer in stock'}{/if}{else}{$product->available_now}{/if}</span>
+                    <span id="availability_value"{if $product->quantity <= 0} class="warning_inline"{/if}>
+                        {if $product->quantity <= 0}
+                            {if $allow_oosp}
+                                {$product->available_later}
+                            {else}
+                                {if $extras.type == 0}
+                                    {l s='Tickets are currently not available'}
+                                {else if $extras.type == 1}
+                                    {l s='Carnets are currently not available'}
+                                {/if}
+                            {/if}
+                        {else}
+                            {$product->available_now}
+                        {/if}
+                    </span>
                 </p>
             {/if}
             <p id="availability_date"{if ($product->quantity > 0) || !$product->available_for_order || $PS_CATALOG_MODE || !isset($product->available_date) || $product->available_date < $smarty.now|date_format:'%Y-%m-%d'} style="display: none;"{/if}>
