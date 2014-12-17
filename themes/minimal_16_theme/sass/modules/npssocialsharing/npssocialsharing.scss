@@ -70,4 +70,18 @@
       }
     }
   }
+  @media (max-width: $screen-xs-max) {
+    padding: 10px 5px 10px calc((100% / 2) - 100px);
+
+    button {
+      border: 3px solid;
+      padding: 0;
+      width: 40px;
+      height: 40px;
+
+      i {
+        font-size: 16px;
+      }
+    }
+  }
 }

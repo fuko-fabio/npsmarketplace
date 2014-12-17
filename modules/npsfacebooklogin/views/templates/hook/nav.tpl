@@ -21,7 +21,7 @@
                 <a href="{$link->getModuleLink('npsfavorite', 'account')|escape:'html':'UTF-8'}" onclick="$.fancybox.showLoading();" title="{l s='My favorite products.' mod='npsfacebooklogin'}"><i class="icon-heart"></i> {l s='My favorite products' mod='npsfacebooklogin'}</a>
             </li>
             <li>
-                <a href="{$link->getPageLink('identity', true)|escape:'html'}" onclick="$.fancybox.showLoading();"><i class="icon-ticket"></i> {l s='Settings' mod='npsfacebooklogin'}</a>
+                <a href="{$link->getPageLink('identity', true)|escape:'html'}" onclick="$.fancybox.showLoading();"><i class="icon-user"></i> {l s='Settings' mod='npsfacebooklogin'}</a>
             </li>
             <li class="divider"></li>
             <li>

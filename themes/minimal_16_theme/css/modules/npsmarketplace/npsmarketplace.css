@@ -82,7 +82,7 @@
     .nps-product-seller-info .content .col-md-6 span {
       position: absolute;
       top: 40%;
-      left: 35%;
+      left: calc(50% - 35px);
       color: #333; }
 
 .nps-myaccount-block li {
@@ -176,6 +176,9 @@
       color: #ffaa00; }
     .nps-header-sell a:hover {
       color: #ffaa00; }
+  @media (max-width: 767px) {
+    .nps-header-sell {
+      display: none; } }
 
 .nps-towns-top {
   float: left;
@@ -190,7 +193,8 @@
     font-weight: bold;
     padding: 8px 10px 10px 10px;
     line-height: 18px;
-    cursor: pointer; }
+    cursor: pointer;
+    white-space: nowrap; }
     @media (max-width: 479px) {
       .nps-towns-top div.current {
         text-align: center;

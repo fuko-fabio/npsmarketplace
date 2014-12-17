@@ -1606,17 +1606,7 @@ div.star a:hover {
         position: relative;
         margin-bottom: 0;
         padding-bottom: 13px;
-        &:after {
-          display: block;
-          content: "\f055";
-          font-family: $font-icon;
-          position: absolute;
-          right: 0;
-          top: 1px;
-        }
-        &.active:after {
-          content: "\f056";
-        }
+        font-size: 14px;
       }
       a {
         color: $dark-text-color;

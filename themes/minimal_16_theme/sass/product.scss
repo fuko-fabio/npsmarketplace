@@ -1249,6 +1249,10 @@ Quick View Styles
           color: $primary-color;
           border: none;
         }
+        @media (max-width: $screen-xs-max) {
+          font-size: 12px;
+          padding: 10px 10px;
+        }
       }
       &.active {
         border-color: transparent;

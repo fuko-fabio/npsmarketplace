@@ -6543,16 +6543,8 @@ div.star a:hover {
         .footer-container #footer h4 {
           position: relative;
           margin-bottom: 0;
-          padding-bottom: 13px; }
-          .footer-container #footer h4:after {
-            display: block;
-            content: "\f055";
-            font-family: "FontAwesome";
-            position: absolute;
-            right: 0;
-            top: 1px; }
-          .footer-container #footer h4.active:after {
-            content: "\f056"; } }
+          padding-bottom: 13px;
+          font-size: 14px; } }
       .footer-container #footer h4 a {
         color: #353535; }
     .footer-container #footer ul li {

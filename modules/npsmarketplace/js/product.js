@@ -37,7 +37,7 @@ $(document).ready(function(){
         setAddForm();
 
     CollapsibleLists.apply();
-    $('.collapsibleListClosed').click()
+    $('.collapsibleListClosed').click();
 });
 
 function setTicketForm() {
