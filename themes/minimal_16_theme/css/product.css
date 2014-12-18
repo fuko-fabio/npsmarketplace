@@ -1003,6 +1003,10 @@ Quick View Styles
       background: none;
       color: #ffaa00;
       border: none; }
+    @media (max-width: 767px) {
+      .tabs-container .nav-tabs li a {
+        font-size: 12px;
+        padding: 10px 10px; } }
   .tabs-container .nav-tabs li.active {
     border-color: transparent;
     border-bottom: 3px solid #ffaa00; }

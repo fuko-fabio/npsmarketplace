@@ -72,8 +72,17 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             $link_rewrite = array();
             $images = array();
             $removed_images = array();
-            if (isset($_POST['category']))
-                $categories = $_POST['category'];
+            if (isset($_POST['category'])) {
+                $categs = $_POST['category'];
+                foreach ($categs as $key => $value) {
+                    if (strpos($value, '|') !== false) {
+                        $ids = explode('|', $value);
+                        $categories = array_merge($categories, $ids);
+                    } else
+                        $categories[] = $value;
+                }
+                $categories = array_unique($categories);
+            }
 
             if(isset($_POST['images']))
                 $images = $_POST['images'];
@@ -84,17 +93,6 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             if($type == 2) {
                 $quantity = 1;
                 $price = 0;
-            }
-
-            $free_cat_id = Configuration::get('NPS_FREE_CATEGORY_ID');
-            if (isset($free_cat_id) && !empty($free_cat_id)){
-                if ($price == 0) {
-                        $categories[] = $free_cat_id;
-                } else {
-                    if (in_array($free_cat_id, $categories)) {
-                        $categories = array_diff($categories, $free_cat_id);
-                    }
-                }
             }
 
             if(Tools::getValue('form_token') != $this->context->cookie->__get('form_token')) {
@@ -142,6 +140,18 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                         $this -> errors[] = $this->module->l('Product time is required', 'Product');
                     else if (!Validate::isTime($time))
                         $this -> errors[] = $this->module->l('Invalid time format', 'Product');
+                    
+                    if (strtotime($date.' '.$time) < time())
+                        $this -> errors[] = $this->module->l('You are trying to add event in the past. Check event date and time.', 'Product');
+                    if (strtotime($expiry_date) > strtotime($date))
+                        $this -> errors[] = $this->module->l('Expiry date cannot be later than event date.', 'Product');
+                } if ($type == 1) {
+                    if (isset($date_to) && !empty($date_to) && !Validate::isDateFormat($date_to))
+                        $this -> errors[] = $this->module->l('Invalid carnet \'date to\' format', 'Product');
+                    if (isset($date_from) && !empty($date_from) && !Validate::isDateFormat($date_from))
+                        $this -> errors[] = $this->module->l('Invalid carnet \'date from\' format', 'Product');
+                    if (isset($entries) && !empty($entries) && !Validate::isInt($entries))
+                        $this -> errors[] = $this->module->l('Invalid entries value', 'Product');
                 }
                 if (empty($quantity))
                     $this -> errors[] = $this->module->l('Product quantity is required', 'Product');
@@ -181,6 +191,17 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                 $link_rewrite[$lang['id_lang']] = Tools::link_rewrite($p_name);
             }
 
+            $free_cat_id = Configuration::get('NPS_FREE_CATEGORY_ID');
+            if (isset($free_cat_id) && !empty($free_cat_id)){
+                if ($price == 0) {
+                        $categories[] = $free_cat_id;
+                } else {
+                    if (in_array($free_cat_id, $categories)) {
+                        $categories = array_diff($categories, $free_cat_id);
+                    }
+                }
+            }
+
             if (empty($this -> errors)) {
                 $this->_product -> price = $price;
                 $this->_product -> name = $name;
@@ -198,28 +219,35 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                 if (!$this->_product->save()) {
                     $this->errors[] = $this->module->l('Unable to save product.', 'Product');
                 } else {
-                    $this->context->cookie->__unset('form_token');
-                    StockAvailable::setProductOutOfStock($this->_product->id, 0);
-                    $this->saveTicketFeatures($town, $district, $address);
-
-                    $this->_product->updateCategories($categories);
-                    if(empty($current_id_product)) {
-                        if ($type == 0 || $type == 2)
-                            $this->_product->newEventCombination($date, $time, (int)$quantity, $expiry_date, $this->context->shop->id);
-                        else if ($type == 1) {
-                            $this->saveCarnetFeatures($entries, $date_from, $date_to);
-                            StockAvailable::setQuantity((int) $this->_product->id, null, $quantity);
-                            $expDate = new ProductAttributeExpiryDate();
-                            $expDate->id_product = $this->_product->id;
-                            $expDate->expiry_date = $expiry_date;
-                            $expDate->save();
+                    try {
+                        $this->context->cookie->__unset('form_token');
+                        StockAvailable::setProductOutOfStock($this->_product->id, 0);
+                        $this->saveTicketFeatures($town, $district, $address);
+    
+                        if(empty($current_id_product)) {
+                            $this->_seller->assignProduct($this->_product->id);
+                            if ($type == 0 || $type == 2)
+                                $this->_product->newEventCombination($date, $time, (int)$quantity, $expiry_date, $this->context->shop->id);
+                            else if ($type == 1) {
+                                $this->saveCarnetFeatures($entries, $date_from, $date_to);
+                                StockAvailable::setQuantity((int) $this->_product->id, null, $quantity);
+                                $expDate = new ProductAttributeExpiryDate();
+                                $expDate->id_product = $this->_product->id;
+                                $expDate->expiry_date = $expiry_date;
+                                $expDate->save();
+                            }
                         }
-                        $this->_seller->assignProduct($this->_product->id);
+                        $this->_product->updateCategories($categories);
+                        $this->saveProductImages($images);
+                        $this->removeProductImages($removed_images, $current_id_product);
+                        $this->_product->persistExtraInfo($type, $lat, $lng, $video_url);
+                        Tools::redirect($this->context->link->getModuleLink('npsmarketplace', 'ProductsList'));
+                    } catch(Exception $e) {
+                        error_log($e);
+                        $this->_product->delete();
+                        $this->_product = new Product();
+                        $this->errors[] = $this->module->l('Unable to save product. Unexpected error occured. Please try again or contact with customer support.', 'Product');
                     }
-                    $this->saveProductImages($images);
-                    $this->removeProductImages($removed_images, $current_id_product);
-                    $this->_product->persistExtraInfo($type, $lat, $lng, $video_url);
-                    Tools::redirect($this->context->link->getModuleLink('npsmarketplace', 'ProductsList'));
                 }
             }
         }

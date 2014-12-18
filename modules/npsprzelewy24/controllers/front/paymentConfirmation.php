@@ -15,11 +15,12 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
     public function initContent() {
         parent::initContent();
         $this->setTemplate('payment_confirmation.tpl');
+        $is_renew = Tools::getValue('renew');
 
         if(isset($_GET['order_id'])) {
             $cart = Cart::getCartByOrderId($_GET['order_id']);
             if($cart == null) {
-                $this -> errors[] = sprintf($this->module->l('Requested order with id %s not exists. Please try to contact the customer support', 'paymentConfirmation'), $_GET['order_id']);
+                $this->errors[] = sprintf($this->module->l('Requested order with id %s not exists. Please try to contact the customer support', 'paymentConfirmation'), $_GET['order_id']);
                 return;
             }
         } else {
@@ -27,7 +28,7 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
         }
 
         $payment = P24Payment::getByCartId($cart->id);
-        if ($payment != null && $payment->id != null) {
+        if ($payment != null && $payment->id != null && !$is_renew) {
             $this -> errors[] = $this->module->l('Payment already finalized. Go to your account and check orders history.', 'paymentConfirmation');
             return;
         }
@@ -120,7 +121,7 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
         }
         $result = P24::transactionRegister($data);
 
-        if ($result['error'] == 0) {
+        if (isset($result) && $result['error'] == 0) {
             Tools::redirect(P24::url().'/trnRequest/'.$result['token']);
         } else {
             $id_order = Order::getOrderByCartId($cart->id);

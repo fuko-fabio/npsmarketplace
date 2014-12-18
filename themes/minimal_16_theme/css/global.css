@@ -5329,10 +5329,9 @@ sup {
   font-size: 16px;
   margin-bottom: 10px; }
   .alert ul, .alert ol {
-    padding-left: 15px;
-    margin-left: 27px; }
+    padding-left: 15px; }
     .alert ul li, .alert ol li {
-      list-style-type: decimal;
+      list-style-type: none;
       font-weight: normal; }
   .alert .alert-content {
     display: block;
@@ -6543,16 +6542,8 @@ div.star a:hover {
         .footer-container #footer h4 {
           position: relative;
           margin-bottom: 0;
-          padding-bottom: 13px; }
-          .footer-container #footer h4:after {
-            display: block;
-            content: "\f055";
-            font-family: "FontAwesome";
-            position: absolute;
-            right: 0;
-            top: 1px; }
-          .footer-container #footer h4.active:after {
-            content: "\f056"; } }
+          padding-bottom: 13px;
+          font-size: 14px; } }
       .footer-container #footer h4 a {
         color: #353535; }
     .footer-container #footer ul li {
@@ -7669,9 +7660,6 @@ div.star.star_hover:after {
   padding: 10px; }
 #product_comparison #social-share-compare {
   margin-bottom: 50px; }
-
-.detail_step_by_step .label {
-  color: #333; }
 
 .nav-tabs {
   border-color: #bbb; }

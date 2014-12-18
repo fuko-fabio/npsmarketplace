@@ -59,7 +59,8 @@ class NpsPrzelewy24 extends PaymentModule {
             && $this->registerHook('payment')
             && $this->registerHook('adminSellerView')
             && $this->registerHook('displayOrderDetail')
-            && $this->registerHook('displayCustomerAccount');
+            && $this->registerHook('displayCustomerAccount')
+            && $this->registerHook('displayOrderDetail');
     }
 
     public function uninstall() {
@@ -68,6 +69,7 @@ class NpsPrzelewy24 extends PaymentModule {
             && $this->unregisterHook('payment')
             && $this->unregisterHook('displayOrderDetail')
             && $this->unregisterHook('adminSellerView')
+            && $this->unregisterHook('displayOrderDetail')
             && $this->deleteTab()
             && $this->deleteOrderStates()
             && $this->deleteTables();
@@ -405,6 +407,20 @@ class NpsPrzelewy24 extends PaymentModule {
     public function hookPayment() {
         $this->context->smarty->assign('p24_payment_url', $this->context->link->getModuleLink('npsprzelewy24', 'paymentConfirmation'));
         return $this->display(__FILE__, 'payment.tpl');
+    }
+
+    public function hookDisplayOrderDetail($params) {
+        $order = $params['order'];
+        $result = Db::getInstance()->executeS('SELECT id_order_state FROM `'._DB_PREFIX_.'order_history` WHERE `id_order`="'.$order->id.'"');
+
+        foreach ($result as $key => $value)
+            if ($value['id_order_state'] == Configuration::get('NPS_P24_ORDER_STATE_ACCEPTED'))
+                return;
+
+        $this->context->smarty->assign(
+            'p24_retryPaymentUrl', $this->context->link->getModuleLink('npsprzelewy24', 'paymentConfirmation', array('order_id' => $order->id, 'renew' => true))
+        );
+        return $this->display(__FILE__, 'renew_payment.tpl');
     }
 
     public function reportError($logs = array()) {

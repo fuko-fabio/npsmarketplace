@@ -30,6 +30,7 @@ class CategoriesList {
                 'link' => $this->context->link->getCategoryLink($item['id_category'], $item['link_rewrite']),
                 'name' =>  $item['name'],
                 'desc'=>  $item['description'],
+                'id_parent'=>  $item['id_parent'],
                 'children' => array()
             );
         }
@@ -80,6 +81,7 @@ class CategoriesList {
             'link' => $this->context->link->getCategoryLink($id_category, $resultIds[$id_category]['link_rewrite']),
             'name' =>  $resultIds[$id_category]['name'],
             'desc'=>  $resultIds[$id_category]['description'],
+            'id_parent'=>  $resultIds[$id_category]['id_parent'],
             'children' => $children
         );
 
