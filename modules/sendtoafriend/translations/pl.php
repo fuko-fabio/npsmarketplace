@@ -3,6 +3,7 @@
 global $_MODULE;
 $_MODULE = array();
 $_MODULE['<{sendtoafriend}prestashop>product_page_2107f6398c37b4b9ee1e1b5afb5d3b2a'] = 'Wyślij do znajomego';
+$_MODULE['<{sendtoafriend}prestashop>sendtoafriend_ajax_22c4733a9ceb239bf825a0cecd1cfaec'] = 'Znajomy';
 $_MODULE['<{sendtoafriend}prestashop>sendtoafriend-extra_11cbd9ec2e4b628c371094b6361b9c96'] = 'Twój e-mail został poprawnie wysłany';
 $_MODULE['<{sendtoafriend}prestashop>sendtoafriend-extra_36fb3f59b4a75949a0db90e7011b21f2'] = 'Nie można było wysłać Twojego e-maila. Sprawdź adres e-mail i spróbuj ponownie.';
 $_MODULE['<{sendtoafriend}prestashop>sendtoafriend-extra_2107f6398c37b4b9ee1e1b5afb5d3b2a'] = 'Wyślij do znajomego';
@@ -23,4 +24,3 @@ $_MODULE['<{sendtoafriend}prestashop>sendtoafriend_e55de03786f359e2b133f2a74612e
 $_MODULE['<{sendtoafriend}prestashop>sendtoafriend_19f41c3d6db934fb2db1840ddefd2c51'] = 'E-mail znajomego';
 $_MODULE['<{sendtoafriend}prestashop>sendtoafriend_2541d938b0a58946090d7abdde0d3890'] = 'Wyślij';
 $_MODULE['<{sendtoafriend}prestashop>sendtoafriend_68728c1897e5936032fe21ffb6b10c2e'] = 'Powrót do strony produktu.';
-$_MODULE['<{sendtoafriend}prestashop>sendtoafriend_ajax_22c4733a9ceb239bf825a0cecd1cfaec'] = 'Znajomy';

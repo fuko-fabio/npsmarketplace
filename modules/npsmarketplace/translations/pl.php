@@ -23,8 +23,11 @@ $_MODULE['<{npsmarketplace}prestashop>npsmarketplace_675e31b94580e2642405e2f8586
 $_MODULE['<{npsmarketplace}prestashop>npsmarketplace_839f4d959affa0625b283e528b77d1e9'] = 'Sprzedawcy';
 $_MODULE['<{npsmarketplace}prestashop>npsmarketplace_0edd523d13dd109722453df873485d21'] = 'Miasta';
 $_MODULE['<{npsmarketplace}prestashop>npsmarketplace_4b9fc0ff41a2ee8963ecc9ac50a67666'] = 'Dzielnice';
+$_MODULE['<{npsmarketplace}prestashop>tab_content_dd7bf230fde8d4836917806aff6a6b27'] = 'Adres';
+$_MODULE['<{npsmarketplace}prestashop>tab_content_e0bb2f66e5b61be3235bf8969979de19'] = 'Dzielnica';
+$_MODULE['<{npsmarketplace}prestashop>tab_content_c16dac173aa8377a1c07aed8e0472f7c'] = 'Miasto';
 $_MODULE['<{npsmarketplace}prestashop>tab_34e2d1989a1dbf75cd631596133ee5ee'] = 'Film';
-$_MODULE['<{npsmarketplace}prestashop>tab_46f3ea056caa3126b91f3f70beea068c'] = 'Mapa';
+$_MODULE['<{npsmarketplace}prestashop>tab_ce5bf551379459c1c61d2a204061c455'] = 'Lokalizacja';
 $_MODULE['<{npsmarketplace}prestashop>tab_863171b8c7f55d2c225958622d431eb7'] = 'Regulamin';
 $_MODULE['<{npsmarketplace}prestashop>admindistrictscontroller_d3b206d196cd6be3a2764c1fb90b200f'] = 'Usuń wybrane';
 $_MODULE['<{npsmarketplace}prestashop>admindistrictscontroller_e25f0ecd41211b01c83e5fec41df4fe7'] = 'Usunąć wybrane obiekty?';
@@ -246,7 +249,6 @@ $_MODULE['<{npsmarketplace}prestashop>product_fieldset_05a79b3e220b02798e20b0f4e
 $_MODULE['<{npsmarketplace}prestashop>product_fieldset_7388fa8bf129112372e7a8b77955c33d'] = 'Ogłoszenie';
 $_MODULE['<{npsmarketplace}prestashop>product_fieldset_aaa6e61ccb9bc32c365cac9fe5b8fc15'] = 'Nazwa wydarzenia';
 $_MODULE['<{npsmarketplace}prestashop>product_fieldset_36e3402e4ddef43e92b99aef016c057e'] = 'Krótki opis';
-$_MODULE['<{npsmarketplace}prestashop>product_fieldset_ea64f3bf611cb21dfc37940172cdef03'] = 'Krótki opis będzie widoczny na liście wydarzen';
 $_MODULE['<{npsmarketplace}prestashop>product_fieldset_b5a7adde1af5c87d7fd797b6245c2a39'] = 'Opis';
 $_MODULE['<{npsmarketplace}prestashop>product_fieldset_3e0d90910ff7f044d45c4fdc864439d1'] = 'Ogłoszenie';
 $_MODULE['<{npsmarketplace}prestashop>product_fieldset_837b955eed6a37b5f04b7332d48c31d2'] = 'Po dodaniu wydarzenia nie będzie możliwości edycji typu karnetu oraz wartości jakie zostały mu przypisane.';
@@ -257,13 +259,13 @@ $_MODULE['<{npsmarketplace}prestashop>product_fieldset_f38058e40825bc4680cbc09bd
 $_MODULE['<{npsmarketplace}prestashop>product_fieldset_2b05e1a0e6c62dbf0018af09ed38f4e0'] = 'Format: YYYY-MM-DD';
 $_MODULE['<{npsmarketplace}prestashop>product_fieldset_e12167aa0a7698e6ebc92b4ce3909b53'] = 'Do';
 $_MODULE['<{npsmarketplace}prestashop>product_fieldset_3601146c4e948c32b6424d2c0a7f0118'] = 'Cena';
-$_MODULE['<{npsmarketplace}prestashop>product_fieldset_8beb41d3a028d4eb025f58bfa68fbfe9'] = 'Przykład: 120.50';
 $_MODULE['<{npsmarketplace}prestashop>product_fieldset_694e8d1f2ee056f98ee488bdc4982d73'] = 'Ilość';
 $_MODULE['<{npsmarketplace}prestashop>product_fieldset_359ff4ae83f885f7d3227a4353ea525e'] = 'Data wydarzenia';
 $_MODULE['<{npsmarketplace}prestashop>product_fieldset_ebf8c6ad06d0246a3182799d95190f01'] = 'Godzina wydarzenia';
 $_MODULE['<{npsmarketplace}prestashop>product_fieldset_00c5dad1d6e5fc772f10d2b3433e8a76'] = 'Format: HH:MM';
 $_MODULE['<{npsmarketplace}prestashop>product_fieldset_3430a5363df0023906b701cf80afa03d'] = 'Data wygaśnięcia oferty';
 $_MODULE['<{npsmarketplace}prestashop>product_fieldset_08f676de94c28954676f87d2dabbe614'] = 'Numer referencyjny oferty';
+$_MODULE['<{npsmarketplace}prestashop>product_fieldset_8beb41d3a028d4eb025f58bfa68fbfe9'] = 'Przykład: 120.50';
 $_MODULE['<{npsmarketplace}prestashop>product_fieldset_ec0f66006fd8234fcb42214dc4f85557'] = 'Lokalizacja wydarzenia';
 $_MODULE['<{npsmarketplace}prestashop>product_fieldset_c16dac173aa8377a1c07aed8e0472f7c'] = 'Miasto';
 $_MODULE['<{npsmarketplace}prestashop>product_fieldset_e0bb2f66e5b61be3235bf8969979de19'] = 'Dzielnica';
@@ -272,7 +274,6 @@ $_MODULE['<{npsmarketplace}prestashop>product_fieldset_c619291b1b305e2be5e9177d5
 $_MODULE['<{npsmarketplace}prestashop>product_fieldset_bedaa62346f986c7af7b1b6c0965f4a7'] = 'Złap marker, przesuń i upuść w miejscu wydarzenia';
 $_MODULE['<{npsmarketplace}prestashop>product_fieldset_3b563524fdb17b4a86590470d40bef74'] = 'Media';
 $_MODULE['<{npsmarketplace}prestashop>product_fieldset_b11ddc7e1671c0bd22dc89dd757508d4'] = 'Zdjęcia';
-$_MODULE['<{npsmarketplace}prestashop>product_fieldset_8423d9690f4654db7c9b5f15e8c91b8a'] = 'Przynajmniej jedno zdjęcie jest wymagane. Maksymalny rozmiar 8MB. Zalecany minimalny rozmiar 458px X 458px';
 $_MODULE['<{npsmarketplace}prestashop>product_fieldset_23c484719a9df048cf0d429c5b664b2a'] = 'Kod filmu do umieszczenia na stronie';
 $_MODULE['<{npsmarketplace}prestashop>product_fieldset_ac84aee4e29545eff60de61472840c4c'] = 'Wklej tutaj kod do umieszczenia na stronie pobrany z serwisy YouTube/Vimeo';
 $_MODULE['<{npsmarketplace}prestashop>product_fieldset_8d2e39d418da38fe23445ba122a972ef'] = 'Zobacz jak dodać film';
