@@ -109,14 +109,14 @@
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        background: $primary-color;
+        background: $base-border-color;
 
         .number {
           font-family: $font-montser;
           font-weight: 700;
           font-size: 20px;
           line-height: 20px;
-          color: $light-text-color;
+          color: $base-text-color;
         }
         .name {
           font-size: 20px;

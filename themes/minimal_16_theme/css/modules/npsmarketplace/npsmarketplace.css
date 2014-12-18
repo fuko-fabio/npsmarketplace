@@ -99,7 +99,7 @@
     position: absolute;
     left: 35px;
     font-size: 14px; }
-  .nps-myaccount-block a:hover {
+  .nps-myaccount-block a:hover, .nps-myaccount-block a.active {
     color: #ffaa00; }
 
 .nps-sellers-list h2 {

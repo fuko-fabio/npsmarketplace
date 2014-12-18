@@ -98,6 +98,6 @@
 		</table>
 		<div id="block-order-detail" class="unvisible">&nbsp;</div>
 	{else}
-		<p class="alert alert-warning"><span class="alert-content">{l s='You have not placed any orders.'}</span></p>
+		<p class="alert alert-info"><span class="alert-content">{l s='You have not placed any orders.'}</span></p>
 	{/if}
 </div>

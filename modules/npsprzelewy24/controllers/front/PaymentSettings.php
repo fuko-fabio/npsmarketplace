@@ -130,6 +130,11 @@ class NpsPrzelewy24PaymentSettingsModuleFrontController extends ModuleFrontContr
         }
     }
 
+    public function init() {
+        $this->page_name = 'payment-settings';
+        parent::init();
+    }
+
     public function initContent() {
         parent::initContent();
         $seller = new Seller(null, $this->context->customer->id);

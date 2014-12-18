@@ -33,6 +33,7 @@ class NpsFavoriteAccountModuleFrontController extends ModuleFrontController
 
 	public function init()
 	{
+	    $this->page_name = 'favourite';
 		parent::init();
 
 		require_once($this->module->getLocalPath().'NpsFavoriteProduct.php');
@@ -41,7 +42,6 @@ class NpsFavoriteAccountModuleFrontController extends ModuleFrontController
 	public function initContent()
 	{
 		parent::initContent();
-
 		if (!Context::getContext()->customer->isLogged())
 			Tools::redirect('index.php?controller=authentication&redirect=module&module=npsfavorite&action=account');
 

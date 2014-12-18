@@ -73,13 +73,13 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      background: #ffaa00; }
+      background: #d6d4d4; }
       .nps-calendar .content .day .top .number {
         font-family: "Montserrat", sans-serif;
         font-weight: 700;
         font-size: 20px;
         line-height: 20px;
-        color: #fff; }
+        color: #333; }
       .nps-calendar .content .day .top .name {
         font-size: 20px;
         line-height: 20px;
