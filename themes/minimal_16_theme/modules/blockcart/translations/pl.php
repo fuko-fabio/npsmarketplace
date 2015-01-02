@@ -17,7 +17,7 @@ $_MODULE['<{blockcart}minimal_16_theme>blockcart_5f2effb52d25d197793288dfa94c27c
 $_MODULE['<{blockcart}minimal_16_theme>blockcart_c9cc8cce247e49bae79f15173ce97354'] = 'Zapisz';
 $_MODULE['<{blockcart}minimal_16_theme>blockcart_20351b3328c35ab617549920f5cb4939'] = 'Dostosowywanie #';
 $_MODULE['<{blockcart}minimal_16_theme>blockcart_ed6e9a09a111035684bb23682561e12d'] = 'Usuń wydarzenie z koszyka';
-$_MODULE['<{blockcart}minimal_16_theme>blockcart_c6995d6cc084c192bc2e742f052a5c74'] = 'Darmowa wysyłka!';
+$_MODULE['<{blockcart}minimal_16_theme>blockcart_c6995d6cc084c192bc2e742f052a5c74'] = 'Na adres mailowy';
 $_MODULE['<{blockcart}minimal_16_theme>blockcart_e7a6ca4e744870d455a57b644f696457'] = 'Za darmo!';
 $_MODULE['<{blockcart}minimal_16_theme>blockcart_f2a6c498fb90ee345d997f888fce3b18'] = 'Usuń';
 $_MODULE['<{blockcart}minimal_16_theme>blockcart_0c3bf3014aafb90201805e45b5e62881'] = 'Pokaż mój koszyk';
@@ -32,11 +32,11 @@ $_MODULE['<{blockcart}minimal_16_theme>blockcart_09dc02ecbb078868a3a86dded030076
 $_MODULE['<{blockcart}minimal_16_theme>blockcart_ea9cf7e47ff33b2be14e6dd07cbcefc6'] = 'Wysyłka';
 $_MODULE['<{blockcart}minimal_16_theme>blockcart_ba794350deb07c0c96fe73bd12239059'] = 'Pakowanie';
 $_MODULE['<{blockcart}minimal_16_theme>blockcart_4b78ac8eb158840e9638a3aeb26c4a9d'] = 'Podatek';
-$_MODULE['<{blockcart}minimal_16_theme>blockcart_96b0141273eabab320119c467cdcaf17'] = 'Razem';
+$_MODULE['<{blockcart}minimal_16_theme>blockcart_96b0141273eabab320119c467cdcaf17'] = 'Cena';
 $_MODULE['<{blockcart}minimal_16_theme>blockcart_0d11c2b75cf03522c8d97938490466b2'] = 'Podane ceny są cenami brutto';
 $_MODULE['<{blockcart}minimal_16_theme>blockcart_41202aa6b8cf7ae885644717dab1e8b4'] = 'Podane ceny są cenami netto';
 $_MODULE['<{blockcart}minimal_16_theme>blockcart_377e99e7404b414341a9621f7fb3f906'] = 'Realizuj zamówienie';
-$_MODULE['<{blockcart}minimal_16_theme>crossselling_ef2b66b0b65479e08ff0cce29e19d006'] = 'Klienci którzy zakupili ten produkt kupili również:';
+$_MODULE['<{blockcart}minimal_16_theme>crossselling_ef2b66b0b65479e08ff0cce29e19d006'] = 'Klienci, którzy zakupili ten produkt, kupili również:';
 $_MODULE['<{blockcart}minimal_16_theme>crossselling_dd1f775e443ff3b9a89270713580a51b'] = 'Poprzedni';
 $_MODULE['<{blockcart}minimal_16_theme>crossselling_4351cfebe4b61d8aa5efa1d020710005'] = 'Zobacz';
 $_MODULE['<{blockcart}minimal_16_theme>crossselling_10ac3d04253ef7e1ddc73e6091c0cd55'] = 'Następny';
@@ -46,7 +46,8 @@ $_MODULE['<{blockcart}minimal_16_theme>blockcart_694e8d1f2ee056f98ee488bdc4982d7
 $_MODULE['<{blockcart}minimal_16_theme>blockcart_e5694b7726ceaf2f057e5f06cf86209e'] = 'W Twoim koszyku jest [1]%d[/1] biletów/karnetów';
 $_MODULE['<{blockcart}minimal_16_theme>blockcart_fc86c43dbffcadc193832a310f7a444a'] = 'W Twoim koszyku jest jeden bilet/karnet';
 $_MODULE['<{blockcart}minimal_16_theme>blockcart_db205f01b4fd580fb5daa9072d96849d'] = 'Ilość biletów/karnetów';
-$_MODULE['<{blockcart}minimal_16_theme>blockcart_f4e8b53a114e5a17d051ab84d326cae5'] = 'Przesyłka';
+$_MODULE['<{blockcart}minimal_16_theme>blockcart_21034ae6d01a83e702839a72ba8a77b0'] = 'Darmowa';
+$_MODULE['<{blockcart}minimal_16_theme>blockcart_1f87346a16cf80c372065de3c54c86d9'] = 'W sumie';
+$_MODULE['<{blockcart}minimal_16_theme>blockcart_f4e8b53a114e5a17d051ab84d326cae5'] = 'Wysyłka';
 $_MODULE['<{blockcart}minimal_16_theme>blockcart_300225ee958b6350abc51805dab83c24'] = 'Kontynuuj zakupy';
-$_MODULE['<{blockcart}minimal_16_theme>blockcart_7e0bf6d67701868aac3116ade8fea957'] = 'Zapłać';
-$_MODULE['<{blockcart}minimal_16_theme>blockcart_46b5f570c1c3c9375a9a6960a952ffc6'] = 'Po kliknięciu przycisku „Zapłać” znajdziesz się na stronie, gdzie następnie sfinalizujesz zakupy poprzez dokonanie płatności. ';
+$_MODULE['<{blockcart}minimal_16_theme>blockcart_7e0bf6d67701868aac3116ade8fea957'] = 'Przejdź do koszyka';

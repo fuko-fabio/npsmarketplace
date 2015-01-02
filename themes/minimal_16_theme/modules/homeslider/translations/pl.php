@@ -21,7 +21,7 @@ $_MODULE['<{homeslider}minimal_16_theme>homeslider_0f059227d0a750ce652337d911879
 $_MODULE['<{homeslider}minimal_16_theme>homeslider_8cf45ba354f4725ec8a0d31164910895'] = 'Nie ustawione zdjęcie';
 $_MODULE['<{homeslider}minimal_16_theme>homeslider_7f82c65d548588c8d5412463c182e450'] = 'Konfiguracja nie może zostać zaktualizowana';
 $_MODULE['<{homeslider}minimal_16_theme>homeslider_20015706a8cbd457cbb6ea3e7d5dc9b3'] = 'Konfiguracja zaktualizowana';
-$_MODULE['<{homeslider}minimal_16_theme>homeslider_7cc92687130ea12abb80556681538001'] = 'Błąd podczas uploadu zdjęcia';
+$_MODULE['<{homeslider}minimal_16_theme>homeslider_7cc92687130ea12abb80556681538001'] = 'Błąd podczas ładowania zdjęcia';
 $_MODULE['<{homeslider}minimal_16_theme>homeslider_cdf841e01e10cae6355f72e6838808eb'] = 'Slajd nie może zostać dodany';
 $_MODULE['<{homeslider}minimal_16_theme>homeslider_eb28485b92fbf9201918698245ec6430'] = 'Slajd nie może zostać zaktualizowany';
 $_MODULE['<{homeslider}minimal_16_theme>homeslider_b9f5c797ebbf55adccdd8539a65a0241'] = 'Wyłączony';
