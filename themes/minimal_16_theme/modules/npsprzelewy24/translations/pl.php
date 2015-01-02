@@ -163,6 +163,9 @@ $_MODULE['<{npsprzelewy24}minimal_16_theme>payment_return_0103106e5b047a944d727f
 $_MODULE['<{npsprzelewy24}minimal_16_theme>payment_return_4082ea29b4f196c4f60533500139725a'] = 'Śledź zamówienie';
 $_MODULE['<{npsprzelewy24}minimal_16_theme>payment_return_9390390581f54c65d6acfc8da4e17362'] = 'Powrót do zamówień';
 $_MODULE['<{npsprzelewy24}minimal_16_theme>payment_c8ed360cbe1ba919f8c40f07a31125d7'] = 'Zapłać z Przelewy24';
+$_MODULE['<{npsprzelewy24}minimal_16_theme>renew_payment_c453a4b8e8d98e82f35b67f433e3b4da'] = 'Płatność';
+$_MODULE['<{npsprzelewy24}minimal_16_theme>renew_payment_446d1b4378848e7bcef699407f933a56'] = 'Twoja płatność została anulowana bądź nie potwierdzona przez serwis Przelewy24. Jeśli nie dokończyłeś płatności  możesz ponownie dokonać zapłaty klikając \"Zapłać\".';
+$_MODULE['<{npsprzelewy24}minimal_16_theme>renew_payment_99938b17c91170dfb0c2f3f8bc9f2a85'] = 'Zapłać';
 $_MODULE['<{npsprzelewy24}minimal_16_theme>seller_generate_report_08512c0c5db8120b6786f387ee84a8a8'] = 'Raport sprzedaży';
 $_MODULE['<{npsprzelewy24}minimal_16_theme>seller_generate_report_50d9d560b468ec07f8b4fe721fcae24e'] = 'Data od';
 $_MODULE['<{npsprzelewy24}minimal_16_theme>seller_generate_report_bad39a65b5302bb8628585aae59da36b'] = 'Data do';

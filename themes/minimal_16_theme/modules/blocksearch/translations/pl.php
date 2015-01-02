@@ -8,4 +8,4 @@ $_MODULE['<{blocksearch}minimal_16_theme>blocksearch-top_13348442cc6a27032d2b4aa
 $_MODULE['<{blocksearch}minimal_16_theme>blocksearch_13348442cc6a27032d2b4aa28b75a5d3'] = 'Szukaj';
 $_MODULE['<{blocksearch}minimal_16_theme>blocksearch_ce1b00a24b52e74de46971b174d2aaa6'] = 'Szukaj produktów:';
 $_MODULE['<{blocksearch}minimal_16_theme>blocksearch_5f075ae3e1f9d0382bb8c4632991f96f'] = 'Szukaj';
-$_MODULE['<{blocksearch}minimal_16_theme>blocksearch-top_0e194c2b0b2b542dc93d48bc68373c08'] = 'Szukaj nazwa adres dzielnica data...';
+$_MODULE['<{blocksearch}minimal_16_theme>blocksearch-top_0e194c2b0b2b542dc93d48bc68373c08'] = 'Szukaj: joga, Bronowice, 2015-02-14';

@@ -133,6 +133,11 @@ $_MODULE['<{npsmarketplace}minimal_16_theme>product_52a68cff1bb9990d63988c1c03cb
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_adc58f1d615417a70417cd447f17ea91'] = 'Niepoprawny format daty wydarzenia';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_8f4c564a445b50e73f809b10af242fc2'] = 'Godzina wydarzenia jest wymagana';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_8fd03b6cd0cec59cde38dbef63031e63'] = 'Niepoprawny format godziny';
+$_MODULE['<{npsmarketplace}minimal_16_theme>product_b4a4420c7aa0a5348cf54e49bdbf8b4d'] = 'Próbujesz dodać wydażenie w przeszłości. Sprawdź datę i godzinę wydarzenia.';
+$_MODULE['<{npsmarketplace}minimal_16_theme>product_c4a6b3bbe2f746bc73193f0ae6b77798'] = 'Data wygaśnięcia wydarzenia nie może być późniejsza niż data wydarzenia.';
+$_MODULE['<{npsmarketplace}minimal_16_theme>product_b8ca564fbe976cc20cc9d5f8617e4b24'] = 'Niepoprawny format daty karnetu \' Data do\'.';
+$_MODULE['<{npsmarketplace}minimal_16_theme>product_671a23f637dc01ad86077c3a762114cc'] = 'Niepoprawny format daty karnetu \' Data od\'.';
+$_MODULE['<{npsmarketplace}minimal_16_theme>product_b20b08a6fda29d9f2071bb2d3cf5b837'] = 'Niepoprawna wartość karnetu \'Ilość wejść\'';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_c52876e3592a705b6783255e410eda6b'] = 'Ilość biletów jest wymagana';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_32df66177440f9817b034cd5a174b2d1'] = 'Niepoprawny format ilości biletów';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_21e727fa7d2ebd89fc73ad7d0f0f4b01'] = 'Przynajmniej jedno zdjęcie jest wymagane';
@@ -141,6 +146,7 @@ $_MODULE['<{npsmarketplace}minimal_16_theme>product_7a53cb67e1f70c07037d0137b761
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_c3446579128782316d904e53f359ba8f'] = 'Niepoprawny krótki opis wydarzenia';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_3c3e7c9a0447d9a7f1f14768b3034a50'] = 'Niepoprawny opis wydarzenia';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_0b6ee8ab284044768ae086b58144bcaa'] = 'Nie można dodać wydarzenia';
+$_MODULE['<{npsmarketplace}minimal_16_theme>product_3236a64e838b137cadf39e1265afa96f'] = 'Nie można dodać wydarzenia. Wystąpił nieoczekiwany błąd. Spróbuj ponownie dodać wydarzenie. Jeśli problem będzie się powtarzał prosimy o kontakt z obsługą klienta.';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_bfe31b95a0ae7a8c56d7be59caa81d00'] = 'Wydarzenie nie może zostać usunięte';
 $_MODULE['<{npsmarketplace}minimal_16_theme>selleraccount_d4bc52b6aa33de56e6a7cb9c88636d63'] = 'Nazwa butiku jest wymagana';
 $_MODULE['<{npsmarketplace}minimal_16_theme>selleraccount_7426e6f5e72c4202409d9a927862dab9'] = 'Niepoprawna nazwa butiku';
@@ -154,6 +160,10 @@ $_MODULE['<{npsmarketplace}minimal_16_theme>selleraccount_1b91c523f25d11290a5d16
 $_MODULE['<{npsmarketplace}minimal_16_theme>selleraccount_6e58f5ad8d68c19d5004b05dbfdd99bd'] = 'Niepoprawny REGON';
 $_MODULE['<{npsmarketplace}minimal_16_theme>selleraccount_96a13b2e938aa083bd80d9d332ef790f'] = 'Opis zawiera niedozwolone znaki';
 $_MODULE['<{npsmarketplace}minimal_16_theme>selleraccount_6945da7e77bcc349bd2d4ed9f36563e4'] = 'Regulamin zawiera niedozwolone znaki';
+$_MODULE['<{npsmarketplace}minimal_16_theme>unlockaccount_c2b49b62ae27652cc67c9b952fb2b045'] = 'Tytuł wiadomości jest wymagany';
+$_MODULE['<{npsmarketplace}minimal_16_theme>unlockaccount_f016d454692b000ac7fa1d8cf686e367'] = 'Niepoprawny format tytułu wiadomości.';
+$_MODULE['<{npsmarketplace}minimal_16_theme>unlockaccount_caf57bac80302530124a084701e9c019'] = 'Treść wiadomości jest wymagana';
+$_MODULE['<{npsmarketplace}minimal_16_theme>unlockaccount_71e18a367eb9d0719ddc5fa749b0d2e9'] = 'Niepoprawny format wiadomości. Wiadomość zawiera niedozwolone znaki.';
 $_MODULE['<{npsmarketplace}minimal_16_theme>seller_view_7dce122004969d56ae2e0245cb754d35'] = 'Edytuj';
 $_MODULE['<{npsmarketplace}minimal_16_theme>seller_view_e7b47c58815acf1d3afa59a84b5db7fb'] = 'Nazwa firmy';
 $_MODULE['<{npsmarketplace}minimal_16_theme>seller_view_ed8549736fb45a926a9314d5a6cfcf2b'] = 'Prowizja';
@@ -364,6 +374,10 @@ $_MODULE['<{npsmarketplace}minimal_16_theme>seller_shop_c281f92b77ba329f692077d2
 $_MODULE['<{npsmarketplace}minimal_16_theme>seller_shop_8140422558233bd6cd42b9bf534389e0'] = 'Opis firmy';
 $_MODULE['<{npsmarketplace}minimal_16_theme>seller_shop_87f9f735a1d36793ceaecd4e47124b63'] = 'Wydarzenia';
 $_MODULE['<{npsmarketplace}minimal_16_theme>seller_shop_863171b8c7f55d2c225958622d431eb7'] = 'Regulamin';
+$_MODULE['<{npsmarketplace}minimal_16_theme>unlock_account_84fce255e09b628fe1e04ce72d24d0bd'] = 'Twoja wiadomość została wysłana do nas. Prośimy cierpliwie zaczekać na odpowiedź.';
+$_MODULE['<{npsmarketplace}minimal_16_theme>unlock_account_3397fe898961aabdb6c884c92e4fdd95'] = 'Twoje konto zostało zablokowane. Powinieneś otrzymać wiadomość od nas z powodem blokady. Tutaj możesz wysłać wiadomość bezpośrednio do nas w celu wyjaśnienia problemu. ';
+$_MODULE['<{npsmarketplace}minimal_16_theme>unlock_account_b78a3223503896721cca1303f776159b'] = 'Tytuł wiadomości';
+$_MODULE['<{npsmarketplace}minimal_16_theme>unlock_account_4c2a8fe7eaf24721cc7a9f0175115bd4'] = 'Treść wiadomości';
 $_MODULE['<{npsmarketplace}minimal_16_theme>unlock_account_94966d90747b97d1f0f206c98a8b1ac3'] = 'Wyślij';
 $_MODULE['<{npsmarketplace}minimal_16_theme>header_top_b1c94ca2fbc3e78fc30069c8d0f01680'] = 'Wszystkie';
 $_MODULE['<{npsmarketplace}minimal_16_theme>header_top_3068c5a98c003498f1fec0c489212e8b'] = 'Sprzedaj';
