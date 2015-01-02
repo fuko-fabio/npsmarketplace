@@ -296,7 +296,22 @@ class NpsTicketDelivery extends Module {
 
     public function hookDisplayBeforeVirtualCarrier() {
         $this->context->controller->addJS(_PS_JS_DIR_.'validate.js');
+        $this->context->smarty->assign(array(
+            'send_tickets_info_url' => Configuration::get('NPS_TICKETS_INFO_URL'),
+            
+        ));
+        
         return $this->display(__FILE__, 'views/templates/hook/virtual_carrier.tpl');
+    }
+
+    public function getContent() {
+        $output = null;
+
+        if (Tools::isSubmit('submit'.$this->name)) {
+            Configuration::updateValue('NPS_TICKETS_INFO_URL', Tools::getValue('NPS_TICKETS_INFO_URL'));
+            $output .= $this->displayConfirmation($this->l('Settings updated'));
+        }
+        return $output.$this->displayForm();
     }
 
     public function hookActionPostProcessCarrier($params) {
@@ -314,6 +329,76 @@ class NpsTicketDelivery extends Module {
         $ticket->save();
     }
 
+    private function displayForm() {
+        $this->context->controller->addJqueryPlugin('tagify');
+        // Get default language
+        $default_lang = (int)Configuration::get('PS_LANG_DEFAULT');
+
+        // Init Fields form array
+        $fields_form[0] = $this->linksForm();
+        $helper = new HelperForm();
+         
+        // Module, token and currentIndex
+        $helper->module = $this;
+        $helper->name_controller = $this->name;
+        $helper->token = Tools::getAdminTokenLite('AdminModules');
+        $helper->currentIndex = AdminController::$currentIndex.'&configure='.$this->name;
+         
+        // Language
+        $helper->default_form_language = $default_lang;
+        $helper->allow_employee_form_lang = $default_lang;
+         
+        // Title and toolbar
+        $helper->title = $this->displayName;
+        $helper->show_toolbar = true;        // false -> remove toolbar
+        $helper->toolbar_scroll = true;      // yes - > Toolbar is always visible on the top of the screen.
+        $helper->submit_action = 'submit'.$this->name;
+        $helper->toolbar_btn = array(
+            'save' =>
+            array(
+                'desc' => $this->l('Save'),
+                'href' => AdminController::$currentIndex.'&configure='.$this->name.'&save'.$this->name.
+                '&token='.Tools::getAdminTokenLite('AdminModules'),
+            ),
+            'back' => array(
+                'href' => AdminController::$currentIndex.'&token='.Tools::getAdminTokenLite('AdminModules'),
+                'desc' => $this->l('Back to list')
+            )
+        );
+         
+        // Load current value
+        $helper->fields_value = $this->getConfigFieldsValues();
+        return $helper->generateForm($fields_form);
+    }
+
+
+    private function linksForm() {
+        return array(
+            'form' => array(
+                'legend' => array(
+                    'title' => $this->l('User Guide URL\'s'),
+                ),
+                'input' => array(
+                     array(
+                        'type' => 'text',
+                        'label' => $this->l('Send tickets info URL'),
+                        'name' => 'NPS_TICKETS_INFO_URL',
+                        'required' => true
+                    ),
+                ),
+                'submit' => array(
+                    'title' => $this->l('Save'),
+                    'class' => 'btn btn-default pull-right',
+                    'name' => 'submit'.$this->name,
+                )
+            )
+        );
+    }
+    public function getConfigFieldsValues() {
+        return array(
+            'NPS_TICKETS_INFO_URL' => Tools::getValue('NPS_TICKETS_INFO_URL', Configuration::get('NPS_TICKETS_INFO_URL')),
+        );
+    }
     private function createTables($sql) {
         foreach ($sql as $query)
             if (!Db::getInstance()->execute(trim($query)))

@@ -379,6 +379,7 @@ class NpsMarketplace extends Module {
             Configuration::updateValue('NPS_EVENT_DESC_GUIDE_URL', Tools::getValue('NPS_EVENT_DESC_GUIDE_URL'));
             Configuration::updateValue('NPS_USER_GUIDE_URL', Tools::getValue('NPS_USER_GUIDE_URL'));
             Configuration::updateValue('NPS_EVENT_IMAGE_GUIDE_URL', Tools::getValue('NPS_EVENT_IMAGE_GUIDE_URL'));
+            Configuration::updateValue('NPS_TICKETS_INFO_URL', Tools::getValue('NPS_TICKETS_INFO_URL'));
             $output .= $this->displayConfirmation($this->l('URL\'s settings updated'));
         }
         return $output.$this->displayForm();
