@@ -15,6 +15,7 @@ class TicketsGenerator {
         $attachments = array();
         foreach ($tickets as $ticket) {
             $ticket['gift'] = $is_gift;
+            $ticket['seller_name'] = Db::getInstance()->getValue('SELECT `name` FROM '._DB_PREFIX_.'seller WHERE id_seller='.$ticket['id_seller']);
             $t = TicketsGenerator::generateTicket($ticket);
             $attachments[] = array(
                 'content' => $t['content'],

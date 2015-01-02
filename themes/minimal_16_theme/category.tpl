@@ -24,8 +24,8 @@
 *}
 {include file="$tpl_dir./errors.tpl"}
 {if isset($category)}
-	{if $category->id AND $category->active}
-{*
+    {if $category->id AND $category->active}
+
     {if $scenes || $category->description || $category->id_image}
         <div class="content_scene_cat">
                  {if $scenes}
@@ -71,8 +71,7 @@
                   {/if}
             </div>
         {/if}
-*}
-        <h1 class="page-heading{if (isset($subcategories) && !$products) || (isset($subcategories) && $products) || !isset($subcategories) && $products} product-listing{/if}"><span class="cat-name">{$category->name|escape:'html':'UTF-8'}{if isset($categoryNameComplement)}&nbsp;{$categoryNameComplement|escape:'html':'UTF-8'}{/if}</span></h1>
+
         {if isset($subcategories)}
         <!-- Subcategories -->
         <div id="subcategories">

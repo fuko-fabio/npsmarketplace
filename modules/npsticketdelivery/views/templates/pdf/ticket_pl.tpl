@@ -28,17 +28,21 @@
                         <div style="font-weight:700;font-size:22px;text-overflow: ellipsis;white-space: nowrap;">{$name|truncate:40}</div>
                         <br />
                         {if $type == 0 && isset($date)}
-                        <div style="width:100px;text-transform: uppercase;float: left;display: inline-block;">Termin</div>: <span style="font-weight: 700;float: left">{date_format(date_create($date), 'Y-m-d H:i')}</span><br />
+                        <div style="font-size: 12px;width:100px;text-transform: uppercase;float: left;display: inline-block;">Termin</div>: <span style="font-weight: 700;float: left">{date_format(date_create($date), 'Y-m-d H:i')}</span><br />
                         {else if $type == 1 && isset($entries) && $entries > 0}
-                        <div style="width:100px;text-transform: uppercase;float: left;display: inline-block;">Ilość wejść</div>: <span style="font-weight: 700;float: left">{$entries}</span><br />
+                        <div style="font-size: 12px;width:100px;text-transform: uppercase;float: left;display: inline-block;">Ilość wejść</div>: <span style="font-weight: 700;float: left">{$entries}</span><br />
                         {else if $type == 1 && strtotime($from) > 0 && strtotime($to) > 0}
-                        <div style="width:100px;text-transform: uppercase;float: left;display: inline-block;">Ważność</div>: <span style="font-weight: 700;float: left">{date_format(date_create($from), 'Y-m-d')} - {date_format(date_create($to), 'Y-m-d')}</span><br />
+                        <div style="font-size: 12px;width:100px;text-transform: uppercase;float: left;display: inline-block;">Ważność</div>: <span style="font-weight: 700;float: left">{date_format(date_create($from), 'Y-m-d')} - {date_format(date_create($to), 'Y-m-d')}</span><br />
                         {/if}
                         <br />
-                        <div style="width:100px;text-transform: uppercase;float: left;display: inline-block;">Osoba</div>: <span style="float: left;text-overflow: ellipsis;white-space: nowrap;">{$person|truncate:60}</span><br />
-                        <div style="width:100px;text-transform: uppercase;float: left;display: inline-block;">Adres wydarzenia</div>: <span style="float: left;text-overflow: ellipsis;white-space: nowrap;">{$address|truncate:60}</span><br />
-                        <div style="width:100px;text-transform: uppercase;float: left;display: inline-block;">Dzielnica</div>: <span style="float: left;text-overflow: ellipsis;white-space: nowrap;">{$district|truncate:60}</span><br />
-                        <div style="width:100px;text-transform: uppercase;float: left;display: inline-block;">Miasto</div>: <span style="float: left;text-overflow: ellipsis;white-space: nowrap;">{$town|truncate:60}</span><br />
+                        <div style="font-size: 12px;width:100px;text-transform: uppercase;float: left;display: inline-block;">Osoba</div>: <span style="float: left;text-overflow: ellipsis;white-space: nowrap;">{$person|truncate:60}</span><br />
+                        <div style="font-size: 12px;width:100px;text-transform: uppercase;float: left;display: inline-block;">Adres wydarzenia</div>: <span style="float: left;text-overflow: ellipsis;white-space: nowrap;">{$address|truncate:60}</span><br />
+                        <div style="font-size: 12px;width:100px;text-transform: uppercase;float: left;display: inline-block;">Dzielnica</div>: <span style="float: left;text-overflow: ellipsis;white-space: nowrap;">{$district|truncate:60}</span><br />
+                        <div style="font-size: 12px;width:100px;text-transform: uppercase;float: left;display: inline-block;">Miasto</div>: <span style="float: left;text-overflow: ellipsis;white-space: nowrap;">{$town|truncate:60}</span><br />
+                        {if isset($seller_name)}
+                        <br />
+                        <div style="font-size: 12px;width:100px;text-transform: uppercase;float: left;display: inline-block;">Sprzedawca</div>: <span style="float: left;text-overflow: ellipsis;white-space: nowrap;">{$seller_name|truncate:60}</span><br />
+                        {/if}
                     </div>
                     <br />
                     {if $gift}

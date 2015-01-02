@@ -15,9 +15,10 @@ class NpsTicketDeliveryTicketsModuleFrontController extends ModuleFrontControlle
     public function postProcess() {
         if (Tools::isSubmit('id_ticket')) {
             $ticket = Ticket::getForCustomer($this->context->customer->id, Tools::getValue('id_ticket'));
-            $is_gift = Db::getInstance()->getValue('SELECT `gift` FROM '._DB_PREFIX_.'cart WHERE id_cart='.$ticket['id_cart']);
-            $ticket['gift'] = $is_gift;
             if(isset($ticket)) {
+                $ticket['gift'] = Db::getInstance()->getValue('SELECT `gift` FROM '._DB_PREFIX_.'cart WHERE id_cart='.$ticket['id_cart']);
+                $ticket['seller_name'] = Db::getInstance()->getValue('SELECT `name` FROM '._DB_PREFIX_.'seller WHERE id_seller='.$ticket['id_seller']);
+
                 $g_t = TicketsGenerator::generateTicket($ticket);
                 header('Content-Description: File Transfer');
                 header('Cache-Control: private, must-revalidate, post-check=0, pre-check=0, max-age=1');

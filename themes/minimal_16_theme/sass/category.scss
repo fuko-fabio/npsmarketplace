@@ -5,20 +5,14 @@
 								Categories Page Styles
 ************************************************************************************************ */
 .content_scene_cat {
-  color: #d7d7d7;
   line-height: 19px;
   margin: 0;
   .content_scene_cat_bg {
-    padding: 18px 10px 10px 42px;
-    background-color: #464646 !important;
-    @media (max-width: $screen-md-max) {
-      // max 1199px
-      padding: 10px 10px 10px 15px;
-    }
+    padding-bottom: 10px
   }
   span.category-name {
-    font: 600 42px/51px $font-custom;
-    color: $light-text-color;
+    font: 600 32px/41px $font-custom;
+    color: $base-text-color;
     margin-bottom: 12px;
     @media (max-width: $screen-md-max) {
       // max 1199px
@@ -30,7 +24,7 @@
     margin-bottom: 0;
   }
   a {
-    color: $light-text-color;
+    color: $base-text-color;
     &:hover {
       text-decoration: underline;
     }

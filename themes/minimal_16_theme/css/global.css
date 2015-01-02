@@ -6638,9 +6638,19 @@ div.star a:hover {
       position: absolute;
       bottom: -100px;
       left: 0;
-      width: 100%; }
+      width: 100%;
+      text-align: center; }
       .footer-container #footer .bottom-eu img {
         width: 210px; }
+      .footer-container #footer .bottom-eu a {
+        display: inline-block; }
+        @media (max-width: 768px) {
+          .footer-container #footer .bottom-eu a {
+            display: none; } }
+      .footer-container #footer .bottom-eu p {
+        margin-top: 10px;
+        margin-bottom: 0px;
+        text-align: left; }
     .footer-container #footer .bottom-footer {
       position: absolute;
       bottom: -150px;
@@ -7757,3 +7767,6 @@ div.star.star_hover:after {
   .collapsibleList li li {
     background-image: url(../img/list-item.png);
     padding-left: 35px; }
+
+.table-responsive .link {
+  font-weight: normal; }

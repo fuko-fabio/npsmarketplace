@@ -300,10 +300,15 @@ class NpsTicketDelivery extends Module {
     }
 
     public function hookActionPostProcessCarrier($params) {
+        if ($params['ticket_email'] != $this->context->customer->email)
+            $emails = implode(',', array($this->context->customer->email, $params['ticket_email']));
+        else
+            $emails = $params['ticket_email'];
+
         $ticket = new CartTicket(null, $params['id_cart']);
         $ticket->id_cart = $params['id_cart'];
         $ticket->id_customer = $this->context->customer->id;
-        $ticket->email = $params['ticket_email'];
+        $ticket->email = $emails;
         $ticket->id_currency = $this->context->currency->id;
         $ticket->persons = json_encode($params['ticket_person']);
         $ticket->save();

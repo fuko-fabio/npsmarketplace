@@ -33,7 +33,7 @@ class CartTicket extends ObjectModel {
             'id_cart' =>     array('type' => self::TYPE_INT,    'validate' => 'isUnsignedId',  'required' => true),
             'id_customer' => array('type' => self::TYPE_INT,    'validate' => 'isUnsignedId',  'required' => true),
             'id_currency' => array('type' => self::TYPE_INT,    'validate' => 'isUnsignedId',  'required' => true),
-            'email' =>       array('type' => self::TYPE_STRING, 'validate' => 'isEmail',       'required' => true),
+            'email' =>       array('type' => self::TYPE_STRING, 'required' => true),
             'persons' =>     array('type' => self::TYPE_STRING),
         ),
     );

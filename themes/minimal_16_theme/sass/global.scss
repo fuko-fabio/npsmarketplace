@@ -1760,8 +1760,21 @@ div.star a:hover {
       bottom: -100px;
       left: 0;
       width: 100%;
+      text-align: center;
       img {
         width:210px;
+      }
+      
+      a {
+        display: inline-block;
+        @media (max-width: $screen-sm) {
+          display: none;
+        }
+      }
+      p {
+        margin-top: 10px;
+        margin-bottom: 0px;
+        text-align: left;
       }
     }
     .bottom-footer {
@@ -3339,5 +3352,11 @@ div.star.star_hover {
       background-image: url(../img/list-item.png);
       padding-left: 35px;
     }
+  }
+}
+
+.table-responsive {
+  .link {
+    font-weight: normal;
   }
 }
