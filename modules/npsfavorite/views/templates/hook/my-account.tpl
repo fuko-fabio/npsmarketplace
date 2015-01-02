@@ -24,7 +24,7 @@
 *}
 
 <li>
-	<a href="{$link->getModuleLink('npsfavorite', 'account')|escape:'html':'UTF-8'}" title="{l s='My favorite products.' mod='npsfavorite'}">
+	<a {if $page_name == 'favourite'}class="active"{/if} href="{$link->getModuleLink('npsfavorite', 'account')|escape:'html':'UTF-8'}" title="{l s='My favorite products.' mod='npsfavorite'}">
 	    {if !$in_footer}<i class="icon-heart"></i>{/if}<span>{l s='My favorite products' mod='npsfavorite'}</span>
 	</a>
 </li>

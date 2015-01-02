@@ -265,6 +265,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
      * @see FrontController::init()
      */
     public function init() {
+        $this->page_name = 'add-product';
         parent::init();
 
         $this->_seller = new Seller(null, $this->context->customer->id);

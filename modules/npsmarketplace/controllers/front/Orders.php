@@ -17,6 +17,11 @@ class NpsMarketplaceOrdersModuleFrontController extends ModuleFrontController {
         $this->addJqueryPlugin('scrollTo');
     }
 
+    public function init() {
+        $this->page_name = 'orders';
+        parent::init();
+    }
+
     public function initContent() {
         parent::initContent();
 

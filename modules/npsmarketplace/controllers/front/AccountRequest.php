@@ -155,6 +155,11 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
             _NPS_MAILS_DIR_);
     }
 
+    public function init() {
+        $this->page_name = 'seller-request';
+        parent::init();
+    }
+
     public function initContent() {
         parent::initContent();
 

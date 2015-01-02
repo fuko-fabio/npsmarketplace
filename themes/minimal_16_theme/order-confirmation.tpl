@@ -41,6 +41,6 @@
     </p>
 {else}
 <p class="cart_navigation exclusive">
-	<a class="button-exclusive btn btn-default" href="{$link->getPageLink('history', true)|escape:'html':'UTF-8'}" title="{l s='Back to orders'}"><i class="icon-chevron-left"></i>{l s='Back to orders'}</a>
+	<a class="button-exclusive btn btn-default" href="{$link->getPageLink('my-account', true)|escape:'html':'UTF-8'}" title="{l s='My tickets'}"><i class="icon-chevron-left"></i>{l s='My tickets'}</a>
 </p>
 {/if}

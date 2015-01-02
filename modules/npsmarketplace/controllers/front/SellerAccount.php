@@ -89,6 +89,11 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
         }
     }
 
+    public function init() {
+        $this->page_name = 'seller-account';
+        parent::init();
+    }
+
     public function initContent() {
         parent::initContent();
 

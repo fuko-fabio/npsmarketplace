@@ -63,6 +63,11 @@ class NpsMarketplaceUnlockAccountModuleFrontController extends ModuleFrontContro
         }
     }
 
+    public function init() {
+        $this->page_name = 'unlock-account';
+        parent::init();
+    }
+
     public function initContent() {
         parent::initContent();
 

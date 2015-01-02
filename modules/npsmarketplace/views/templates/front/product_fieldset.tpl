@@ -248,9 +248,9 @@
                     <ul class="categories-tree tree collapsibleList">
                         {foreach from=$categories_tree.children item=child name=categories_tree}
                         {if $smarty.foreach.categories_tree.last}
-                        {include file="$category_partial_tpl_path" node=$child last='true'}
+                        {include file="$category_partial_tpl_path" node=$child last='true' merge_parent='true'}
                         {else}
-                        {include file="$category_partial_tpl_path" node=$child}
+                        {include file="$category_partial_tpl_path" node=$child merge_parent='true'}
                         {/if}
                         {/foreach}
                         <!-- Home category -->
@@ -278,9 +278,9 @@
                     <ul class="categories-tree tree">
                         {foreach from=$special_categories_tree item=child name=special_categories_tree}
                         {if $smarty.foreach.special_categories_tree.last}
-                        {include file="$category_partial_tpl_path" node=$child last='true'}
+                        {include file="$category_partial_tpl_path" node=$child last='true' merge_parent='false'}
                         {else}
-                        {include file="$category_partial_tpl_path" node=$child}
+                        {include file="$category_partial_tpl_path" node=$child merge_parent='false'}
                         {/if}
                         {/foreach}
                     </ul>

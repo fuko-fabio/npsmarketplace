@@ -16,6 +16,11 @@ class NpsMarketplaceMarketingModuleFrontController extends ModuleFrontController
         $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/marketing.js');
     }
 
+    public function init() {
+        $this->page_name = 'marketing';
+        parent::init();
+    }
+
     public function initContent() {
         parent::initContent();
 

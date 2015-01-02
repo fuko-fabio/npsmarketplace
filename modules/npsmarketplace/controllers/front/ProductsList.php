@@ -31,6 +31,11 @@ class NpsMarketplaceProductsListModuleFrontController extends ModuleFrontControl
         }
     }
 
+    public function init() {
+        $this->page_name = 'products-list';
+        parent::init();
+    }
+
     public function initContent() {
         parent::initContent();
 
