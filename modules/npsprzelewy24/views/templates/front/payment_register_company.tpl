@@ -76,7 +76,7 @@
             <div class="checkbox">
                 <label class="required" for="acceptance">
                 <input type="checkbox" name="acceptance" id="acceptance" readonly="" {if isset($smarty.post.acceptance) && $smarty.post.acceptance == '1'}checked="checked"{/if} />
-                {l s='Accept the' mod='npsprzelewy24'} <a href="{$p24_agreement_url}">{l s='“Regulations of Przelewy24”' mod='npsprzelewy24'}</a></label>
+                {l s='Accept the' mod='npsprzelewy24'} <a href="{$p24_agreement_url}" target="_blank">{l s='“Regulations of Przelewy24”' mod='npsprzelewy24'}</a></label>
             </div>
         </div>
         <button type="submit" name="submitCompany" class="btn btn-default button button-medium pull-right" onclick="$.fancybox.showLoading();"><span>{l s='Register' mod='npsprzelewy24'} <i class="icon-save right"></i></span></button>

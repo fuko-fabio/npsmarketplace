@@ -1,47 +1,8 @@
 {*
-* 2007-2014 PrestaShop
-*
-* NOTICE OF LICENSE
-*
-* This source file is subject to the Academic Free License (AFL 3.0)
-* that is bundled with this package in the file LICENSE.txt.
-* It is also available through the world-wide-web at this URL:
-* http://opensource.org/licenses/afl-3.0.php
-* If you did not receive a copy of the license and are unable to
-* obtain it through the world-wide-web, please send an email
-* to license@prestashop.com so we can send you a copy immediately.
-*
-* DISCLAIMER
-*
-* Do not edit or add to this file if you wish to upgrade PrestaShop to newer
-* versions in the future. If you wish to customize PrestaShop for your
-* needs please refer to http://www.prestashop.com for more information.
-*
-*  @author PrestaShop SA <contact@prestashop.com>
-*  @copyright  2007-2014 PrestaShop SA
-*  @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
-*  International Registered Trademark & Property of PrestaShop SA
+*  @author Norbert Pabian <norbert.pabian@gmail.com>
+*  @copyright 2014 npsoftware
 *}
-{capture name=path}{l s='Your addresses'}{/capture}
 <div>
-	<h1 class="page-subheading">{l s='Your addresses'}</h1>
-	<p class="alert alert-info">
-	    <span class="alert-content">
-		{if isset($id_address) && (isset($smarty.post.alias) || isset($address->alias))}
-			{l s='Modify address'} 
-			{if isset($smarty.post.alias)}
-				"{$smarty.post.alias}"
-			{else}
-				{if isset($address->alias)}"{$address->alias|escape:'html':'UTF-8'}"{/if}
-			{/if}
-		{else}
-			{l s='To add a new address, please fill out the form below.'}
-		{/if}
-		</span>
-	</p>
-	{include file="$tpl_dir./errors.tpl"}
-	<form action="{$link->getPageLink('address', true)|escape:'html':'UTF-8'}" method="post" class="std" id="add_address">
-		<!--h3 class="page-subheading">{if isset($id_address)}{l s='Your address'}{else}{l s='New address'}{/if}</h3-->
 		{assign var="stateExist" value=false}
 		{assign var="postCodeExist" value=false}
 		{assign var="dniExist" value=false}
@@ -134,7 +95,7 @@
 		{/foreach}
 		{if !$postCodeExist}
             <li class="col-xs-12 col-sm-6">
-			<div class="required postcode form-group">
+			<div class="required postcode form-group unvisible">
 				<label for="postcode">{l s='Zip/Postal Code'} <sup>*</sup></label>
 				<input class="is_required validate form-control" data-validate="{$address_validation.postcode.validate}" type="text" id="postcode" name="postcode" value="{if isset($smarty.post.postcode)}{$smarty.post.postcode}{else}{if isset($address->postcode)}{$address->postcode|escape:'html':'UTF-8'}{/if}{/if}" />
 			</div>
@@ -160,10 +121,6 @@
             </li>
 		{/if}
         </ul>
-		<div class="form-group">
-			<label for="other">{l s='Additional information'}</label>
-			<textarea class="validate form-control" data-validate="{$address_validation.other.validate}" id="other" name="other" cols="26" rows="3" >{if isset($smarty.post.other)}{$smarty.post.other}{else}{if isset($address->other)}{$address->other|escape:'html':'UTF-8'}{/if}{/if}</textarea>
-		</div>
 		{if !$homePhoneExist}
 			<div class="form-group phone-number">
 				<label for="phone">{l s='Home phone'}</label>
@@ -177,10 +134,6 @@
 				<input class="validate form-control" data-validate="{$address_validation.phone_mobile.validate}" type="tel" id="phone_mobile" name="phone_mobile" value="{if isset($smarty.post.phone_mobile)}{$smarty.post.phone_mobile}{else}{if isset($address->phone_mobile)}{$address->phone_mobile|escape:'html':'UTF-8'}{/if}{/if}" />
 			</div>
 		{/if}
-		<div class="required form-group" id="adress_alias">
-			<label for="alias">{l s='Please assign an address title for future reference.'} <sup>*</sup></label>
-			<input type="text" id="alias" class="is_required validate form-control" data-validate="{$address_validation.alias.validate}" name="alias" value="{if isset($smarty.post.alias)}{$smarty.post.alias}{else if isset($address->alias)}{$address->alias|escape:'html':'UTF-8'}{elseif !$select_address}{l s='My address'}{/if}" />
-		</div>
         <div class="clearfix"></div>
 
         <p class="required"><sup>*</sup>{l s='Required field'}</p>
@@ -188,20 +141,6 @@
             {assign var="atLeastOneExists" value=true}
             <p class="inline-infos required"><sup>**</sup> {l s='You must register at least one phone number.'}</p>
         {/if}
-        <p class="submit2">
-			{if isset($id_address)}<input type="hidden" name="id_address" value="{$id_address|intval}" />{/if}
-			{if isset($back)}<input type="hidden" name="back" value="{$back}" />{/if}
-			{if isset($mod)}<input type="hidden" name="mod" value="{$mod}" />{/if}
-			{if isset($select_address)}<input type="hidden" name="select_address" value="{$select_address|intval}" />{/if}
-			<input type="hidden" name="token" value="{$token}" />		
-			<button type="submit" name="submitAddress" id="submitAddress" class="btn btn-default button button-medium pull-right" onclick="$.fancybox.showLoading();">
-				<span>
-					{l s='Save'}
-					<i class="icon-save right"></i>
-				</span>
-			</button>
-		</p>
-	</form>
 </div>
 {strip}
 {if isset($smarty.post.id_state) && $smarty.post.id_state}

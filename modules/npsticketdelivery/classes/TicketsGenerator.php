@@ -58,7 +58,7 @@ class TicketsGenerator {
             'tickets',
             Mail::l('Tickets from LabsInTown'),
             $mail_params,
-            $cart_ticket->email,
+            explode(',', $cart_ticket->email),
             null,
             strval(Configuration::get('PS_SHOP_EMAIL')),
             strval(Configuration::get('PS_SHOP_NAME')),

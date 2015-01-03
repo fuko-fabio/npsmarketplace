@@ -25,15 +25,10 @@
         <!-- center infos -->
         <div class="pb-center-column col-xs-6 col-sm-9 col-md-9">
             <h1 itemprop="name">{$seller['name']|escape:'html':'UTF-8'}</h1>
-            <br />
-            <p>
-                <label>{l s='Company name' mod='npsmarketplace'}</label><br />
-                {$seller['company_name']}
-            </p>
-            {if $seller['company_description'][$current_id_lang]}
+            {if $seller['description'][$current_id_lang]}
             <p class="rte align_justify">
-                <label>{l s='Company description' mod='npsmarketplace'}</label><br />
-                <div class="rte">{$seller['company_description'][$current_id_lang]}</div>
+                <label>{l s='Description' mod='npsmarketplace'}</label><br />
+                <div class="rte">{$seller['description'][$current_id_lang]}</div>
             </p>
             <!-- end short_description_block -->
             {/if}
@@ -46,6 +41,7 @@
         <ul class="nav nav-tabs">
             <li class="active"><a href="#seller_events" data-toggle="tab">{l s='Events'  mod='npsmarketplace'}</a></li>
             {if $seller['regulations_active']}
+            <li><a href="#seller_company" data-toggle="tab">{l s='Company informations'  mod='npsmarketplace'}</a></li>
             <li><a href="#seller_regulations" data-toggle="tab">{l s='Regulations'  mod='npsmarketplace'}</a></li>
             {/if}
             {$HOOK_SELLER_TAB}
@@ -71,6 +67,46 @@
                     </div>
                 </div>
                 {/if}
+            </div>
+            <div class="tab-pane fade" id="seller_company">
+                <table class="table-data-sheet">
+                    {if !empty($seller.company)}
+                    <tr>
+                        <td>{l s='Company Name' mod='npsmarketplace'}</td>
+                        <td>{$seller.company}</td>
+                    </tr>
+                    {/if}
+                    {if !empty($seller.person)}
+                    <tr>
+                        <td>{l s='Person' mod='npsmarketplace'}</td>
+                        <td>{$seller.person}</td>
+                    </tr>
+                    {/if}
+                    {if !empty($seller.address)}
+                    <tr>
+                        <td>{l s='Address' mod='npsmarketplace'}</td>
+                        <td>{$seller.address}</td>
+                    </tr>
+                    {/if}
+                    {if !empty($seller.krs)}
+                    <tr>
+                        <td>{l s='KRS' mod='npsmarketplace'}</td>
+                        <td>{$seller.krs}</td>
+                    </tr>
+                    {/if}
+                    {if !empty($seller.krs_reg)}
+                    <tr>
+                        <td>{l s='The KRS registration authority' mod='npsmarketplace'}</td>
+                        <td>{$seller.krs_reg}</td>
+                    </tr>
+                    {/if}
+                    {if !empty($seller.nip)}
+                    <tr>
+                        <td>{l s='NIP' mod='npsmarketplace'}</td>
+                        <td>{$seller.nip}</td>
+                    </tr>
+                    {/if}
+                </table>
             </div>
             {if $seller['regulations_active']}
             <div class="tab-pane fade" id="seller_regulations">

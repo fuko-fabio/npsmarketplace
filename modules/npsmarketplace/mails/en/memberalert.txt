@@ -4,12 +4,12 @@ Nowy sprzedawca zarejestrował się w serwisie {shop_name} podając następując
 
 Nazwa sprzedawcy: {name}
 
-Nazwa sklepu: {company_name}
-Opis sklepu: {company_description}
+Opis sklepu: {description}
 Email: {email}
-Telefon: {phone}
 NIP: {nip}
 REGON: {regon}
+KRS: {krs}
+KRS zarejestrowany przez: {krs_reg}
 
 Przejdź do panelu administracyjnego i aktywuj konto: [{admin_link}]
 

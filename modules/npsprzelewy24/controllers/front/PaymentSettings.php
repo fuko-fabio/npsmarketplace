@@ -188,21 +188,21 @@ class NpsPrzelewy24PaymentSettingsModuleFrontController extends ModuleFrontContr
         $post_code = '';
         $address = '';
         $cust = $this->context->customer;
-        $seller = new Seller(null, $cust->id);
-        $addresses = $cust->getAddresses($this->context->language->id);
+        $seller = new Address($seller->id_address);
+        $address = $cust->getAddresses($this->context->language->id);
         if (!empty($addresses)) {
-            $city = $addresses[0]['city'];
-            $post_code = $addresses[0]['postcode'];
-            $address = $addresses[0]['address1'].' '.$addresses[0]['address2'];
+            $city = $address->city;
+            $post_code = $address->postcode;
+            $address = $address->address1.' '.$address->address2;
         }
         return array(
-            "company_name" => $seller->company_name,
+            "company_name" => $address->company,
             "city" => $city,
             "street" => $address,
             "post_code" => $post_code,
-            "email" => $seller->email,
+            "email" => $cust->email,
             "nip" => $seller->nip,
-            "person" => $cust->firstname.' '.$cust->lastname,
+            "person" => $address->firstname.' '.$address->lastname,
             "regon" => $seller->regon,
             "iban" => '',
             "acceptance" => false,

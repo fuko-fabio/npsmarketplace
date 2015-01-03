@@ -15,8 +15,8 @@
                     {$seller->name}
                     [{$seller->id|string_format:"%06d"}]
                     -
-                    <a href="mailto:{$seller->email}"><i class="icon-envelope"></i>
-                        {$seller->email}
+                    <a href="mailto:{$customer->email}"><i class="icon-envelope"></i>
+                        {$customer->email}
                     </a>
                     <div class="panel-heading-action">
                         <a class="btn btn-default" href="index.php?controller=AdminSellersAccounts&id_seller={$seller->id}&updateseller&token={$token}">
@@ -27,27 +27,27 @@
                 </div>
                 <div class="form-horizontal">
                     <div class="row">
-                        <label class="control-label col-lg-3">{l s='Company Name' mod='npsmarketplace'}</label>
-                        <div class="col-lg-9">
-                            <p class="form-control-static">{$seller->company_name}</p>
-                        </div>
-                    </div>
-                    <div class="row">
                         <label class="control-label col-lg-3">{l s='Commision' mod='npsmarketplace'}</label>
                         <div class="col-lg-9">
                             <p class="form-control-static">{$seller->commision}%</p>
                         </div>
                     </div>
                     <div class="row">
-                        <label class="control-label col-lg-3">{l s='Phone' mod='npsmarketplace'}</label>
-                        <div class="col-lg-9">
-                            <p class="form-control-static">{$seller->phone}</p>
-                        </div>
-                    </div>
-                    <div class="row">
                         <label class="control-label col-lg-3">{l s='Registration Date' mod='npsmarketplace'}</label>
                         <div class="col-lg-9">
                             <p class="form-control-static">{$seller->request_date}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="control-label col-lg-3">{l s='KRS' mod='npsmarketplace'}</label>
+                        <div class="col-lg-9">
+                            <p class="form-control-static">{$seller->krs}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="control-label col-lg-3">{l s='The KRS registration authority' mod='npsmarketplace'}</label>
+                        <div class="col-lg-9">
+                            <p class="form-control-static">{$seller->krs_reg}</p>
                         </div>
                     </div>
                     <div class="row">
@@ -118,10 +118,10 @@
                     </div>
                     <br />
                     <div class="row">
-                        <label class="control-label col-lg-3">{l s='Company Description' mod='npsmarketplace'}</label>
+                        <label class="control-label col-lg-3">{l s='Description' mod='npsmarketplace'}</label>
                     </div>
                     <div class="row">
-                        <p class="form-control-static">{$seller->company_description[$lang_id]}</p>
+                        <p class="form-control-static">{$seller->description[$lang_id]}</p>
                     </div>
                 </div>
             </div>
@@ -133,7 +133,7 @@
                     <i class="icon-money"></i>
                     {l s='Payment Settings' mod='npsmarketplace'}
                     -
-                    <a href="mailto:{$seller->email}"><i class="icon-envelope"></i>
+                    <a href="mailto:{$payment->email}"><i class="icon-envelope"></i>
                         {$payment->email}
                     </a>
                     <div class="panel-heading-action">

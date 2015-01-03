@@ -1,15 +1,15 @@
 CREATE TABLE IF NOT EXISTS `PREFIX_seller` (
   `id_seller` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `id_customer` int(10) unsigned NOT NULL,
+  `id_address` int(10) unsigned NOT NULL,
   `name` varchar(128) NOT NULL UNIQUE,
-  `company_name` varchar(64) NOT NULL,
   `active` tinyint(1) NOT NULL,
   `locked` tinyint(1) NOT NULL,
   `requested` tinyint(1) NOT NULL,
   `regulations_active` tinyint(1) NOT NULL,
   `request_date` datetime,
-  `phone` varchar(16) NOT NULL,
-  `email` varchar(128) NOT NULL,
+  `krs` varchar(16) NOT NULL,
+  `krs_reg` varchar(1024) NOT NULL,
   `commision` DECIMAL(5,2),
   `nip` varchar(14),
   `regon` varchar(14),
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS `PREFIX_seller` (
 
 CREATE TABLE IF NOT EXISTS `PREFIX_seller_lang` (
   `id_seller` int(10) unsigned NOT NULL,
-  `company_description` text,
+  `description` text,
   `regulations` text,
   `link_rewrite` varchar(128) NOT NULL,
   `id_lang` int(10) unsigned NOT NULL,

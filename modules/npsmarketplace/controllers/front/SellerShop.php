@@ -11,17 +11,23 @@ class NpsMarketplaceSellerShopModuleFrontController extends ModuleFrontControlle
         $id_seller = (int)Tools::getValue('id_seller', 0);
         $tpl_seller = array();
         $seller = new Seller($id_seller);
+        $address = new Address($seller->id_address);
+        $customer = new Customer($seller->id_customer);
         if ($id_seller) {
             $image = Seller::getImageLink($seller->id, 'home_default', $this->context);
             $tpl_seller = array(
                 'id' => $seller->id,
                 'image' => $image,
                 'name' => $seller->name,
-                'company_name' => $seller->company_name,
-                'company_description' => $seller->company_description,
-                'phone' => $seller->phone,
-                'email' => $seller->email,
+                'description' => $seller->description,
+                'company' => $address->company,
+                'person' => $address->firstname.' '.$address->lastname,
+                'address' => $address->address1.' '.$address->address2,
+                'phone' => $address->phone.' '.$address->phone_mobile,
+                'email' => $customer->email,
                 'nip' => $seller->nip,
+                'krs' => $seller->krs,
+                'krs_reg' => $seller->krs_reg,
                 'regon' => $seller->regon,
                 'active' => $seller->active,
                 'request_date' => $seller->request_date,
@@ -46,7 +52,6 @@ class NpsMarketplaceSellerShopModuleFrontController extends ModuleFrontControlle
             'have_image' => $image != null,
             'largeSize' => Image::getSize(ImageType::getFormatedName('large')),
             'products' =>  $this->productsList($ids),
-            'comments' => $this->commentsList($id_seller),
         ));
 
         $this->setTemplate('seller_shop.tpl');
@@ -80,8 +85,5 @@ class NpsMarketplaceSellerShopModuleFrontController extends ModuleFrontControlle
                 (isset($this->n) ? (int)($this->n) : null),
                 true
             );
-    }
-
-    private function commentsList($id_seller) {
     }
 }

@@ -41,6 +41,7 @@
 /override/*
 !/override/classes
 /override/classes/*
+!/override/classes/Address.php
 !/override/classes/Category.php
 !/override/classes/Customer.php
 !/override/classes/Product.php

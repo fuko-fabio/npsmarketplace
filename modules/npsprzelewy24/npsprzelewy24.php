@@ -405,7 +405,10 @@ class NpsPrzelewy24 extends PaymentModule {
     }
 
     public function hookPayment() {
-        $this->context->smarty->assign('p24_payment_url', $this->context->link->getModuleLink('npsprzelewy24', 'paymentConfirmation'));
+        $this->context->smarty->assign(array(
+            'p24_agreement_url' => Configuration::get('NPS_P24_REGULATIONS_URL'),
+            'p24_payment_url' => $this->context->link->getModuleLink('npsprzelewy24', 'paymentConfirmation')
+        ));
         return $this->display(__FILE__, 'payment.tpl');
     }
 

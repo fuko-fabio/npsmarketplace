@@ -36,6 +36,7 @@
 	<div id="opc_account" class="opc-main-block">
 		<div id="opc_account-overlay" class="opc-overlay" style="display: none;"></div>
 {/if}
+<p class="alert alert-info">{l s='Address shown in the summary of transaction (received via e-mail) or invoice (if you choose that option).'}</p>
 <div class="addresses box clearfix">
     <div class="row">
         <div class="form-group col-sm-6">

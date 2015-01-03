@@ -7,13 +7,15 @@
 if ( !defined( '_NPS_SEL_IMG_DIR_' ) )
     define('_NPS_SEL_IMG_DIR_', _PS_IMG_DIR_.'seller/');
 
-class Seller extends ObjectModel
-{
+class Seller extends ObjectModel {
     /** @var integer id */
     public $id;
 
     /** @var integer Customer id */
     public $id_customer;
+
+    /** @var integer Address id */
+    public $id_address;
 
     /** @var string Request date */
     public $request_date;
@@ -21,17 +23,17 @@ class Seller extends ObjectModel
     /** @var string Name */
     public $name;
 
-    /** @var string e-mail */
-    public $email;
-
-    /** @var string phone */
-    public $phone;
-
     /** @var string NIP */
     public $nip = null;
 
     /** @var string REGON */
     public $regon = null;
+
+    /** @var string KRS */
+    public $krs = null;
+
+    /** @var string KRS registration authority */
+    public $krs_reg = null;
 
     /** @var boolean account state */
     public $active = false;
@@ -45,14 +47,11 @@ class Seller extends ObjectModel
     /** @var float commision */
     public $commision;
 
-    /** @var string Company name */
-    public $company_name;
-
-    /** @var string Company description */
-    public $company_description;
-
     /** @var boolean Company regulations activity */
     public $regulations_active = false;
+
+    /** @var string Company description */
+    public $description;
 
     /** @var string Company regulations */
     public $regulations;
@@ -84,25 +83,26 @@ class Seller extends ObjectModel
         'multilang' => true,
         'fields' => array(
             'id_customer' =>         array('type' => self::TYPE_INT,    'validate' => 'isUnsignedId',  'required' => true),
+            'id_address' =>          array('type' => self::TYPE_INT,    'validate' => 'isUnsignedId',  'required' => true),
             'request_date' =>        array('type' => self::TYPE_DATE,   'validate' => 'isDateFormat'),
             'active' =>              array('type' => self::TYPE_BOOL,   'validate' => 'isBool',        'required' => true),
             'requested' =>           array('type' => self::TYPE_BOOL,   'validate' => 'isBool',        'required' => true),
             'locked' =>              array('type' => self::TYPE_BOOL,   'validate' => 'isBool',        'required' => true),
-            'email' =>               array('type' => self::TYPE_STRING, 'validate' => 'isEmail',       'required' => true),
-            'phone' =>               array('type' => self::TYPE_STRING, 'validate' => 'isPhoneNumber', 'required' => true),
+            'krs' =>                 array('type' => self::TYPE_INT,    'validate' => 'isKrs'),
+            'krs_reg' =>             array('type' => self::TYPE_STRING, 'validate' => 'isCleanHtml'),
             'nip' =>                 array('type' => self::TYPE_STRING, 'validate' => 'isNip',         ),
             'regon' =>               array('type' => self::TYPE_STRING, 'validate' => 'isRegon',       ),
             'commision' =>           array('type' => self::TYPE_FLOAT,  'validate' => 'isFloat',       'required' => true),
             'regulations_active' =>  array('type' => self::TYPE_BOOL,   'validate' => 'isBool',        ),
             'name' =>                array('type' => self::TYPE_STRING, 'validate' => 'isGenericName', 'required' => true, 'size' => 128),
-            'company_name' =>        array('type' => self::TYPE_STRING, 'validate' => 'isGenericName', 'required' => true,),
              // Lang fields
             'link_rewrite' =>        array('type' => self::TYPE_STRING, 'validate' => 'isLinkRewrite', 'required' => true, 'lang' => true, 'size' => 128),
-            'company_description' => array('type' => self::TYPE_HTML,   'validate' => 'isCleanHtml',   'required' => false,'lang' => true),
+            'description' =>         array('type' => self::TYPE_HTML,   'validate' => 'isCleanHtml',   'required' => false,'lang' => true),
             'regulations' =>         array('type' => self::TYPE_HTML,   'validate' => 'isCleanHtml',   'required' => false,'lang' => true),
         ),
         'associations' => array(
             'customer' => array('type' => self::HAS_ONE,  'field' => 'id_customer', 'object' => 'Customer'),
+            'address' => array('type' => self::HAS_ONE,  'field' => 'id_address', 'object' => 'Address'),
             'products' => array('type' => self::HAS_MANY, 'field' => 'id_product',  'object' => 'Product', 'association' => 'seller_product'),
         )
     );

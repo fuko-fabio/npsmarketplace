@@ -9,7 +9,7 @@ class Validate extends ValidateCore
      /**
      * Check for NIP number validity
      *
-     * @param string $name Name to validate
+     * @param string $nip NIP to validate
      * @return boolean Validity is ok or not
      */
     public static function isNip($nip)
@@ -20,7 +20,7 @@ class Validate extends ValidateCore
     /**
      * Check for REGON number validity
      *
-     * @param string $name Name to validate
+     * @param string $regon REGON to validate
      * @return boolean Validity is ok or not
      */
     public static function isRegon($regon)
@@ -53,5 +53,16 @@ class Validate extends ValidateCore
             return 1;
         else
             return 0;
+    }
+    
+    /**
+     * Check for KRS number validity
+     *
+     * @param string $krs KRS to validate
+     * @return boolean Validity is ok or not
+     */
+    public static function isKrs($krs)
+    {
+        return preg_match('/^[0-9]/', $krs);
     }
 }

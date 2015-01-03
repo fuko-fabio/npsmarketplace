@@ -42,17 +42,14 @@ class AdminSellersAccountsController extends AdminController
             'name' => array(
                 'title' => $this->l('Name')
             ),
-            'company_name' => array(
-                'title' => $this->l('Company Name')
+            'krs' => array(
+                'title' => $this->l('KRS')
             ),
             'nip' => array(
                 'title' => $this->l('NIP')
             ),
             'regon' => array(
                 'title' => $this->l('REGON')
-            ),
-            'email' => array(
-                'title' => $this->l('Email address')
             ),
             'locked' => array(
                 'title' => $this->l('Locked'),
@@ -129,7 +126,7 @@ class AdminSellersAccountsController extends AdminController
             $template,
             $title,
             $mail_params,
-            $seller->email,
+            $customer->email,
             null,
             strval(Configuration::get('PS_SHOP_EMAIL')),
             strval(Configuration::get('PS_SHOP_NAME')),
@@ -166,7 +163,7 @@ class AdminSellersAccountsController extends AdminController
                 'account_active',
                 Mail::l('Seller account activated'),
                 $mail_params,
-                $seller->email,
+                $customer->email,
                 null,
                 strval(Configuration::get('PS_SHOP_EMAIL')),
                 strval(Configuration::get('PS_SHOP_NAME')),
@@ -332,15 +329,9 @@ class AdminSellersAccountsController extends AdminController
                     ),
                 ),
                 array(
-                    'type' => 'text',
-                    'label' => $this->l('Company Name'),
-                    'name' => 'company_name',
-                    'required' => true,
-                ),
-                array(
                     'type' => 'textarea',
-                    'label' => $this->l('Company Description'),
-                    'name' => 'company_description',
+                    'label' => $this->l('Description'),
+                    'name' => 'description',
                     'required' => true,
                     'lang' => true,
                     'autoload_rte' => 'rte', //Enable TinyMCE editor
@@ -350,18 +341,17 @@ class AdminSellersAccountsController extends AdminController
                     'label' => $this->l('Seller Name'),
                     'name' => 'name',
                     'required' => true,
-                    'lang' => true
                 ),
                 array(
                     'type' => 'text',
-                    'label' => $this->l('Phone'),
-                    'name' => 'phone',
+                    'label' => $this->l('KRS'),
+                    'name' => 'krs',
                     'required' => true,
                 ),
                 array(
                     'type' => 'text',
-                    'label' => $this->l('Email'),
-                    'name' => 'email',
+                    'label' => $this->l('The KRS registration authority'),
+                    'name' => 'krs_reg',
                     'required' => true,
                 ),
                 array(
@@ -475,6 +465,8 @@ class AdminSellersAccountsController extends AdminController
             'currency' => $this->context->currency,
             'lang_id' =>  $this->context->language->id,
             'payment' => new P24SellerCompany(null, $obj->id),
+            'address' => new Address($obj->id_address),
+            'customer' => new Customer($obj->id_customer),
             'token' => $this->token,
             'payment_token' => Tools::getAdminTokenLite('AdminSellerCompany')
          );

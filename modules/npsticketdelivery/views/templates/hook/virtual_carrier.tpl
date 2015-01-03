@@ -20,7 +20,7 @@
             <tr>
                 <th class="first_item" data-sort-ignore="true">{l s='Event name' mod='npsticketdelivery'}</th>
                 <th class="item">{l s='Additional information' mod='npsticketdelivery'}</th>
-                <th class="last_item" data-sort-ignore="true">{l s='Person' mod='npsticketdelivery'} <a class="link" target="_blank" href="{$send_tickets_info_url}">{l s='See more informations' mod='npsticketdelivery'}</a></th>
+                <th class="last_item" data-sort-ignore="true">{l s='Person' mod='npsticketdelivery'} <span>({l s='Visible on ticket.' mod='npsticketdelivery'} <a class="link" target="_blank" href="{$send_tickets_info_url}">{l s='See more informations' mod='npsticketdelivery'}</a>)</span></th>
             </tr>
         </thead>
         <tbody>

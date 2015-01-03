@@ -5,6 +5,7 @@
 */
 
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/CategoriesList.php');
+include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/SellerHelper.php');
 
 class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontController {
 
@@ -15,9 +16,13 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
 
     public function setMedia() {
         parent::setMedia();
-        $this->addJS(_PS_JS_DIR_.'validate.js');
-        $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/tinymce/tinymce.min.js');
-        $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/tinymce_init.js');
+        $this->addJS(array(
+            _THEME_JS_DIR_.'tools/vatManagement.js',
+            _THEME_JS_DIR_.'tools/statesManagement.js',
+            _PS_JS_DIR_.'validate.js',
+            _PS_MODULE_DIR_.'npsmarketplace/js/tinymce/tinymce.min.js',
+            _PS_MODULE_DIR_.'npsmarketplace/js/tinymce_init.js'
+        ));
     }
 
     public function postProcess() {
@@ -27,16 +32,17 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
             if ($seller->id != null) 
                 Tools::redirect('index.php?controller=my-account');
 
-            $company_name = trim(Tools::getValue('company_name'));
-            $name = trim(Tools::getValue('seller_name'));
-            $phone = trim(Tools::getValue('seller_phone'));
-            $email = trim(Tools::getValue('seller_email'));
-            $nip = Tools::getValue('seller_nip');
-            $regon = Tools::getValue('seller_regon');
-            $company_description = $_POST['company_description'];
             $companyLogo = trim(Tools::getValue('company_logo'));
+            $name = trim(Tools::getValue('seller_name'));
+            $description = $_POST['company_description'];
             $regulations_active = Tools::getIsset('regulations_active');
             $regulations = Tools::getValue('regulations');
+            
+            $nip = Tools::getValue('seller_nip');
+            $regon = Tools::getValue('seller_regon');
+            $krs = Tools::getValue('seller_krs');
+            $krs_reg = Tools::getValue('seller_krs_reg');
+
             $link_rewrite = array();
 
             if (empty($name))
@@ -46,29 +52,20 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
             else if (Seller::sellerExists($name))
                 $this -> errors[] = $this->module->l('Seller name is not unique', 'AccountRequest');
 
-            if (empty($phone))
-                $this -> errors[] = $this->module->l('Phone number is required', 'AccountRequest');
-            else if (!Validate::isPhoneNumber($phone))
-                $this -> errors[] = $this->module->l('Invalid phone number', 'AccountRequest');
-
-            if (empty($email))
-                $this -> errors[] = $this->module->l('Buisness email is required', 'AccountRequest');
-            else if (!Validate::isEmail($email))
-                $this -> errors[] = $this->module->l('Invalid email addres', 'AccountRequest');
-
-            if (empty($company_name))
-                $this -> errors[] = $this->module->l('Company name is required', 'AccountRequest');
-            else if (!Validate::isGenericName($company_name))
-                $this -> errors[] = $this->module->l('Invalid company name', 'AccountRequest');
-
             if (!empty($nip) && !Validate::isNip($nip))
                 $this -> errors[] = $this->module->l('Invalid NIP number', 'AccountRequest');
+
+            if (!empty($krs) && !Validate::isKrs($krs))
+                $this -> errors[] = $this->module->l('Invalid KRS number', 'AccountRequest');
+
+            if (!empty($krs_reg) && !Validate::isCleanHtml($krs_reg))
+                $this -> errors[] = $this->module->l('Invalid KRS registration authority content', 'AccountRequest');
 
             if (!empty($regon) && !Validate::isRegon($regon))
                 $this -> errors[] = $this->module->l('Invalid REGON number', 'AccountRequest');
 
             foreach (Language::getLanguages() as $key => $lang) {
-                if (!Validate::isCleanHtml($company_description[$lang['id_lang']]))
+                if (!Validate::isCleanHtml($description[$lang['id_lang']]))
                     $this -> errors[] = $this->module->l('Invalid company description', 'AccountRequest');
                 if (!Validate::isCleanHtml($regulations[$lang['id_lang']]))
                     $this -> errors[] = $this->module->l('Invalid regulations content', 'AccountRequest');
@@ -77,27 +74,106 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
             }
 
             if(empty($this->errors)) {
-                $seller -> company_name = $company_name;
-                $seller -> company_description = $company_description;
-                $seller -> name = $name;
-                $seller -> phone = $phone;
-                $seller -> email = $email;
-                $seller -> nip = $nip;
-                $seller -> regon = $regon;
-                $seller -> link_rewrite = $link_rewrite;
-                $seller -> regulations = $regulations;
-                $seller -> regulations_active = $regulations_active;
-                $seller -> id_customer = $this -> context -> customer -> id;
-                $seller -> commision = Configuration::get('NPS_GLOBAL_COMMISION');
-                $seller -> request_date = date("Y-m-d H:i:s");
-                $seller -> requested = true;
-                $seller->save();
-                $this->postImage($seller);
-                $this->mailToSeller($seller);
-                $this->mailToAdmin($seller);
-                Tools::redirect('index.php?controller=my-account' );
+                $id_adress = $this->processSubmitAddress($seller);
+                if(empty($this->errors)) {
+                    $seller->description = $description;
+                    $seller->name = $name;
+                    $seller->krs = $krs;
+                    $seller->krs_reg = $krs_reg;
+                    $seller->nip = $nip;
+                    $seller->regon = $regon;
+                    $seller->link_rewrite = $link_rewrite;
+                    $seller->regulations = $regulations;
+                    $seller->regulations_active = $regulations_active;
+                    $seller->id_customer = $this->context->customer->id;
+                    $seller->commision = Configuration::get('NPS_GLOBAL_COMMISION');
+                    $seller->request_date = date("Y-m-d H:i:s");
+                    $seller->requested = true;
+                    $seller->id_address = $id_adress;
+                    $seller->save();
+                    $this->postImage($seller);
+                    $this->mailToSeller($seller);
+                    $this->mailToAdmin($seller);
+                    Tools::redirect('index.php?controller=my-account' );
+                }
             }
         }
+    }
+
+    protected function processSubmitAddress($seller) {
+        $address = new Address();
+        if (isset($_POST['company']) && !empty($_POST['company']))
+            $_POST['alias'] = $_POST['company'];
+        else
+            $_POST['alias'] = $this->module->l('Company address');
+
+        $this->errors = $address->validateController();
+        $address->id_customer = (int)$this->context->customer->id;
+
+        // Check phone
+        if (Configuration::get('PS_ONE_PHONE_AT_LEAST') && !Tools::getValue('phone') && !Tools::getValue('phone_mobile'))
+            $this->errors[] = $this->module->l('You must register at least one phone number.');
+        if ($address->id_country)
+        {
+            // Check country
+            if (!($country = new Country($address->id_country)) || !Validate::isLoadedObject($country))
+                throw new PrestaShopException('Country cannot be loaded with address->id_country');
+
+            if ((int)$country->contains_states && !(int)$address->id_state)
+                $this->errors[] = $this->module->l('This country requires you to chose a State.');
+
+            if (!$country->active)
+                $this->errors[] = Tools::displayError('This country is not active.');
+
+            $postcode = Tools::getValue('postcode');
+            /* Check zip code format */
+            if ($country->zip_code_format && !$country->checkZipCode($postcode))
+                $this->errors[] = sprintf($this->module->l('The Zip/Postal code you\'ve entered is invalid. It must follow this format: %s'), str_replace('C', $country->iso_code, str_replace('N', '0', str_replace('L', 'A', $country->zip_code_format))));
+            elseif(empty($postcode) && $country->need_zip_code)
+                $this->errors[] = $this->module->l('A Zip/Postal code is required.');
+            elseif ($postcode && !Validate::isPostCode($postcode))
+                $this->errors[] = $this->module->l('The Zip/Postal code is invalid.');
+
+            // Check country DNI
+            if ($country->isNeedDni() && (!Tools::getValue('dni') || !Validate::isDniLite(Tools::getValue('dni'))))
+                $this->errors[] = $this->module->l('The identification number is incorrect or has already been used.');
+            else if (!$country->isNeedDni())
+                $address->dni = null;
+        }
+
+        // Check the requires fields which are settings in the BO
+        $this->errors = array_merge($this->errors, $address->validateFieldsRequiredDatabase());
+
+        // Don't continue this process if we have errors !
+        if ($this->errors && !$this->ajax)
+            return false;
+
+        // If we edit this address, delete old address and create a new one
+        if (Validate::isLoadedObject($country) && !$country->contains_states)
+            $address->id_state = 0;
+        $address_old = new Address($seller->id_address);
+        if ($address_old->id && Customer::customerHasAddress($this->context->customer->id, (int)$address_old->id)) {
+            if ($address_old->isUsed())
+                $address_old->delete();
+            else {
+                $address->id = (int)($address_old->id);
+                $address->date_add = $address_old->date_add;
+            }
+        }
+
+        // Save address
+        if ($result = $address->save())
+        {           
+            // Update id address of the current cart if necessary
+            if (isset($address_old) && $address_old->isUsed())
+                $this->context->cart->updateAddressId($address_old->id, $address->id);
+            else // Update cart address
+                $this->context->cart->autosetProductAddress();
+
+            $this->context->cart->update();
+            return $address->id;
+        }
+        $this->errors[] = $this->module->l('An error occurred while saving your company address.');
     }
 
     private function mailToSeller($seller) {
@@ -113,7 +189,7 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
             'account_request',
             $this->module->l('Seller account request', 'AccountRequest'),
             $mail_params,
-            $seller->email,
+            $this->context->customer->email,
             null,
             strval(Configuration::get('PS_SHOP_EMAIL')),
             strval(Configuration::get('PS_SHOP_NAME')),
@@ -128,10 +204,10 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
         $email = strval(Configuration::get('PS_SHOP_EMAIL'));
         $mail_params = array(
             '{name}' => $seller->name,
-            '{company_name}' => $seller->company_name,
-            '{company_description}' => $seller->company_description[$lang_id],
-            '{email}' => $seller->email,
-            '{phone}' => $seller->phone,
+            '{description}' => $seller->description[$lang_id],
+            '{email}' => $this->context->customer->email,
+            '{krs}' => $seller->krs,
+            '{krs_reg}' => $seller->krs_reg,
             '{nip}' => $seller->nip,
             '{regon}' => $seller->regon,
             '{admin_link}' => Tools::getHttpHost(true).__PS_BASE_URI__.'backoffice/'.$this->context->link->getAdminLink('AdminSellers'),
@@ -162,30 +238,18 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
 
     public function initContent() {
         parent::initContent();
-
-        $id_customer = $this -> context -> customer -> id;
-        if ($id_customer)
-        {
-            $query = new DbQuery();
-            $query
-                -> select('*')
-                -> from('seller')
-                -> where('`id_customer` = '.$id_customer);
-            $account_state = 'none';
-            $date = null;
-            if ($result = Db::getInstance() -> executeS($query))
-            {
-                $date = $result[0]['request_date'];
-                $active = $result[0]['active'];
-                $locked = $result[0]['locked'];
-                $requested = $result[0]['requested'];
-                if ($requested == 1 && $active == 0 && $locked == 0)
-                    $account_state = 'requested';
-                else if ($requested == 1 && $active == 1 && $locked == 0)
-                    $account_state = 'active';
-                else if ($requested == 1 && $locked == 1)
-                    $account_state = 'locked';
-            }
+        
+        $id_address = (int)Address::getFirstCustomerAddressId($this->context->customer->id);
+        $account_state = 'none';
+        $seller = new Seller(null, $this->context->customer->id);
+        if ($seller->id) {
+            $id_address = $seller->id_address;
+            if ($seller->rerequested == 1 && $seller->active == 0 && $seller->locked == 0)
+                $account_state = 'requested';
+            else if ($seller->requested == 1 && $seller->active == 1 && $seller->locked == 0)
+                $account_state = 'active';
+            else if ($seller->requested == 1 && $seller->locked == 1)
+                $account_state = 'locked';
         }
 
         $this -> context -> smarty -> assign(
@@ -193,16 +257,19 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
                 'HOOK_MY_ACCOUNT_COLUMN' => Hook::exec('displayMyAccountColumn'),
                 'seller' => array('image' => '', 'regulations_active' => false),
                 'account_state' => $account_state,
-                'account_request_date' => $date,
+                'account_request_date' => $seller->request_date,
                 'current_id_lang' => (int)$this->context->language->id,
                 'languages' => Language::getLanguages(),
                 'user_agreement_url' =>  Configuration::get('NPS_SELLER_AGREEMENT_URL'),
                 'processing_data_url' => '#',
                 'seller_fieldset_tpl_path' => _PS_MODULE_DIR_.'npsmarketplace/views/templates/front/seller_fieldset.tpl',
-                'add_product' => Tools::getValue('not_configured')
+                'add_product' => Tools::getValue('not_configured'),
+                'address_tpl_path' =>_PS_MODULE_DIR_.'npsmarketplace/views/templates/front/address.tpl',
             )
         );
-
+        
+        $sellerHelper = new SellerHelper($this->context, new Address($id_address), $this->errors);
+        $sellerHelper->initAddressContent();
         $this -> setTemplate('account_request.tpl');
     }
 
