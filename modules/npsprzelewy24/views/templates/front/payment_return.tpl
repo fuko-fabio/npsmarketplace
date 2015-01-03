@@ -33,6 +33,6 @@
     </p>
 {else}
     <p class="cart_navigation exclusive">
-        <a class="btn btn-default button button-small " href="{$link->getPageLink('history', true)|escape:'html':'UTF-8'}" title="{l s='Back to orders' mod='npsprzelewy24'}"><i class="icon-chevron-left"> </i>{l s='Back to orders' mod='npsprzelewy24'}</a>
+        <a class="btn btn-default button button-small " href="{$link->getPageLink('my-account', true)|escape:'html':'UTF-8'}" title="{l s='Back to my tickets' mod='npsprzelewy24'}"><i class="icon-chevron-left"> </i>{l s='Back to orders' mod='npsprzelewy24'}</a>
     </p>
 {/if}
