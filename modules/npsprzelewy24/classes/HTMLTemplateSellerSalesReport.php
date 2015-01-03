@@ -68,7 +68,7 @@ class HTMLTemplateSellerSalesReport extends HTMLTemplateShopSalesReport {
             @mkdir(_PS_ROOT_DIR_._NPS_REPORTS_DIR_);
             @mkdir(_PS_ROOT_DIR_._NPS_SELLER_REPORTS_DIR_);
         }
-        $file = $path.$this->seller->company_name.'_'.$this->report_data['start_date'].'_to_'.$this->report_data['end_date'].'.pdf';
+        $file = $path.$this->seller->name.'_'.$this->report_data['start_date'].'_to_'.$this->report_data['end_date'].'.pdf';
         return $file;
     }
 

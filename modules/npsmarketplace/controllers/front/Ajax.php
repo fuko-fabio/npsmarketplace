@@ -56,6 +56,7 @@ class NpsMarketplaceAjaxModuleFrontController extends ModuleFrontController {
             $productLink = $this->context->link->getProductLink($product);
 
             $seller = new Seller(Seller::getSellerByProduct($id_product));
+            $customer = new Customer($seller->id_customer);
             $templateVars = array(
                 '{seller_name}' => $seller->name,
                 '{product_name}' => $product->name,
@@ -70,7 +71,7 @@ class NpsMarketplaceAjaxModuleFrontController extends ModuleFrontController {
                     'question_to_seller',
                     sprintf(Mail::l('Question about %1$s', (int)$this->context->language->id), $product->name),
                     $templateVars,
-                    $seller->email,
+                    $customer->email,
                     $seller->name,
                     $email,
                     ($this->context->cookie->customer_firstname ? $this->context->cookie->customer_firstname.' '.$this->context->cookie->customer_lastname : null),

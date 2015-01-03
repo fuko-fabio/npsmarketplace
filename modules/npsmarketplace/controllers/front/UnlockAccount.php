@@ -39,10 +39,11 @@ class NpsMarketplaceUnlockAccountModuleFrontController extends ModuleFrontContro
                     $emails = Configuration::get('PS_SHOP_EMAIL');
 
                 $seller = new Seller(null, $this->context->customer->id);
+                $customer = new Customer($seller->id_customer);
 
                 $mail_params = array(
                     '{seller_name}' => $seller->name,
-                    '{seller_email}' => $seller->email,
+                    '{seller_email}' => $customer->email,
                     '{message}' => $message,
                     '{admin_link}' => Tools::getHttpHost(true).__PS_BASE_URI__.'backoffice/'.$this->context->link->getAdminLink('AdminSellersAccounts'),
                 );
@@ -53,7 +54,7 @@ class NpsMarketplaceUnlockAccountModuleFrontController extends ModuleFrontContro
                     $mail_params,
                     explode(self::__MA_MAIL_DELIMITOR__, $emails),
                     null,
-                    $seller->email,
+                    $customer->email,
                     $seller->name,
                     null,
                     null,

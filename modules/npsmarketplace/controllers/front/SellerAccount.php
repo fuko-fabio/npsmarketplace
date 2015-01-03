@@ -63,7 +63,7 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
             }
 
             if(empty($this->errors)) {
-                $id_adress = $this->processSubmitAddress($seller);
+                $id_address = $this->processSubmitAddress($seller);
                 if(empty($this->errors)) {
                     $seller->description = $description;
                     $seller->name = $name;
@@ -72,7 +72,7 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
                     $seller->link_rewrite = $link_rewrite;
                     $seller->regulations = $regulations;
                     $seller->regulations_active = $regulations_active;
-                    $seller->id_adress = $id_adress;
+                    $seller->id_address = $id_adress;
                     $seller->krs = $krs;
                     $seller->krs_reg = $krs_reg;
                     $seller->save();

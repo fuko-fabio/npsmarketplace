@@ -81,7 +81,7 @@ foreach ($rows as $row) {
             'sales_report',
             Mail::l('Monthly sales report'),
             $mail_params,
-            $seller->email,
+            $customer->email,
             $seller->name,
             strval(Configuration::get('PS_SHOP_EMAIL')),
             strval(Configuration::get('PS_SHOP_NAME')),

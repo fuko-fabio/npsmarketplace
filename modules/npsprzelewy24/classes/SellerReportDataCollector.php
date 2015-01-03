@@ -10,13 +10,17 @@ class SellerReportDataCollector {
     private $start_date;
     private $end_date;
     private $seller;
+    private $customer;
+    private $address;
 
     public function __construct(Seller $seller, $start_date, $end_date) {
         $this->seller = $seller;
         $this->start_date = $start_date;
         $this->end_date = $end_date;
+        $this->customer = new Customer($this->seller->id_customer);
+        $this->address = new Address($this->seller->id_address);
     }
-    
+
     public function collect() {
         $rows = Db::getInstance()->executeS('
             SELECT * FROM `'._DB_PREFIX_.'seller_invoice_data`
@@ -52,7 +56,7 @@ class SellerReportDataCollector {
             'start_date' => $s_date,
             'end_date' => $e_date,
             'id_seller' => $this->seller->id,
-            'company_name' => $this->seller->company_name,
+            'company_name' => $this->address->company,
             'empty' => count($rows) == 0
         );
     }

@@ -237,9 +237,10 @@ class NpsTicketDelivery extends Module {
             }
 
             $invoice = new Address($order->id_address_invoice);
+            
             $data = array(
                 '{name}' => $seller->name,
-                '{email}' => $seller->email,
+                '{email}' => $seller_customer->email,
                 '{firstname}' => $seller_customer->firstname,
                 '{invoice_info}' => $invoice_request == 1 ? 'Kupujący prosi o wystawienie faktury na dane:' : 'Dane do rachunku',
                 '{invoice_block_txt}' => $this->_getFormatedAddress($invoice, "\n"),
@@ -271,7 +272,7 @@ class NpsTicketDelivery extends Module {
                 'order_info',
                 Mail::l('New order'),
                 $data,
-                $seller->email,
+                $seller_customer->email,
                 $seller->name,
                 $shop_email,
                 $shop_name,
