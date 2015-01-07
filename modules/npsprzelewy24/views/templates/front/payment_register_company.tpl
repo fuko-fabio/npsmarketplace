@@ -69,7 +69,7 @@
         </div>
         <div class="form-group">
             <label class="required" for="iban">{l s='Bank account number' mod='npsprzelewy24'}</label>
-            <input class="validate is_required form-control" data-validate="isNrb" type="text" id="iban" name="iban" 
+            <input class="validate is_required form-control" data-validate="isNrb" type="text" id="iban" name="iban" autocomplete="off"
             value="{if isset($smarty.post.iban)}{$smarty.post.iban}{else}{if isset($company['iban'])}{$company['iban']|escape:'html':'UTF-8'}{/if}{/if}"/>
         </div>
         <div class="required form-group">

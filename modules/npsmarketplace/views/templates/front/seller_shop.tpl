@@ -40,10 +40,8 @@
     <div class="tabs-container">
         <ul class="nav nav-tabs">
             <li class="active"><a href="#seller_events" data-toggle="tab">{l s='Events'  mod='npsmarketplace'}</a></li>
-            {if $seller['regulations_active']}
             <li><a href="#seller_company" data-toggle="tab">{l s='Company informations'  mod='npsmarketplace'}</a></li>
             <li><a href="#seller_regulations" data-toggle="tab">{l s='Regulations'  mod='npsmarketplace'}</a></li>
-            {/if}
             {$HOOK_SELLER_TAB}
         </ul>
         <div class="tab-content">
@@ -108,11 +106,9 @@
                     {/if}
                 </table>
             </div>
-            {if $seller['regulations_active']}
             <div class="tab-pane fade" id="seller_regulations">
                 <div class="rte">{$seller['regulations'][$current_id_lang]}</div>
             </div>
-            {/if}
             {$HOOK_SELLER_TAB_CONTENT}
         </div><!-- tab content -->
     </div>

@@ -382,23 +382,6 @@ class AdminSellersAccountsController extends AdminController
                     'lang' => true
                 ),
                 array(
-                    'type' => 'switch',
-                    'label' => $this->l('Append Company Regulations'),
-                    'name' => 'regulations_active',
-                    'values' => array(
-                        array(
-                            'id' => 'append',
-                            'value' => 1,
-                            'label' => $this->l('Append')
-                        ),
-                        array(
-                            'id' => 'not_append',
-                            'value' => 0,
-                            'label' => $this->l('Don\'t Append')
-                        )
-                    ),
-                ),
-                array(
                     'type' => 'textarea',
                     'label' => $this->l('Company Regulations'),
                     'name' => 'regulations',

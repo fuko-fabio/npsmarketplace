@@ -392,7 +392,6 @@ class NpsMarketplace extends Module {
             $seller = new Seller($id_seller);
             $extras = Product::getExtras($id_product, $this->context->language->id);
             $this->context->smarty->assign(array(
-                'show_regulations' => $seller->regulations_active,
                 'video_url' => $extras['video']
             ));
             return ($this->display(__FILE__, '/tab.tpl'));
@@ -427,7 +426,6 @@ class NpsMarketplace extends Module {
             $this->context->smarty->assign(array(
                 'current_id_lang' => $lang_id,
                 'regulations' => $seller->regulations,
-                'show_regulations' => $seller->regulations_active,
                 'product_address' => isset($address) ? $address->value[$lang_id] : '',
                 'product_town' => isset($town) ? $town->value[$lang_id] : '',
                 'product_district' => isset($district) ? $district->value[$lang_id] : '',

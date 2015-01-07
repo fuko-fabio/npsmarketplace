@@ -42,8 +42,8 @@
     <div class="product_top">
         <h2 class="product_name" itemprop="name">{$product->name|escape:'html':'UTF-8'}
             <span id="product_reference"{if empty($product->reference) || !$product->reference} style="display: none;"{/if}>
-            <span class="editable"
-                  itemprop="sku">{if !isset($groups)}{$product->reference|escape:'html':'UTF-8'}{/if}</span>
+            <span class="product_reference"
+                  itemprop="sku">{if !isset($groups)}({$product->reference|escape:'html':'UTF-8'}){/if}</span>
             </span>
         </h2>
     </div>

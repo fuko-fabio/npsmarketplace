@@ -93,8 +93,8 @@ img {
     font-size: 28px;
     font-weight: bold; }
   .product_top .product_reference {
-    color: #353535;
-    font-size: 24px; }
+    color: #555454;
+    font-size: 12px; }
 
 /* miniatures */
 #thumbs_list {
@@ -336,7 +336,6 @@ span.view_scroll_spacer {
     left: 0; }
 
 #page .rte {
-  padding: 0 20px 20px;
   word-wrap: break-word; }
   #page .rte p {
     margin-bottom: 0; }
@@ -1034,3 +1033,9 @@ Quick View Styles
   border: 1px solid #d6d4d4; }
 .ie8 .box-security {
   filter: none; }
+
+.tab-content .page-heading {
+  text-transform: none;
+  font-size: 16px;
+  padding-bottom: 5px;
+  color: #353535; }

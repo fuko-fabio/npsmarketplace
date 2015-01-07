@@ -183,11 +183,13 @@
 							<input type="checkbox" name="newsletter" id="newsletter" value="1" {if isset($smarty.post.newsletter) && $smarty.post.newsletter == '1'}checked="checked"{/if} />
 							{l s='Sign up for our newsletter!'}</label>
 						</div>
+						{*
 						<div class="checkbox">
 							<label for="optin">
 							<input type="checkbox" name="optin" id="optin" value="1" {if isset($smarty.post.optin) && $smarty.post.optin == '1'}checked="checked"{/if} />
 							{l s='Receive special offers from our partners!'}</label>
 						</div>
+						*}
 					{/if}
 					<h3 class="page-heading bottom-indent top-indent">{l s='Delivery address'}</h3>
 					{foreach from=$dlv_all_fields item=field_name}
@@ -531,10 +533,12 @@
 					<input type="checkbox" name="newsletter" id="newsletter" value="1" {if isset($smarty.post.newsletter) AND $smarty.post.newsletter == 1} checked="checked"{/if} />
 					<label for="newsletter">{l s='Sign up for our newsletter!'}</label>
 				</div>
+				{*
 				<div class="checkbox">
 					<input type="checkbox"name="optin" id="optin" value="1" {if isset($smarty.post.optin) AND $smarty.post.optin == 1} checked="checked"{/if} />
 					<label for="optin">{l s='Receive special offers from our partners!'}</label>
 				</div>
+				*}
 			{/if}
 		</div>
 		{if isset($PS_REGISTRATION_PROCESS_TYPE) && $PS_REGISTRATION_PROCESS_TYPE}
@@ -666,7 +670,7 @@
 			<input type="hidden" name="is_new_customer" value="1" />
 			{if isset($back)}<input type="hidden" class="hidden" name="back" value="{$back|escape:'html':'UTF-8'}" />{/if}
 			<button type="submit" name="submitAccount" id="submitAccount" class="btn btn-default button button-medium pull-right">
-				<span>{l s='Register'}<i class="icon-chevron-right right"></i></span>
+				<span>{l s='Register'} <i class="icon-chevron-right right"></i></span>
 			</button>
 			<p class="required"><span><sup>*</sup> {l s='Required field'}</span></p>
             {if isset($one_phone_at_least) && $one_phone_at_least}

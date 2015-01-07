@@ -49,6 +49,7 @@ $('document').ready(function(){
 </script>
 <ul id="seller_info_block_extra">
     <li class="seller-name"><a href="{$seller_shop_url}">{$seller_name}</a><br/></li>
+    <li class="seller-info"><a href="{$seller_shop_url}">{l s='Information about seller' mod='npsmarketplace'}</a><br/></li>
     <li class="seller-ask"><a id="send_seller_button" href="#send_seller_form">{l s='Ask seller' mod='npsmarketplace'}</a></li>
 </ul>
 <div style="display: none;">

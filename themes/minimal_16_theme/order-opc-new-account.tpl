@@ -134,11 +134,13 @@
 					<input type="checkbox" name="newsletter" id="newsletter" value="1" {if isset($guestInformations) && isset($guestInformations.newsletter) && $guestInformations.newsletter}checked="checked"{/if} autocomplete="off"/>
 					{l s='Sign up for our newsletter!'}</label>
 				</div>
+				{*
 				<div class="checkbox" >
                 	<label for="optin">
 					<input type="checkbox"name="optin" id="optin" value="1" {if isset($guestInformations) && isset($guestInformations.optin) && $guestInformations.optin}checked="checked"{/if} autocomplete="off"/>
 					{l s='Receive special offers from our partners!'}</label>
 				</div>
+				*}
 				{/if}
 				<h3 class="page-subheading top-indent">{l s='Delivery address'}</h3>
 				{$stateExist = false}
@@ -377,7 +379,7 @@
                 		<p class="required opc-required pull-right">
                             <sup>*</sup>{l s='Required field'}
                         </p>
-                    <button type="submit" name="submitAccount" id="submitAccount" class="btn btn-default button button-medium"><span>{l s='Save'}<i class="icon-chevron-right right"></i></span></button>
+                    <button type="submit" name="submitAccount" id="submitAccount" class="btn btn-default button button-medium"><span>{l s='Save'} <i class="icon-chevron-right right"></i></span></button>
                     
 				</div>
 				<div style="display: none;" id="opc_account_saved" class="alert alert-success">

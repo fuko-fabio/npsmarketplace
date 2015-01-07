@@ -32,7 +32,6 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
             $companyLogo = trim(Tools::getValue('company_logo'));
             $name = trim(Tools::getValue('seller_name'));
             $description = $_POST['company_description'];
-            $regulations_active = Tools::getIsset('regulations_active');
             $regulations = Tools::getValue('regulations');
 
             $nip = Tools::getValue('seller_nip');
@@ -64,15 +63,14 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
 
             if(empty($this->errors)) {
                 $id_address = $this->processSubmitAddress($seller);
-                if(empty($this->errors)) {
+                if($id_address && empty($this->errors)) {
                     $seller->description = $description;
                     $seller->name = $name;
                     $seller->nip = $nip;
                     $seller->regon = $regon;
                     $seller->link_rewrite = $link_rewrite;
                     $seller->regulations = $regulations;
-                    $seller->regulations_active = $regulations_active;
-                    $seller->id_address = $id_adress;
+                    $seller->id_address = $id_address;
                     $seller->krs = $krs;
                     $seller->krs_reg = $krs_reg;
                     $seller->save();
@@ -111,7 +109,6 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
                 'commision' => $seller-> commision,
                 'account_state' => $seller->getAccountState(),
                 'regulations' => $seller-> regulations,
-                'regulations_active' => $seller-> regulations_active,
             );
         }
 

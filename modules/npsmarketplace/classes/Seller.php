@@ -47,9 +47,6 @@ class Seller extends ObjectModel {
     /** @var float commision */
     public $commision;
 
-    /** @var boolean Company regulations activity */
-    public $regulations_active = false;
-
     /** @var string Company description */
     public $description;
 
@@ -93,7 +90,6 @@ class Seller extends ObjectModel {
             'nip' =>                 array('type' => self::TYPE_STRING, 'validate' => 'isNip',         ),
             'regon' =>               array('type' => self::TYPE_STRING, 'validate' => 'isRegon',       ),
             'commision' =>           array('type' => self::TYPE_FLOAT,  'validate' => 'isFloat',       'required' => true),
-            'regulations_active' =>  array('type' => self::TYPE_BOOL,   'validate' => 'isBool',        ),
             'name' =>                array('type' => self::TYPE_STRING, 'validate' => 'isGenericName', 'required' => true, 'size' => 128),
              // Lang fields
             'link_rewrite' =>        array('type' => self::TYPE_STRING, 'validate' => 'isLinkRewrite', 'required' => true, 'lang' => true, 'size' => 128),

@@ -118,8 +118,8 @@ img {
     font-weight: bold;
   }
   .product_reference {
-    color: $dark-text-color;
-    font-size: 24px;
+    color: $base-heading-color;
+    font-size: 12px;
   }
 }
 
@@ -421,7 +421,6 @@ span.view_scroll_spacer {
 }
 
 #page .rte {
-  padding: 0 20px 20px;
   word-wrap: break-word;
   p {
     margin-bottom: 0;
@@ -1298,4 +1297,13 @@ Quick View Styles
   .box-security {
     filter: none;
   }
-} 
+}
+
+.tab-content {
+  .page-heading {
+    text-transform: none;
+    font-size: 16px;
+    padding-bottom: 5px;
+    color: $dark-text-color;
+  }
+}

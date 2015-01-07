@@ -175,7 +175,7 @@ class NpsPrzelewy24PaymentSettingsModuleFrontController extends ModuleFrontContr
                 $this->setTemplate('payment_company_registered.tpl');
             } else {
                 $this->context->smarty->assign(array(
-                    'company' => $this->getRegisterCompanyData(),
+                    'company' => $this->getRegisterCompanyData($seller),
                     'p24_agreement_url' => Configuration::get('NPS_P24_REGULATIONS_URL')
                 ));
                 $this->setTemplate('payment_register_company.tpl');
@@ -183,14 +183,13 @@ class NpsPrzelewy24PaymentSettingsModuleFrontController extends ModuleFrontContr
         }
     }
 
-    private function getRegisterCompanyData() {
+    private function getRegisterCompanyData($seller) {
         $city = '';
         $post_code = '';
         $address = '';
         $cust = $this->context->customer;
-        $seller = new Address($seller->id_address);
-        $address = $cust->getAddresses($this->context->language->id);
-        if (!empty($addresses)) {
+        $address = new Address($seller->id_address);
+        if ($address && $address->id) {
             $city = $address->city;
             $post_code = $address->postcode;
             $address = $address->address1.' '.$address->address2;

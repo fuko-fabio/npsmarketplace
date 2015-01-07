@@ -99,25 +99,6 @@
                         </div>
                     </div>
                     <div class="row">
-                        <label class="control-label col-lg-3">{l s='Show Company Regualtions' mod='npsmarketplace'}</label>
-                        <div class="col-lg-9">
-                            <p class="form-control-static">
-                                {if $seller->regulations_active}
-                                    <span class="label label-success">
-                                        <i class="icon-check"></i>
-                                        {l s='Yes' mod='npsmarketplace'}
-                                    </span>
-                                {else}
-                                    <span class="label label-danger">
-                                        <i class="icon-remove"></i>
-                                        {l s='No' mod='npsmarketplace'}
-                                    </span>
-                                {/if}
-                            </p>
-                        </div>
-                    </div>
-                    <br />
-                    <div class="row">
                         <label class="control-label col-lg-3">{l s='Description' mod='npsmarketplace'}</label>
                     </div>
                     <div class="row">
