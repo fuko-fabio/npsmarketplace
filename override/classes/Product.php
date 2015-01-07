@@ -283,9 +283,12 @@ class Product extends ProductCore
         return $res;
     }
 
-    public static function getExtras($id_product, $id_lang, $all = true) {
+    public static function getExtras($id_product, $id_lang = null, $all = true) {
         if (!isset($id_product))
             return null;
+        
+        if ($id_lang == null)
+            $id_lang = (int)Configuration::get('PS_LANG_DEFAULT');
 
         $sql = 'SELECT `type`, `video`, `lat`, `lng`
                 FROM `'._DB_PREFIX_.'product`
