@@ -28,7 +28,10 @@
       top: 0;
       left: 15px;
       padding-top: 85%;
-      padding-left: 5px
+      padding-left: 5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     img {
       width: 100%;

@@ -53,7 +53,8 @@
     background: #FFC654; }
 
 .nps-product-seller-info {
-  text-align: center; }
+  text-align: center;
+  margin-top: 15px; }
   .nps-product-seller-info .content {
     margin-top: 10px; }
   .nps-product-seller-info .name {
@@ -128,18 +129,25 @@
     position: absolute;
     left: 15px;
     top: 0;
-    width: 90%;
+    width: calc(100% - 30px);
     height: 100%;
     color: #fff;
     padding: 10px;
-    border: 1px solid #ffaa00; }
+    border: 1px solid #ffaa00;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; }
   .nps-sellers-list a .name {
     position: absolute;
     top: 0;
-    left: 15px;
-    padding: 10px;
+    left: 0;
+    padding: 10px 25px;
     color: #333;
-    border: 1px solid transparent; }
+    border: 1px solid transparent;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%; }
   @media (min-width: 992px) {
     .nps-sellers-list a:hover .mask {
       display: block; } }

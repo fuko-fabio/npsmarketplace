@@ -172,6 +172,8 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                     $this -> errors[] = $this->module->l('You can upload max 4 pictures', 'Product');
             }
 
+            $d_s_limit = (int)Configuration::get('PS_PRODUCT_SHORT_DESC_LIMIT');
+            if ($d_s_limit <= 0) $d_s_limit = 400;
             foreach (Language::getLanguages() as $key => $lang) {
                 if(empty($name[$lang['id_lang']])) {
                     $name[$lang['id_lang']] = $name[(int)$this->context->language->id];
@@ -185,10 +187,25 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                 $p_name = $name[$lang['id_lang']];
                 if (!Validate::isGenericName($p_name))
                     $this -> errors[] = $this->module->l('Invalid product name', 'Product');
+                $nl = Tools::strlen($p_name);
+                if ($nl > 128)
+                    $this->errors[] = sprintf($this->module->l(
+                    'Name too long. Max allowed characters: 128, now is: %d characters. Language: %s', 'Product'),
+                    $nl,
+                    $lang['iso_code']);
+                
                 if (!Validate::isCleanHtml($description_short[$lang['id_lang']]))
                     $this -> errors[] = $this->module->l('Invalid product short description', 'Product');
                 if (!Validate::isCleanHtml($description[$lang['id_lang']]))
                     $this -> errors[] = $this->module->l('Invalid product description', 'Product');
+                // Check description short size without html
+                $dsl = Tools::strlen(strip_tags($description_short[$lang['id_lang']]));
+                if ($dsl > $d_s_limit)
+                    $this->errors[] = sprintf($this->module->l(
+                    'Short description too long. Max allowed characters: %d, now is: %d characters. Language: %s', 'Product'),
+                    $d_s_limit,
+                    $dsl,
+                    $lang['iso_code']);
 
                 $link_rewrite[$lang['id_lang']] = Tools::link_rewrite($p_name);
             }

@@ -78,6 +78,7 @@
 
 .nps-product-seller-info {
   text-align: center;
+  margin-top: 15px;
   .content {
     margin-top: 10px;
   }
@@ -171,19 +172,26 @@
       position: absolute;
       left: 15px;
       top: 0;
-      width: 90%;
+      width: calc(100% - 30px);
       height: 100%;
       color: $light-text-color;
       padding: 10px;
       border: 1px solid $primary-color;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     .name {
       position: absolute;
       top: 0;
-      left: 15px;
-      padding: 10px;
+      left: 0;
+      padding: 10px 25px;
       color: $base-text-color;
       border: 1px solid transparent;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      width: 100%;
     }
     &:hover {
       @media (min-width: $screen-md) {

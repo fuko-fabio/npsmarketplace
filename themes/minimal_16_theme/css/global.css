@@ -6663,8 +6663,10 @@ div.star a:hover {
       .footer-container #footer .bottom-footer .copyright a span {
         color: #ffaa00; }
       .footer-container #footer .bottom-footer .cname {
+        font-size: 16px;
         font-family: "Danube", sans-serif; }
       .footer-container #footer .bottom-footer .csoftware {
+        font-size: 16px;
         font-family: "Quicksand", sans-serif; }
 
 #reinsurance_block {
