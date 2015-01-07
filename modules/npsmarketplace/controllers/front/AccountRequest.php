@@ -100,7 +100,7 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
 
     protected function processSubmitAddress($seller) {
         $address = new Address();
-        if (isset($_POST['company']) && !empty($_POST['company']))
+        if (isset($_POST['company']) && !empty($_POST['company']) && strlen($_POST['company']) < 32)
             $_POST['alias'] = $_POST['company'];
         else
             $_POST['alias'] = $this->module->l('Company address');
