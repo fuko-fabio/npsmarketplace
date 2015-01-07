@@ -35,7 +35,6 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
             $companyLogo = trim(Tools::getValue('company_logo'));
             $name = trim(Tools::getValue('seller_name'));
             $description = $_POST['company_description'];
-            $regulations_active = Tools::getIsset('regulations_active');
             $regulations = Tools::getValue('regulations');
             
             $nip = Tools::getValue('seller_nip');
@@ -74,8 +73,8 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
             }
 
             if(empty($this->errors)) {
-                $id_adress = $this->processSubmitAddress($seller);
-                if(empty($this->errors)) {
+                $id_address = $this->processSubmitAddress($seller);
+                if($id_address && empty($this->errors)) {
                     $seller->description = $description;
                     $seller->name = $name;
                     $seller->krs = $krs;
@@ -84,12 +83,11 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
                     $seller->regon = $regon;
                     $seller->link_rewrite = $link_rewrite;
                     $seller->regulations = $regulations;
-                    $seller->regulations_active = $regulations_active;
                     $seller->id_customer = $this->context->customer->id;
                     $seller->commision = Configuration::get('NPS_GLOBAL_COMMISION');
                     $seller->request_date = date("Y-m-d H:i:s");
                     $seller->requested = true;
-                    $seller->id_address = $id_adress;
+                    $seller->id_address = $id_address;
                     $seller->save();
                     $this->postImage($seller);
                     $this->mailToSeller($seller);
@@ -191,8 +189,8 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
             $mail_params,
             $this->context->customer->email,
             null,
-            strval(Configuration::get('PS_SHOP_EMAIL')),
-            strval(Configuration::get('PS_SHOP_NAME')),
+            null,
+            null,
             null,
             null,
             _NPS_MAILS_DIR_);
@@ -210,7 +208,7 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
             '{krs_reg}' => $seller->krs_reg,
             '{nip}' => $seller->nip,
             '{regon}' => $seller->regon,
-            '{admin_link}' => Tools::getHttpHost(true).__PS_BASE_URI__.'backoffice/'.$this->context->link->getAdminLink('AdminSellers'),
+            '{admin_link}' => Tools::getHttpHost(true).__PS_BASE_URI__.'backoffice/'.$this->context->link->getAdminLink('AdminSellersAccounts'),
         );
         $merchant_emails = Configuration::get('NPS_MERCHANT_EMAILS');
         if (!is_null($merchant_emails) && !empty($merchant_emails)) 
@@ -224,8 +222,8 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
             $mail_params,
             explode(self::__MA_MAIL_DELIMITOR__, $emails),
             null,
-            strval(Configuration::get('PS_SHOP_EMAIL')),
-            strval(Configuration::get('PS_SHOP_NAME')),
+            null,
+            null,
             null,
             null,
             _NPS_MAILS_DIR_);
@@ -255,7 +253,7 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
         $this -> context -> smarty -> assign(
             array(
                 'HOOK_MY_ACCOUNT_COLUMN' => Hook::exec('displayMyAccountColumn'),
-                'seller' => array('image' => '', 'regulations_active' => false),
+                'seller' => array('image' => ''),
                 'account_state' => $account_state,
                 'account_request_date' => $seller->request_date,
                 'current_id_lang' => (int)$this->context->language->id,

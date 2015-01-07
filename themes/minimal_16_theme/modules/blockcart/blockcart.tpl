@@ -236,7 +236,7 @@
 						{l s='There is 1 item in your cart.' mod='blockcart'}
 					</span>
 				</h2>
-	
+	{*
 				<div class="layer_cart_row">
 					<strong class="dark">
 						{l s='Total products' mod='blockcart'}
@@ -252,7 +252,7 @@
 						{/if}
 					</span>
 				</div>
-	
+	*}
 				{if $show_wrapping}
 					<div class="layer_cart_row">
 						<strong class="dark">

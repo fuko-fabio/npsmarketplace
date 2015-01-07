@@ -43,6 +43,8 @@
 	<div id="opc_payment_methods" class="opc-main-block">
 		<div id="opc_payment_methods-overlay" class="opc-overlay" style="display: none;"></div>
 {/if}
+<p class="alert alert-error error-terms-of-p24" style="display: none;"><span class="alert-content">{l s='You must agree to the terms of service before continuing.'}</span></p>
+
 		<div class="paiement_block">
 			<div id="HOOK_TOP_PAYMENT">{$HOOK_TOP_PAYMENT}</div>
 				{if $HOOK_PAYMENT}

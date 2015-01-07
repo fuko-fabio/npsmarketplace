@@ -128,8 +128,8 @@ class AdminSellersAccountsController extends AdminController
             $mail_params,
             $customer->email,
             null,
-            strval(Configuration::get('PS_SHOP_EMAIL')),
-            strval(Configuration::get('PS_SHOP_NAME')),
+            null,
+            null,
             null,
             null,
             _NPS_MAILS_DIR_);
@@ -165,8 +165,8 @@ class AdminSellersAccountsController extends AdminController
                 $mail_params,
                 $customer->email,
                 null,
-                strval(Configuration::get('PS_SHOP_EMAIL')),
-                strval(Configuration::get('PS_SHOP_NAME')),
+                null,
+                null,
                 null,
                 null,
                 _NPS_MAILS_DIR_);
@@ -380,23 +380,6 @@ class AdminSellersAccountsController extends AdminController
                     'name' => 'link_rewrite',
                     'required' => true,
                     'lang' => true
-                ),
-                array(
-                    'type' => 'switch',
-                    'label' => $this->l('Append Company Regulations'),
-                    'name' => 'regulations_active',
-                    'values' => array(
-                        array(
-                            'id' => 'append',
-                            'value' => 1,
-                            'label' => $this->l('Append')
-                        ),
-                        array(
-                            'id' => 'not_append',
-                            'value' => 0,
-                            'label' => $this->l('Don\'t Append')
-                        )
-                    ),
                 ),
                 array(
                     'type' => 'textarea',

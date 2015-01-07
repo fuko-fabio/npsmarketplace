@@ -137,6 +137,9 @@ class NpsMarketplaceProductCombinationModuleFrontController extends ModuleFrontC
         else if ($seller->locked)
             Tools::redirect($this->context->link->getModuleLink('npsmarketplace', 'UnlockAccount'));
 
+        $extras = Product::getExtras($this->_product->id, $this->context->language->id);
+        if ($extras && $extras['type'] != 0)
+            Tools::redirect($this->context->link->getModuleLink('npsmarketplace', 'ProductsList'));
         $tpl_product = array();
         if (isset($this->_product->id)) {
             $features = $this->_product->getFeatures();

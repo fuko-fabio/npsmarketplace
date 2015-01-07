@@ -7465,6 +7465,9 @@ div.star.star_hover:after {
   background: url(../img/icon/form-ok.png) 99% 5px no-repeat; }
 .form-group.form-error .form-control, .form-group.form-ok .form-control {
   padding-right: 30px; }
+.form-group .form_info {
+  font-size: 10px;
+  line-height: 10px; }
 
 .radio-inline, .checkbox {
   padding-left: 0; }

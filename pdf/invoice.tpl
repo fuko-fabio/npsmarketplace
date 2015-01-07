@@ -78,6 +78,10 @@
 			<b>{l s='Order Date:' pdf='true'}</b><br />
 			{dateFormat date=$order->date_add full=0}<br />
 			<!-- / CUSTOMER INFORMATION -->
+			<br />
+			{l s='Tax included if needed.' pdf='true'}<br />
+			<br />
+            {l s='Payment finalized through the Przelewy 24 service.' pdf='true'}<br />
 		</td>
 		<td style="width: 83%; text-align: right">
 			<table style="width: 100%; font-size: 8pt;">

@@ -40,7 +40,7 @@ class P24 {
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION  ,true);
         curl_setopt($ch, CURLOPT_HEADER, false); 
         curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_SSLVERSION, 4);
+        curl_setopt($ch, CURLOPT_SSLVERSION, 0);
         curl_setopt($ch, CURLOPT_SSL_CIPHER_LIST, 'TLSv1');
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data, '', '&'));

@@ -39,7 +39,7 @@ class AdminSellersCommentsController extends AdminController {
         $this->context = Context::getContext();
         $this->default_form_language = $this->context->language->id;
         $this->_join .= 'LEFT JOIN `'._DB_PREFIX_.'seller` s ON (s.`id_seller` = a.`id_seller`)';
-        $this->_select .= 's.`id_seller`, s.`name`, s.`company_name`, s.`nip`';
+        $this->_select .= 's.`id_seller`, s.`name`, s.`krs`, s.`nip`';
         
         $this->fields_list = array(
             'id_seller_comment' => array(
@@ -56,8 +56,8 @@ class AdminSellersCommentsController extends AdminController {
                 'title' => $this->l('Seller Name'),
                 'align' => 'text-center',
             ),
-            'company_name' => array(
-                'title' => $this->l('Seller Company Name'),
+            'krs' => array(
+                'title' => $this->l('Seller KRS'),
                 'align' => 'text-center',
             ),
             'nip' => array(

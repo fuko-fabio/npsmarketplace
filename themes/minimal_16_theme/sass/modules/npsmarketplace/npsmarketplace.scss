@@ -44,6 +44,11 @@
         content: "\f128";
       }
     }
+    &.seller-info {
+      a:before {
+        content: "\f129";
+      }
+    }
   }
 }
 
@@ -82,12 +87,14 @@
     font-size: 18px;
     text-align: right;
     margin-top: 60px;
-    a {
-      color: $dark-background;
+    color: $dark-background;
+    &:hover {
+      color: $link-hover-color;
     }
   }
   .logo {
     text-align: left;
+    margin-left: 5px;
   }
   .content .col-md-6 {
     padding-left: 5px;

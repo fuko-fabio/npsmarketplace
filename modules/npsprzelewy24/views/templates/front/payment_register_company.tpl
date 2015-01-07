@@ -69,7 +69,7 @@
         </div>
         <div class="form-group">
             <label class="required" for="iban">{l s='Bank account number' mod='npsprzelewy24'}</label>
-            <input class="validate is_required form-control" data-validate="isNrb" type="text" id="iban" name="iban" 
+            <input class="validate is_required form-control" data-validate="isNrb" type="text" id="iban" name="iban" autocomplete="off"
             value="{if isset($smarty.post.iban)}{$smarty.post.iban}{else}{if isset($company['iban'])}{$company['iban']|escape:'html':'UTF-8'}{/if}{/if}"/>
         </div>
         <div class="required form-group">
@@ -79,6 +79,6 @@
                 {l s='Accept the' mod='npsprzelewy24'} <a href="{$p24_agreement_url}" target="_blank">{l s='“Regulations of Przelewy24”' mod='npsprzelewy24'}</a></label>
             </div>
         </div>
-        <button type="submit" name="submitCompany" class="btn btn-default button button-medium pull-right" onclick="$.fancybox.showLoading();"><span>{l s='Register' mod='npsprzelewy24'} <i class="icon-save right"></i></span></button>
+        <button type="submit" name="submitCompany" class="btn btn-default button button-medium pull-right"><span>{l s='Register' mod='npsprzelewy24'} <i class="icon-save right"></i></span></button>
     </form>
 </div>

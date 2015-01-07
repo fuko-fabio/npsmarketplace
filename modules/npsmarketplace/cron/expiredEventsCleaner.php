@@ -38,14 +38,21 @@ foreach ($outdated_ids as $id) {
 }
 
 $products_ids = array_unique($products_ids);
+$to_disable = array();
 foreach ($products_ids as $id) {
-    $attrs_ids = Product::getProductAttributesIds($id);
-    if(empty($attrs_ids)) {
-        $product = new Product($id);
-        if($product->active) {
-            $default_product = new Product((int)$id, false, null, (int)$product->id_shop_default);
-            $default_product->toggleStatus();
-        }
+    $extras = Product::getExtras($id);
+    if ($extras['type'] == 0) {
+        $attrs_ids = Product::getProductAttributesIds($id);
+        if(empty($attrs_ids))
+            $to_disable[] = $id;
+    } else 
+        $to_disable[] = $id;
+}
+foreach ($to_disable as $id) {
+    $product = new Product($id);
+    if($product->active) {
+        $default_product = new Product((int)$id, false, null, (int)$product->id_shop_default);
+        $default_product->toggleStatus();
     }
 }
 exit(0);

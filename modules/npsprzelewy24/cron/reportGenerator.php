@@ -83,8 +83,8 @@ foreach ($rows as $row) {
             $mail_params,
             $customer->email,
             $seller->name,
-            strval(Configuration::get('PS_SHOP_EMAIL')),
-            strval(Configuration::get('PS_SHOP_NAME')),
+            null,
+            null,
             $file_attachement,
             null,
             _PS_MODULE_DIR_.'npsprzelewy24/mails/');

@@ -34,7 +34,6 @@ class NpsMarketplaceSellerShopModuleFrontController extends ModuleFrontControlle
                 'commision' => $seller->commision,
                 'account_state' => $seller->getAccountState(),
                 'regulations' => $seller->regulations,
-                'regulations_active' => $seller->regulations_active,
             );
         }
 

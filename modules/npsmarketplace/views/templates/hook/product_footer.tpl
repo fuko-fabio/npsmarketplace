@@ -3,14 +3,7 @@
 * @copyright 2014 npsoftware
 *}
 <div class="nps-product-seller-info">
-     <div class="row">
-        <div class="col-xs-6 col-sm-6 col-md-6 name">
-            <a href="{$seller_shop_url}">{$seller->name}</a>
-        </div>
-        <div class="col-xs-6 col-sm-6 col-md-6 logo">
-            {if $logo}<a href="{$seller_shop_url}"><img src="{$logo}" /></a>{/if}
-        </div>
-    </div>
+    <a href="{$seller_shop_url}"><span class="name">{$seller->name}</span><span class="logo">{if $logo}<a href="{$seller_shop_url}"><img src="{$logo}" /></a>{/if}</span></a>
     <div class="content">
         {if $p1 || $p2}
         <div class="row">

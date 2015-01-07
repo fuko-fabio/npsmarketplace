@@ -16,10 +16,7 @@
             value="{if isset($smarty.post.seller_name)}{$smarty.post.seller_name}{else}{if isset($seller['name'])}{$seller['name']|escape:'html':'UTF-8'}{/if}{/if}"/>
             <span class="form_info">{l s='This name will be visible for our customers' mod='npsmarketplace'}</span>
         </div>
-        <div class="form-group">
-            <label>{l s='Shop Description' mod='npsmarketplace'}</label>
-        </div>
-        <ul class="nav nav-tabs" role="tablist">
+        <ul class="nav nav-tabs {if $languages|@count < 2}hidden{/if}" role="tablist">
           {foreach from=$languages item=lang}
               <li {if $lang.id_lang == $current_id_lang}class="active"{/if}><a href="#shop_lang{$lang.id_lang}" role="tab" data-toggle="tab">{$lang.iso_code}</a></li>
           {/foreach}
@@ -28,28 +25,11 @@
             {foreach from=$languages item=lang}
                 <div class="tab-pane {if $lang.id_lang == $current_id_lang}active{/if}" id="shop_lang{$lang.id_lang}">
                     <div class="form-group">
+                        <label>{l s='Shop Description' mod='npsmarketplace'}</label>
                         <textarea class="tinymce form-control" name="company_description[{$lang.id_lang}]">{if isset($smarty.post.company_description[$lang.id_lang])}{$smarty.post.company_description[$lang.id_lang]}{else}{if isset($seller['company_description'][$lang.id_lang])}{$seller['company_description'][$lang.id_lang]|escape:'html':'UTF-8'}{/if}{/if}</textarea>
                     </div>
-                </div>
-            {/foreach}
-        </div>
-        <div class="form-group">
-            <label for="regulations_active">{l s='Show Shop Regulations' mod='npsmarketplace'}</label>
-            <input class="form-control" type="checkbox" id="regulations_active" name="regulations_active" {if $seller['regulations_active'] == 1}checked{/if}/>
-            <span class="form_info">{l s='Add Company Regulations to your shop, important informations, FAQ etc' mod='npsmarketplace'}</span>
-        </div>
-        <div class="form-group">
-            <label>{l s='Shop Regulations' mod='npsmarketplace'}</label>
-        </div>
-        <ul class="nav nav-tabs" role="tablist">
-          {foreach from=$languages item=lang}
-              <li {if $lang.id_lang == $current_id_lang}class="active"{/if}><a href="#shop_lang_reg{$lang.id_lang}" role="tab" data-toggle="tab">{$lang.iso_code}</a></li>
-          {/foreach}
-        </ul>
-        <div class="tab-content">
-            {foreach from=$languages item=lang}
-                <div class="tab-pane {if $lang.id_lang == $current_id_lang}active{/if}" id="shop_lang_reg{$lang.id_lang}">
                     <div class="form-group">
+                        <label>{l s='Shop Regulations' mod='npsmarketplace'}</label>
                         <textarea class="tinymce form-control" name="regulations[{$lang.id_lang}]">{if isset($smarty.post.regulations[$lang.id_lang])}{$smarty.post.regulations[$lang.id_lang]}{else}{if isset($seller['regulations'][$lang.id_lang])}{$seller['regulations'][$lang.id_lang]|escape:'html':'UTF-8'}{/if}{/if}</textarea>
                     </div>
                 </div>

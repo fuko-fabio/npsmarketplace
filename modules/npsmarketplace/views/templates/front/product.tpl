@@ -41,9 +41,9 @@
         <strong>{l s='By clicking "Add" I accept the' mod='npsmarketplace'} <a href="{$user_agreement_url}">{l s='User Agreement.' mod='npsmarketplace'}</a></strong>
         </br>
         {if isset($product['id'])}
-            <button type="submit" class="btn btn-default button button-medium pull-right" name="saveProduct" onclick="$.fancybox.showLoading();"><span>{l s='Save' mod='npsmarketplace'} <i class="icon-save right"></i></span></button>
+            <button type="submit" class="btn btn-default button button-medium pull-right" name="saveProduct"><span>{l s='Save' mod='npsmarketplace'} <i class="icon-save right"></i></span></button>
         {else}
-            <button id="save-product-btn" type="submit" class="btn btn-default button button-medium pull-right" name="saveProduct" onclick="$.fancybox.showLoading();"><span>{l s='Add' mod='npsmarketplace'} <i class="icon-plus right"></i></span></button>
+            <button id="save-product-btn" type="submit" class="btn btn-default button button-medium pull-right" name="saveProduct"><span>{l s='Add' mod='npsmarketplace'} <i class="icon-plus right"></i></span></button>
         {/if}
         </p>
     </form>

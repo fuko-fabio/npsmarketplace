@@ -150,12 +150,14 @@
                             {l s='Sign up for our newsletter!'}
                         </label>
                     </div>
+                    {*
                     <div class="checkbox hidden">
                         <label for="optin">
                             <input type="checkbox" name="optin" id="optin" value="1" {if isset($smarty.post.optin) && $smarty.post.optin == 1} checked="checked"{/if}/>
                             {l s='Receive special offers from our partners!'}
                         </label>
                     </div>
+                    *}
                 {/if}
 			{if $b2b_enable}
 				<h1 class="page-subheading">

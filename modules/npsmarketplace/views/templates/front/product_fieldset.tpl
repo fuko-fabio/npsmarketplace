@@ -3,7 +3,7 @@
 *  @copyright 2014 npsoftware
 *}
 <fieldset>
-    {if $edit_product == 1}
+    {if $edit_product == 1 && $product['type'] == 0}
     <div class="alert alert-info">
         <span class="alert-content">
         <a class="alert-link" href="{$new_tem_link}">{l s='Click here' mod='npsmarketplace'}</a> {l s='to add new event term' mod='npsmarketplace'}
