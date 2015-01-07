@@ -35,23 +35,31 @@
 				<footer id="footer"  class="container">
 					<div class="row">
 					    {$HOOK_FOOTER}
-					<section class="bottom-eu">
-                        <img class="pull-left" src="{$img_dir}kapital_ludzki.png"/>
-                        <a class="text-center" href="{$base_dir}" title="{$shop_name|escape:'html':'UTF-8'}">
-                            <img class="logo img-responsive" src="{$logo_url}" alt="{$shop_name|escape:'html':'UTF-8'}"{if $logo_image_width} width="{$logo_image_width}"{/if}{if $logo_image_height} height="{$logo_image_height}"{/if}/>
-                        </a>
-                        <img class="pull-right" src="{$img_dir}unia.png"/>
-                        <p class="clearfix">{l s="Projekt współfinansowany przez Unię Europejską w ramach Europejskiego Funduszu Społecznego"}</p>
-                    </section>
-                        <section class="bottom-footer">
-                            <div class="copyright">
-                                Copyright &copy; 2014 <a href="http://labsintown.com" title="Labs In Town"><span>Labs</span> in Town</a>
-                            </div>
-                            <div class="pull-right">
-                                <a target="_blank" href="http://npsoftware.pl" title="nps software"><span class="cname">nps</span><span class="csoftware"> software</span></a>
-                            </div>
-                        </section>
 					</div>
+					<div class="bottom-eu row">
+					    <div class="col-xs-6 col-sm-4">
+                            <img class="pull-left" src="{$img_dir}kapital_ludzki.png"/>
+                        </div>
+                        <div class="col-xs-0 col-sm-4">
+                            <a href="{$base_dir}" title="{$shop_name|escape:'html':'UTF-8'}">
+                                <img class="logo img-responsive" src="{$logo_url}" alt="{$shop_name|escape:'html':'UTF-8'}"{if $logo_image_width} width="{$logo_image_width}"{/if}{if $logo_image_height} height="{$logo_image_height}"{/if}/>
+                            </a>
+                        </div>
+                        <div class="col-xs-6 col-sm-4">
+                            <img class="pull-right" src="{$img_dir}unia.png"/>
+                        </div>
+                    </div>
+                    <div class="bottom-info row">
+                        <p class="clearfix">{l s="Projekt współfinansowany przez Unię Europejską w ramach Europejskiego Funduszu Społecznego"}</p>
+                    </div>
+                    <div class="bottom-footer row">
+                        <div class="pull-left copyright">
+                            Copyright &copy; 2014 <a href="http://labsintown.pl" title="Labs In Town"><span>Labs</span> in Town</a>
+                        </div>
+                        <div class="pull-right">
+                            <a target="_blank" href="http://npsoftware.pl" title="nps software"><span class="cname">nps</span><span class="csoftware"> software</span></a>
+                        </div>
+                    </div>
 				</footer>
 			</div><!-- #footer -->
 		</div><!-- #page -->

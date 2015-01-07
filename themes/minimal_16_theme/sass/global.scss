@@ -1575,9 +1575,6 @@ div.star a:hover {
   @media (min-width: $screen-sm) {
     background: url(../img/footer-bg.png) repeat-x $homepage-footer-bg;
   }
-  .container {
-    padding-bottom: 160px;
-  }
   #footer {
     color: #777777;
     .row {
@@ -1756,15 +1753,14 @@ div.star a:hover {
       }
     }
     .bottom-eu {
-      position: absolute;
-      bottom: -100px;
-      left: 0;
-      width: 100%;
       text-align: center;
       img {
         width:210px;
+        @media (max-width: $screen-sm) {
+          width:100%;
+        }
       }
-      
+
       a {
         display: inline-block;
         @media (max-width: $screen-sm) {
@@ -1777,16 +1773,12 @@ div.star a:hover {
         text-align: left;
       }
     }
+    .bottom-info {
+      padding: 15px;
+    }
     .bottom-footer {
-      position: absolute;
-      bottom: -150px;
-      left: 0;
-      width: 100%;
       border-top: 1px solid #515151;
-      div {
-        padding: 15px 0 0 0;
-        float: left;
-      }
+      padding: 15px;
       .copyright {
         a {
           span {

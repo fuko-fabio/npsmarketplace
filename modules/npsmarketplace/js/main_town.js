@@ -1,8 +1,8 @@
 $(document).ready(function() {
     $('.nps-towns-top').hover(function() {
-      $(this).find('.toogle_content').stop(true, true).delay(200).fadeIn(200);
+      $(this).find('.toogle_content').stop(true, true).delay(0).fadeIn(200);
     }, function() {
-      $(this).find('.toogle_content').stop(true, true).delay(200).fadeOut(200);
+      $(this).find('.toogle_content').stop(true, true).delay(400).fadeOut(200);
     });
 });
 

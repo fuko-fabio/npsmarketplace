@@ -9,7 +9,7 @@
 <div class="nps-seller-shop">
     <div class="primary_block row">
         <!-- left infos-->
-        <div class="pb-left-column col-xs-6 col-sm-3 col-md-3">
+        <div class="pb-left-column col-xs-12 col-sm-3 col-md-3">
             <!-- product img-->
             <div id="image-block" class="clearfix">
                 {if $have_image}
@@ -23,7 +23,7 @@
         <!-- end pb-left-column -->
         <!-- end left infos-->
         <!-- center infos -->
-        <div class="pb-center-column col-xs-6 col-sm-9 col-md-9">
+        <div class="pb-center-column col-xs-12 col-sm-9 col-md-9">
             <h1 itemprop="name">{$seller['name']|escape:'html':'UTF-8'}</h1>
             {if $seller['description'][$current_id_lang]}
             <p class="rte align_justify">

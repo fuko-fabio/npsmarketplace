@@ -65,7 +65,10 @@ $(document).ready(function(){
 		$("#header .shopping_cart a:first").hover(
 			function(){
 				if (ajaxCart.nb_total_products > 0 || cart_qty > 0)
-					$("#header .cart_block").stop(true, true).slideDown(450);
+                    $('.cart-buttons').show();
+                else
+                    $('.cart-buttons').hide();
+				$("#header .cart_block").stop(true, true).slideDown(450);
 			},
 			function(){
 				setTimeout(function(){

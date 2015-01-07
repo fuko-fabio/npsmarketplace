@@ -6519,8 +6519,6 @@ div.star a:hover {
   @media (min-width: 768px) {
     .footer-container {
       background: url(../img/footer-bg.png) repeat-x #f2f2f2; } }
-  .footer-container .container {
-    padding-bottom: 160px; }
   .footer-container #footer {
     color: #777777; }
     .footer-container #footer .row {
@@ -6635,13 +6633,12 @@ div.star a:hover {
         .footer-container #footer #social_block h4 span {
           color: #ffaa00; }
     .footer-container #footer .bottom-eu {
-      position: absolute;
-      bottom: -100px;
-      left: 0;
-      width: 100%;
       text-align: center; }
       .footer-container #footer .bottom-eu img {
         width: 210px; }
+        @media (max-width: 768px) {
+          .footer-container #footer .bottom-eu img {
+            width: 100%; } }
       .footer-container #footer .bottom-eu a {
         display: inline-block; }
         @media (max-width: 768px) {
@@ -6651,15 +6648,11 @@ div.star a:hover {
         margin-top: 10px;
         margin-bottom: 0px;
         text-align: left; }
+    .footer-container #footer .bottom-info {
+      padding: 15px; }
     .footer-container #footer .bottom-footer {
-      position: absolute;
-      bottom: -150px;
-      left: 0;
-      width: 100%;
-      border-top: 1px solid #515151; }
-      .footer-container #footer .bottom-footer div {
-        padding: 15px 0 0 0;
-        float: left; }
+      border-top: 1px solid #515151;
+      padding: 15px; }
       .footer-container #footer .bottom-footer .copyright a span {
         color: #ffaa00; }
       .footer-container #footer .bottom-footer .cname {

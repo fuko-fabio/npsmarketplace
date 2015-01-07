@@ -5,9 +5,9 @@
 <script>
 $(document).ready(function(){
     $('.nps-facebook-login').hover(function() {
-      $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(200);
+      $(this).find('.dropdown-menu').stop(true, true).delay(0).fadeIn(200);
     }, function() {
-      $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(200);
+      $(this).find('.dropdown-menu').stop(true, true).delay(400).fadeOut(200);
     });
 });
 </script>
