@@ -1,0 +1,13 @@
+Cześć,
+
+Sprzedawca prosi o odblokowanie konta i przesyła następującą wiadomość:
+
+{message}
+
+Nazwa sprzedawcy: {seller_name}
+Email sprzedawcy: {seller_email}
+
+Przejdź do panelu administracyjnego aby odblokować konto: [{admin_link}]
+
+--
+{shop_name}

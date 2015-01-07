@@ -10,7 +10,7 @@ $_MODULE['<{npssocial}minimal_16_theme>npssocial_c162369096f0fe5784f05052ceee6b4
 $_MODULE['<{npssocial}minimal_16_theme>npssocial_bcca29e10968edaf6e0154d2339ad556'] = 'URL Twittera';
 $_MODULE['<{npssocial}minimal_16_theme>npssocial_6aadf667dfc3538abc2708ba76861bba'] = 'Twoje oficjalne konto na Twitter';
 $_MODULE['<{npssocial}minimal_16_theme>npssocial_1a530e4877d8d41f810d9d05f065722d'] = 'URL kanału RSS';
-$_MODULE['<{npssocial}minimal_16_theme>npssocial_672f301ddc5372b2477ed3c1d9322949'] = 'wój wybrany kanał RSS (Twój blog, Twój sklep, itp.).';
+$_MODULE['<{npssocial}minimal_16_theme>npssocial_672f301ddc5372b2477ed3c1d9322949'] = 'Twój wybrany kanał RSS (Twój blog, Twój sklep, itp.).';
 $_MODULE['<{npssocial}minimal_16_theme>npssocial_ad7198d676478ac70c3243c1d3446331'] = 'URL kanału YouTube';
 $_MODULE['<{npssocial}minimal_16_theme>npssocial_5817a34292f074f9f596de6cb3607540'] = 'Twój oficjalny kanał na YouTube.';
 $_MODULE['<{npssocial}minimal_16_theme>npssocial_1dd99e363d1bebee81578708c1e8a5e0'] = 'URL Google+';
