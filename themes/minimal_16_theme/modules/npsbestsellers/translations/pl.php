@@ -3,7 +3,7 @@
 global $_MODULE;
 $_MODULE = array();
 $_MODULE['<{npsbestsellers}minimal_16_theme>npsbestsellers-home_d7b2933ba512ada478c97fa43dd7ebe6'] = 'Najczęściej kupowane';
-$_MODULE['<{npsbestsellers}minimal_16_theme>npsbestsellers-home_adc570b472f54d65d3b90b8cee8368a9'] = 'Obecnie brak wydarzeń';
+$_MODULE['<{npsbestsellers}minimal_16_theme>npsbestsellers-home_adc570b472f54d65d3b90b8cee8368a9'] = 'Już wkrótce dowiesz się, jakie warsztaty są najpopularniejsze w Twoim mieście!';
 $_MODULE['<{npsbestsellers}minimal_16_theme>npsbestsellers_22b3f132d42b427687aa418de1db194a'] = 'nps Blok najczęściej kupowanych';
 $_MODULE['<{npsbestsellers}minimal_16_theme>npsbestsellers_ed6476843a865d9daf92e409082b76e1'] = 'Dodaje blok wyświetlający najczęściej kupowane produkty.';
 $_MODULE['<{npsbestsellers}minimal_16_theme>npsbestsellers_c888438d14855d7d96a2724ee9c306bd'] = 'Zaktualizowano ustawienia';

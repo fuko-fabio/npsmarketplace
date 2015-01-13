@@ -34,3 +34,5 @@ $_MODULE['<{npssocial}minimal_16_theme>npssocial_86709a608bd914b28221164e6680ebf
 $_MODULE['<{npssocial}minimal_16_theme>npssocial_15db599e0119be476d71bfc1fda72217'] = 'Vimeo';
 $_MODULE['<{npssocial}minimal_16_theme>npssocial_55f015a0c5605702f913536afe70cfb0'] = 'Instagram';
 $_MODULE['<{npssocial}minimal_16_theme>npssocial_be8df1f28c0abc85a0ed0c6860e5d832'] = 'Blog';
+$_MODULE['<{npssocial}minimal_16_theme>npssocial_970cfba66b8380fb97b742e4571356c6'] = 'Youtube';
+$_MODULE['<{npssocial}minimal_16_theme>npssocial_dda8dc38128a8c843ba9f496d6ee7186'] = 'Google Plus';

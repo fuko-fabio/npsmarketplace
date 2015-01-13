@@ -3,7 +3,7 @@
 global $_MODULE;
 $_MODULE = array();
 $_MODULE['<{npsnewproducts}minimal_16_theme>npsnewproducts_home_a0d0ebc37673b9ea77dd7c1a02160e2d'] = 'Nowości';
-$_MODULE['<{npsnewproducts}minimal_16_theme>npsnewproducts_home_2dd198853ad2c65b9b6cf9fa7a18fe9e'] = 'Brak nowych wydarzeń';
+$_MODULE['<{npsnewproducts}minimal_16_theme>npsnewproducts_home_2dd198853ad2c65b9b6cf9fa7a18fe9e'] = 'Warsztaty w mieście - nowe warsztaty wkrótce!';
 $_MODULE['<{npsnewproducts}minimal_16_theme>npsnewproducts_552ee8eccec10f486f555a8385e9ac65'] = 'nps Blok nowych produktów';
 $_MODULE['<{npsnewproducts}minimal_16_theme>npsnewproducts_d3ee346c7f6560faa13622b6fef26f96'] = 'Wyświetla blok prezentujący nowo dodane produkty.';
 $_MODULE['<{npsnewproducts}minimal_16_theme>npsnewproducts_1cd777247f2a6ed79534d4ace72d78ce'] = 'Proszę wypełnić pole \"wyświetlane produkty\".';

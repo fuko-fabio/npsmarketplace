@@ -2,6 +2,16 @@
 
 global $_MODULE;
 $_MODULE = array();
+$_MODULE['<{npscomments}minimal_16_theme>npscomments_f27118489b33b08b1a044483e46f8d29'] = 'Jesteś pewien że chcesz usunąc ten moduł?';
+$_MODULE['<{npscomments}minimal_16_theme>npscomments_148b6d3c87526bfa5718f1347a64f231'] = 'Ustawienia komentowania zostały uaktualnione';
+$_MODULE['<{npscomments}minimal_16_theme>npscomments_c9cc8cce247e49bae79f15173ce97354'] = 'Zapisz';
+$_MODULE['<{npscomments}minimal_16_theme>npscomments_630f6dc397fe74e52d5189e2c80f282b'] = 'Powrót do listy';
+$_MODULE['<{npscomments}minimal_16_theme>npscomments_88d4987c804041d400bee6d7e27d8fe1'] = 'Konfiguracji komentarzy sprzedawców';
+$_MODULE['<{npscomments}minimal_16_theme>npscomments_cf2fcb22e6342dea54b0cc34bb521752'] = 'Wszystkie komentarze muszą zostać zatwierdzone przez administratora';
+$_MODULE['<{npscomments}minimal_16_theme>npscomments_00d23a76e43b46dae9ec7aa9dcbebb32'] = 'Włączone';
+$_MODULE['<{npscomments}minimal_16_theme>npscomments_b9f5c797ebbf55adccdd8539a65a0241'] = 'Wyłączone';
+$_MODULE['<{npscomments}minimal_16_theme>npscomments_4e26bb46aa3f40913ee95cfb1d6c82f9'] = 'Pozwól komentować niezalogowanym użytkownikom';
+$_MODULE['<{npscomments}minimal_16_theme>npscomments_9dc1140983196141368ceda7565128a8'] = 'Minimalny czas pomiędzy dwoma komentarzami';
 $_MODULE['<{npscomments}minimal_16_theme>sellercomments_0589bc6e1ace6f05adf1f0829ac21168'] = 'ID sprzedawcy jest niepoprawne';
 $_MODULE['<{npscomments}minimal_16_theme>sellercomments_7b0bf23ae4079e07a3a4cb4d07e2caef'] = 'Tytuł jest niepoprawny';
 $_MODULE['<{npscomments}minimal_16_theme>sellercomments_ddbd56de5feb78ef1aaf60401f8c472b'] = 'Komentarz zawiera niedozwolone znaki';
@@ -10,13 +20,16 @@ $_MODULE['<{npscomments}minimal_16_theme>sellercomments_26510b8eb6e6053f5e91d511
 $_MODULE['<{npscomments}minimal_16_theme>sellercomments_a201fbadca94d310a1b62407cdc775d5'] = 'Ocena jest wymagana';
 $_MODULE['<{npscomments}minimal_16_theme>sellercomments_a5d37da2d02dcb1893938c19016a3834'] = 'Sprzedawca nie odnaleziony';
 $_MODULE['<{npscomments}minimal_16_theme>sellercomments_6d10b2f471e8894d59ae18e01537ece5'] = 'Nie możesz teraz dodać komentarza';
+$_MODULE['<{npscomments}minimal_16_theme>npscomments_ab51a81c76d95ddc762194d58ec5db63'] = 'Jesteś pewien że chcesz zgłosić ten komentarz?';
+$_MODULE['<{npscomments}minimal_16_theme>npscomments_64330ad674ed22fe609522f5e44a0e1b'] = 'Nie można dodać komentarza. Wystąpił nieoczekiwany błąd. Prosimy o kontakt z obsługą klienta.';
 $_MODULE['<{npscomments}minimal_16_theme>npscomments_9a2ccd41653469a8bd94fbb84b271a14'] = 'Komentarz został dodany!';
 $_MODULE['<{npscomments}minimal_16_theme>npscomments_b20968d9aecd2d075519992e9e2f1ffe'] = 'Komentarz został zapisany ale będzie widoczny dopiero po zatwierdzeniu.';
 $_MODULE['<{npscomments}minimal_16_theme>npscomments_186c30cab59f6b64a453778330d4bbf0'] = 'Nowy komentarz';
 $_MODULE['<{npscomments}minimal_16_theme>npscomments_e0aa021e21dddbd6d8cecec71e9cf564'] = 'OK';
 $_MODULE['<{npscomments}minimal_16_theme>npscomments_4b3b9db8c9784468094acde0f8bf7071'] = 'Ocena';
 $_MODULE['<{npscomments}minimal_16_theme>npscomments_f35965b2d600c9747c8943e8f2f221fa'] = 'Skomentuj butik, podziel się opinią o wydarzeniu';
-$_MODULE['<{npscomments}minimal_16_theme>npscomments_964cfd7f71281750b9e1cafe7c8c1366'] = 'Brak komentarzy';
+$_MODULE['<{npscomments}minimal_16_theme>npscomments_56a9c69efa26668f8fc2496d94f46dd8'] = 'Brak komentarzy. Bądź pierwszy i skomentuj butik lub podziel się opinią o wydarzeniu.';
+$_MODULE['<{npscomments}minimal_16_theme>npscomments_34a9fb157c02cdaf542857cbea16a507'] = 'Brak komentarzy.';
 $_MODULE['<{npscomments}minimal_16_theme>npscomments_7966126831926ad29c528b239d69f855'] = 'Dodaj komentarz';
 $_MODULE['<{npscomments}minimal_16_theme>npscomments_45dacce3e2bc0f7bebde95098b9326a8'] = 'Tytuł komentarza';
 $_MODULE['<{npscomments}minimal_16_theme>npscomments_3421ad00975533fbbd5f17d2cb568125'] = 'Komentarz';

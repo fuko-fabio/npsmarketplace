@@ -2,6 +2,12 @@
 
 global $_MODULE;
 $_MODULE = array();
+$_MODULE['<{npsticketdelivery}minimal_16_theme>npsticketdelivery_4c9120f1a5947445c0e9620254ceb30b'] = 'Nowe zamówienie';
+$_MODULE['<{npsticketdelivery}minimal_16_theme>npsticketdelivery_c888438d14855d7d96a2724ee9c306bd'] = 'Ustawienia zostały uaktualnione';
+$_MODULE['<{npsticketdelivery}minimal_16_theme>npsticketdelivery_c9cc8cce247e49bae79f15173ce97354'] = 'Zapisz';
+$_MODULE['<{npsticketdelivery}minimal_16_theme>npsticketdelivery_630f6dc397fe74e52d5189e2c80f282b'] = 'Powrót do listy';
+$_MODULE['<{npsticketdelivery}minimal_16_theme>npsticketdelivery_43a0cf02192baf87ccea7de85585bc84'] = 'URL do przewodnika użytkownika';
+$_MODULE['<{npsticketdelivery}minimal_16_theme>npsticketdelivery_5f0bccf6ca5bb25387a61b8a35476625'] = 'URL do przewodnika jak wysyłać bilety';
 $_MODULE['<{npsticketdelivery}minimal_16_theme>tickets_sold_ad9d96adbede4ac62d27ef7d5baa9a33'] = 'Sprzedane bilety';
 $_MODULE['<{npsticketdelivery}minimal_16_theme>tickets_sold_b718adec73e04ce3ec720dd11a06a308'] = 'ID';
 $_MODULE['<{npsticketdelivery}minimal_16_theme>tickets_sold_49ee3087348e8d44e1feda1917443987'] = 'Wydarzenie';
@@ -40,7 +46,21 @@ $_MODULE['<{npsticketdelivery}minimal_16_theme>virtual_carrier_aaa6e61ccb9bc32c3
 $_MODULE['<{npsticketdelivery}minimal_16_theme>virtual_carrier_0f68b904e33d9ac04605aecc958bcf52'] = 'Termin';
 $_MODULE['<{npsticketdelivery}minimal_16_theme>virtual_carrier_40bed7cf9b3d4bb3a3d7a7e3eb18c5eb'] = 'Wpisz dowolne nazwisko osoby';
 $_MODULE['<{npsticketdelivery}minimal_16_theme>virtual_carrier_38db7a0967aaad7adc89259aa34fc7c8'] = 'które będzie widoczne na bilecie';
-$_MODULE['<{npsticketdelivery}minimal_16_theme>ticket_pl_1c2684566717c78cd97248bd9b26c55b'] = 'ID Sprzedawcy';
-$_MODULE['<{npsticketdelivery}minimal_16_theme>ticket_pl_c2f3f489a00553e7a01d369c103c7251'] = 'Numer';
-$_MODULE['<{npsticketdelivery}minimal_16_theme>ticket_pl_58cb16120e5f67c8966bbe20c5c8ff26'] = 'Wygenerowano';
-$_MODULE['<{npsticketdelivery}minimal_16_theme>ticket_pl_d1f8b0bc6d39f5d6dd7a8a27c24f96b4'] = 'Kupuj bilety na';
+$_MODULE['<{npsticketdelivery}minimal_16_theme>ticket_c751439d0db3883ac1c8e816327adcab'] = 'Bilet';
+$_MODULE['<{npsticketdelivery}minimal_16_theme>ticket_05a79b3e220b02798e20b0f4e1bd1431'] = 'Karnet';
+$_MODULE['<{npsticketdelivery}minimal_16_theme>ticket_cf5f3091e30dee6597885d8c0e0c357f'] = 'Termin';
+$_MODULE['<{npsticketdelivery}minimal_16_theme>ticket_bc14b0a9c516310fc195a778937cc0a0'] = 'Ilość wejść';
+$_MODULE['<{npsticketdelivery}minimal_16_theme>ticket_3ac705f2acd51a4613f9188c05c91d0d'] = 'Data ważności';
+$_MODULE['<{npsticketdelivery}minimal_16_theme>ticket_40bed7cf9b3d4bb3a3d7a7e3eb18c5eb'] = 'Imię i nazwisko';
+$_MODULE['<{npsticketdelivery}minimal_16_theme>ticket_dd7bf230fde8d4836917806aff6a6b27'] = 'Adres wydarzenia';
+$_MODULE['<{npsticketdelivery}minimal_16_theme>ticket_e0bb2f66e5b61be3235bf8969979de19'] = 'Dzielnica';
+$_MODULE['<{npsticketdelivery}minimal_16_theme>ticket_c16dac173aa8377a1c07aed8e0472f7c'] = 'Miasto';
+$_MODULE['<{npsticketdelivery}minimal_16_theme>ticket_1e62e6ce22608229f9e7d30baae981ee'] = 'Sprzedawca';
+$_MODULE['<{npsticketdelivery}minimal_16_theme>ticket_0d9175fe89fb80d815e7d03698b6e83a'] = 'Prezent';
+$_MODULE['<{npsticketdelivery}minimal_16_theme>ticket_3601146c4e948c32b6424d2c0a7f0118'] = 'Cena';
+$_MODULE['<{npsticketdelivery}minimal_16_theme>ticket_e2e79605fc9450ec17957cf0e910f5c6'] = 'z vat';
+$_MODULE['<{npsticketdelivery}minimal_16_theme>ticket_1c2684566717c78cd97248bd9b26c55b'] = 'ID Sprzedawcy';
+$_MODULE['<{npsticketdelivery}minimal_16_theme>ticket_c2f3f489a00553e7a01d369c103c7251'] = 'Numer';
+$_MODULE['<{npsticketdelivery}minimal_16_theme>ticket_58cb16120e5f67c8966bbe20c5c8ff26'] = 'Wygenerowano';
+$_MODULE['<{npsticketdelivery}minimal_16_theme>ticket_d1f8b0bc6d39f5d6dd7a8a27c24f96b4'] = 'Kupuj bilety na';
+$_MODULE['<{npsticketdelivery}minimal_16_theme>ticket_a9b3fbc11a2b38c993c1f90e9104f963'] = 'labsintown.pl';

@@ -3,7 +3,7 @@
 	<name>npsfacebooklogin</name>
 	<displayName><![CDATA[nps Log in with facebook]]></displayName>
 	<version><![CDATA[1]]></version>
-	<description><![CDATA[Displays log in with facebook button on authentication page]]></description>
+	<description><![CDATA[Pokazuje przycisk &amp;quot;Zaloguj z facebook&amp;quot; na stronie autentykacji]]></description>
 	<author><![CDATA[Norbert Pabian]]></author>
 	<tab><![CDATA[search_filter]]></tab>
 	<is_configurable>1</is_configurable>
