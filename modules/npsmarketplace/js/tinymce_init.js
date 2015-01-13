@@ -6,5 +6,6 @@ tinymce.init({
     menubar : false,
     statusbar : false,
     skin : 'nps',
-    language : 'pl'
+    language : 'pl',
+    valid_styles : {'*' : 'font-size,font-weight,text-decoration'},
 });
