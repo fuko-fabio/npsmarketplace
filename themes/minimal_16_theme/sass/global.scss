@@ -1647,9 +1647,12 @@ div.star a:hover {
     }
     #social_block {
       float: left;
-      padding: 22px 15px 10px 15px;
+      padding: 22px 0;
+      @media (max-width: $screen-xs-max) {
+        background: $dark-background;
+      }
       ul {
-        float: right;
+        float: left;
         margin-right: 10px;
         @media (max-width: $screen-xs-max) {
           float: none;
@@ -1666,14 +1669,7 @@ div.star a:hover {
             display: inline-block;
             color: $light-text-color;
             font-size: 28px;
-            @media (max-width: $screen-xs-max) {
-              color: $dark-background;
-            }
 
-            // min 768px max 991px
-            @media (min-width: $screen-sm) and (max-width: $screen-sm-max) {
-              font-size: 20px;
-            }
             span {
               display: none;
             }
@@ -1734,7 +1730,7 @@ div.star a:hover {
         }
       }
       h4 {
-        float: right;
+        float: left;
         margin-bottom: 0;
         font-size: 21px;
         line-height: 25px;

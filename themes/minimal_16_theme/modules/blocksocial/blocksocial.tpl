@@ -24,8 +24,7 @@
 *  International Registered Trademark & Property of PrestaShop SA
 *}
 
-<section id="social_block" class="col-xs-12 col-sm-6">
-    <h4>{l s='Stay updated with' mod='blocksocial'} <span>Labs</span> in Town!</h4>
+<section id="social_block" class="col-xs-6 col-sm-6">
     <ul>
 		{if $facebook_url != ''}
 			<li class="facebook">
@@ -69,5 +68,6 @@
         		</a>
         	</li>
         {/if}
-	</ul>
+    </ul>
+    <h4>{l s='Stay updated with' mod='blocksocial'} <span>Labs</span> in Town!</h4>
 </section>
