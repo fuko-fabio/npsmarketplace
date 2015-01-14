@@ -1,41 +1,43 @@
-.lit-content-body h4 {
-  color: #333;
-  font-weight: 700; }
-.lit-content-body .shop {
-  color: #333;
-  font-weight: 700;
-  right: 0;
-  top: 0;
-  position: absolute; }
-  .lit-content-body .shop span {
-    color: #ffaa00; }
-.lit-content-body .item .item-content {
-  margin-bottom: 15px;
-  -moz-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
-  -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
-  border: 1px solid #d6d4d4; }
-  .lit-content-body .item .item-content:hover {
-    -moz-box-shadow: 0 2px 8px rgba(255, 170, 0, 0.8);
-    -webkit-box-shadow: 0 2px 8px rgba(255, 170, 0, 0.8);
-    box-shadow: 0 2px 8px rgba(255, 170, 0, 0.8);
-    border-color: #ffaa00; }
-  .lit-content-body .item .item-content .content-price {
-    margin-left: 5px; }
-  .lit-content-body .item .item-content .sale-box {
-    right: 10px; }
-  .lit-content-body .item .item-content .new-box {
-    left: 10px; }
-  .lit-content-body .item .item-content a img {
-    width: 100%; }
-  .lit-content-body .item .item-content h5 {
-    margin-top: 0;
-    margin-bottom: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis; }
-    .lit-content-body .item .item-content h5 a {
-      color: #333;
-      margin: 0px 5px;
-      font-family: "Hammersmith One", sans-serif;
-      font-weight: 700; }
+.lit-content-body {
+  min-width: 100px !important; }
+  .lit-content-body h4 {
+    color: #333;
+    font-weight: 700; }
+  .lit-content-body .shop {
+    color: #333;
+    font-weight: 700;
+    right: 0;
+    top: 10px;
+    position: absolute; }
+    .lit-content-body .shop span {
+      color: #ffaa00; }
+  .lit-content-body .item .item-content {
+    margin-bottom: 15px;
+    -moz-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+    -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+    border: 1px solid #d6d4d4; }
+    .lit-content-body .item .item-content:hover {
+      -moz-box-shadow: 0 2px 8px rgba(255, 170, 0, 0.8);
+      -webkit-box-shadow: 0 2px 8px rgba(255, 170, 0, 0.8);
+      box-shadow: 0 2px 8px rgba(255, 170, 0, 0.8);
+      border-color: #ffaa00; }
+    .lit-content-body .item .item-content .content-price {
+      margin-left: 5px; }
+    .lit-content-body .item .item-content .sale-box {
+      right: 10px; }
+    .lit-content-body .item .item-content .new-box {
+      left: 10px; }
+    .lit-content-body .item .item-content a img {
+      width: 100%; }
+    .lit-content-body .item .item-content h5 {
+      margin-top: 0;
+      margin-bottom: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis; }
+      .lit-content-body .item .item-content h5 a {
+        color: #333;
+        margin: 0px 5px;
+        font-family: "Hammersmith One", sans-serif;
+        font-weight: 700; }

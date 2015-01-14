@@ -275,7 +275,7 @@ class NpsMarketplace extends Module {
         $key = Tools::encrypt($this->name.$id_seller.$id_lang,$id_town);
 
         $item = $width/$in_row;
-        $height = ceil((($item + ($item * 0.25)) * ($max_events / $in_row)) + 20);
+        $height = ceil((($item + ($item * 0.25)) * ($max_events / $in_row)) + 40);
         $this->context->smarty->assign(
             array(
                 'url' => $shop_url.'modules/npsmarketplace/iframe.php?id_lang='.$id_lang.'&id_town='.$id_town.'&id_seller='.$id_seller.'&max='.$max_events.'&row='.$in_row.'&key='.$key,

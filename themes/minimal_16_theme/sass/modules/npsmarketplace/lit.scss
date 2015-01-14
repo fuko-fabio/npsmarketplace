@@ -2,6 +2,8 @@
 @import "theme_variables";
 
 .lit-content-body {
+  min-width: 100px !important;
+  
   h4 {
     color: $base-text-color;
     font-weight: 700;
@@ -10,7 +12,7 @@
     color: $base-text-color;
     font-weight: 700;
     right: 0;
-    top: 0;
+    top: 10px;
     position: absolute;
     span {
       color: $primary-color;
