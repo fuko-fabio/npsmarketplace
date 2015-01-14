@@ -1570,7 +1570,7 @@ div.star a:hover {
 
 // FOOTER
 .footer-container {
-  background-color: $homepage-footer-bg;
+  background-color: $primary-color;
   // min 768px
   @media (min-width: $screen-sm) {
     background: url(../img/footer-bg.png) repeat-x $homepage-footer-bg;
@@ -1648,6 +1648,7 @@ div.star a:hover {
     #social_block {
       float: left;
       padding: 22px 0;
+      height: 75px;
       @media (max-width: $screen-xs-max) {
         background: $dark-background;
       }
@@ -1770,11 +1771,11 @@ div.star a:hover {
       }
     }
     .bottom-info {
-      padding: 15px;
+      padding: 5px;
     }
     .bottom-footer {
       border-top: 1px solid #515151;
-      padding: 15px;
+      padding: 5px;
       .copyright {
         a {
           span {
@@ -1783,11 +1784,9 @@ div.star a:hover {
         }
       }
       .cname {
-        font-size: 16px;
         font-family: $font-danube;
       }
       .csoftware {
-        font-size: 16px;
         font-family: $font-quicksand;
       }
     }

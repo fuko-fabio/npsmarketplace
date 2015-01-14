@@ -6515,7 +6515,7 @@ div.star a:hover {
     width: 20px; }
 
 .footer-container {
-  background-color: #f2f2f2; }
+  background-color: #ffaa00; }
   @media (min-width: 768px) {
     .footer-container {
       background: url(../img/footer-bg.png) repeat-x #f2f2f2; } }
@@ -6570,7 +6570,8 @@ div.star a:hover {
       clear: left; }
     .footer-container #footer #social_block {
       float: left;
-      padding: 22px 0; }
+      padding: 22px 0;
+      height: 75px; }
       @media (max-width: 767px) {
         .footer-container #footer #social_block {
           background: #36454f; } }
@@ -6646,17 +6647,15 @@ div.star a:hover {
         margin-bottom: 0px;
         text-align: left; }
     .footer-container #footer .bottom-info {
-      padding: 15px; }
+      padding: 5px; }
     .footer-container #footer .bottom-footer {
       border-top: 1px solid #515151;
-      padding: 15px; }
+      padding: 5px; }
       .footer-container #footer .bottom-footer .copyright a span {
         color: #ffaa00; }
       .footer-container #footer .bottom-footer .cname {
-        font-size: 16px;
         font-family: "Danube", sans-serif; }
       .footer-container #footer .bottom-footer .csoftware {
-        font-size: 16px;
         font-family: "Quicksand", sans-serif; }
 
 #reinsurance_block {

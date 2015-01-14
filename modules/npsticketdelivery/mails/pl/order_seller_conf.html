@@ -132,7 +132,7 @@
                   </span>
                   <br/>
                   <span class="subtitle" style="font-weight:500;font-size:16px;text-transform:uppercase;line-height:25px">
-                    Dziękujemy za złożenie zamówienia!
+                    Dziękujemy za zakupy z {shop_name}!
                   </span>
                 </font>
               </td>
@@ -144,10 +144,10 @@
                     <td>
                       <font size="2" face="Open-sans, sans-serif" color="#555454">
                         <p data-html-only="1" style="border-bottom:1px solid #ffaa00;margin:3px 0 7px;text-transform:uppercase;font-weight:500;font-size:14px;padding-bottom:10px">
-                          Szczegóły</p>
+                          Szczegóły zrealizowanego zamówienia</p>
                         <span style="color:#777">
                           <span style="color:#333"><strong>Zamówienie:</strong></span> {order_name} Dokonane dnia: {date}<br /><br />
-                          <span style="color:#333"><strong>Metoda płatności:</strong></span> {payment}
+                          <span style="color:#333"><strong>Metoda płatność:</strong></span> {payment}
                         </span>
                       </font>
                     </td>
@@ -156,24 +156,27 @@
               </td>
             </tr>
             <tr>
+              <td class="space_footer" style="padding:0!important">&nbsp;</td>
+            </tr>
+            <tr>
+              <td>
+                {seller_products}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <font size="2" face="Open-sans, sans-serif" color="#555454">
+                  <p data-html-only="1" style="border-bottom:1px solid #ffaa00;margin:3px 0 7px;text-transform:uppercase;font-weight:500;font-size:14px;padding-bottom:10px">
+                    Podsumowanie
+                  </p>
+                </font>
+              </td>
+            </tr>
+            <tr>
               <td>
                 <font size="2" face="Open-sans, sans-serif" color="#555454">
                   <table class="table table-recap" bgcolor="#ffffff" style="width:100%;border-collapse:collapse"><!-- Title -->
-                    <thead>
-                      <tr>
-                        <th style="border:1px solid #D6D4D4;background-color:#fbfbfb;font-family:Arial;color:#333;font-size:13px;padding:10px">Indeks</th>
-                        <th style="border:1px solid #D6D4D4;background-color:#fbfbfb;font-family:Arial;color:#333;font-size:13px;padding:10px">Wydarzenie</th>
-                        <th style="border:1px solid #D6D4D4;background-color:#fbfbfb;font-family:Arial;color:#333;font-size:13px;padding:10px">Cena jednostkowa</th>
-                        <th style="border:1px solid #D6D4D4;background-color:#fbfbfb;font-family:Arial;color:#333;font-size:13px;padding:10px">Ilość</th>
-                        <th style="border:1px solid #D6D4D4;background-color:#fbfbfb;font-family:Arial;color:#333;font-size:13px;padding:10px">Cena końcowa</th>
-                      </tr>
-                    </thead>
                     <tbody>
-                      <tr>
-                        <td colspan="5" style="border:1px solid #D6D4D4;color:#777;padding:7px 0">
-                          &nbsp;&nbsp;{products} 
-                        </td>
-                      </tr>
                       <tr class="conf_body">
                         <td bgcolor="#f8f8f8" colspan="4" style="border:1px solid #D6D4D4;color:#333;padding:7px 0">
                           <table class="table" style="width:100%;border-collapse:collapse">
@@ -181,7 +184,7 @@
                               <td width="10" style="color:#333;padding:0">&nbsp;</td>
                               <td align="right" style="color:#333;padding:0">
                                 <font size="2" face="Open-sans, sans-serif" color="#555454">
-                                  <strong>Do zapłaty w sumie</strong>
+                                  <strong>Zapłacono w sumie</strong>
                                 </font>
                               </td>
                               <td width="10" style="color:#333;padding:0">&nbsp;</td>
@@ -220,7 +223,7 @@
                           <td style="padding:7px 0">
                             <font size="2" face="Open-sans, sans-serif" color="#555454">
                               <p data-html-only="1" style="border-bottom:1px solid #ffaa00;margin:3px 0 7px;text-transform:uppercase;font-weight:500;font-size:14px;padding-bottom:10px">
-                                Wybrany adres do rachunku</p>
+                                Adres do rachunku</p>
                               <span data-html-only="1" style="color:#777">
                                 {invoice_block_html}
                               </span>
@@ -236,14 +239,6 @@
             </tr>
             <tr>
               <td class="space_footer" style="padding:0!important">&nbsp;</td>
-            </tr>
-            <tr>
-              <td class="linkbelow">
-                <font size="2" face="Open-sans, sans-serif" color="#555454">
-                  <span>
-                    Po otrzymaniu zapłaty prześlemy bilety oraz potwierdzenie zamówienia.
-                </font>
-              </td>
             </tr>
             <tr>
               <td class="linkbelow">

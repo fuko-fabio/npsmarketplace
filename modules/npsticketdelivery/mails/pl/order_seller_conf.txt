@@ -1,32 +1,15 @@
 Witaj {firstname},
 
-Dziękujemy za złożenie zamówienia! 
+Dziękujemy za zakupy {shop_name}! 
 
 ZAMÓWIENIE: {order_name} Dokonane dnia: {date}
+PŁATNOŚĆ: {payment}
 
-METODA PŁATNOŚCI: {payment}
+SZCZEGÓŁY ZAMÓWIENIA:
 
-INDEKS
+{seller_products_txt}
 
-WYDARZENIE
-
-CENA JEDNOSTKOWA
-
-ILOŚĆ
-
-CENA KOŃCOWA
-
-{products_txt} 
-
-WYDARZENIA 
-
-{total_products} 
-
-DO ZAPŁATY W SUMIE 
-
-{total_paid} 
-
-Po otrzymaniu zapłaty prześlemy bilety oraz potwierdzenie zamówienia.
+ZAPŁACONO W SUMIE: {total_paid} 
 
 Możesz obejrzeć swoje zamówienie i pobrać fakturę w "Historia
 zamówień" [{history_url}] logując się do konta

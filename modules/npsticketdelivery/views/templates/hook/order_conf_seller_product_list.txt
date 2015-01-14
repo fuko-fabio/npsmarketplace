@@ -1,0 +1,16 @@
+{foreach $list as $item}
+{l s='Seller'}: {$item.seller->name}
+{$item.address_txt}
+{$item.customer->email}
+{if isset($item.seller->nip) && !empty($item.seller->nip)}{l s='NIP'}: {$item.seller->nip}{/if}
+{if isset($item.seller->regon) && !empty($item.seller->regon)}{l s='REGON'}: {$item.seller->regon}{/if}
+{if isset($item.seller->krs) && !empty($item.seller->krs)}{l s='KRS'}: {$item.seller->krs}{/if}
+{if isset($item.seller->krs_reg) && !empty($item.seller->krs_reg)}{l s='KRS registered by'}: {$item.seller->krs_reg}{/if}
+
+{l s='INDEKS'}
+{l s='WYDARZENIE'}
+{l s='CENA JEDNOSTKOWA'}
+{l s='ILOŚĆ'}
+{l s='CENA KOŃCOWA'}
+{$item.products_txt} 
+{/foreach}

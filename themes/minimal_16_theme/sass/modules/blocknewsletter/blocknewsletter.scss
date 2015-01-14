@@ -35,6 +35,7 @@
     overflow: hidden;
     float: right;
     padding: 16px 10px;
+    height: 75px;
     @media (max-width: $screen-xs-max) {
       background: $dark-background;
     }

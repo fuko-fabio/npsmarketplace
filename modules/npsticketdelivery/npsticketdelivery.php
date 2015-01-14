@@ -115,8 +115,7 @@ class NpsTicketDelivery extends Module {
         $id_o_s = Configuration::get('NPS_P24_ORDER_STATE_ACCEPTED');
         if ($order_history->id_order_state == $id_o_s || $order_history->id_order_state == 2) {
             $info_seller = array();
-            $id_order = $order_history->id_order;
-            $cart = Cart::getCartByOrderId($id_order);
+            $cart = Cart::getCartByOrderId($order_history->id_order);
             $c_t = CartTicket::getByCartId($cart->id);
             $persons = json_decode($c_t->persons);
             foreach ($cart->getProducts() as $product) {
@@ -168,23 +167,41 @@ class NpsTicketDelivery extends Module {
                 }
             }
             TicketsGenerator::generateAndSend($c_t->id, $this->context);
-            $this->sendInfoToSellers($cart, $c_t, $info_seller);
+            $this->sendEmails($order_history->id_order, $cart->id, $c_t, $info_seller);
         }
     }
 
-    private function sendInfoToSellers($cart, $cart_ticket, $info_seller) {
-        $shop_name = Configuration::get('PS_SHOP_NAME');
-        $shop_url = Tools::getHttpHost(true).__PS_BASE_URI__;
-        $shop_email = Configuration::get('PS_SHOP_EMAIL');
-        $order = new Order(Order::getOrderByCartId($cart->id));
-        $sql = 'SELECT invoice FROM '._DB_PREFIX_.'cart WHERE id_cart='.$cart->id;
-        $invoice_request = Db::getInstance()->getValue($sql);
+    private function sendEmails($id_order, $id_cart, $cart_ticket, $info_seller) {
+        $invoice_requested = Db::getInstance()->getValue('SELECT invoice FROM '._DB_PREFIX_.'cart WHERE id_cart='.$id_cart);
+
+        $order = new Order($id_order);
+        $customer = $order->getCustomer();
+
+        $invoice = new Address($order->id_address_invoice);
+        $invoice_state = $invoice->id_state ? new State($invoice->id_state) : false;
+
+        $invoice_info = $invoice_requested ? $this->l('Customer asks for an invoice') : $this->l('Bill address');
+        $invoice_block_txt = $this->_getFormatedAddress($invoice, "\n");
+        $invoice_block_html = $this->_getFormatedAddress($invoice, '<br />', array(
+            'firstname' => '<span style="font-weight:bold;">%s</span>',
+            'lastname'  => '<span style="font-weight:bold;">%s</span>'
+        ));
+
+        $delivery = new Address($order->id_address_delivery);
+        $delivery_state = $delivery->id_state ? new State($delivery->id_state) : false;
+        $delivery_block_txt = $this->_getFormatedAddress($delivery, "\n");
+        $delivery_block_html = $this->_getFormatedAddress($delivery, '<br />', array(
+            'firstname' => '<span style="font-weight:bold;">%s</span>',
+            'lastname'  => '<span style="font-weight:bold;">%s</span>'
+        ));
+
+        $confirmation_data = array();
+
         foreach ($info_seller as $data) {
             $seller = $data['seller'];
             $seller_customer = new Customer($seller->id_customer);
             // Construct order detail table for the email
             $products_list = '';
-            $virtual_product = true;
             $product_var_tpl_list = array();
             foreach ($data['products'] as $product) {
                 $price = Product::getPriceStatic((int)$product['id_product'], false, ($product['id_product_attribute'] ? (int)$product['id_product_attribute'] : null), 6, null, false, true, $product['cart_quantity'], false, (int)$order->id_customer, (int)$order->id_cart, (int)$order->{Configuration::get('PS_TAX_ADDRESS_TYPE')});
@@ -224,9 +241,6 @@ class NpsTicketDelivery extends Module {
                 }
 
                 $product_var_tpl_list[] = $product_var_tpl;
-                // Check if is not a virutal product for the displaying of shipping
-                if (!$product['is_virtual'])
-                    $virtual_product &= false;
             } // end foreach ($products)
 
             $product_list_txt = '';
@@ -235,19 +249,15 @@ class NpsTicketDelivery extends Module {
                 $product_list_txt = $this->getEmailTemplateContent('order_conf_product_list.txt', Mail::TYPE_TEXT, $product_var_tpl_list);
                 $product_list_html = $this->getEmailTemplateContent('order_conf_product_list.tpl', Mail::TYPE_HTML, $product_var_tpl_list);
             }
+            $product_var_tpl_list = array();
 
-            $invoice = new Address($order->id_address_invoice);
-            
             $data = array(
                 '{name}' => $seller->name,
                 '{email}' => $seller_customer->email,
                 '{firstname}' => $seller_customer->firstname,
-                '{invoice_info}' => $invoice_request == 1 ? 'Kupujący prosi o wystawienie faktury na dane:' : 'Dane do rachunku',
-                '{invoice_block_txt}' => $this->_getFormatedAddress($invoice, "\n"),
-                '{invoice_block_html}' => $this->_getFormatedAddress($invoice, '<br />', array(
-                    'firstname' => '<span style="font-weight:bold;">%s</span>',
-                    'lastname'  => '<span style="font-weight:bold;">%s</span>'
-                )),
+                '{invoice_info}' => $invoice_info,
+                '{invoice_block_txt}' => $invoice_block_txt,
+                '{invoice_block_html}' => $invoice_block_html,
                 '{invoice_company}' => $invoice->company,
                 '{invoice_vat_number}' => $invoice->vat_number,
                 '{invoice_firstname}' => $invoice->firstname,
@@ -268,18 +278,120 @@ class NpsTicketDelivery extends Module {
                 '{seller_orders_url}' => $this->context->link->getModuleLink('npsmarketplace', 'Orders'),
             );
 
-            Mail::Send(Context::getContext()->language->id,
-                'order_info',
-                $this->l('New order'),
-                $data,
-                $seller_customer->email,
-                $seller->name,
-                null,
-                null,
-                null,
-                null,
-                _PS_MODULE_DIR_.'npsticketdelivery/mails/');
+            if (Validate::isEmail($seller_customer->email)) {
+                Mail::Send(Context::getContext()->language->id,
+                    'order_info',
+                    $this->l('New order'),
+                    $data,
+                    $seller_customer->email,
+                    $seller->name,
+                    null,
+                    null,
+                    null,
+                    null,
+                    _PS_MODULE_DIR_.'npsticketdelivery/mails/');
+            }
+            $seller_address = new Address($seller->id_address);
+            $seller_address_block_txt = $this->_getFormatedAddress($seller_address, "\n");
+            $seller_address_block_html = $this->_getFormatedAddress($seller_address, '<br />', array(
+                'firstname' => '<span style="font-weight:bold;">%s</span>',
+                'lastname'  => '<span style="font-weight:bold;">%s</span>'
+            ));
+            $confirmation_data[] = array(
+                'seller' => $seller,
+                'customer' => $seller_customer,
+                'address_html' => $seller_address_block_html,
+                'address_txt' => $seller_address_block_txt,
+                'products_html' => $product_list_html,
+                'products_txt' => $product_list_txt,
+            );
         }
+
+        $seller_product_list_txt = $this->getEmailTemplateContent(
+            'order_conf_seller_product_list.txt',
+            Mail::TYPE_TEXT,
+            $confirmation_data,
+            _PS_MODULE_DIR_.'npsticketdelivery/views/templates/hook'
+        );
+        $seller_product_list_html = $this->getEmailTemplateContent(
+            'order_conf_seller_product_list.tpl',
+            Mail::TYPE_HTML,
+            $confirmation_data,
+            _PS_MODULE_DIR_.'npsticketdelivery/views/templates/hook'
+        );
+
+        // Notify customer
+        $data = array(
+            '{firstname}' => $customer->firstname,
+            '{lastname}' => $customer->lastname,
+            '{email}' => $customer->email,
+            '{delivery_block_txt}' => $delivery_block_txt,
+            '{invoice_block_txt}' => $invoice_block_txt,
+            '{delivery_block_html}' => $delivery_block_html,
+            '{invoice_block_html}' => $invoice_block_html,
+            '{delivery_company}' => $delivery->company,
+            '{delivery_firstname}' => $delivery->firstname,
+            '{delivery_lastname}' => $delivery->lastname,
+            '{delivery_address1}' => $delivery->address1,
+            '{delivery_address2}' => $delivery->address2,
+            '{delivery_city}' => $delivery->city,
+            '{delivery_postal_code}' => $delivery->postcode,
+            '{delivery_country}' => $delivery->country,
+            '{delivery_state}' => $delivery->id_state ? $delivery_state->name : '',
+            '{delivery_phone}' => ($delivery->phone) ? $delivery->phone : $delivery->phone_mobile,
+            '{delivery_other}' => $delivery->other,
+            '{invoice_company}' => $invoice->company,
+            '{invoice_vat_number}' => $invoice->vat_number,
+            '{invoice_firstname}' => $invoice->firstname,
+            '{invoice_lastname}' => $invoice->lastname,
+            '{invoice_address2}' => $invoice->address2,
+            '{invoice_address1}' => $invoice->address1,
+            '{invoice_city}' => $invoice->city,
+            '{invoice_postal_code}' => $invoice->postcode,
+            '{invoice_country}' => $invoice->country,
+            '{invoice_state}' => $invoice->id_state ? $invoice_state->name : '',
+            '{invoice_phone}' => ($invoice->phone) ? $invoice->phone : $invoice->phone_mobile,
+            '{invoice_other}' => $invoice->other,
+            '{order_name}' => $order->getUniqReference(),
+            '{date}' => Tools::displayDate(date('Y-m-d H:i:s'), null, 1),
+            //'{carrier}' => ($virtual_product || !isset($carrier->name)) ? Tools::displayError('No carrier') : $carrier->name,
+            '{payment}' => Tools::substr($order->payment, 0, 32),
+            '{seller_products}' => $seller_product_list_html,
+            '{seller_products_txt}' => $seller_product_list_txt,
+            //'{discounts}' => $cart_rules_list_html,
+            //'{discounts_txt}' => $cart_rules_list_txt,
+            '{total_paid}' => Tools::displayPrice($order->total_paid, $this->context->currency, false),
+            '{total_products}' => Tools::displayPrice($order->total_paid - $order->total_shipping - $order->total_wrapping + $order->total_discounts, $this->context->currency, false),
+            '{total_discounts}' => Tools::displayPrice($order->total_discounts, $this->context->currency, false),
+            '{total_shipping}' => Tools::displayPrice($order->total_shipping, $this->context->currency, false),
+            '{total_wrapping}' => Tools::displayPrice($order->total_wrapping, $this->context->currency, false),
+            '{total_tax_paid}' => Tools::displayPrice(($order->total_products_wt - $order->total_products) + ($order->total_shipping_tax_incl - $order->total_shipping_tax_excl), $this->context->currency, false));
+
+        // Join PDF invoice
+        //if ((int)Configuration::get('PS_INVOICE') && $order_status->invoice && $order->invoice_number){
+        //    $pdf = new PDF($order->getInvoicesCollection(), PDF::TEMPLATE_INVOICE, $this->context->smarty);
+        //    $file_attachement['content'] = $pdf->render(false);
+        //    $file_attachement['name'] = Configuration::get('PS_INVOICE_PREFIX', (int)$order->id_lang, null, $order->id_shop).sprintf('%06d', $order->invoice_number).'.pdf';
+        //    $file_attachement['mime'] = 'application/pdf';
+        //} else
+            $file_attachement = null;
+
+        if (Validate::isEmail($customer->email))
+            Mail::Send(
+                (int)$order->id_lang,
+                'order_seller_conf',
+                $this->l('Order summary'),
+                $data,
+                $customer->email,
+                $customer->firstname.' '.$customer->lastname,
+                null,
+                null,
+                $file_attachement,
+                null,
+                _PS_MODULE_DIR_.'npsticketdelivery/mails/',
+                false,
+                (int)$order->id_shop
+            );
     }
 
     private function getFeatureValue($features, $id_feature) {
@@ -434,7 +546,7 @@ class NpsTicketDelivery extends Module {
      *
      * @return string
      */
-    protected function getEmailTemplateContent($template_name, $mail_type, $var) {
+    protected function getEmailTemplateContent($template_name, $mail_type, $var, $template_dir = null) {
         $email_configuration = Configuration::get('PS_MAIL_TYPE');
         if ($email_configuration != $mail_type && $email_configuration != Mail::TYPE_BOTH)
             return '';
@@ -444,6 +556,9 @@ class NpsTicketDelivery extends Module {
 
         if (Tools::file_exists_cache($theme_template_path))
             $default_mail_template_path = $theme_template_path;
+
+        if ($template_dir != null)
+            $default_mail_template_path = $template_dir.DIRECTORY_SEPARATOR.$template_name;
 
         if (Tools::file_exists_cache($default_mail_template_path)) {
             $this->context->smarty->assign('list', $var);
