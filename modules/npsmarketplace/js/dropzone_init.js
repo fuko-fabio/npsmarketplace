@@ -30,14 +30,14 @@ $(document).ready(function(){
         init: function() {
             var that = this;
             this.on("success", function(file, response) {
-                n = file['name'];
+                var n = file['name'];
+                var savePath = response['save_path'];
                 $('#' + that.element.id).append(
-                    '<input class="hidden" data-target="' + n + '" name="images[' + n + '][name]" value="' + response['name'] + '"/>' +
-                    '<input class="hidden" data-target="' + n + '" name="images[' + n + '][save_path]" value="' + response['save_path'] + '"/>' +
-                    '<input class="hidden" data-target="' + n + '" name="images[' + n + '][size]" value="' + response['size'] + '"/>' +
-                    '<input class="hidden" data-target="' + n + '" name="images[' + n + '][tmp_name]" value="' + response['tmp_name'] + '"/>' +
-                    '<input class="hidden" data-target="' + n + '" name="images[' + n + '][type]" value="' + response['type'] + '"/>' +
-                    '<input class="hidden" data-target="' + n + '" name="images[' + n + '][error]" value="' + response['error'] + '"/>'
+                    '<input class="hidden" data-target="' + n + '" name="images[' + savePath + '][name]" value="' + response['name'] + '"/>' +
+                    '<input class="hidden" data-target="' + n + '" name="images[' + savePath + '][size]" value="' + response['size'] + '"/>' +
+                    '<input class="hidden" data-target="' + n + '" name="images[' + savePath + '][tmp_name]" value="' + response['tmp_name'] + '"/>' +
+                    '<input class="hidden" data-target="' + n + '" name="images[' + savePath + '][type]" value="' + response['type'] + '"/>' +
+                    '<input class="hidden" data-target="' + n + '" name="images[' + savePath + '][error]" value="' + response['error'] + '"/>'
                 );
             });
             this.on("removedfile", function(file, response) {

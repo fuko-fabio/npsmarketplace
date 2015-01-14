@@ -23,6 +23,7 @@ class FileUploader extends UploaderCore {
 
             $file_size = $this->_getFileSize($file_path, true);
             $file['save_path'] = str_replace(_PS_UPLOAD_DIR_, '', $file_path);
+            syslog(LOG_DEBUG, 'New file uploaded: '.$file_path.' file info: '.implode(' | ', $file));
         }
 
         return $file;
@@ -34,6 +35,7 @@ class FileUploader extends UploaderCore {
 
     public function remove($name) {
         $file_path = $this->getFilePath($this->_token.$name);
+        syslog(LOG_DEBUG, 'Removing uploaded file: '.$file_path);
         unlink($file_path);
     }
 

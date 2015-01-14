@@ -48,6 +48,8 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
 
     public function postProcess() {
         if (Tools::isSubmit('saveProduct')) {
+            syslog(LOG_INFO, 'SAVE PRODUCT REQUEST: '.json_encode($_POST));
+            
             $current_id_product = trim(Tools::getValue('id_product'));
             $name = $_POST['name'];
             $description_short = $_POST['description_short'];
@@ -459,7 +461,8 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
     }
 
     private function saveProductImages($files) {
-        foreach ($files as $file) {
+        foreach ($files as $save_path => $file) {
+            syslog(LOG_DEBUG, 'Save product: '.$this->_product->id.' Adding image, path: '.$save_path.' file info: '.implode(' | ', $file));
             $image = new Image();
             $image -> id_product = (int)($this -> _product -> id);
             $image -> position = Image::getHighestPosition($this -> _product -> id) + 1;
@@ -469,57 +472,64 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             else
                 $image -> cover = 0;
 
-            if (($validate = $image -> validateFieldsLang(false, true)) !== true)
+            if (($validate = $image -> validateFieldsLang(false, true)) !== true) {
                 $this -> errors[] = Tools::displayError($validate);
-
+                syslog(LOG_ERR, 'Save product: '.$this->_product->id.' Adding image: '.$validate);
+            }
             if (isset($file['error']) && (!is_numeric($file['error']) || $file['error'] != 0))
                 continue;
 
-            if (!$image -> add())
+            if (!$image -> add()) {
                 $this -> errors[] = Tools::displayError('Error while creating additional image');
-            else {
-                if (!$new_path = $image -> getPathForCreation()) {
+                syslog(LOG_ERR, 'Save product: '.$this->_product->id.' Error while creating additional image in database');
+            } else {
+                if (!$new_path = $image->getPathForCreation()) {
                     $this -> errors[] = Tools::displayError('An error occurred during new folder creation');
+                    syslog(LOG_ERR, 'Save product: '.$this->_product->id.' An error occurred during new folder creation');
                     continue;
                 }
 
                 $error = 0;
 
-                if (!ImageManager::resize(_PS_UPLOAD_DIR_.$file['save_path'], $new_path . '.' . $image -> image_format, null, null, 'jpg', false, $error)) {
+                if (!ImageManager::resize(_PS_UPLOAD_DIR_.$save_path, $new_path . '.' . $image -> image_format, null, null, 'jpg', false, $error)) {
                     switch ($error) {
                         case ImageManager::ERROR_FILE_NOT_EXIST :
                             $this -> errors[] = Tools::displayError('An error occurred while copying image, the file does not exist anymore.');
+                            syslog(LOG_ERR, 'Save product: '.$this->_product->id.' An error occurred while copying image, the file does not exist anymore.');
                             break;
 
                         case ImageManager::ERROR_FILE_WIDTH :
                             $this -> errors[] = Tools::displayError('An error occurred while copying image, the file width is 0px.');
+                            syslog(LOG_ERR, 'Save product: '.$this->_product->id.' An error occurred while copying image, the file width is 0px.');
                             break;
 
                         case ImageManager::ERROR_MEMORY_LIMIT :
                             $this -> errors[] = Tools::displayError('An error occurred while copying image, check your memory limit.');
+                            syslog(LOG_ERR, 'Save product: '.$this->_product->id.' An error occurred while copying image, check your memory limit.');
                             break;
 
                         default :
                             $this -> errors[] = Tools::displayError('An error occurred while copying image.');
+                            syslog(LOG_ERR, 'Save product: '.$this->_product->id.' An error occurred while copying image.');
                             break;
                     }
                     continue;
                 } else {
                     $imagesTypes = ImageType::getImagesTypes('products');
                     foreach ($imagesTypes as $imageType) {
-                        if (!ImageManager::resize(_PS_UPLOAD_DIR_.$file['save_path'], $new_path . '-' . stripslashes($imageType['name']) . '.' . $image -> image_format, $imageType['width'], $imageType['height'], $image -> image_format)) {
+                        if (!ImageManager::resize(_PS_UPLOAD_DIR_.$save_path, $new_path . '-' . stripslashes($imageType['name']) . '.' . $image -> image_format, $imageType['width'], $imageType['height'], $image -> image_format)) {
                             $this -> errors[] = Tools::displayError('An error occurred while copying image:') . ' ' . stripslashes($imageType['name']);
+                            syslog(LOG_ERR, 'Save product: '.$this->_product->id.' An error occurred while copying image:') . ' ' . stripslashes($imageType['name']);
                             continue;
                         }
                     }
                 }
 
-                unlink(_PS_UPLOAD_DIR_.$file['save_path']);
-                //Necesary to prevent hacking
-                unset($file['save_path']);
+                unlink(_PS_UPLOAD_DIR_.$save_path);
                 Hook::exec('actionWatermark', array('id_image' => $image -> id, 'id_product' => $this -> _product -> id));
 
                 if (!$image -> update()) {
+                    syslog(LOG_ERR, 'Save product: '.$this->_product->id.' Error while updating database statu.');
                     $this -> errors[] = Tools::displayError('Error while updating status');
                     continue;
                 }
