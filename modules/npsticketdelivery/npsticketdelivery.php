@@ -308,7 +308,7 @@ class NpsTicketDelivery extends Module {
         }
 
         $seller_product_list_txt = $this->getEmailTemplateContent(
-            'order_conf_seller_product_list.txt',
+            'order_conf_seller_product_list_txt.tpl',
             Mail::TYPE_TEXT,
             $confirmation_data,
             _PS_MODULE_DIR_.'npsticketdelivery/views/templates/hook'

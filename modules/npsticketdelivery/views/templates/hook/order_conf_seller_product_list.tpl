@@ -4,7 +4,7 @@
         <td>
           <font size="2" face="Open-sans, sans-serif" color="#555454">
             <p data-html-only="1" style="border-bottom:1px solid #ffaa00;margin:3px 0 7px;text-transform:uppercase;font-weight:500;font-size:14px;padding-bottom:10px">
-              {l s='Seller'}: {$item.seller->name}
+              {l s='Seller' mod='npsticketdelivery'}: {$item.seller->name}
             </p>
           </font>
         </td>
@@ -20,19 +20,19 @@
                 {$item.customer->email}
                 <br />
                 {if isset($item.seller->nip) && !empty($item.seller->nip)}
-                  <strong>{l s='NIP'}:</span> {$item.seller->nip}
+                  <strong>{l s='NIP' mod='npsticketdelivery'}:</span> {$item.seller->nip}
                   <br />
                 {/if}
                 {if isset($item.seller->regon) && !empty($item.seller->regon)}
-                  <strong>{l s='REGON'}:</strong> {$item.seller->regon}
+                  <strong>{l s='REGON' mod='npsticketdelivery'}:</strong> {$item.seller->regon}
                   <br />
                 {/if}
                 {if isset($item.seller->krs) && !empty($item.seller->krs)}
-                  <strong>{l s='KRS'}:</strong> {$item.seller->krs}
+                  <strong>{l s='KRS' mod='npsticketdelivery'}:</strong> {$item.seller->krs}
                   <br />
                 {/if}
                 {if isset($item.seller->krs_reg) && !empty($item.seller->krs_reg)}
-                  <strong>{l s='KRS registered by'}:</strong> {$item.seller->krs_reg}
+                  <strong>{l s='KRS registered by' mod='npsticketdelivery'}:</strong> {$item.seller->krs_reg}
                   <br />
                 {/if}
             </span>
@@ -46,11 +46,11 @@
       <!-- Title -->
       <thead>
         <tr>
-          <th style="border:1px solid #D6D4D4;background-color:#fbfbfb;font-family:Arial;color:#333;font-size:13px;padding:10px">{l s='Indeks'}</th>
-          <th style="border:1px solid #D6D4D4;background-color:#fbfbfb;font-family:Arial;color:#333;font-size:13px;padding:10px">{l s='Wydarzenie'}</th>
-          <th style="border:1px solid #D6D4D4;background-color:#fbfbfb;font-family:Arial;color:#333;font-size:13px;padding:10px">{l s='Cena jednostkowa'}</th>
-          <th style="border:1px solid #D6D4D4;background-color:#fbfbfb;font-family:Arial;color:#333;font-size:13px;padding:10px">{l s='Ilość'}</th>
-          <th style="border:1px solid #D6D4D4;background-color:#fbfbfb;font-family:Arial;color:#333;font-size:13px;padding:10px">{l s='Cena końcowa'}</th>
+          <th style="border:1px solid #D6D4D4;background-color:#fbfbfb;font-family:Arial;color:#333;font-size:13px;padding:10px">{l s='Index' mod='npsticketdelivery'}</th>
+          <th style="border:1px solid #D6D4D4;background-color:#fbfbfb;font-family:Arial;color:#333;font-size:13px;padding:10px">{l s='Event' mod='npsticketdelivery'}</th>
+          <th style="border:1px solid #D6D4D4;background-color:#fbfbfb;font-family:Arial;color:#333;font-size:13px;padding:10px">{l s='Price' mod='npsticketdelivery'}</th>
+          <th style="border:1px solid #D6D4D4;background-color:#fbfbfb;font-family:Arial;color:#333;font-size:13px;padding:10px">{l s='Qty' mod='npsticketdelivery'}</th>
+          <th style="border:1px solid #D6D4D4;background-color:#fbfbfb;font-family:Arial;color:#333;font-size:13px;padding:10px">{l s='Total price' mod='npsticketdelivery'}</th>
         </tr>
       </thead>
       <tbody>
