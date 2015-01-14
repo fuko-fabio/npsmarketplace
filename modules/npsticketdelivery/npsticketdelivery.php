@@ -10,6 +10,7 @@ if ( !defined( '_PS_VERSION_' ) )
 require_once(_PS_MODULE_DIR_.'npsticketdelivery/classes/CartTicket.php');
 require_once(_PS_MODULE_DIR_.'npsticketdelivery/classes/Ticket.php');
 require_once(_PS_MODULE_DIR_.'npsticketdelivery/classes/TicketsGenerator.php');
+require_once _PS_MODULE_DIR_.'npsticketdelivery/classes/HTMLTemplateSellerOrderConfirmation.php';
 require_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
 
 class NpsTicketDelivery extends Module {
@@ -169,14 +170,15 @@ class NpsTicketDelivery extends Module {
                 }
             }
             TicketsGenerator::generateAndSend($c_t->id, $this->context);
-            $this->sendEmails($order_history->id_order, $cart->id, $c_t, $info_seller);
+            $this->sendEmails($order_history, $cart->id, $c_t, $info_seller);
         }
     }
 
-    private function sendEmails($id_order, $id_cart, $cart_ticket, $info_seller) {
+    private function sendEmails($order_history, $id_cart, $cart_ticket, $info_seller) {
         $invoice_requested = Db::getInstance()->getValue('SELECT invoice FROM '._DB_PREFIX_.'cart WHERE id_cart='.$id_cart);
 
-        $order = new Order($id_order);
+        $order_state = new OrderState($order_history->id_order_state);
+        $order = new Order($order_history->id_order);
         $customer = $order->getCustomer();
 
         $invoice = new Address($order->id_address_invoice);
@@ -370,13 +372,14 @@ class NpsTicketDelivery extends Module {
             '{total_tax_paid}' => Tools::displayPrice(($order->total_products_wt - $order->total_products) + ($order->total_shipping_tax_incl - $order->total_shipping_tax_excl), $this->context->currency, false));
 
         // Join PDF invoice
-        if ($order_status->invoice){
-            $pdf = new PDF($order, 'SellerOrderConfirmation', $this->smarty);
+        if ((int)$order_state->invoice) {
+            $pdf = new PDF($order, 'SellerOrderConfirmation', Context::getContext()->smarty);
             $file_attachement['content'] = $pdf->render(false);
             $file_attachement['name'] = Configuration::get('PS_INVOICE_PREFIX', (int)$order->id_lang, null, $order->id_shop).sprintf('%06d', $order->id).'.pdf';
             $file_attachement['mime'] = 'application/pdf';
-        } else
+        } else {
             $file_attachement = null;
+        }
 
         if (Validate::isEmail($customer->email))
             Mail::Send(

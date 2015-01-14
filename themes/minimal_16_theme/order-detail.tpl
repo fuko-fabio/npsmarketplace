@@ -24,8 +24,9 @@
 *}
 {*
 <div class="box box-small clearfix">
-*}
+
 <h1 class="page-heading">{l s='Order details'}</h1>
+*}
 {if isset($order)}
 {*<form id="submitReorder" action="{if isset($opc) && $opc}{$link->getPageLink('order-opc', true)}{else}{$link->getPageLink('order', true)}{/if}" method="post" class="submit">
 		<input type="hidden" value="{$order->id}" name="id_order"/>
@@ -37,7 +38,7 @@
 		</p>
 	
 </form>
-</div>*}
+</div>
 <div class="info-order box">
 	{if $carrier->id}<p><strong class="dark">{l s='Carrier'}</strong> {if $carrier->name == "0"}{$shop_name|escape:'html':'UTF-8'}{else}{$carrier->name|escape:'html':'UTF-8'}{/if}</p>{/if}
 	<p><strong class="dark">{l s='Payment method'}</strong> <span class="color-myaccount">{$order->payment|escape:'html':'UTF-8'}</span></p>
@@ -55,7 +56,7 @@
 		<p><strong class="dark">{l s='Message'}</strong> {$order->gift_message|nl2br}</p>
 	{/if}
 </div>
-
+*}
 {if count($order_history)}
 <h1 class="page-heading">{l s='Follow your order\'s status step-by-step'}</h1>
 <div class="table_block">
@@ -69,7 +70,7 @@
 		<tbody>
 		{foreach from=$order_history item=state name="orderStates"}
 			<tr class="{if $smarty.foreach.orderStates.first}first_item{elseif $smarty.foreach.orderStates.last}last_item{/if} {if $smarty.foreach.orderStates.index % 2}alternate_item{else}item{/if}">
-				<td class="step-by-step-date">{dateFormat date=$state.date_add full=0}</td>
+				<td class="step-by-step-date">{dateFormat date=$state.date_add full=1}</td>
 				<td><span class="label{if $state.id_order_state == 1 || $state.id_order_state == 10 || $state.id_order_state == 11 || $state.id_order_state == $p24_awaiting_id} label-info{elseif $state.id_order_state == 5 || $state.id_order_state == 2 || $state.id_order_state == 12 || $state.id_order_state == $p24_accepted_id} label-success{elseif $state.id_order_state == 6 || $state.id_order_state == 7 || $state.id_order_state == 8} label-danger{elseif $state.id_order_state == 3 || $state.id_order_state == 9 || $state.id_order_state == 4} label-warning{/if}">{$state.ostate_name|escape:'html':'UTF-8'}</span></td>
 			</tr>
 		{/foreach}

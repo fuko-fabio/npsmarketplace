@@ -36,9 +36,11 @@ syslog(LOG_INFO, 'Outdated product attributes ids: '.implode('|', $outdated_ids)
 foreach ($outdated_ids as $id) {
     $combination = new Combination($id);
     $products_ids[] = $combination->id_product;
+    $prod = new Product($combination->id_product);
     $combination->delete();
     ProductAttributeExpiryDate::deleteByProductAttribute($id);
-    Search::indexation(false, $combination->id_product);
+    $prod->checkDefaultAttributes();
+    Search::indexation(false, $prod->id);
 }
 
 $products_ids = array_unique($products_ids);

@@ -13,7 +13,10 @@ class NpsTicketDeliveryInvoiceModuleFrontController extends ModuleFrontControlle
 
     public function postProcess() {
         if (Tools::isSubmit('id_order')) {
-            $pdf = new PDF(new Order(Tools::getValue('id_order')), 'SellerOrderConfirmation', $this->context->smarty);
+            $order = new Order(Tools::getValue('id_order'));
+            if ($order->id_customer != $this->context->customer->id)
+                Tools::redirect($this->context->link->getPageLink('history'));
+            $pdf = new PDF($order, 'SellerOrderConfirmation', $this->context->smarty);
             $pdf->render();
         }
     }

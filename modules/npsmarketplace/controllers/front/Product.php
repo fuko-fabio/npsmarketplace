@@ -220,7 +220,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                 }
             }
 
-            if (empty($this -> errors)) {
+            if (empty($this->errors)) {
                 $this->_product -> price = $price;
                 $this->_product -> name = $name;
                 $this->_product -> description = $description;
@@ -237,31 +237,41 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                 if (!$this->_product->save()) {
                     $this->errors[] = $this->module->l('Unable to save product.', 'Product');
                 } else {
+                    $done = true;
                     try {
-                        $this->context->cookie->__unset('form_token');
-                        StockAvailable::setProductOutOfStock($this->_product->id, 0);
-                        $this->saveTicketFeatures($town, $district, $address);
-    
-                        if(empty($current_id_product)) {
-                            $this->_seller->assignProduct($this->_product->id);
-                            if ($type == 0 || $type == 2)
-                                $this->_product->newEventCombination($date, $time, (int)$quantity, $expiry_date, $this->context->shop->id);
-                            else if ($type == 1) {
-                                $this->saveCarnetFeatures($entries, $date_from, $date_to);
-                                StockAvailable::setQuantity((int) $this->_product->id, null, $quantity);
-                                $this->_product->saveExpiryDate($expiry_date);
-                            }
-                        }
-                        $this->updateCategories($categories);
-                        $this->_product->persistExtraInfo($type, $lat, $lng, $video_url);
                         $this->saveProductImages($images);
-                        $this->removeProductImages($removed_images, $current_id_product);
-                        Tools::redirect($this->context->link->getModuleLink('npsmarketplace', 'ProductsList'));
+                        if (empty($this->errors)) {
+                            StockAvailable::setProductOutOfStock($this->_product->id, 0);
+                            $this->saveTicketFeatures($town, $district, $address);
+        
+                            if(empty($current_id_product)) {
+                                $this->_seller->assignProduct($this->_product->id);
+                                if ($type == 0 || $type == 2)
+                                    $this->_product->newEventCombination($date, $time, (int)$quantity, $expiry_date, $this->context->shop->id);
+                                else if ($type == 1) {
+                                    $this->saveCarnetFeatures($entries, $date_from, $date_to);
+                                    StockAvailable::setQuantity((int) $this->_product->id, null, $quantity);
+                                    $this->_product->saveExpiryDate($expiry_date);
+                                }
+                            }
+                            $this->updateCategories($categories);
+                            $this->_product->persistExtraInfo($type, $lat, $lng, $video_url);
+                            $this->saveProductImages($images);
+                            $this->removeProductImages($removed_images, $current_id_product);
+                        } else {
+                            $done = false;
+                        }
                     } catch(Exception $e) {
+                        $done = false;
                         error_log($e);
+                        $this->errors[] = $this->module->l('Unable to save product. Unexpected error occured. Please try again or contact with customer support.', 'Product');
+                    }
+                    if ($done) {
+                        $this->context->cookie->__unset('form_token');
+                        Tools::redirect($this->context->link->getModuleLink('npsmarketplace', 'ProductsList'));
+                    } else {
                         $this->_product->delete();
                         $this->_product = new Product();
-                        $this->errors[] = $this->module->l('Unable to save product. Unexpected error occured. Please try again or contact with customer support.', 'Product');
                     }
                 }
             }
@@ -494,65 +504,65 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             else
                 $image -> cover = 0;
 
-            if (($validate = $image -> validateFieldsLang(false, true)) !== true) {
-                $this -> errors[] = Tools::displayError($validate);
-                syslog(LOG_ERR, 'Save product: '.$this->_product->id.' Adding image: '.$validate);
-            }
-            if (isset($file['error']) && (!is_numeric($file['error']) || $file['error'] != 0))
+            if (isset($file['error']) && (!is_numeric($file['error']) || $file['error'] != 0)) {
+                $this->onSaveImageFail($image, $save_path);
                 continue;
+            }
 
             if (!$image -> add()) {
-                $this -> errors[] = Tools::displayError('Error while creating additional image');
-                syslog(LOG_ERR, 'Save product: '.$this->_product->id.' Error while creating additional image in database');
+                $this->errors[] = $this->module->l('Error while creating image. Try to upload image again.', 'Product');
+                syslog(LOG_ERR, 'Save product: '.$this->_product->id.' Error while creating image in database');
             } else {
                 if (!$new_path = $image->getPathForCreation()) {
-                    $this -> errors[] = Tools::displayError('An error occurred during new folder creation');
+                    $this -> errors[] = $this->module->l('Error while saving image. Try to upload image again.', 'Product');
                     syslog(LOG_ERR, 'Save product: '.$this->_product->id.' An error occurred during new folder creation');
+                    $this->onSaveImageFail($image, $save_path);
                     continue;
                 }
 
                 $error = 0;
 
-                if (!ImageManager::resize(_PS_UPLOAD_DIR_.$save_path, $new_path . '.' . $image -> image_format, null, null, 'jpg', false, $error)) {
+                if (!ImageManager::resize(_PS_UPLOAD_DIR_.$save_path, $new_path . '.' . $image->image_format, null, null, 'jpg', false, $error)) {
                     switch ($error) {
                         case ImageManager::ERROR_FILE_NOT_EXIST :
-                            $this -> errors[] = Tools::displayError('An error occurred while copying image, the file does not exist anymore.');
+                            $this->errors[] = $this->module->l('Error while saving image. Try to upload image again.', 'Product');
                             syslog(LOG_ERR, 'Save product: '.$this->_product->id.' An error occurred while copying image, the file does not exist anymore.');
                             break;
 
                         case ImageManager::ERROR_FILE_WIDTH :
-                            $this -> errors[] = Tools::displayError('An error occurred while copying image, the file width is 0px.');
+                            $this->errors[] = $this->module->l('Error while saving image. Try to upload image again.', 'Product');
                             syslog(LOG_ERR, 'Save product: '.$this->_product->id.' An error occurred while copying image, the file width is 0px.');
                             break;
 
                         case ImageManager::ERROR_MEMORY_LIMIT :
-                            $this -> errors[] = Tools::displayError('An error occurred while copying image, check your memory limit.');
+                            $this->errors[] = $this->module->l('Error while saving image. Try to upload image again.', 'Product');
                             syslog(LOG_ERR, 'Save product: '.$this->_product->id.' An error occurred while copying image, check your memory limit.');
                             break;
 
                         default :
-                            $this -> errors[] = Tools::displayError('An error occurred while copying image.');
+                            $this->errors[] = $this->module->l('Error while saving image. Try to upload image again.', 'Product');
                             syslog(LOG_ERR, 'Save product: '.$this->_product->id.' An error occurred while copying image.');
                             break;
                     }
+                    $this->onSaveImageFail($image, $save_path);
                     continue;
                 } else {
                     $imagesTypes = ImageType::getImagesTypes('products');
                     foreach ($imagesTypes as $imageType) {
-                        if (!ImageManager::resize(_PS_UPLOAD_DIR_.$save_path, $new_path . '-' . stripslashes($imageType['name']) . '.' . $image -> image_format, $imageType['width'], $imageType['height'], $image -> image_format)) {
-                            $this -> errors[] = Tools::displayError('An error occurred while copying image:') . ' ' . stripslashes($imageType['name']);
+                        if (!ImageManager::resize(_PS_UPLOAD_DIR_.$save_path, $new_path . '-' . stripslashes($imageType['name']) . '.' . $image->image_format, $imageType['width'], $imageType['height'], $image->image_format)) {
                             syslog(LOG_ERR, 'Save product: '.$this->_product->id.' An error occurred while copying image:') . ' ' . stripslashes($imageType['name']);
+                            $this->onSaveImageFail($image, $save_path);
                             continue;
                         }
                     }
                 }
 
-                unlink(_PS_UPLOAD_DIR_.$save_path);
                 Hook::exec('actionWatermark', array('id_image' => $image -> id, 'id_product' => $this -> _product -> id));
 
                 if (!$image -> update()) {
-                    syslog(LOG_ERR, 'Save product: '.$this->_product->id.' Error while updating database statu.');
-                    $this -> errors[] = Tools::displayError('Error while updating status');
+                    syslog(LOG_ERR, 'Save product: '.$this->_product->id.' Error while updating database status.');
+                    $this->errors[] = $this->module->l('Error while saving image. Try to upload image again.', 'Product');
+                    $this->onSaveImageFail($image, $save_path);
                     continue;
                 }
 
@@ -572,10 +582,16 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                 $file['path'] = $image -> getExistingImgPath();
                 $file['shops'] = $json_shops;
 
+                @unlink(_PS_UPLOAD_DIR_.$save_path);
                 @unlink(_PS_TMP_IMG_DIR_ . 'product_' . (int)$this -> _product -> id . '.jpg');
                 @unlink(_PS_TMP_IMG_DIR_ . 'product_mini_' . (int)$this -> _product -> id . '_' . $this -> context -> shop -> id . '.jpg');
             }
         }
+    }
+
+    private function onSaveImageFail(Image $image, $file_path) {
+        $image->delete();
+        @unlink(_PS_UPLOAD_DIR_.$file_path);
     }
 }
 ?>
