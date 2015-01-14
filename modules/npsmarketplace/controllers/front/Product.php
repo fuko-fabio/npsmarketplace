@@ -238,9 +238,9 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                             }
                         }
                         $this->_product->updateCategories($categories);
+                        $this->_product->persistExtraInfo($type, $lat, $lng, $video_url);
                         $this->saveProductImages($images);
                         $this->removeProductImages($removed_images, $current_id_product);
-                        $this->_product->persistExtraInfo($type, $lat, $lng, $video_url);
                         Tools::redirect($this->context->link->getModuleLink('npsmarketplace', 'ProductsList'));
                     } catch(Exception $e) {
                         error_log($e);
