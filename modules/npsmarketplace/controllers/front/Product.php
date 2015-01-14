@@ -48,8 +48,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
 
     public function postProcess() {
         if (Tools::isSubmit('saveProduct')) {
-            syslog(LOG_INFO, 'SAVE PRODUCT REQUEST: '.json_encode($_POST));
-            
+
             $current_id_product = trim(Tools::getValue('id_product'));
             $name = $_POST['name'];
             $description_short = $_POST['description_short'];

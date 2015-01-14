@@ -8,9 +8,12 @@ include dirname(__FILE__).'/../../../init.php';
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/ProductAttributeExpiryDate.php');
 
 $token = Tools::getValue('token');
+syslog(LOG_INFO, 'Cleaning expired events...');
 
-if ($token != '733acb9920b35800545d7d3e9c2e9e21')
+if ($token != '733acb9920b35800545d7d3e9c2e9e21') {
+    syslog(LOG_ERR, 'Invalid token!');
     exit(1);
+}
 
 $sql = 'SELECT * FROM `'._DB_PREFIX_.'product_attribute_expiry_date` WHERE `expiry_date` < NOW()';
 
@@ -29,6 +32,7 @@ foreach ($rows as $row) {
 }
 
 $outdated_ids = array_unique($outdated_ids);
+syslog(LOG_INFO, 'Outdated product attributes ids: '.implode('|', $outdated_ids));
 foreach ($outdated_ids as $id) {
     $combination = new Combination($id);
     $products_ids[] = $combination->id_product;
@@ -38,6 +42,7 @@ foreach ($outdated_ids as $id) {
 }
 
 $products_ids = array_unique($products_ids);
+syslog(LOG_INFO, 'Outdated products ids: '.implode('|', $products_ids));
 $to_disable = array();
 foreach ($products_ids as $id) {
     $extras = Product::getExtras($id);
@@ -48,6 +53,7 @@ foreach ($products_ids as $id) {
     } else 
         $to_disable[] = $id;
 }
+syslog(LOG_INFO, 'Disabling products: '.implode('|', $to_disable));
 foreach ($to_disable as $id) {
     $product = new Product($id);
     if($product->active) {
