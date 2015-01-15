@@ -34,7 +34,7 @@ class FileUploader extends UploaderCore {
     }
 
     public function remove($name) {
-        $file_path = $this->getFilePath($this->_token.$name);
+        $file_path = $this->getFilePath($name);
         syslog(LOG_DEBUG, 'Removing uploaded file: '.$file_path);
         unlink($file_path);
     }

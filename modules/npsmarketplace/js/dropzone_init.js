@@ -42,6 +42,7 @@ $(document).ready(function(){
                 var n = file['name'];
                 var savePath = response['save_path'];
                 $('#' + that.element.id).append(
+                    '<input class="hidden path" data-target="' + n + '" value="' + savePath + '"/>' +
                     '<input class="hidden" data-target="' + n + '" name="images[' + savePath + '][name]" value="' + response['name'] + '"/>' +
                     '<input class="hidden" data-target="' + n + '" name="images[' + savePath + '][size]" value="' + response['size'] + '"/>' +
                     '<input class="hidden" data-target="' + n + '" name="images[' + savePath + '][tmp_name]" value="' + response['tmp_name'] + '"/>' +
@@ -50,9 +51,10 @@ $(document).ready(function(){
                 );
             });
             this.on("removedfile", function(file, response) {
+                var filePath = $('input.path[data-target="' + file['name'] + '"]').val();
                 $('input[data-target="' + file['name'] + '"]').remove();
                 $.ajax({
-                    url: that.options.url + '&name=' + file['name'],
+                    url: that.options.url + '&name=' + filePath,
                     type: 'DELETE',
                 });
             });
