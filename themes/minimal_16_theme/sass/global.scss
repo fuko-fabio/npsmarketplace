@@ -87,11 +87,8 @@ header {
     }
     #header_logo {
       @extend .col-sm-4;
-      @media (max-width: $screen-md) {
-        padding-top: 40px;
-      }
+      padding-top: 10px;
       @media (max-width: $screen-xs-max) {
-        padding-top: 15px;
         img {
           margin: 0 auto;
         }

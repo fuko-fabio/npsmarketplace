@@ -359,4 +359,13 @@
   bottom: -3px;
   font-family: $font-hammer;
   color: $primary-color;
+
+  @media (max-width: $screen-sm-max) {
+    right: 20px;
+    font-size: 18px;
+  }
+
+  @media (max-width: $screen-md-max) {
+    right: 20px;
+  }
 }

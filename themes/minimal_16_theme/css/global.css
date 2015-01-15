@@ -5275,12 +5275,9 @@ header {
     position: relative; }
     header .row > .container {
       position: relative; }
-    @media (max-width: 992px) {
-      header .row #header_logo {
-        padding-top: 40px; } }
-    @media (max-width: 767px) {
-      header .row #header_logo {
-        padding-top: 15px; }
+    header .row #header_logo {
+      padding-top: 10px; }
+      @media (max-width: 767px) {
         header .row #header_logo img {
           margin: 0 auto; } }
   @media (min-width: 767px) {

@@ -272,3 +272,10 @@
   bottom: -3px;
   font-family: "Hammersmith One", sans-serif;
   color: #ffaa00; }
+  @media (max-width: 991px) {
+    .nps-main-town {
+      right: 20px;
+      font-size: 18px; } }
+  @media (max-width: 1199px) {
+    .nps-main-town {
+      right: 20px; } }
