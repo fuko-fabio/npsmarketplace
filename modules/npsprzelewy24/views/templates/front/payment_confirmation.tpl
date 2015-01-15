@@ -10,15 +10,17 @@
 {include file="$tpl_dir./order-steps.tpl"}
 
 {include file="$tpl_dir./errors.tpl"}
-{if !isset($errors)}
+
+{if !isset($errors) || empty($errors)}
 <p>{l s='You should be redirected to our partner Przelewy24 to securely pay by order. If not, click' mod='npsprzelewy24'} <a href="{$payment_url}">{l s='here' mod='npsprzelewy24'}</a></p>
-    {if $is_guest}
-        <p class="cart_navigation exclusive">
-            <a class="button-exclusive btn btn-default" href="{$link->getPageLink('guest-tracking', true, NULL, "id_order={$reference_order}&email={$email}")|escape:'html':'UTF-8'}" onclick="$.fancybox.showLoading();" title="{l s='Follow my order' mod='npsprzelewy24'}"><i class="icon-chevron-left"></i>{l s='Follow my order' mod='npsprzelewy24'}</a>
-        </p>
-    {else}
-        <p class="cart_navigation exclusive">
-            <a class="button-exclusive btn btn-default" href="{$link->getPageLink('history', true)|escape:'html':'UTF-8'}" onclick="$.fancybox.showLoading();" title="{l s='Back to orders' mod='npsprzelewy24'}"><i class="icon-chevron-left"></i>{l s='Back to orders' mod='npsprzelewy24'}</a>
-        </p>
-    {/if}
+{/if}
+
+{if $is_guest}
+    <p class="cart_navigation exclusive">
+        <a class="btn btn-default button button-small" href="{$link->getPageLink('guest-tracking', true, NULL, "id_order={$reference_order}&email={$email}")|escape:'html':'UTF-8'}" onclick="$.fancybox.showLoading();" title="{l s='Follow my order' mod='npsprzelewy24'}"><i class="icon-chevron-left"></i> {l s='Follow my order' mod='npsprzelewy24'}</a>
+    </p>
+{else}
+    <p class="cart_navigation exclusive">
+        <a class="btn btn-default button button-small" href="{$link->getPageLink('history', true)|escape:'html':'UTF-8'}" onclick="$.fancybox.showLoading();" title="{l s='Back to orders' mod='npsprzelewy24'}"><i class="icon-chevron-left"></i> {l s='Back to orders' mod='npsprzelewy24'}</a>
+    </p>
 {/if}

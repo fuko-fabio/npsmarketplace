@@ -2,6 +2,7 @@
 *  @author Norbert Pabian <norbert.pabian@gmail.com>
 *  @copyright 2014 npsoftware
 *}
+{if $tickets}
 <h1 class="page-heading">{l s='Invoice' mod='npsticketdelivery'}</h1>
 <div class="box">
     <p>{l s='Transaction summary can be downloaded here.' mod='npsticketdelivery'}</p>
@@ -9,7 +10,6 @@
     <br />
 </div>
 
-{if $tickets}
 <h1 class="page-heading">{l s='Tickets' mod='npsticketdelivery'}</h1>
 <div id="nps_tickets_block" class="box">
     <ul class="grid row">

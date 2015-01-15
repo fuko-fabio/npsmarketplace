@@ -132,15 +132,13 @@ class P24PaymentValodator {
     * @return void
     */
     private function updateOrderState($id_cart) {
-        $order_id = Order::getOrderByCartId(intval($id_cart));
-        $order = new Order($order_id);
+        $order = new Order(Order::getOrderByCartId($id_cart));
+        $order_state = Configuration::get('NPS_P24_ORDER_STATE_ACCEPTED');
 
         $history = new OrderHistory();
-        $history->id_order = intval($order_id);
-
-        $order_state = Configuration::get('NPS_P24_ORDER_STATE_ACCEPTED');
-        $history->changeIdOrderState($order_state, intval($order_id), true);
-        $history->addWithemail(true);
+        $history->id_order = $order->id;
+        $history->changeIdOrderState($order_state, intval($order->id), true);
+        $history->add();
 
         $payments = $order->getOrderPaymentCollection();
         if (count($payments) > 0) {

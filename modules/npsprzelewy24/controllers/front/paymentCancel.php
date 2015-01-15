@@ -10,6 +10,10 @@ class NpsPrzelewy24PaymentCancelModuleFrontController extends ModuleFrontControl
 
     public function init() {
         parent::init();
+
+        if(Tools::getValue('error')) {
+            $this->errors[] = $this->module->l('Unable to register transaction in Przelewy24 service. Please contact with customer support', 'paymentCancel');
+        }
         $this->setTemplate('payment_cancel.tpl');
     }
 }

@@ -229,6 +229,7 @@
                 </div>
             </div>
             <span class="form_info">{l s='First image will be general image.' mod='npsmarketplace'} <a href="$images_how_to_url">{l s='See how to add images.' mod='npsmarketplace'}</a></span>
+            <p class="alert alert-info waitForImages"><span class="alert-content">{l s='Sending images in progress. Wait for the result.' mod='npsmarketplace'}</span></p>
         </div>
         <div class="row">
             <div class="form-group col-xs-12">

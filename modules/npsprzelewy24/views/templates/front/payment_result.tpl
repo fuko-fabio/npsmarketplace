@@ -33,10 +33,10 @@
 <br />
 {if $is_guest}
     <p class="cart_navigation exclusive">
-        <a class="btn btn-default button button-small " href="{$link->getPageLink('guest-tracking', true, NULL, "id_order={$reference_order}&email={$email}")|escape:'html':'UTF-8'}" title="{l s='Follow my order' mod='npsprzelewy24'}"><i class="icon-chevron-left"></i> {l s='Follow my order' mod='npsprzelewy24'}</a>
+        <a class="btn btn-default button button-small" onclick="$.fancybox.showLoading();" href="{$link->getPageLink('guest-tracking', true, NULL, "id_order={$reference_order}&email={$email}")|escape:'html':'UTF-8'}" title="{l s='Follow my order' mod='npsprzelewy24'}"><i class="icon-chevron-left"></i> {l s='Follow my order' mod='npsprzelewy24'}</a>
     </p>
 {else}
     <p class="cart_navigation exclusive">
-        <a class="btn btn-default button button-small " href="{$link->getPageLink('my-account', true)|escape:'html':'UTF-8'}" title="{l s='Back to my tickets' mod='npsprzelewy24'}"><i class="icon-chevron-left"> </i>{l s='Back to my tickets' mod='npsprzelewy24'}</a>
+        <a class="btn btn-default button button-small" onclick="$.fancybox.showLoading();" href="{$link->getPageLink('my-account', true)|escape:'html':'UTF-8'}" title="{l s='Back to my tickets' mod='npsprzelewy24'}"><i class="icon-chevron-left"> </i>{l s='Back to my tickets' mod='npsprzelewy24'}</a>
     </p>
 {/if}
