@@ -61,7 +61,7 @@
                     <div class="form-group">
                         <label for="product_description_{$lang.id_lang}">{l s='Description' mod='npsmarketplace'}</label>
                         <textarea class="tinymce form-control" id="product_description_{$lang.id_lang}" name="description[{$lang.id_lang}]">{if isset($smarty.post.description[{$lang.id_lang}])}{$smarty.post.description[{$lang.id_lang}]}{else}{if isset($product['description'][{$lang.id_lang}])}{$product['description'][{$lang.id_lang}]}{/if}{/if}</textarea>
-                        <span class="form_info"><a href="$description_how_to_url">{l s='How to write interesting description?' mod='npsmarketplace'}</a></span>
+                        <span class="form_info"><a href="{$description_how_to_url}">{l s='How to write interesting description?' mod='npsmarketplace'}</a></span>
                     </div>
                 </div>
             {/foreach}
@@ -228,14 +228,14 @@
                     <input name="file[]" type="file" multiple />
                 </div>
             </div>
-            <span class="form_info">{l s='First image will be general image.' mod='npsmarketplace'} <a href="$images_how_to_url">{l s='See how to add images.' mod='npsmarketplace'}</a></span>
+            <span class="form_info">{l s='First image will be general image.' mod='npsmarketplace'} <a href="{$images_how_to_url}">{l s='See how to add images.' mod='npsmarketplace'}</a></span>
             <p class="alert alert-info waitForImages"><span class="alert-content">{l s='Sending images in progress. Wait for the result.' mod='npsmarketplace'}</span></p>
         </div>
         <div class="row">
             <div class="form-group col-xs-12">
                 <label for="video_url">{l s='Video embeded code/URL' mod='npsmarketplace'}</label>
                <textarea class="form-control textarea-autosize" id="video_url" name="video_url">{if isset($smarty.post.video_url)}{$smarty.post.video_url}{else}{if isset($product['video_url'])}{$product['video_url']|escape:'html':'UTF-8'}{/if}{/if}</textarea>
-                <span class="form_info">{l s='Paste embeded video code (YouTube, Vimeo)' mod='npsmarketplace'} <a href="$vide_how_to_url">{l s='See how to add video' mod='npsmarketplace'}</a></span>
+                <span class="form_info">{l s='Paste embeded video code (YouTube, Vimeo)' mod='npsmarketplace'} <a href="{$vide_how_to_url}">{l s='See how to add video' mod='npsmarketplace'}</a></span>
             </div>
         </div>
     </div>
