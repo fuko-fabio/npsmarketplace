@@ -256,7 +256,6 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                             }
                             $this->updateCategories($categories);
                             $this->_product->persistExtraInfo($type, $lat, $lng, $video_url);
-                            $this->saveProductImages($images);
                             $this->removeProductImages($removed_images, $current_id_product);
                         } else {
                             $done = false;
