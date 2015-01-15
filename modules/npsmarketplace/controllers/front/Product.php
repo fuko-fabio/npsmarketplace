@@ -397,7 +397,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
 
         $this -> context -> smarty -> assign(array(
             'HOOK_MY_ACCOUNT_COLUMN' => Hook::exec('displayMyAccountColumn'),
-            'user_agreement_url' =>'#',
+            'user_agreement_url' => Configuration::get('NPS_SELLER_AGREEMENT_URL'),
             'categories_tree' => $cat,
             'special_categories_tree' => $s_cat,
             'category_partial_tpl_path' =>_PS_MODULE_DIR_.'npsmarketplace/views/templates/front/category_tree_partial.tpl',
