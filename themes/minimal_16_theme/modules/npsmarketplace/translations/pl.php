@@ -148,8 +148,10 @@ $_MODULE['<{npsmarketplace}minimal_16_theme>product_32df66177440f9817b034cd5a174
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_21e727fa7d2ebd89fc73ad7d0f0f4b01'] = 'Przynajmniej jedno zdjęcie jest wymagane';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_4fd0d848ea2025717dbf440d03f41103'] = 'Możesz dodać maksymalnie 4 zdjęcia';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_7a53cb67e1f70c07037d0137b7615fea'] = 'Niepoprawna nazwa';
+$_MODULE['<{npsmarketplace}minimal_16_theme>product_6a7bc2a62f8b89cb5a061aee751457a0'] = 'Nazwa wydarzenia jest za długa. Maksymalna dozwolona liczba znaków: 128, obecnie jest: %d. Język: %s';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_c3446579128782316d904e53f359ba8f'] = 'Niepoprawny krótki opis wydarzenia';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_3c3e7c9a0447d9a7f1f14768b3034a50'] = 'Niepoprawny opis wydarzenia';
+$_MODULE['<{npsmarketplace}minimal_16_theme>product_b1e879e34ee06329ce8227cabdfc4eb4'] = 'Krótki opis wydarzenia jest za długi. Maksymalna dozwolona liczba znaków: %d, obecnie jest: %d. Język: %s';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_0b6ee8ab284044768ae086b58144bcaa'] = 'Nie można dodać wydarzenia';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_3236a64e838b137cadf39e1265afa96f'] = 'Nie można dodać wydarzenia. Wystąpił nieoczekiwany błąd. Spróbuj ponownie dodać wydarzenie. Jeśli problem będzie się powtarzał prosimy o kontakt z administratorem.';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_bfe31b95a0ae7a8c56d7be59caa81d00'] = 'Wydarzenie nie może zostać usunięte';
@@ -396,7 +398,7 @@ $_MODULE['<{npsmarketplace}minimal_16_theme>seller_fieldset_4c72b599119cb41bb4b9
 $_MODULE['<{npsmarketplace}minimal_16_theme>seller_fieldset_2be69d2c4f6a31bb2ae7db875035037e'] = 'NIP';
 $_MODULE['<{npsmarketplace}minimal_16_theme>seller_fieldset_35dc9ae0735af64abf9438b80e6d6298'] = 'REGON';
 $_MODULE['<{npsmarketplace}minimal_16_theme>seller_fieldset_12a86871bce96d049ee2d262171bca98'] = 'Numer KRS';
-$_MODULE['<{npsmarketplace}minimal_16_theme>seller_fieldset_812c9abde0edca152096f715992cd849'] = 'Organ rejestrujący (w przypadku KRS)';
+$_MODULE['<{npsmarketplace}minimal_16_theme>seller_fieldset_812c9abde0edca152096f715992cd849'] = 'Organ rejestrujący ';
 $_MODULE['<{npsmarketplace}minimal_16_theme>seller_shop_6ef39564f22bb26f47c3086f9fa7dd00'] = 'Sklep %s';
 $_MODULE['<{npsmarketplace}minimal_16_theme>seller_shop_b5a7adde1af5c87d7fd797b6245c2a39'] = 'Opis firmy';
 $_MODULE['<{npsmarketplace}minimal_16_theme>seller_shop_87f9f735a1d36793ceaecd4e47124b63'] = 'Wydarzenia';

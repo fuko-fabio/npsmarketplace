@@ -5,7 +5,7 @@
 	<title>Wiadomość od {shop_name}</title>
 </head>
 <body>
-										    <table class="table table-mail" style="width:100%;margin-top:10px;-moz-box-shadow:0 0 5px #afafaf;-webkit-box-shadow:0 0 5px #afafaf;-o-box-shadow:0 0 5px #afafaf;box-shadow:0 0 5px #afafaf;filter:progid:DXImageTransform.Microsoft.Shadow(color=#afafaf,Direction=134,Strength=5)">
+	    <table class="table table-mail" style="width:100%;margin-top:10px;-moz-box-shadow:0 0 5px #afafaf;-webkit-box-shadow:0 0 5px #afafaf;-o-box-shadow:0 0 5px #afafaf;box-shadow:0 0 5px #afafaf;filter:progid:DXImageTransform.Microsoft.Shadow(color=#afafaf,Direction=134,Strength=5)">
       <tr>
         <td align="center" style="padding:7px 0">
           <table class="table" bgcolor="#ffffff" style="width:100%">
@@ -15,24 +15,48 @@
                   <span class="title" style="font-weight:500;font-size:28px;text-transform:uppercase;line-height:33px">
                     Witaj {firstname}
                   </span>
+                  <br/>
+                  <span class="subtitle" style="font-weight:500;font-size:16px;text-transform:uppercase;line-height:25px">
+                    Z powodzeniem założyłeś konto w Labs in Town poprzez facebook!
+                  </span>
                 </font>
               </td>
             </tr>
             <tr>
               <td>
                 <font size="2" face="Open-sans, sans-serif" color="#555454">
-                  <p data-html-only="1" style="border-bottom:1px solid #ffaa00;margin:3px 0 7px;text-transform:uppercase;font-weight:500;font-size:14px;padding-bottom:10px">
-                    Zam&oacute;wienie {order_name}&nbsp;-&nbsp;Zwrot przetwarzany            </p>
-                  <span style="color:#777">
-                    Przetworzyliśmy zwrot pieniędzy ze sklepu <strong><span style="color:#333">{shop_name}</span></strong> dla Twojego zam&oacute;wienia o numerze <strong><span style="color:#333">{order_name}</span></strong>.            </span>
+                      <p data-html-only="1" style="border-bottom:1px solid #ffaa00;margin:3px 0 7px;text-transform:uppercase;font-weight:500;font-size:14px;padding-bottom:10px">
+                        Twoje dane logowania
+                      </p>
+                      <span style="color:#777"> <span style="color:#333">
+                        <strong>Adres e-mail: <a href="mailto:{email}" style="color:#337ff1">{email}</a></strong>
+                      </span>
+                      <br />
+                      <span style="color:#333"><strong>Hasło:</strong></span> {passwd} </span>
+                      <br />
+                      Hasło możesz zmienić logując się na swoje konto w zakładce "Moje konto"
+                      <br />
                 </font>
-              </td>
-            </tr>
-            <tr>
-              <td class="linkbelow">
-                <font size="2" face="Open-sans, sans-serif" color="#555454">
-                  <span>
-                    Możesz obejrzeć swoje zam&oacute;wienie w <a href="{history_url}" style="color:#337ff1">"Historia zam&oacute;wień"</a> logując się do konta klienta <a href="{my_account_url}" style="color:#337ff1">"Moje konto"</a> w naszym sklepie.      </span>
+                <br />
+                <font size="2" face="Open-sans, sans-serif" color="#555454"> TERAZ MOŻESZ:
+                <br />
+                  &shy;- kupować bilety i karnety na warsztaty, zajęcia kreatywne i kursy
+                  <br />
+                  &shy;- rejestrować się na wydarzenia bezpłatne lub po prostu się o nich dowiadywać
+                  <br />
+                  &shy;- robić świetne prezenty swoim bliskim, przesyłając im bilet w wersji "Prezent" poprzez Labs in Town lub dzielić się z nimi informacjami
+                  <br />
+                  <br />
+                  Tutaj dowiesz się więcej, jak korzystać z wszystkich ciekawych możliwoćci Labs in Town: <a href="{user_guide_url}" style="color:#337ff1">&bdquo;Poradnik klienta&rdquo;</a>
+                  <br />
+                  <br />
+                  ... ZOSTAŃ SPRZEDAWCĄ:
+                  <br />
+                  - sprzedawać bilety i karnety na zajęcia, warsztaty i kursy
+                  <br />
+                  - rejestrować uczestnik&oacute;w na wydarzenia bezpłatne lub je ogłaszać
+                  <br />
+                  - zobacz, jak to zrobić: <a href="{seller_guide_url}" style="color:#337ff1">&bdquo;Zostań sprzedawcą&rdquo;</a>
                 </font>
               </td>
             </tr>
@@ -79,14 +103,5 @@
       </tr>
     </table>
   
-
-
-
-
-
-
-
-
-
 </body>
 </html>

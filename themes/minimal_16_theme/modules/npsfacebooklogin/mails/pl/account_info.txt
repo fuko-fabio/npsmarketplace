@@ -1,26 +1,32 @@
 Witaj {firstname},
 
-Z powodzeniem założyłeś konto w Labs in Town!
+Z powodzeniem założyłeś konto w Labs in Town poprzez facebook!
+
+Oto twoje dane logowania:
+
+ADRES E-MAIL: {email}
+
+HASŁO: {passwd}
+
+Hasło możesz zmienić logując się na swoje konto w zakładce "Moje konto".
 
 TERAZ MOŻESZ:
 
-­- kupować bilety i karnety na warsztaty, zajęcia kreatywne i kursy
+­- kupowaæ bilety i karnety na warsztaty, zajęcia kreatywne i kursy
 
 ­- rejestrować się na wydarzenia bezpłatne lub po prostu się o nich dowiadywać
 
 ­- robić świetne prezenty swoim bliskim, przesyłając im bilet w wersji "Prezent" poprzez Labs in Town lub dzielić się z nimi informacjami
 
-Tutaj dowiesz się więcej, jak korzystać z wszystkich ciekawych możliwości Labs in Town: [{user_guide_url}]
+Tutaj dowiesz się więcej, jak korzystać z wszystkich ciekawych możliwoćci Labs in Town: [{user_guide_url}]
 
 ... ZOSTAŃ SPRZEDAWCĄ:
 
-- sprzedawaj bilety i karnety na zajęcia, warsztaty i kursy
+- sprzedawać bilety i karnety na zajęcia, warsztaty i kursy
 
-- rejestruj uczestników na wydarzenia bezpłatne lub je ogłaszać
+- rejestrować uczestników na wydarzenia bezpłatne lub je ogłaszać
 
-- tutaj założysz konto Sprzedawcy: [{seller_guide_url}]
-
-- tutaj znajdziesz "Pełny Poradnik Sprzedawcy" z przydatnymi instrukcjami: http://labsintown.pl/pl/content/23-pelny-poradnik-sprzedawcy
+- zobacz, jak to zrobić: [{seller_guide_url}]
 
 Pozdrawiamy,
 Zespół Labs in Town!
