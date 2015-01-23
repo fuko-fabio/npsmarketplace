@@ -255,7 +255,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                                 $expDate->save();
                             }
                         }
-                        $this->_product->updateCategories($categories);
+                        $this->updateCategories($categories);
                         $this->_product->persistExtraInfo($type, $lat, $lng, $video_url);
                         $this->saveProductImages($images);
                         $this->removeProductImages($removed_images, $current_id_product);
@@ -269,6 +269,15 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                 }
             }
         }
+    }
+
+    private function updateCategories($categories) {
+        $global_cat_id = 2;
+        $currentCategories = $this->_product->getCategories();
+        if (!in_array($global_cat_id, $currentCategories)) {
+            $categories = array_diff($categories, array($global_cat_id));
+        }
+        $this->_product->updateCategories($categories);
     }
 
     public function isSellerAllowedToPublish() {
