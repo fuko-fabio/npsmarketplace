@@ -24,7 +24,7 @@ class TicketsGenerator {
             );
         }
         TicketsGenerator::sentTickets($c_t, $attachments, $context);
-        TicketsGenerator::updateOrdetState($c_t->id_cart);
+        TicketsGenerator::updateOrderState($c_t->id_cart);
     }
 
     public static function generateTicket($ticket, $context = null) {
@@ -79,7 +79,7 @@ class TicketsGenerator {
         return number_format($code, 0, '', ' ');
     }
 
-    public static function updateOrdetState($id_cart) {
+    public static function updateOrderState($id_cart) {
         $order_id = Order::getOrderByCartId(intval($id_cart));
         $order = new Order($order_id);
 

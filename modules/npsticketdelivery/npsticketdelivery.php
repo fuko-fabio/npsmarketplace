@@ -49,6 +49,7 @@ class NpsTicketDelivery extends Module {
             return false;
         return true;
     }
+
     public function uninstall() {
         if (!parent::uninstall()
             || !$this->unregisterHook('actionOrderHistoryAddAfter')
@@ -80,7 +81,8 @@ class NpsTicketDelivery extends Module {
             $tickets = CartTicket::getAllTicketsByCartId($id_cart);
             $this->smarty->assign(array(
                 'tickets' => $this->fillTickets($tickets),
-                'is_seller' => true
+                'is_seller' => true,
+                'invoice_url' => $this->context->link->getModuleLink('npsticketdelivery', 'Invoice', array('id_order' => $order->id)),
             ));
 
             return $this->display(__FILE__, 'order_details.tpl');
@@ -368,12 +370,12 @@ class NpsTicketDelivery extends Module {
             '{total_tax_paid}' => Tools::displayPrice(($order->total_products_wt - $order->total_products) + ($order->total_shipping_tax_incl - $order->total_shipping_tax_excl), $this->context->currency, false));
 
         // Join PDF invoice
-        //if ((int)Configuration::get('PS_INVOICE') && $order_status->invoice && $order->invoice_number){
-        //    $pdf = new PDF($order->getInvoicesCollection(), PDF::TEMPLATE_INVOICE, $this->context->smarty);
-        //    $file_attachement['content'] = $pdf->render(false);
-        //    $file_attachement['name'] = Configuration::get('PS_INVOICE_PREFIX', (int)$order->id_lang, null, $order->id_shop).sprintf('%06d', $order->invoice_number).'.pdf';
-        //    $file_attachement['mime'] = 'application/pdf';
-        //} else
+        if ($order_status->invoice){
+            $pdf = new PDF($order, 'SellerOrderConfirmation', $this->smarty);
+            $file_attachement['content'] = $pdf->render(false);
+            $file_attachement['name'] = Configuration::get('PS_INVOICE_PREFIX', (int)$order->id_lang, null, $order->id_shop).sprintf('%06d', $order->id).'.pdf';
+            $file_attachement['mime'] = 'application/pdf';
+        } else
             $file_attachement = null;
 
         if (Validate::isEmail($customer->email))

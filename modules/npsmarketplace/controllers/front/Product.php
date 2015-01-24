@@ -249,10 +249,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                             else if ($type == 1) {
                                 $this->saveCarnetFeatures($entries, $date_from, $date_to);
                                 StockAvailable::setQuantity((int) $this->_product->id, null, $quantity);
-                                $expDate = new ProductAttributeExpiryDate();
-                                $expDate->id_product = $this->_product->id;
-                                $expDate->expiry_date = $expiry_date;
-                                $expDate->save();
+                                $this->_product->saveExpiryDate($expiry_date);
                             }
                         }
                         $this->updateCategories($categories);

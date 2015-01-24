@@ -83,7 +83,7 @@ class P24PaymentValodator {
                 $result = $this->transactionVerify();
                 if ($result['error'] == 0) {
                     $this->persistPaymentStatement($p24_payment->id);
-                    $this->updateOrdetState($id_cart);
+                    $this->updateOrderState($id_cart);
                     return array('error' => 0);
                 } else {
                     $module->reportError(array(
@@ -125,13 +125,13 @@ class P24PaymentValodator {
         return $ps->save();
     }
 
-    /** updateOrdetState Updates order state if payment was verified by przelewy24
+    /** updateOrderState Updates order state if payment was verified by przelewy24
     *
     * @param int $id_cart Cart ID
     *
     * @return void
     */
-    private function updateOrdetState($id_cart) {
+    private function updateOrderState($id_cart) {
         $order_id = Order::getOrderByCartId(intval($id_cart));
         $order = new Order($order_id);
 

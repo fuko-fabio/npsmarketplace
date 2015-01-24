@@ -7,10 +7,9 @@
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/ProductAttributeExpiryDate.php');
 include_once(_PS_MODULE_DIR_.'npsmarketplace/npsmarketplace.php');
 
-class Product extends ProductCore
-{
-    public function delete()
-    {
+class Product extends ProductCore {
+
+    public function delete() {
         if(parent::delete())
             return $this->deleteSellersAssociations() && $this->deleteExtras();
         else
@@ -22,15 +21,7 @@ class Product extends ProductCore
     }
 
     public function deleteExtras() {
-        $ids = Product::getProductAttributesIds($this->id);
-        if (!empty($ids))
-            foreach ($ids as $key => $value) {
-                ProductAttributeExpiryDate::deleteByProductAttribute($value);
-            }
-        else {
-            ProductAttributeExpiryDate::deleteByProductId($this->id);
-        }
-        return true;
+        return ProductAttributeExpiryDate::deleteByProductId($this->id);
     }
 
     public function newEventCombination($date, $time, $quantity, $expiry_date, $id_shop = null) {
@@ -93,17 +84,18 @@ class Product extends ProductCore
         $combination = new Combination((int)$id_product_attribute);
         $combination->setAttributes(array($date_attr->id, $time_attr->id));
         StockAvailable::setQuantity((int)$this->id, (int)$id_product_attribute, $quantity, $id_shop);
-        $this->saveExpiryDate($id_product_attribute, $expiry_date, $time);
+        $this->saveExpiryDate($expiry_date, $id_product_attribute, $time);
         Db::getInstance()->execute('UPDATE '._DB_PREFIX_.'product SET date_add = NOW() WHERE id_product = '.$this->id);
         Search::indexation(false, $this->id);
     }
 
-    private function saveExpiryDate($id_product_attribute, $expiry_date, $time) {
+    public function saveExpiryDate($expiry_date, $id_product_attribute = null, $time = '00:00:00') {
         $dt = new DateTime($expiry_date.' '.$time);
         $dt->modify('-15 min');
         $e_d = new ProductAttributeExpiryDate();
         $e_d->expiry_date = $dt->format('Y-m-d H:i:s');
         $e_d->id_product_attribute = $id_product_attribute;
+        $e_d->id_product = $this->id;
         $e_d->save();
     }
 
