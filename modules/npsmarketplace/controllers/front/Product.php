@@ -455,7 +455,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             Product::addFeatureProductImport($this->_product->id, $feature_id, $feature_value_id);
 
             $feature_id = Configuration::get('NPS_FEATURE_TO_ID');
-            $feature_value_id = FeatureValue::addFeatureValueImport($feature_id, $date_from, $this->context->language->id, true);
+            $feature_value_id = FeatureValue::addFeatureValueImport($feature_id, $date_to, $this->context->language->id, true);
             Product::addFeatureProductImport($this->_product->id, $feature_id, $feature_value_id);
         }
         return true;

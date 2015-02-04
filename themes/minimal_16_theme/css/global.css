@@ -6512,7 +6512,7 @@ div.star a:hover {
     width: 20px; }
 
 .footer-container {
-  background-color: #ffaa00; }
+  background-color: #f2f2f2; }
   @media (min-width: 768px) {
     .footer-container {
       background: url(../img/footer-bg.png) repeat-x #f2f2f2; } }
