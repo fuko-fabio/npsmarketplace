@@ -39,24 +39,34 @@ $(document).ready(function(){
                 $('button[type="submit"]').prop('disabled', false);
             });
             this.on("success", function(file, response) {
-                var n = file['name'];
-                var savePath = response['save_path'];
+                var path = response['save_path'];
                 $('#' + that.element.id).append(
-                    '<input class="hidden path" data-target="' + n + '" value="' + savePath + '"/>' +
-                    '<input class="hidden" data-target="' + n + '" name="images[' + savePath + '][name]" value="' + response['name'] + '"/>' +
-                    '<input class="hidden" data-target="' + n + '" name="images[' + savePath + '][size]" value="' + response['size'] + '"/>' +
-                    '<input class="hidden" data-target="' + n + '" name="images[' + savePath + '][tmp_name]" value="' + response['tmp_name'] + '"/>' +
-                    '<input class="hidden" data-target="' + n + '" name="images[' + savePath + '][type]" value="' + response['type'] + '"/>' +
-                    '<input class="hidden" data-target="' + n + '" name="images[' + savePath + '][error]" value="' + response['error'] + '"/>'
+                    '<input class="hidden" data-target="' + path + '" name="images[' + path + '][name]" value="' + response['name'] + '"/>' +
+                    '<input class="hidden" data-target="' + path + '" name="images[' + path + '][size]" value="' + response['size'] + '"/>' +
+                    '<input class="hidden" data-target="' + path + '" name="images[' + path + '][tmp_name]" value="' + response['tmp_name'] + '"/>' +
+                    '<input class="hidden" data-target="' + path + '" name="images[' + path + '][type]" value="' + response['type'] + '"/>' +
+                    '<input class="hidden" data-target="' + path + '" name="images[' + path + '][error]" value="' + response['error'] + '"/>'
                 );
             });
-            this.on("removedfile", function(file, response) {
-                var filePath = $('input.path[data-target="' + file['name'] + '"]').val();
-                $('input[data-target="' + file['name'] + '"]').remove();
-                $.ajax({
-                    url: that.options.url + '&name=' + filePath,
-                    type: 'DELETE',
-                });
+            this.on("removedfile", function(file) {
+                if (!file.xhr) {
+                    return;
+                }
+                var response;
+                try {
+                    response = JSON.parse(file.xhr.response);
+                } catch(error) {
+                    console.warn('Unable to remove file: ' + error);
+                    return;
+                }
+                var path = response['save_path'];
+                if (path) {
+                    $('input[data-target="' + path + '"]').remove();
+                    $.ajax({
+                        url: that.options.url + '&name=' + path,
+                        type: 'DELETE',
+                    });
+                }
             });
             for (var i = 0; i < dropzoneImages.length; ++i) {
                 var file = {

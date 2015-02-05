@@ -33,6 +33,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
         $this->addJS ("https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places");
         $this->addJS(_PS_JS_DIR_.'validate.js');
         $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/edit_map.js');
+        $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/base64.js');
         $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/dropzone_init.js');
         $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/datetime_init.js');
         $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/bootstrap-datetimepicker.min.js');
