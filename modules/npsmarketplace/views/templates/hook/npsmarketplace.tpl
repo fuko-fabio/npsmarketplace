@@ -1,12 +1,14 @@
 <li class="section"><p>{l s='Selling' mod='npsmarketplace'}</p></li>
 {if $account_state == 'none'}
 <li><a {if $page_name == 'seller-request'}class="active"{/if} href="{$seller_request_link}" onclick="$.fancybox.showLoading();"><i class="icon-share"></i><span>{l s='Become a Seller' mod='npsmarketplace'}</span></a></li>
-{/if}
-{if $account_state == 'locked' || $account_state == 'active' || $account_state == 'requested'}
+{else}
 <li><a {if $page_name == 'seller-account'}class="active"{/if} href="{$seller_profile_link}" onclick="$.fancybox.showLoading();"><i class="icon-th-large"></i><span>{l s='My Shop' mod='npsmarketplace'}</span></a></li>
 {/if}
 {if $account_state == 'requested' && $products_count == 0}
 <li><a {if $page_name == 'add-product'}class="active"{/if} href="{$add_product_link}" onclick="$.fancybox.showLoading();"><i class="icon-plus"></i><span>{l s='Add First Event' mod='npsmarketplace'}</span></a></li>
+{/if}
+{if $account_state == 'requested'}
+<li><a {if $page_name == 'products-list'}class="active"{/if} href="{$products_list_link}" onclick="$.fancybox.showLoading();"><i class="icon-th-list"></i><span>{l s='My Events' mod='npsmarketplace'}</span></a></li>
 {/if}
 {if $account_state == 'locked'}
     <li><a {if $page_name == 'unlock-account'}class="active"{/if} href="{$unlock_account_link}" onclick="$.fancybox.showLoading();"><i class="icon-lock"></i><span>{l s='Unlock Account' mod='npsmarketplace'}</span></a></li>
