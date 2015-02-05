@@ -142,9 +142,11 @@ class NpsMarketplace extends Module {
         $this->context->cookie->__set('main_town', $id_town);
     }
 
-    public static function filterByTown($products, $id_town = null) {
-        if (!isset($id_town))
+    public static function filterByLocation($products, $id_province = null, $id_town = null) {
+        if (!isset($id_province) && !isset($id_town)) {
+            $id_province = (int)Context::getContext()->cookie->main_province;
             $id_town = (int)Context::getContext()->cookie->main_town;
+        }
         if ($id_town > 0) {
             $result = array();
             $town = new Town($id_town);
@@ -152,6 +154,24 @@ class NpsMarketplace extends Module {
                 foreach ($product['features'] as $key => $feature) {
                     $found = false;
                     foreach ($town->name as $key => $name) {
+                        if ($feature['value'] == $name) {
+                            $result[] = $product;
+                            $found = true;
+                            break;
+                        }
+                    }
+                    if ($found)
+                        break;
+                }
+            }
+            return $result;
+        } else if ($id_province > 0) {
+            $result = array();
+            $province = new Province($id_province);
+            foreach ($products as $product) {
+                foreach ($product['features'] as $key => $feature) {
+                    $found = false;
+                    foreach ($province->name as $key => $name) {
                         if ($feature['value'] == $name) {
                             $result[] = $product;
                             $found = true;
@@ -321,7 +341,7 @@ class NpsMarketplace extends Module {
         $products = array();
         if(!empty($ids)) {
             $products = Product::getProductsByIds($lang->id, $ids, null, null, false, null, null, $this->context);
-            $products = $this->filterByTown($products, $id_town);
+            $products = $this->filterByLocation($products, null, $id_town);
         }
         $this->context->smarty->assign(
             array(

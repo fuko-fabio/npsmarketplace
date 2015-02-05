@@ -1,5 +1,6 @@
 <?php
 require_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Town.php');
+require_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Province.php');
 
 class Category extends CategoryCore  {
 
@@ -58,15 +59,28 @@ class Category extends CategoryCore  {
 			die (Tools::displayError());
 
 		$id_supplier = (int)Tools::getValue('id_supplier');
-        
+
         $id_feature_value = null;
         $id_town = $context->cookie->main_town;
+        $id_province = $context->cookie->main_province;
         if ($id_town > 0) {
             $t = new Town($id_town);
             $dbquery = new DbQuery();
             $dbquery->select('id_feature_value')
                 ->from('feature_value_lang')
                 ->where('`value` = \''.$t->name[$context->language->id].'\'');
+            $id_feature_value = Db::getInstance()->getValue($dbquery);
+            if (!$id_feature_value)
+                if ($get_total)
+                    return 0;
+                else 
+                    return array();
+        } else if($id_province > 0) {
+            $province = new Province($id_province);
+            $dbquery = new DbQuery();
+            $dbquery->select('id_feature_value')
+                ->from('feature_value_lang')
+                ->where('`value` = \''.$province->name[$context->language->id].'\'');
             $id_feature_value = Db::getInstance()->getValue($dbquery);
             if (!$id_feature_value)
                 if ($get_total)

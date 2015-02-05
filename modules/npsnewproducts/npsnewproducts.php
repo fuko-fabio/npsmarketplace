@@ -101,7 +101,7 @@ class NpsNewProducts extends Module
 
 		if (!$newProducts && Configuration::get('PS_NPS_NEWPRODUCTS_DISPLAY'))
 			return;
-		return NpsMarketplace::filterByTown($newProducts);
+		return NpsMarketplace::filterByLocation($newProducts);
 	}
 
 	protected function getCacheId($name = null)

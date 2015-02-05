@@ -66,7 +66,7 @@ class Province extends ObjectModel
             ->leftJoin('province_lang', 'pl', 'p.id_province = pl.id_province')
             ->where('pl.`id_lang` = '.$id_lang)
             ->orderBy('pl.name ASC');
-        $result = Db::getInstance()->executeS($dbquery);
+        $result = Db::getInstance()->ExecuteS($dbquery);
 
         if ($add_towns) {
             foreach ($result as $key => $value) {
@@ -76,11 +76,21 @@ class Province extends ObjectModel
         return $result;
     }
 
-    public static function getActiveProvinces($lang_id) {
-        $sql = 'SELECT t.`id_province`, `name`, `id_feature_value` from `'._DB_PREFIX_.'province` t
-                LEFT JOIN `'._DB_PREFIX_.'province_lang` tl ON (tl.`id_province` = t.`id_province`)
-                WHERE tl.`id_lang` = '.(int)$lang_id;
-        return Db::getInstance()->ExecuteS($sql);
+    public static function getActiveProvinces($id_lang, $add_towns = false) {
+        $dbquery = new DbQuery();
+        $dbquery->select('p.`id_province`, `name`, `id_feature_value`')
+            ->from('province', 'p')
+            ->leftJoin('province_lang', 'pl', 'p.id_province = pl.id_province')
+            ->where('pl.`id_lang` = '.$id_lang.' AND p.`active` = 1')
+            ->orderBy('pl.name ASC');
+        $result = Db::getInstance()->executeS($dbquery);
+
+        if ($add_towns) {
+            foreach ($result as $key => $value) {
+                $result[$key]['towns'] = Town::getActiveTowns($id_lang, $value['id_province']);
+            }
+        }
+        return $result;
     }
 }
 

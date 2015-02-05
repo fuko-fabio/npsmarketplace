@@ -8,20 +8,12 @@ require_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
 
 class NpsMarketplaceAjaxModuleFrontController extends ModuleFrontController {
 
-    public function __construct() {
-        parent::__construct();
-        $this->context = Context::getContext();
-    }
-    public function postProcess()  {
-        $this->switchActions();
-    }
-    public function initContent()  {
-        parent::initContent();
-        $this->context = Context::getContext();
-    }
 
-    protected function switchActions() {
+    public function postProcess()  {
         if (Tools::isSubmit('action')) {
+            if ($this->context == null) {
+                $this->context = Context::getContext();
+            }
             switch(Tools::getValue('action')) {
                 case 'sendToSeller':
                     $this->ajaxProcessSendToSeller();

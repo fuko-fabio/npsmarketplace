@@ -75,11 +75,18 @@ class Town extends ObjectModel {
         return Db::getInstance()->executeS($dbquery);
     }
 
-    public static function getActiveTowns($lang_id) {
-        $sql = 'SELECT t.`id_town`, `name`, `id_feature_value` from `'._DB_PREFIX_.'town` t
-                LEFT JOIN `'._DB_PREFIX_.'town_lang` tl ON (tl.`id_town` = t.`id_town`)
-                WHERE tl.`id_lang` = '.(int)$lang_id;
-        return Db::getInstance()->ExecuteS($sql);
+    public static function getActiveTowns($id_lang, $id_province = null) {
+        $dbquery = new DbQuery();
+        $dbquery->select('t.`id_town`, `name`, `id_feature_value`')
+            ->from('town', 't')
+            ->leftJoin('town_lang', 'tl', 't.id_town = tl.id_town')
+            ->orderBy('tl.name ASC');
+        if ($id_province) {
+            $dbquery->where('tl.`id_lang` = '.$id_lang.' AND t.`active` = 1 AND t.`id_province` = '.$id_province);
+        } else {
+            $dbquery->where('tl.`id_lang` = '.$id_lang.' AND t.`active` = 1');
+        }
+        return Db::getInstance()->executeS($dbquery);
     }
 }
 

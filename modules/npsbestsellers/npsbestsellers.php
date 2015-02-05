@@ -229,6 +229,6 @@ class NpsBestSellers extends Module
 		foreach ($result as &$row)
 			$row['price'] = Tools::displayPrice(Product::getPriceStatic((int)$row['id_product'], $usetax), $currency);
 
-		return NpsMarketplace::filterByTown($result);;
+		return NpsMarketplace::filterByLocation($result);
 	}
 }

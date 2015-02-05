@@ -199,6 +199,14 @@
         <h3 class="page-heading">{l s='Event location' mod='npsmarketplace'}</h3>
         <div class="row">
             <div class="form-group col-md-6">
+                <label class="required" for="product_province">{l s='Province' mod='npsmarketplace'}</label>
+                <select class="form-control" id="product_province" name="province">
+                    {foreach from=$provinces item=province}
+                        <option value="{$province.id_feature_value}" {if $product['province'] eq $province.name}selected{/if}>{$province.name}</option> 
+                    {/foreach}
+                </select>
+            </div>
+            <div class="form-group col-md-6">
                 <label class="required" for="product_town">{l s='Town' mod='npsmarketplace'}</label>
                 <select class="form-control" id="product_town" name="town">
                     {foreach from=$towns item=town}
@@ -206,9 +214,21 @@
                     {/foreach}
                 </select>
             </div>
+        </div>
+        <div class="row">
             <div class="form-group col-md-6">
-                <label class="required" for="product_district">{l s='District' mod='npsmarketplace'}</label>
-                <input list="districts_list" class="is_required validate form-control" data-validate="isGenericName" type="text" id="product_district" name="district" required=""
+                <label class="required" for="map-address-input">{l s='Address' mod='npsmarketplace'}</label>
+                <input id="map-address-input" class="is_required validate form-control" data-validate="isMessage" name="address" type="text" required="" placeholder="{l s='Search adress...' mod='npsmarketplace'}"
+                    value="{if isset($smarty.post.address)}{$smarty.post.address}{else}{if isset($product['address'])}{$product['address']|escape:'html':'UTF-8'}{/if}{/if}"/>
+                <span class="form_info">{l s='After you specify address please check town and district. This inputs are not adjusted automatically.' mod='npsmarketplace'}</span>
+                <input id="map-lat-input" class="hide" name="lat" type="text"
+                    value="{if isset($smarty.post.lat)}{$smarty.post.lat}{else}{if isset($product['lat'])}{$product['lat']|escape:'html':'UTF-8'}{/if}{/if}">
+                <input id="map-lng-input" class="hide" name="lng" type="text"
+                    value="{if isset($smarty.post.lng)}{$smarty.post.lng}{else}{if isset($product['lng'])}{$product['lng']|escape:'html':'UTF-8'}{/if}{/if}">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="product_district">{l s='District' mod='npsmarketplace'}</label>
+                <input list="districts_list" class="validate form-control" data-validate="isGenericName" type="text" id="product_district" name="district"
                     value="{if isset($smarty.post.district)}{$smarty.post.district}{else}{if isset($product['district'])}{$product['district']|escape:'html':'UTF-8'}{/if}{/if}"/>
                 <datalist id="districts_list">
                     {foreach from=$districts item=district}
@@ -216,16 +236,6 @@
                     {/foreach}
                 </datalist>
             </div>
-        </div>
-        <div class="form-group">
-            <label class="required" for="map-address-input">{l s='Address' mod='npsmarketplace'}</label>
-            <input id="map-address-input" class="is_required validate form-control" data-validate="isMessage" name="address" type="text" required="" placeholder="{l s='Search adress...' mod='npsmarketplace'}"
-                value="{if isset($smarty.post.address)}{$smarty.post.address}{else}{if isset($product['address'])}{$product['address']|escape:'html':'UTF-8'}{/if}{/if}"/>
-            <span class="form_info">{l s='After you specify address please check town and district. This inputs are not adjusted automatically.' mod='npsmarketplace'}</span>
-            <input id="map-lat-input" class="hide" name="lat" type="text"
-                value="{if isset($smarty.post.lat)}{$smarty.post.lat}{else}{if isset($product['lat'])}{$product['lat']|escape:'html':'UTF-8'}{/if}{/if}">
-            <input id="map-lng-input" class="hide" name="lng" type="text"
-                value="{if isset($smarty.post.lng)}{$smarty.post.lng}{else}{if isset($product['lng'])}{$product['lng']|escape:'html':'UTF-8'}{/if}{/if}">
         </div>
         <div class="form-group">
             <div id="map-canvas"></div>

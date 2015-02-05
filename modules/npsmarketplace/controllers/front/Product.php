@@ -7,6 +7,7 @@
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/CategoriesList.php');
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Town.php');
+include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Province.php');
 include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24SellerCompany.php');
 
 class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
@@ -352,8 +353,13 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
 
     public function initContent() {
         parent::initContent();
+        $tpl_product = array(
+            'categories' => array(),
+            'province' => $this->context->cookie->main_province,
+            'town' => $this->context->cookie->main_town,
+            'images' => array()
+        );
 
-        $tpl_product = array('categories' => array(), 'town' => null, 'images' => array());
         if ($this->_product->id) {
             $features = $this->_product->getFeatures();
             $images = Image::getImages($this->context->language->id, $this->_product->id);
@@ -370,6 +376,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                 'price' => $this->_product->getPrice(),
                 'quantity' => Product::getQuantity($this->_product->id),
                 'reference' => $this->_product->reference,
+                'province' => $this->getFeatureValue($features, 'province'),
                 'town' => $this->getFeatureValue($features, 'town'),
                 'address' => $this->getFeatureValue($features, 'address'),
                 'district' => $this->getFeatureValue($features, 'district'),
@@ -383,9 +390,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                 $tpl_product['lng'] = $extras['lng'];
                 $tpl_product['video_url'] = $extras['video'];
             }
-            
         }
-        $towns = Town::getActiveTowns((int)$this->context->language->id);
         $districts = $this->getDistricts();
         $categoriesList = new CategoriesList($this->context);
         $specialCategoriesIds = explode(',', Configuration::get('NPS_SPECIAL_CATEGORIES'));
@@ -409,7 +414,8 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             'edit_product' => array_key_exists('id', $tpl_product),
             'current_id_lang' => (int)$this->context->language->id,
             'languages' => Language::getLanguages(),
-            'towns' => $towns,
+            'towns' => Town::getActiveTowns($this->context->language->id),
+            'provinces' => Province::getActiveProvinces($this->context->language->id, true),
             'districts' => $districts,
             'form_token' => $form_token,
             'max_images' => self::MAX_IMAGES,
