@@ -200,7 +200,7 @@
                     <div class="tab-pane fade active in" id="product-more-info">
                         <!-- full description -->
                         <div class="rte">{$product->description}</div>
-                        {if $extras.type != 2}
+                        {if $extras.type == 0 || $extras.type == 1 }
                         <h3 class="page-heading">{l s='Delivery'}</h3>
                         {l s='Free shipping on given e-mail address.'}
                         <h3 class="page-heading">{l s='Payment'}</h3>
@@ -307,10 +307,10 @@
             {if $extras.type == 1}
                 <p class="product-type carnet">{l s='Carnet'}</p>
             {/if}
-            {if $extras.type == 2}
+            {if $extras.type == 2 || $extras.type == 3}
                 <p class="product-type ad">{l s='Advertisment'}</p>
             {/if}
-            {if $product->show_price && !isset($restricted_country_mode) && !$PS_CATALOG_MODE && $extras.type != 2}
+            {if $product->show_price && !isset($restricted_country_mode) && !$PS_CATALOG_MODE && ($extras.type == 0 || $extras.type == 1)}
                 <!-- prices -->
                 <div class="price">
                     <p class="our_price_display" itemprop="offers" itemscope
@@ -368,7 +368,7 @@
         <!-- end content_prices -->
         <div class="product_attributes clearfix">
             <!-- quantity wanted -->
-            {if !$PS_CATALOG_MODE && $extras.type != 2}
+            {if !$PS_CATALOG_MODE && ($extras.type == 0 || $extras.type == 1)}
                 <div id="quantity_wanted_p"{if (!$allow_oosp && $product->quantity <= 0) || !$product->available_for_order || $PS_CATALOG_MODE} style="display: none;"{/if}>
                     <label>{l s='Quantity:'}</label>
                     <div class="qty-inputs">
@@ -560,7 +560,7 @@
             {/if}
         </div>
         <!-- end product_attributes -->
-        {if $extras.type != 2}
+        {if $extras.type == 0 || $extras.type == 1}
         <div class="box-cart-bottom">
             <div{if (!$allow_oosp && $product->quantity <= 0) || !$product->available_for_order || (isset($restricted_country_mode) && $restricted_country_mode) || $PS_CATALOG_MODE} class="unvisible"{/if}>
                 <p id="add_to_cart">

@@ -15,6 +15,8 @@ class AdminSellersAccountsController extends AdminController
 
     protected $_defaultOrderBy = 'request_date';
     protected $_defaultOrderWay = 'DESC';
+    
+    protected $general_error;
 
     public function __construct() {
         $this->bootstrap = true;
@@ -30,6 +32,7 @@ class AdminSellersAccountsController extends AdminController
         $this->addRowAction('view');
         $this->addRowAction('edit');
         $this->base_tpl_view = 'seller_view.tpl';
+        $this->general_error = Tools::displayError('An error occurred while updating seller information.');
 
         $this->context = Context::getContext();
         $this->default_form_language = $this->context->language->id;
@@ -76,6 +79,13 @@ class AdminSellersAccountsController extends AdminController
                 'align' => 'text-center',
                 'class' => 'fixed-width-xs'
             ),
+            'outer_adds' => array(
+                'title' => $this->l('External Advertisments'),
+                'align' => 'text-center',
+                'type' => 'bool',
+                'callback' => 'printOuterAddsIcon',
+                'orderby' => false
+            ),
         );
 
         $this->shopLinkType = 'shop';
@@ -84,38 +94,58 @@ class AdminSellersAccountsController extends AdminController
         parent::__construct();
     }
 
-	public function printLockedIcon($value, $seller) {
+    public function printOuterAddsIcon($value, $seller) {
+        return '<a class="list-action-enable '.($value ? 'action-enabled' : 'action-disabled').'" href="index.php?tab=AdminSellersAccounts&id_seller='
+            .(int)$seller['id_seller'].'&changeOuterAddsVal&token='.Tools::getAdminTokenLite('AdminSellersAccounts').'">
+                '.($value ? '<i class="icon-check"></i>' : '<i class="icon-remove"></i>').
+            '</a>';
+    }
+
+    public function printLockedIcon($value, $seller) {
         return '<a class="list-action-enable '.($value ? 'action-enabled' : 'action-disabled').'" href="index.php?tab=AdminSellersAccounts&id_seller='
             .(int)$seller['id_seller'].'&changeLockedVal&token='.Tools::getAdminTokenLite('AdminSellersAccounts').'">
                 '.($value ? '<i class="icon-check"></i>' : '<i class="icon-remove"></i>').
             '</a>';
     }
 
+    public function processChangeOuterAddsVal() {
+        if (!($obj = $this->loadObject(true))) {
+            $this->errors[] = $this->general_error;
+            return;
+        }
+        $obj->outer_adds = !$obj->outer_adds;
+        if(!$obj->update())
+            $this->errors[] = $this->general_error;
+    }
+
     public function processChangeLockedVal() {
-        $seller = new Seller($this->id_object);
-        if (!Validate::isLoadedObject($seller))
-            $this->errors[] = Tools::displayError('An error occurred while updating seller information.');
-        $seller->locked = $seller->locked ? 0 : 1;
-        if (!$seller->update())
-            $this->errors[] = Tools::displayError('An error occurred while updating seller information.');
-        $seller_products = $seller->getProducts();
-        $payment_config = new P24SellerCompany(null, $seller->id);
-        if ($payment_config->id != null && !$seller->locked)
+        if (!($obj = $this->loadObject(true))) {
+            $this->errors[] = $this->general_error;
+            return;
+        }
+        $obj->locked = !$obj->locked;
+        if(!$obj->update()) {
+            $this->errors[] = $this->general_error;
+            return;
+        }
+        $seller_products = $obj->getProducts();
+        $payment_config = new P24SellerCompany(null, $obj->id);
+        if ($payment_config->id != null && !$obj->locked)
             $this->changeProductsState($seller_products, true);
         else
             $this->changeProductsState($seller_products, false);
 
-        $customer = new Customer($seller->id_customer);
+        $customer = new Customer($obj->id_customer);
         $mail_params = array(
             '{lastname}' => $customer->lastname,
             '{firstname}' => $customer->firstname,
             '{shop_name}' => Configuration::get('PS_SHOP_NAME'),
             '{shop_url}' => Tools::getHttpHost(true).__PS_BASE_URI__,
-            '{seller_shop_url}' => $this->context->link->getModuleLink('npsmarketplace', 'SellerShop', array('id_seller' => $seller->id)),
+            '{seller_shop_url}' => $this->context->link->getModuleLink('npsmarketplace', 'SellerShop', array('id_seller' => $obj->id)),
             '{product_guide_url}' => Configuration::get('NPS_PRODUCT_GUIDE_URL'),
             '{seller_guide_url}' => Configuration::get('NPS_SELLER_GUIDE_URL'),
         );
-        if ($seller->locked) {
+        if ($obj->locked) {
             $template = 'account_locked';
             $title = $this->l('Your account has been locked');
         } else {
@@ -219,6 +249,11 @@ class AdminSellersAccountsController extends AdminController
         if (Tools::isSubmit('changeLockedVal') && $this->id_object) {
             if ($this->tabAccess['edit'] === '1')
                 $this->action = 'change_locked_val';
+            else
+                $this->errors[] = Tools::displayError('You do not have permission to edit this.');
+        } else if (Tools::isSubmit('changeOuterAddsVal') && $this->id_object) {
+            if ($this->tabAccess['edit'] === '1')
+                $this->action = 'change_outer_adds_val';
             else
                 $this->errors[] = Tools::displayError('You do not have permission to edit this.');
         } else if (Tools::isSubmit('changeActiveProduct') && $this->id_object) {

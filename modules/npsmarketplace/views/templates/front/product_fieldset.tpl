@@ -33,7 +33,19 @@
                     {l s='Advertisement' mod='npsmarketplace'}
                 </label>
             </div>
+            {if $seller->outer_adds}
+                <div class="radio-inline">
+                    <label class="top">
+                        <input type="radio" name="product_type" {if $edit_product == 1}disabled=""{/if} value="3"{if isset($smarty.post.product_type) && $smarty.post.product_type == 3} checked="checked" {/if}/>
+                        {l s='External Advertisement' mod='npsmarketplace'}
+                    </label>
+                </div>
+            {/if}
         </div>
+        <p class="alert alert-info type-info-ticket" style="display: none;"><span class="alert-content">{l s='Allows you to sell tickets for event in selected tem. You can define multiple terms for one event. You can use this event type for free events when registration is required in this case set price to 0.' mod='npsmarketplace'}</span></p>
+        <p class="alert alert-info type-info-carnet" style="display: none;"><span class="alert-content">{l s='Allows you to sell carnet for event. Carnet can be defined for number of entries (eg. this carnter allows you to enter 5 times to this event) or for period of time (eg. carnet is valid since 01.06 to 01.07).' mod='npsmarketplace'}</span></p>
+        <p class="alert alert-info type-info-ad" style="display: none;"><span class="alert-content">{l s='Allows you to add free event advertisment which is organized by you.' mod='npsmarketplace'}</span></p>
+        <p class="alert alert-info type-info-outer-ad" style="display: none;"><span class="alert-content">{l s='Allows you to add free event advertisment which is not organized by you. No information about your shop will be attached to this event.' mod='npsmarketplace'}</span></p>
         {else}
             <input type="hidden" name="product_type" value="{if isset($smarty.post.product_type)}{$smarty.post.product_type}{else}{if isset($product['type'])}{$product['type']|escape:'html':'UTF-8'}{/if}{/if}"/>
         {/if}

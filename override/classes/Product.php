@@ -281,6 +281,11 @@ class Product extends ProductCore {
         return $res;
     }
 
+    public static function showSellerDetails($id_product) {
+        $extras = Product::getExtras($id_product, null, false);
+        return $extras['type'] != 3;
+    }
+
     public static function getExtras($id_product, $id_lang = null, $all = true) {
         if (!isset($id_product))
             return null;

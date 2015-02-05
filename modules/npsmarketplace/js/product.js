@@ -9,8 +9,8 @@ $(document).ready(function(){
             setTicketForm();
         else if (this.value == '1')
             setCarnetForm();
-        else if (this.value == '2')
-            setAddForm();
+        else if (this.value == '2' || this.value == '3')
+            setAddForm(this.value);
         $('#date_input, #time_input, #entries, #date_from, #date_to').val('');
     });
 
@@ -33,14 +33,16 @@ $(document).ready(function(){
         setTicketForm();
     else if (type == '1')
         setCarnetForm();
-    else if (type == '2')
-        setAddForm();
+    else if (type == '2' || type == '3')
+        setAddForm(type);
 
     CollapsibleLists.apply();
     $('.collapsibleListClosed').click();
 });
 
 function setTicketForm() {
+    $('.type-info-carnet, .type-info-ad, .type-info-outer-ad').hide('slow');
+    $('.type-info-ticket').show('slow');
     $('.price-amount').show();
     $('#product_price, #product_amount').attr('required', true);
     $('[for=date_input], [for=time_input]').addClass('required');
@@ -52,6 +54,8 @@ function setTicketForm() {
 }
 
 function setCarnetForm() {
+    $('.type-info-ticket, .type-info-ad, .type-info-outer-ad').hide('slow');
+    $('.type-info-carnet').show('slow');
     $('.price-amount').show();
     $('#product_price, #product_amount').attr('required', true);
 
@@ -70,7 +74,14 @@ function setCarnetForm() {
     }
 }
 
-function setAddForm() {
+function setAddForm(type) {
+    if (type == '2') {
+        $('.type-info-ticket, .type-info-carnet, .type-info-outer-ad').hide('slow');
+        $('.type-info-ad').show('slow');
+    } else {
+        $('.type-info-ticket, .type-info-carnet, .type-info-ad').hide('slow');
+        $('.type-info-outer-ad').show('slow');
+    }
     $('.price-amount').hide();
     $('#product_price, #product_amount').removeAttr('required');
 

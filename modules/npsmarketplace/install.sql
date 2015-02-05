@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS `PREFIX_seller` (
   `name` varchar(128) NOT NULL UNIQUE,
   `active` tinyint(1) NOT NULL,
   `locked` tinyint(1) NOT NULL,
+  `outer_adds` tinyint(1) NOT NULL,
   `requested` tinyint(1) NOT NULL,
   `request_date` datetime,
   `krs` varchar(16),

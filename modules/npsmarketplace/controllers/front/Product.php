@@ -92,7 +92,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             if(isset($_POST['removed_images']))
                 $removed_images = $_POST['removed_images'];
 
-            if($type == 2) {
+            if($type == 2 || $type == 3) {
                 $quantity = 1;
                 $price = 0;
             }
@@ -247,7 +247,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
         
                             if(empty($current_id_product)) {
                                 $this->_seller->assignProduct($this->_product->id);
-                                if ($type == 0 || $type == 2)
+                                if ($type == 0 || $type == 2 || $type == 3)
                                     $this->_product->newEventCombination($date, $time, (int)$quantity, $expiry_date, $this->context->shop->id);
                                 else if ($type == 1) {
                                     $this->saveCarnetFeatures($entries, $date_from, $date_to);
@@ -315,7 +315,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
         }
 
         $state = $this->_seller->getAccountState();
-        if ($state == 'requested' && count($products) >= 1) {
+        if ($state == 'requested' && count($products) >= 1 && !$id_product) {
             Tools::redirect($this->context->link->getModuleLink('npsmarketplace', 'ProductsList', array('not_configured' => 1)));
         } else if ($state == 'locked') {
             Tools::redirect($this->context->link->getModuleLink('npsmarketplace', 'UnlockAccount'));
@@ -399,6 +399,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
         $this -> context -> smarty -> assign(array(
             'HOOK_MY_ACCOUNT_COLUMN' => Hook::exec('displayMyAccountColumn'),
             'user_agreement_url' => Configuration::get('NPS_SELLER_AGREEMENT_URL'),
+            'seller' => $this->_seller,
             'categories_tree' => $cat,
             'special_categories_tree' => $s_cat,
             'category_partial_tpl_path' =>_PS_MODULE_DIR_.'npsmarketplace/views/templates/front/category_tree_partial.tpl',

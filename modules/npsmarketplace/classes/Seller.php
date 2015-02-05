@@ -44,6 +44,9 @@ class Seller extends ObjectModel {
     /** @var boolean account lock state */
     public $locked = false;
 
+    /** @var boolean allow external advertisments */
+    public $outer_adds = false;
+
     /** @var float commision */
     public $commision;
 
@@ -85,6 +88,7 @@ class Seller extends ObjectModel {
             'active' =>              array('type' => self::TYPE_BOOL,   'validate' => 'isBool',        'required' => true),
             'requested' =>           array('type' => self::TYPE_BOOL,   'validate' => 'isBool',        'required' => true),
             'locked' =>              array('type' => self::TYPE_BOOL,   'validate' => 'isBool',        'required' => true),
+            'outer_adds' =>          array('type' => self::TYPE_BOOL,   'validate' => 'isBool',        'required' => true),
             'krs' =>                 array('type' => self::TYPE_STRING, 'validate' => 'isKrs'),
             'krs_reg' =>             array('type' => self::TYPE_STRING, 'validate' => 'isCleanHtml'),
             'nip' =>                 array('type' => self::TYPE_STRING, 'validate' => 'isNip',         ),

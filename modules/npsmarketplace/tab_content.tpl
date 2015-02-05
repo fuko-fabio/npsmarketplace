@@ -32,6 +32,8 @@
     <div id="map-canvas" data-target="{$product_address}"></div>
 </div>
 
+{if $show_seller_details}
 <div class="tab-pane fade" id="seller_regulations_tab">
     <div class="rte">{$regulations[$current_id_lang]}</div>
 </div>
+{/if}

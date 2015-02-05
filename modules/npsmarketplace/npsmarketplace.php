@@ -165,6 +165,9 @@ class NpsMarketplace extends Module {
 
     public function hookDisplayRightColumnProduct() {
         $id_product = Tools::getValue('id_product');
+        if (!Product::showSellerDetails($id_product)) {
+            return;
+        }
         $id_seller = (int)Seller::getSellerByProduct($id_product);
 
         if(isset($id_seller) && $id_seller > 0) {
@@ -195,6 +198,9 @@ class NpsMarketplace extends Module {
 
     public function hookProductFooter($params) {
         $product = $params['product'];
+        if (!Product::showSellerDetails($product->id)) {
+            return;
+        }
         $seller = new Seller(Seller::getSellerByProduct($product->id));
         $products = $seller->getProducts(3, false);
         $p1 = null;
@@ -392,7 +398,8 @@ class NpsMarketplace extends Module {
             $seller = new Seller($id_seller);
             $extras = Product::getExtras($id_product, $this->context->language->id);
             $this->context->smarty->assign(array(
-                'video_url' => $extras['video']
+                'video_url' => $extras['video'],
+                'show_seller_details' => $extras['type'] != 3
             ));
             return ($this->display(__FILE__, '/tab.tpl'));
         }
@@ -429,7 +436,8 @@ class NpsMarketplace extends Module {
                 'product_address' => isset($address) ? $address->value[$lang_id] : '',
                 'product_town' => isset($town) ? $town->value[$lang_id] : '',
                 'product_district' => isset($district) ? $district->value[$lang_id] : '',
-                'video_url' => $extras['video']
+                'video_url' => $extras['video'],
+                'show_seller_details' => $extras['type'] != 3
             ));
             return ($this->display(__FILE__, '/tab_content.tpl'));
         }
