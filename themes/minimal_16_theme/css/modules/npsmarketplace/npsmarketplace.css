@@ -261,7 +261,8 @@
       .nps-towns-top ul li.selected a, .nps-towns-top ul li:hover a {
         color: #ffaa00; }
 
-.sale-event-box .row {
+.sale-event-box .row,
+.quantity-box .row {
   margin: 0 0 50px 0; }
 
 .nps-main-town {

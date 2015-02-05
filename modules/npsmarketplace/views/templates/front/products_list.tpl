@@ -93,7 +93,7 @@
                                         <li><a href="{$product.edit_combination_url}" onclick="$.fancybox.showLoading();"> <i class="icon-calendar"></i> {l s='List of Terms' mod='npsmarketplace'}</a></li>
                                     {/if}
                                     {if $product.active == 1}
-                                        {if $product.type != 2}
+                                        {if $product.type == 0 || $product.type == 1 }
                                             {if !$product.on_sale}
                                                 <li><a class="sale-event-btn" href="#sale_event_box{$product.id_product}"> <i class="icon-chevron-down"></i> {l s='Sale' mod='npsmarketplace'}</a></li>
                                                 <!-- Fancybox -->

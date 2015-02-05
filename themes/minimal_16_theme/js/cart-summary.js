@@ -78,7 +78,7 @@ $(document).ready(function(){
 	});
 	
 	$('#gift').checkboxChange(function(){
-		$('#gift_div').show('slow');
+		$('#gift_div').slideDown('slow');
 	}, function(){
 		$('#gift_div').hide('slow');
 	});

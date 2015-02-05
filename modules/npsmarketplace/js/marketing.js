@@ -45,7 +45,7 @@ function getTheCode() {
         },
         error : function(result) {
             $.fancybox.hideLoading();
-            $('.code-error').show('slow');
+            $('.code-error').slideDown('slow');
         }
     });
 }

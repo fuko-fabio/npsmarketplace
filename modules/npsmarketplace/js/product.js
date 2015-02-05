@@ -42,7 +42,7 @@ $(document).ready(function(){
 
 function setTicketForm() {
     $('.type-info-carnet, .type-info-ad, .type-info-outer-ad').hide('slow');
-    $('.type-info-ticket').show('slow');
+    $('.type-info-ticket').slideDown('slow');
     $('.price-amount').show();
     $('#product_price, #product_amount').attr('required', true);
     $('[for=date_input], [for=time_input]').addClass('required');
@@ -55,7 +55,7 @@ function setTicketForm() {
 
 function setCarnetForm() {
     $('.type-info-ticket, .type-info-ad, .type-info-outer-ad').hide('slow');
-    $('.type-info-carnet').show('slow');
+    $('.type-info-carnet').slideDown('slow');
     $('.price-amount').show();
     $('#product_price, #product_amount').attr('required', true);
 
@@ -77,10 +77,10 @@ function setCarnetForm() {
 function setAddForm(type) {
     if (type == '2') {
         $('.type-info-ticket, .type-info-carnet, .type-info-outer-ad').hide('slow');
-        $('.type-info-ad').show('slow');
+        $('.type-info-ad').slideDown('slow');
     } else {
         $('.type-info-ticket, .type-info-carnet, .type-info-ad').hide('slow');
-        $('.type-info-outer-ad').show('slow');
+        $('.type-info-outer-ad').slideDown('slow');
     }
     $('.price-amount').hide();
     $('#product_price, #product_amount').removeAttr('required');

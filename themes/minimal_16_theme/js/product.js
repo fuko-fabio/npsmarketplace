@@ -438,7 +438,7 @@ function updateDisplay() {
 
     if (!selectedCombination['unavailable'] && quantityAvailable > 0 && productAvailableForOrder == 1) {
         //show the choice of quantities
-        $('#quantity_wanted_p:hidden').show('slow');
+        $('#quantity_wanted_p:hidden').slideDown('slow');
 
         //show the "add to cart" button ONLY if it was hidden
         $('#add_to_cart:hidden').fadeIn(600);
@@ -462,13 +462,13 @@ function updateDisplay() {
         //'last quantities' message management
         if (!allowBuyWhenOutOfStock) {
             if (quantityAvailable <= maxQuantityToAllowDisplayOfLastQuantityMessage)
-                $('#last_quantities').show('slow');
+                $('#last_quantities').slideDown('slow');
             else
                 $('#last_quantities').hide('slow');
         }
 
         if (quantitiesDisplayAllowed) {
-            $('#pQuantityAvailable:hidden').show('slow');
+            $('#pQuantityAvailable:hidden').slideDown('slow');
             $('#quantityAvailable').text(quantityAvailable);
 
             if (quantityAvailable < 2) // we have 1 or less product in stock and need to show "item" instead of "items"
@@ -535,7 +535,7 @@ function updateDisplay() {
             if (availableLaterValue != '') {
                 $('#availability_value').text(availableLaterValue);
                 if (stock_management == 1)
-                    $('#availability_statut:hidden').show('slow');
+                    $('#availability_statut:hidden').slideDown('slow');
             }
             else
                 $('#availability_statut:visible').hide('slow');
@@ -543,7 +543,7 @@ function updateDisplay() {
         else {
             $('#add_to_cart:visible').fadeOut(600);
             if (stock_management == 1)
-                $('#availability_statut:hidden').show('slow');
+                $('#availability_statut:hidden').slideDown('slow');
         }
 
         if (productAvailableForOrder == 0)
@@ -555,7 +555,7 @@ function updateDisplay() {
             $('#product_reference span').text(selectedCombination['reference']);
         else if (productReference)
             $('#product_reference span').text(productReference);
-        $('#product_reference:hidden').show('slow');
+        $('#product_reference:hidden').slideDown('slow');
     }
     else
         $('#product_reference:visible').hide('slow');

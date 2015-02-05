@@ -54,3 +54,7 @@ function validate_isNrb(nrb) {
         return false;
     }
 }
+
+function validate_isQuantity(s) {
+    return validate_isInteger(s) && s > 0;
+}

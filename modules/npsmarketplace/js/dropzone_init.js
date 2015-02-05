@@ -31,7 +31,7 @@ $(document).ready(function(){
         init: function() {
             var that = this;
             this.on('processing', function() {
-                $('.waitForImages').show('slow');
+                $('.waitForImages').slideDown('slow');
                 $('button[type="submit"]').prop('disabled', true);
             });
             this.on('queuecomplete', function() {

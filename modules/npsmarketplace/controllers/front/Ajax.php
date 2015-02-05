@@ -38,6 +38,9 @@ class NpsMarketplaceAjaxModuleFrontController extends ModuleFrontController {
                 case 'getTheCode':
                     $this->ajaxProcessGetTheCode();
                     break;
+                case 'submitCombinationQuantity':
+                    $this->ajaxProcessCombinationQuantity();
+                    break;
             }
         }
     }
@@ -87,6 +90,18 @@ class NpsMarketplaceAjaxModuleFrontController extends ModuleFrontController {
             die('1');
         }
         die('0');
+    }
+
+    protected function ajaxProcessCombinationQuantity() {
+        $id_product_attribute = Tools::getValue('id_product_attribute');
+        $quantity =  Tools::getValue('quantity');
+        $combination = new Combination($id_product_attribute);
+        if ($combination->id && Validate::isUnsignedInt($quantity) && $quantity > 0) {
+            StockAvailable::setQuantity($combination->id_product, $combination->id, $quantity);
+        } else {
+            die('0');
+        }
+        die('1');
     }
 
     protected function ajaxProcessChangeTown() {
