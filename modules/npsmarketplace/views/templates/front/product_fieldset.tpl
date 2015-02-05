@@ -176,22 +176,24 @@
     </div>
 
     {else}
-    <div class="box">
-        <h3 class="page-heading">{l s='Price' mod='npsmarketplace'}</h3>
-        <div class="row">
-            <div class="form-group col-md-6">
-                <label class="required" for="product_price">{l s='Price' mod='npsmarketplace'}</label>
-                <input class="is_required validate form-control" data-validate="isPrice" type="text" id="product_price" name="price" required=""
-                    value="{if isset($smarty.post.price)}{$smarty.post.price}{else}{if isset($product['price'])}{$product['price']|escape:'html':'UTF-8'}{/if}{/if}"/>
-                <span class="form_info">{l s='Example: 120.50' mod='npsmarketplace'}</span>
-            </div>
-            <div class="form-group col-md-6">
-                <label for="product_code">{l s='Ticket reference' mod='npsmarketplace'}</label>
-                <input class="validate form-control" data-validate="isMessage" type="text" id="product_code" name="reference"
-                    value="{if isset($smarty.post.reference)}{$smarty.post.reference}{else}{if isset($product['reference'])}{$product['reference']|escape:'html':'UTF-8'}{/if}{/if}"/>
+        {if $product['type'] == 0 || $product['type'] == 1}
+        <div class="box">
+            <h3 class="page-heading">{l s='Price' mod='npsmarketplace'}</h3>
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label class="required" for="product_price">{l s='Price' mod='npsmarketplace'}</label>
+                    <input class="is_required validate form-control" data-validate="isPrice" type="text" id="product_price" name="price" required=""
+                        value="{if isset($smarty.post.price)}{$smarty.post.price}{else}{if isset($product['price'])}{$product['price']|escape:'html':'UTF-8'}{/if}{/if}"/>
+                    <span class="form_info">{l s='Example: 120.50' mod='npsmarketplace'}</span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="product_code">{l s='Ticket reference' mod='npsmarketplace'}</label>
+                    <input class="validate form-control" data-validate="isMessage" type="text" id="product_code" name="reference"
+                        value="{if isset($smarty.post.reference)}{$smarty.post.reference}{else}{if isset($product['reference'])}{$product['reference']|escape:'html':'UTF-8'}{/if}{/if}"/>
+                </div>
             </div>
         </div>
-     </div>
+        {/if}
     {/if}
     <div class="box">
         <h3 class="page-heading">{l s='Event location' mod='npsmarketplace'}</h3>
