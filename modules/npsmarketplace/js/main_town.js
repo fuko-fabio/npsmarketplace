@@ -1,10 +1,37 @@
 $(document).ready(function() {
-    $('.nps-towns-top').hover(function() {
-      $(this).find('.toogle_content').stop(true, true).delay(0).fadeIn(200);
+    $('.nps-location-top').hover(function() {
+      $(this).find('.location-selector').stop(true, true).delay(0).fadeIn(200);
     }, function() {
-      $(this).find('.toogle_content').stop(true, true).delay(400).fadeOut(200);
+      $(this).find('.location-selector').stop(true, true).delay(400).fadeOut(200);
+    });
+    $('li.province').hover(function() {
+      $(this).find('ul').stop(true, true).delay(0).fadeIn(200);
+    }, function() {
+      $(this).find('ul').stop(true, true).delay(200).fadeOut(200);
     });
 });
+
+function changeMainProvince(id_province) {
+    $.fancybox.showLoading();
+    $.ajax({
+        url : npsAjaxUrl,
+        type : "POST",
+        headers : {
+            "cache-control" : "no-cache"
+        },
+        dataType : "json",
+        data: {
+            action: 'changeProvince',
+            id_province: id_province
+        },
+        success : function(result) {
+            location.reload();
+        },
+        error : function() {
+            $.fancybox.hideLoading();
+        }
+    });
+}
 
 function changeMainTown(id_town) {
     $.fancybox.showLoading();
@@ -21,6 +48,9 @@ function changeMainTown(id_town) {
         },
         success : function(result) {
             location.reload();
+        },
+        error : function() {
+            $.fancybox.hideLoading();
         }
     });
 }

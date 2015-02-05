@@ -3,33 +3,32 @@
 *  @author Norbert Pabian <norbert.pabian@gmail.com>
 *  @copyright 2014 npsoftware
 */
+require_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Town.php');
 
-class Town extends ObjectModel {
-
+class Province extends ObjectModel
+{
     public $name;
     public $active;
     public $default;
     public $id_feature_value;
-    public $id_province;
 
     /**
      * @see ObjectModel::$definition
      */
     public static $definition = array(
-        'table' => 'town',
-        'primary' => 'id_town',
+        'table' => 'province',
+        'primary' => 'id_province',
         'multilang' => true,
         'fields' => array(
             'name' =>             array('type' => self::TYPE_STRING, 'validate' => 'isGenericName', 'required' => true, 'lang' => true, 'size' => 64),
             'id_feature_value' => array('type' => self::TYPE_INT, 'validate' => 'isUnsignedId', 'required' => true),
-            'id_province' =>      array('type' => self::TYPE_INT, 'validate' => 'isUnsignedId', 'required' => true),
             'active' =>           array('type' => self::TYPE_BOOL, 'validate' => 'isBool'),
             'default' =>          array('type' => self::TYPE_BOOL, 'validate' => 'isBool'),
-        ),
+        )
     );
 
     public function add($autodate = true, $null_values = false) {
-        $feature_id = Configuration::get('NPS_FEATURE_TOWN_ID');
+        $feature_id = Configuration::get('NPS_FEATURE_PROVINCE_ID');
         $feature_value = new FeatureValue();
         $feature_value->id_feature = $feature_id;
         $feature_value->value = $this->name;
@@ -49,35 +48,37 @@ class Town extends ObjectModel {
         return parent::update($autodate, $null_values);
     }
 
-    public static function getDefaultTownId() {
+    public static function getDefaultProvinceId() {
         $dbquery = new DbQuery();
-        $dbquery->select('id_town')
-            ->from('town')
+        $dbquery->select('id_province')
+            ->from('province')
             ->where('`default` = 1');
         return Db::getInstance()->getValue($dbquery);
     }
 
-    public static function getAll($id_lang, $id_province = null) {
+    public static function getAll($id_lang, $add_towns = false) {
         if($id_lang == null)
             $id_lang = Context::getContext()->language->id;
-
+        
         $dbquery = new DbQuery();
         $dbquery->select('*')
-            ->from('town', 't')
-            ->leftJoin('town_lang', 'tl', 't.id_town = tl.id_town')
-            ->orderBy('tl.name ASC');
-        if ($id_province) {
-            $dbquery->where('tl.`id_lang` = '.$id_lang.' AND t.id_province = '.$id_province);
+            ->from('province', 'p')
+            ->leftJoin('province_lang', 'pl', 'p.id_province = pl.id_province')
+            ->where('pl.`id_lang` = '.$id_lang)
+            ->orderBy('pl.name ASC');
+        $result = Db::getInstance()->executeS($dbquery);
 
-        } else {
-            $dbquery->where('tl.`id_lang` = '.$id_lang);
+        if ($add_towns) {
+            foreach ($result as $key => $value) {
+                $result[$key]['towns'] = Town::getAll($id_lang, $value['id_province']);
+            }
         }
-        return Db::getInstance()->executeS($dbquery);
+        return $result;
     }
 
-    public static function getActiveTowns($lang_id) {
-        $sql = 'SELECT t.`id_town`, `name`, `id_feature_value` from `'._DB_PREFIX_.'town` t
-                LEFT JOIN `'._DB_PREFIX_.'town_lang` tl ON (tl.`id_town` = t.`id_town`)
+    public static function getActiveProvinces($lang_id) {
+        $sql = 'SELECT t.`id_province`, `name`, `id_feature_value` from `'._DB_PREFIX_.'province` t
+                LEFT JOIN `'._DB_PREFIX_.'province_lang` tl ON (tl.`id_province` = t.`id_province`)
                 WHERE tl.`id_lang` = '.(int)$lang_id;
         return Db::getInstance()->ExecuteS($sql);
     }

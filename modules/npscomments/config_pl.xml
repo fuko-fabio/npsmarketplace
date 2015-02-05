@@ -6,7 +6,7 @@
 	<description><![CDATA[Allow customers to add seller coments.]]></description>
 	<author><![CDATA[Norbert Pabian]]></author>
 	<tab><![CDATA[market_place]]></tab>
-	<confirmUninstall><![CDATA[Are you sure you want to delete module?]]></confirmUninstall>
+	<confirmUninstall><![CDATA[Jesteś pewien że chcesz usunąc ten moduł?]]></confirmUninstall>
 	<is_configurable>1</is_configurable>
 	<need_instance>0</need_instance>
 	<limited_countries></limited_countries>

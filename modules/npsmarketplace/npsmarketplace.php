@@ -18,6 +18,7 @@ if ( !defined( '_NPS_MAILS_DIR_' ) )
 
 require_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
 require_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Town.php');
+require_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Province.php');
 require_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24SellerCompany.php');
 
 class NpsMarketplace extends Module {
@@ -74,7 +75,7 @@ class NpsMarketplace extends Module {
         return true;
     }
 
-    public function uninstall() {
+    public function uninstall() {return $this->initProvinces();
         return $this->registerHook('extraLogo');
         if (!parent::uninstall()
             || !$this->unregisterHook('header')
@@ -100,6 +101,7 @@ class NpsMarketplace extends Module {
             || !Configuration::deleteByName('NPS_EVENT_VIDEO_GUIDE_URL')
             || !Configuration::deleteByName('NPS_MERCHANT_EMAILS')
             || !Configuration::deleteByName('NPS_FEATURE_TOWN_ID')
+            || !Configuration::deleteByName('NPS_FEATURE_PROVINCE_ID')
             || !Configuration::deleteByName('NPS_FEATURE_DISTRICT_ID')
             || !Configuration::deleteByName('NPS_FEATURE_ADDRESS_ID')
             || !Configuration::deleteByName('NPS_FEATURE_ENTRIES_ID')
@@ -122,17 +124,19 @@ class NpsMarketplace extends Module {
     }
 
     public function hookDisplayNav() {
-        if(!isset($this->context->cookie->main_town)) {
-            $this->setCurrentTown();
+        if(!isset($this->context->cookie->main_town) || !isset($this->context->cookie->main_province)) {
+            $this->setCurrentLocation();
         }
         $this->context->smarty->assign(array(
-            'towns' => Town::getAll($this->context->language->id),
+            'provinces' => Province::getAll($this->context->language->id, true),
             'nps_ajax_url' => $this->context->link->getModuleLink('npsmarketplace', 'Ajax'),
         ));
         return $this->display(__FILE__, 'views/templates/hook/header_top.tpl');
     }
 
-    private function setCurrentTown() {
+    private function setCurrentLocation() {
+        $id_province = Province::getDefaultProvinceId();
+        $this->context->cookie->__set('main_province', $id_province);
         //TODO Town based on user location ?
         $id_town = Town::getDefaultTownId();
         $this->context->cookie->__set('main_town', $id_town);
@@ -443,8 +447,7 @@ class NpsMarketplace extends Module {
         }
     }
 
-    private function displayForm()
-    {
+    private function displayForm() {
         $this->context->controller->addJqueryPlugin('tagify');
         // Get default language
         $default_lang = (int)Configuration::get('PS_LANG_DEFAULT');
@@ -627,8 +630,9 @@ class NpsMarketplace extends Module {
         $tab->module = $this->name;
         $tab->class_name = 'AdminSellersAccounts';
         $languages = Language::getLanguages();
-        foreach ($languages AS $language)
+        foreach ($languages AS $language) {
             $tab->{'name'}[intval($language['id_lang'])] = $this->l('Marketplace');
+        }
         $success = $tab->add();
 
         $sellers_tab = new Tab();
@@ -636,8 +640,7 @@ class NpsMarketplace extends Module {
         $sellers_tab->position = 0;
         $sellers_tab->module = $this->name;
         $sellers_tab->class_name = 'AdminSellersAccounts';
-        foreach ($languages AS $language)
-        {
+        foreach ($languages AS $language) {
             $sellers_tab->{'name'}[intval($language['id_lang'])] = $this->l('Sellers');
         }
         $success = $success && $sellers_tab->add();
@@ -733,16 +736,17 @@ class NpsMarketplace extends Module {
     }
 
     private function _createFeatures() {
-        $names = array('Town', 'District', 'Address', 'Entries', 'From', 'To');
+        $names = array('Province', 'Town', 'District', 'Address', 'Entries', 'From', 'To');
         foreach ($names as $name) {
             $id = Feature::addFeatureImport($name);
             Configuration::updateValue('NPS_FEATURE_'.strtoupper($name).'_ID', $id);
         }
         return true;
     }
-    
+
     private function _deleteFeatures() {
         $ids = array(
+            Configuration::get('NPS_FEATURE_PROVINCE_ID'),
             Configuration::get('NPS_FEATURE_TOWN_ID'),
             Configuration::get('NPS_FEATURE_DISTRICT_ID'),
             Configuration::get('NPS_FEATURE_ADDRESS_ID'),
@@ -784,11 +788,52 @@ class NpsMarketplace extends Module {
         
         return true;
     }
-    
+
     private function _deleteAttributes() {
         $ad = new AttributeGroup(Configuration::get('NPS_ATTRIBUTE_DATE_ID'));
         $at = new AttributeGroup(Configuration::get('NPS_ATTRIBUTE_TIME_ID'));
         return $ad->delete() && $at->delete();
+    }
+
+    private function initProvinces() {
+        $sql = '
+            CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'province` (
+              `id_province` int(10) unsigned NOT NULL AUTO_INCREMENT,
+              `id_feature_value` int(10) unsigned NOT NULL,
+              `active` tinyint(1) NOT NULL,
+              `default` tinyint(1) NOT NULL,
+              PRIMARY KEY (`id_province`)
+            ) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8;
+            
+            CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'province_lang` (
+              `id_lang` int(10) unsigned NOT NULL,
+              `id_province` int(10) unsigned NOT NULL,
+              `name` varchar(64) NOT NULL,
+              KEY `id_province` (`id_province`)
+            ) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8;';
+
+        Db::getInstance()->execute($sql);
+        $sql = 'ALTER TABLE  `'._DB_PREFIX_.'town` ADD  `id_province` int(10) unsigned NOT NULL AFTER  `id_town`';
+        Db::getInstance()->execute($sql);
+
+        $id = Feature::addFeatureImport('Province');
+        Configuration::updateValue('NPS_FEATURE_PROVINCE_ID', $id);
+
+        $dbquery = new DbQuery();
+        $dbquery->select('id_parent')
+            ->from('tab')
+            ->where('`class_name` = "AdminTowns"');
+        $id = Db::getInstance()->getValue($dbquery);
+        $languages = Language::getLanguages();
+        $sellers_tab = new Tab();
+        $sellers_tab->id_parent = $id;
+        $sellers_tab->position = 0;
+        $sellers_tab->module = $this->name;
+        $sellers_tab->class_name = 'AdminProvinces';
+        foreach ($languages AS $language) {
+            $sellers_tab->{'name'}[intval($language['id_lang'])] = $this->l('Provinces');
+        }
+        return $sellers_tab->add();
     }
 }
 ?>

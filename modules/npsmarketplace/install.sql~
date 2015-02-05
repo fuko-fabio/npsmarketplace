@@ -33,21 +33,6 @@ CREATE TABLE IF NOT EXISTS `PREFIX_seller_product` (
   KEY `id_product` (`id_product`)
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `PREFIX_province` (
-  `id_province` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `id_feature_value` int(10) unsigned NOT NULL,
-  `active` tinyint(1) NOT NULL,
-  `default` tinyint(1) NOT NULL,
-  PRIMARY KEY (`id_province`)
-) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;
-
-CREATE TABLE IF NOT EXISTS `PREFIX_province_lang` (
-  `id_lang` int(10) unsigned NOT NULL,
-  `id_province` int(10) unsigned NOT NULL,
-  `name` varchar(64) NOT NULL,
-  KEY `id_province` (`id_province`)
-) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;
-
 CREATE TABLE IF NOT EXISTS `PREFIX_town` (
   `id_town` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `id_feature_value` int(10) unsigned NOT NULL,

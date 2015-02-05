@@ -29,6 +29,9 @@ class NpsMarketplaceAjaxModuleFrontController extends ModuleFrontController {
                 case 'changeTown':
                     $this->ajaxProcessChangeTown();
                     break;
+                case 'changeProvince':
+                    $this->ajaxProcessChangeProvince();
+                    break;
                 case 'specialPrice':
                     $this->ajaxProcessSpecialPrice();
                     break;
@@ -48,7 +51,7 @@ class NpsMarketplaceAjaxModuleFrontController extends ModuleFrontController {
             $email = Tools::getValue('email');
             $id_product = Tools::getValue('id_product');
         
-            if (!$question || !$email || !$id_product)
+            if (!$question || !$email || !$id_product || !Validate::isEmail($email))
                 die('0');
 
             /* Email generation */
@@ -85,7 +88,15 @@ class NpsMarketplaceAjaxModuleFrontController extends ModuleFrontController {
     }
 
     protected function ajaxProcessChangeTown() {
-        $this->context->cookie->__set('main_town', Tools::getValue('id_town'));
+        $town = new Town(Tools::getValue('id_town'));
+        $this->context->cookie->__set('main_town', $town->id);
+        $this->context->cookie->__set('main_province', $town->id_province);
+        die('1');
+    }
+
+    protected function ajaxProcessChangeProvince() {
+        $this->context->cookie->__set('main_province', Tools::getValue('id_province'));
+        $this->context->cookie->__set('main_town', 0);
         die('1');
     }
 

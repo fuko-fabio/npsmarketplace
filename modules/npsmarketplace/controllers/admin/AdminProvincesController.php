@@ -3,10 +3,9 @@
 *  @author Norbert Pabian <norbert.pabian@gmail.com>
 *  @copyright 2014 npsoftware
 */
-include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Town.php');
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Province.php');
 
-class AdminTownsController extends AdminController
+class AdminProvincesController extends AdminController
 {
     protected $delete_mode;
 
@@ -16,8 +15,8 @@ class AdminTownsController extends AdminController
     public function __construct() {
         $this->bootstrap = true;
         $this->required_database = true;
-        $this->table = 'town';
-        $this->className = 'Town';
+        $this->table = 'province';
+        $this->className = 'Province';
         $this->lang = true;
         $this->explicitSelect = true;
         $this->allow_export = true;
@@ -34,7 +33,7 @@ class AdminTownsController extends AdminController
         $this->default_form_language = $this->context->language->id;
 
         $this->fields_list = array(
-            'id_town' => array(
+            'id_province' => array(
                 'title' => $this->l('ID'),
                 'align' => 'text-center',
                 'class' => 'fixed-width-xs'
@@ -65,34 +64,35 @@ class AdminTownsController extends AdminController
         parent::__construct();
     }
 
-    public function printIcon($value, $town) {
-        return '<a class="list-action-enable '.($value ? 'action-enabled' : 'action-disabled').'" href="index.php?tab=AdminTowns&id_town='
-            .(int)$town['id_town'].'&changeDefaultVal&token='.Tools::getAdminTokenLite('AdminTowns').'">
+    public function printIcon($value, $province) {
+        return '<a class="list-action-enable '.($value ? 'action-enabled' : 'action-disabled').'" href="index.php?tab=AdminProvinces&id_province='
+            .(int)$province['id_province'].'&changeDefaultVal&token='.Tools::getAdminTokenLite('AdminProvinces').'">
                 '.($value ? '<i class="icon-check"></i>' : '<i class="icon-remove"></i>').
             '</a>';
     }
 
     public function processChangeDefaultVal() {
-        $town = new Town($this->id_object);
-        if (!Validate::isLoadedObject($town))
-            $this->errors[] = Tools::displayError('An error occurred while updating town information.');
-        $town->default = $town->default ? 0 : 1;
-        if (!$town->update())
-            $this->errors[] = Tools::displayError('An error occurred while updating town information.');
+        $err = $this->l('An error occurred while updating province information.');
+        if (!($obj = $this->loadObject(true))) {
+            $this->errors[] = $err;
+            return;
+        }
+        $obj->default = !$obj->default;
+        if (!$obj->update())
+            $this->errors[] = $err;
     }
 
     public function initToolbarTitle() {
         parent::initToolbarTitle();
 
-        switch ($this->display)
-        {
+        switch ($this->display) {
             case '':
             case 'list':
-                $this->toolbar_title[] = $this->l('Manage Marketplace Towns');
+                $this->toolbar_title[] = $this->l('Manage Marketplace Provinces');
                 break;
             case 'edit':
-                if (($town = $this->loadObject(true)) && Validate::isLoadedObject($town))
-                    $this->toolbar_title[] = sprintf($this->l('Editing District: %s'), Tools::substr($town->name, 0, 1));
+                if (($obj = $this->loadObject(true)) && Validate::isLoadedObject($obj))
+                    $this->toolbar_title[] = sprintf($this->l('Editing Province: %s'), Tools::substr($obj->name, 0, 1));
                 break;
         }
     }
@@ -104,7 +104,7 @@ class AdminTownsController extends AdminController
             if ($this->tabAccess['edit'] === '1')
                 $this->action = 'change_default_val';
             else
-                $this->errors[] = Tools::displayError('You do not have permission to edit this.');
+                $this->errors[] = $this->l('You do not have permission to edit this.');
         }
     }
 
@@ -115,7 +115,7 @@ class AdminTownsController extends AdminController
 
         $this->fields_form = array(
             'legend' => array(
-                'title' => $this->l('Town'),
+                'title' => $this->l('Province'),
                 'icon' => 'icon-bank'
             ),
             'input' => array(
@@ -143,17 +143,6 @@ class AdminTownsController extends AdminController
                         )
                     ),
                 ),
-                array(
-                    'type' => 'select',
-                    'label' => $this->l('Province'),
-                    'name' => 'id_province',
-                    'required' => true,
-                    'options' => array(
-                        'query' => Province::getAll($this->context->language->id),
-                        'id' => 'id_province',
-                        'name' => 'name'
-                    ),
-                )
             ),
             'submit' => array(
                 'title' => $this->l('Save'),

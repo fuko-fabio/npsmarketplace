@@ -263,7 +263,7 @@
   }
 }
 
-.nps-towns-top {
+.nps-location-top {
   float: left;
   position: relative;
   color: $light-text-color;
@@ -323,24 +323,42 @@
       }
     }
   }
-  ul {
+
+  .location-selector {
     display: none;
     position: absolute;
     top: 37px;
     left: 0;
-    width: 157px;
     background: $dark-background;
     z-index: 2;
-    li {
-      line-height: 35px;
-      font-size: 13px;
-      a,
-      > span {
-        padding: 0 10px 0 12px;
+
+    .parent-menu {
+      float: left;
+    }
+
+    ul {
+      list-style-type: none;
+  
+      li a {
+        padding: 10px 15px;
         display: block;
         color: $light-text-color;
+        text-decoration: none;
+
+        &:hover {
+          color: $primary-color;
+        }
       }
-      &.selected a, &:hover a {
+
+      li > ul {
+        display: none;
+        position: absolute;
+        left: 100%;
+        z-index: -1;
+        background: $dark-background;
+      }
+  
+      li > ul li a:hover {
         color: $primary-color;
       }
     }
