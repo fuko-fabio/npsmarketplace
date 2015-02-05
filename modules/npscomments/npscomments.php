@@ -93,10 +93,14 @@ class npscomments extends Module
         return $output.$this->displayForm();
     }
 
-    public function hookProductTab($params)
-    {
-        $id_seller = (int)Seller::getSellerByProduct(Tools::getValue('id_product'));
+    public function hookProductTab($params) {
+        $product = $params['product'];
+        $id_seller = (int)Seller::getSellerByProduct($product->id);
         if(isset($id_seller) && $id_seller > 0) {
+            
+            if (!Product::showSellerDetails($product->id)) {
+                return;
+            }
             require_once(_PS_MODULE_DIR_.'/npscomments/classes/SellerComment.php');
             require_once(_PS_MODULE_DIR_.'/npscomments/classes/SellerCommentCriterion.php');
 
@@ -120,8 +124,12 @@ class npscomments extends Module
     }
 
     public function hookProductTabContent($params) {
-        $id_seller = (int)Seller::getSellerByProduct(Tools::getValue('id_product'));
+        $product = $params['product'];
+        $id_seller = (int)Seller::getSellerByProduct($product->id);
         if(isset($id_seller) && $id_seller > 0) {
+            if (!Product::showSellerDetails($product->id)) {
+                return;
+            }
             require_once(_PS_MODULE_DIR_.'/npscomments/classes/SellerComment.php');
             require_once(_PS_MODULE_DIR_.'/npscomments/classes/SellerCommentCriterion.php');
 

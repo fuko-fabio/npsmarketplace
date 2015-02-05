@@ -75,6 +75,8 @@
                                 {l s='Carnet' mod='npsmarketplace'}
                             {else if $product.type == 2}
                                 {l s='Ad' mod='npsmarketplace'}
+                            {else if $product.type == 3}
+                                {l s='External Ad' mod='npsmarketplace'}
                             {/if}
                         {/if}
                     </td>

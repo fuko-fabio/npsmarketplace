@@ -391,12 +391,12 @@ class NpsMarketplace extends Module {
         return $output.$this->displayForm();
     }
 
-    public function hookProductTab() {
-        $id_product = Tools::getValue('id_product');
-        $id_seller = (int)Seller::getSellerByProduct($id_product);
+    public function hookProductTab($params) {
+        $product = $params['product'];
+        $id_seller = (int)Seller::getSellerByProduct($product->id);
         if(isset($id_seller) && $id_seller > 0) {
             $seller = new Seller($id_seller);
-            $extras = Product::getExtras($id_product, $this->context->language->id);
+            $extras = Product::getExtras($product->id, $this->context->language->id);
             $this->context->smarty->assign(array(
                 'video_url' => $extras['video'],
                 'show_seller_details' => $extras['type'] != 3
@@ -405,17 +405,17 @@ class NpsMarketplace extends Module {
         }
     }
 
-    public function hookProductTabContent() {
+    public function hookProductTabContent($params) {
+        $product = $params['product'];
         $lang_id = (int)$this->context->language->id;
-        $id_product = Tools::getValue('id_product');
-        $id_seller = (int)Seller::getSellerByProduct($id_product);
+        $id_seller = (int)Seller::getSellerByProduct($product->id);
         if(isset($id_seller) && $id_seller > 0) {
             $this->context->controller->addJS (array(
                 "https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places",
                 _PS_MODULE_DIR_.'npsmarketplace/js/view_map.js'
             ));
             $this->context->controller->addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/map.css');
-            $features = Product::getFeaturesStatic((int)$id_product);
+            $features = Product::getFeaturesStatic((int)$product->id);
             foreach($features as $feature) {
                 if ($feature['id_feature'] == Configuration::get('NPS_FEATURE_ADDRESS_ID')) {
                     $address = new FeatureValue($feature['id_feature_value']);
@@ -428,7 +428,7 @@ class NpsMarketplace extends Module {
                     continue;
                 }
             }
-            $extras = Product::getExtras($id_product, $this->context->language->id);
+            $extras = Product::getExtras($product->id, $this->context->language->id);
             $seller = new Seller(Seller::getSellerByProduct(Tools::getValue('id_product')));
             $this->context->smarty->assign(array(
                 'current_id_lang' => $lang_id,
