@@ -12,14 +12,14 @@ $('document').ready(function(){
     $('#send_seller_button').fancybox({
         'hideOnContentClick': false
     });
-    $('#send_seller_form_error').hide();
+    $('#send_seller_form_error, #send_seller_form_error_general').hide();
 
     $('#sendQuestionEmail').click(function(){
-        $('#send_seller_form_error').hide();
+        $('#send_seller_form_error, #send_seller_form_error_general').hide();
         var event_question = $('#event_question').val();
         var email = $('#customer_email').val();
         var id_product = '{/literal}{$sts_product_id}{literal}';
-        if (event_question && email && !isNaN(id_product))
+        if (event_question && validate_isEmail(email) && !isNaN(id_product))
         {
             $.fancybox.showLoading();
             $.ajax({
@@ -30,10 +30,14 @@ $('document').ready(function(){
                 dataType: "json",
                 success: function(result) {
                     $.fancybox.hideLoading();
-                    $.fancybox.close();
-                    var msg = result ? "{/literal}{l s='Your e-mail has been sent successfully' mod='npsmarketplace'}{literal}" : "{/literal}{l s='Your e-mail could not be sent. Please check the e-mail address and try again.' mod='npsmarketplace'}{literal}";
-                    var title = "{/literal}{l s='Ask seller' mod='npsmarketplace'}{literal}";
-                    fancyMsgBox(msg, title);
+                    if (result) {
+                        $.fancybox.close();
+                        var msg = result ? "{/literal}{l s='Your e-mail has been sent successfully' mod='npsmarketplace'}{literal}" : "{/literal}{l s='Your e-mail could not be sent. Please check the e-mail address and try again.' mod='npsmarketplace'}{literal}";
+                        var title = "{/literal}{l s='Ask seller' mod='npsmarketplace'}{literal}";
+                        fancyMsgBox(msg, title);
+                    } else {
+                        $('#send_seller_form_error_general').show();
+                    }
                 },
                 error: function () {
                     $.fancybox.hideLoading();
@@ -57,8 +61,11 @@ $('document').ready(function(){
             <h2 class="title">{l s='Ask seller' mod='npsmarketplace'}</h2>
 
             <div class="send_seller_form_content" id="send_seller_form_content">
-                <p id="send_seller_form_error" class="alert alert-error">
-                    {l s='You did not fill required fields' mod='npsmarketplace'}
+                <p id="send_seller_form_error" class="alert alert-error"><span class="alert-content">
+                    {l s='You did not fill required fields' mod='npsmarketplace'}</span>
+                </p>
+                <p id="send_seller_form_error_general" class="alert alert-error"><span class="alert-content">
+                    {l s='Unable to send question. Try again or contact with customer support.' mod='npsmarketplace'}</span>
                 </p>
 
                 <div class="form_container">

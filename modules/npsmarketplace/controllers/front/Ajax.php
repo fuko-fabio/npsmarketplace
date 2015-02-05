@@ -61,7 +61,8 @@ class NpsMarketplaceAjaxModuleFrontController extends ModuleFrontController {
             $seller = new Seller(Seller::getSellerByProduct($id_product));
             $customer = new Customer($seller->id_customer);
             $templateVars = array(
-                '{seller_name}' => $seller->name,
+                '{email}' => $email,
+                '{firstname}' => $customer->firstname,
                 '{product_name}' => $product->name,
                 '{product_link}' => $productLink,
                 '{question}' => Tools::safeOutput($question),
@@ -72,15 +73,19 @@ class NpsMarketplaceAjaxModuleFrontController extends ModuleFrontController {
             /* Email sending */
             if (!Mail::Send((int)$this->context->language->id,
                     'question_to_seller',
-                    sprintf($this->module->l('Question about %1$s', (int)$this->context->language->id), $product->name),
+                    sprintf($this->module->l('Question about %1$s', 'Ajax'), $product->name),
                     $templateVars,
                     $customer->email,
                     $seller->name,
-                    $email,
-                    ($this->context->cookie->customer_firstname ? $this->context->cookie->customer_firstname.' '.$this->context->cookie->customer_lastname : null),
                     null,
                     null,
-                    _PS_MODULE_DIR_.'npsmarketplace/mails/'))
+                    null,
+                    null,
+                    _PS_MODULE_DIR_.'npsmarketplace/mails/',
+                    false,
+                    null,
+                    null,
+                    $email))
                 die('0');
             die('1');
         }
