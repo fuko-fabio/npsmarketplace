@@ -128,7 +128,7 @@
               <td align="center" class="titleblock" style="padding:7px 0">
                 <font size="2" face="Open-sans, sans-serif" color="#555454">
                   <span class="title" style="font-weight:500;font-size:28px;text-transform:uppercase;line-height:33px">
-                    Witaj {seller_name}
+                    Witaj {firstname}
                   </span>
                   <br/>
                   <span class="subtitle" style="font-weight:500;font-size:16px;text-transform:uppercase;line-height:25px">
@@ -141,7 +141,10 @@
                 <td>
                     <font size="2" face="Open-sans, sans-serif" color="#555454">
                         Wydarzenie: 
-                        <a href="{product_link}" style="color:#337ff1">{product_name}</a><br />
+                        <a href="{product_link}" style="color:#337ff1">{product_name}</a>
+                        <br />
+                        Nadawca: {email}
+                        <br />
                         <br />
                         Pytanie:
                         <br />
@@ -151,7 +154,10 @@
                 </td>
             </tr>
             <tr>
-                <td>
+              <td class="space_footer" style="padding:0!important">&nbsp;</td>
+            </tr>
+            <tr>
+                <td style="border-top: 1px solid #ffaa00">
                     <font size="2" face="Open-sans, sans-serif" color="#555454">
                         Zadbaj o dobry wizerunek swojego butiku i nie pozwól Klientom długo czekać na odpowiedź.
                     </font>
@@ -169,7 +175,6 @@
                       Pozdrawiamy,<br />
                       Zespół Labs in Town!<br />
                       <br />
-                      To jest automatyczna wiadomość. Prosimy na nią NIE odpowiadać<br />
                       Masz pytania? Napisz do nas: kontakt@labsintown.pl<br />
                       <br />
                       Odwiedź nas:<br />
