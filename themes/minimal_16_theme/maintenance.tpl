@@ -45,21 +45,23 @@
         <div class="container">
             <div id="maintenance">
                 <div class="logo">
-                    <img src="{$logo_url}" {if $logo_image_width}width="{$logo_image_width}"{/if} {if $logo_image_height}height="{$logo_image_height}"{/if} al
+                    <img src="{$logo_url}" height="100" />
                     {$HOOK_MAINTENANCE}
                 </div>
                 <hr />
                 <div class="row">
                     <div class="col-md-6 head-message">
-                        Warsztaty w Twoim mieście!
+                        <h1>Przerwa techniczna</h1>
                     </div>
                     <div class="col-md-6">
                         <div class="row message">
-                            Labs in Town to wirtualna platforma zakupowa marketplace, gdzie
-                            kupisz bilety na warsztaty, kursy i zajęcia kreatywne dla dorosłych i
-                            dla dzieci.
+                            Drodzy LABSterzy! Uruchamiamy dla Was nowe funkcje portalu, abyście
+                            jeszcze łatwiej mogli wyszukać swoje ulubione LABy. Przerwa techniczna
+                            potrwa dosłownie chwilkę i już wrócimy do Was pełną parą!
                         </div>
                         <br />
+                        <br />
+                        Znajdziecie u nas:<br />
                         <div class="row list-message">
                             <ul>
                                 <li>warsztaty kulinarne</li>

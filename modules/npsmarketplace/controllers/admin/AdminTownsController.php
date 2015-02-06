@@ -50,6 +50,13 @@ class AdminTownsController extends AdminController
                 'orderby' => false,
                 'filter_key' => 'a!active'
             ),
+            'selectable' => array(
+                'title' => $this->l('Selectable'),
+                'align' => 'text-center',
+                'type' => 'bool',
+                'callback' => 'printSelectableIcon',
+                'orderby' => false
+            ),
             'default' => array(
                 'title' => $this->l('Default'),
                 'align' => 'text-center',
@@ -65,6 +72,13 @@ class AdminTownsController extends AdminController
         parent::__construct();
     }
 
+    public function printSelectableIcon($value, $town) {
+        return '<a class="list-action-enable '.($value ? 'action-enabled' : 'action-disabled').'" href="index.php?tab=AdminTowns&id_town='
+            .(int)$town['id_town'].'&changeSelectableVal&token='.Tools::getAdminTokenLite('AdminTowns').'">
+                '.($value ? '<i class="icon-check"></i>' : '<i class="icon-remove"></i>').
+            '</a>';
+    }
+
     public function printIcon($value, $town) {
         return '<a class="list-action-enable '.($value ? 'action-enabled' : 'action-disabled').'" href="index.php?tab=AdminTowns&id_town='
             .(int)$town['id_town'].'&changeDefaultVal&token='.Tools::getAdminTokenLite('AdminTowns').'">
@@ -72,11 +86,20 @@ class AdminTownsController extends AdminController
             '</a>';
     }
 
+    public function processChangeSelectableVal() {
+        $town = new Town($this->id_object);
+        if (!Validate::isLoadedObject($town))
+            $this->errors[] = Tools::displayError('An error occurred while updating town information.');
+        $town->selectable = !$town->selectable;
+        if (!$town->update())
+            $this->errors[] = Tools::displayError('An error occurred while updating town information.');
+    }
+
     public function processChangeDefaultVal() {
         $town = new Town($this->id_object);
         if (!Validate::isLoadedObject($town))
             $this->errors[] = Tools::displayError('An error occurred while updating town information.');
-        $town->default = $town->default ? 0 : 1;
+        $town->default = !$town->default;
         if (!$town->update())
             $this->errors[] = Tools::displayError('An error occurred while updating town information.');
     }
@@ -92,7 +115,7 @@ class AdminTownsController extends AdminController
                 break;
             case 'edit':
                 if (($town = $this->loadObject(true)) && Validate::isLoadedObject($town))
-                    $this->toolbar_title[] = sprintf($this->l('Editing District: %s'), Tools::substr($town->name, 0, 1));
+                    $this->toolbar_title[] = sprintf($this->l('Editing Town: %s'), Tools::substr($town->name, 0, 1));
                 break;
         }
     }
@@ -103,6 +126,11 @@ class AdminTownsController extends AdminController
         if (Tools::isSubmit('changeDefaultVal') && $this->id_object) {
             if ($this->tabAccess['edit'] === '1')
                 $this->action = 'change_default_val';
+            else
+                $this->errors[] = Tools::displayError('You do not have permission to edit this.');
+        } else if (Tools::isSubmit('changeSelectableVal') && $this->id_object) {
+            if ($this->tabAccess['edit'] === '1')
+                $this->action = 'change_selectable_val';
             else
                 $this->errors[] = Tools::displayError('You do not have permission to edit this.');
         }
@@ -140,6 +168,23 @@ class AdminTownsController extends AdminController
                             'id' => 'active_off',
                             'value' => 0,
                             'label' => $this->l('Not Active')
+                        )
+                    ),
+                ),
+                array(
+                    'type' => 'switch',
+                    'label' => $this->l('Selectable'),
+                    'name' => 'selectable',
+                    'values' => array(
+                        array(
+                            'id' => 'active_on',
+                            'value' => 1,
+                            'label' => $this->l('Selectable')
+                        ),
+                        array(
+                            'id' => 'active_off',
+                            'value' => 0,
+                            'label' => $this->l('Not Selectable')
                         )
                     ),
                 ),

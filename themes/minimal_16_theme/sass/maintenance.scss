@@ -11,12 +11,11 @@
 		font: 600 28px/34px $font-custom;
 		color: $base-text-color;
 		text-transform: uppercase;
-		border-bottom: 1px solid $base-border-color;
 		padding: 0 0 14px 0;
 		margin: 0 0 19px 0;
 	}
-	#message {
-		font: 600 16px/31px $font-custom;
+	.message {
+		font: 600 14px/26px $font-custom;
 		padding: 0 0 0 18px;
 		color: #555454;
 		text-transform: uppercase;	

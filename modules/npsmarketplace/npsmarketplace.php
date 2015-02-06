@@ -130,7 +130,7 @@ class NpsMarketplace extends Module {
         }
         $this->context->smarty->assign(array(
             'towns' => Town::getActiveTowns($this->context->language->id),
-            'provinces' => Province::getActiveProvinces($this->context->language->id, true),
+            'provinces' => Province::getActiveProvinces($this->context->language->id, true, true),
             'nps_ajax_url' => $this->context->link->getModuleLink('npsmarketplace', 'Ajax'),
         ));
         return $this->display(__FILE__, 'views/templates/hook/header_top.tpl');
@@ -693,8 +693,7 @@ class NpsMarketplace extends Module {
         $sellers_tab->position = 0;
         $sellers_tab->module = $this->name;
         $sellers_tab->class_name = 'AdminTowns';
-        foreach ($languages AS $language)
-        {
+        foreach ($languages AS $language) {
             $sellers_tab->{'name'}[intval($language['id_lang'])] = $this->l('Towns');
         }
         $success = $success && $sellers_tab->add();
@@ -704,21 +703,17 @@ class NpsMarketplace extends Module {
         $sellers_tab->position = 0;
         $sellers_tab->module = $this->name;
         $sellers_tab->class_name = 'AdminDistricts';
-        foreach ($languages AS $language)
-        {
+        foreach ($languages AS $language) {
             $sellers_tab->{'name'}[intval($language['id_lang'])] = $this->l('Districts');
         }
         $success = $success && $sellers_tab->add();
         return $success;
     }
 
-    private function _deleteTab()
-    {
+    private function _deleteTab() {
         $tabs = Tab::getCollectionFromModule($this->name);
-        if (!empty($tabs))
-        {
-            foreach ($tabs as $tab)
-            {
+        if (!empty($tabs)) {
+            foreach ($tabs as $tab) {
                 $tab->delete();
             }
             return true;
@@ -744,6 +739,8 @@ class NpsMarketplace extends Module {
             `'._DB_PREFIX_.'product_attribute_expiry_date`,
             `'._DB_PREFIX_.'town`,
             `'._DB_PREFIX_.'town_lang`,
+            `'._DB_PREFIX_.'province`,
+            `'._DB_PREFIX_.'province_lang`,
             `'._DB_PREFIX_.'district`')
             && Db::getInstance()->execute('ALTER TABLE `'._DB_PREFIX_.'image_type` DROP `sellers`')
             && Db::getInstance()->execute('ALTER TABLE `'._DB_PREFIX_.'product` DROP `type`')
@@ -844,6 +841,7 @@ class NpsMarketplace extends Module {
               `id_province` int(10) unsigned NOT NULL AUTO_INCREMENT,
               `id_feature_value` int(10) unsigned NOT NULL,
               `active` tinyint(1) NOT NULL,
+              `selectable` tinyint(1) NOT NULL,
               PRIMARY KEY (`id_province`)
             ) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8;
             
@@ -853,9 +851,12 @@ class NpsMarketplace extends Module {
               `name` varchar(64) NOT NULL,
               KEY `id_province` (`id_province`)
             ) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8;';
-
         Db::getInstance()->execute($sql);
+
         $sql = 'ALTER TABLE  `'._DB_PREFIX_.'town` ADD  `id_province` int(10) unsigned NOT NULL AFTER  `id_town`';
+        Db::getInstance()->execute($sql);
+
+        $sql = 'ALTER TABLE  `'._DB_PREFIX_.'town` ADD  `selectable` tinyint(1) NOT NULL DEFAULT 1 AFTER `default`';
         Db::getInstance()->execute($sql);
 
         $id = Feature::addFeatureImport('Province');

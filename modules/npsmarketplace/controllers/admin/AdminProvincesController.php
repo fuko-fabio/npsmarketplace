@@ -49,12 +49,35 @@ class AdminProvincesController extends AdminController
                 'orderby' => false,
                 'filter_key' => 'a!active'
             ),
+            'selectable' => array(
+                'title' => $this->l('Selectable'),
+                'align' => 'text-center',
+                'type' => 'bool',
+                'callback' => 'printSelectableIcon',
+                'orderby' => false
+            ),
         );
 
         $this->shopLinkType = 'shop';
         $this->shopShareDatas = Shop::SHARE_CUSTOMER;
 
         parent::__construct();
+    }
+
+    public function printSelectableIcon($value, $province) {
+        return '<a class="list-action-enable '.($value ? 'action-enabled' : 'action-disabled').'" href="index.php?tab=AdminProvinces&id_province='
+            .(int)$province['id_province'].'&changeSelectableVal&token='.Tools::getAdminTokenLite('AdminProvinces').'">
+                '.($value ? '<i class="icon-check"></i>' : '<i class="icon-remove"></i>').
+            '</a>';
+    }
+
+    public function processChangeSelectableVal() {
+        $prov = new Province($this->id_object);
+        if (!Validate::isLoadedObject($prov))
+            $this->errors[] = Tools::displayError('An error occurred while updating province information.');
+        $prov->selectable = !$prov->selectable;
+        if (!$prov->update())
+            $this->errors[] = Tools::displayError('An error occurred while updating province information.');
     }
 
     public function initToolbarTitle() {
@@ -69,6 +92,17 @@ class AdminProvincesController extends AdminController
                 if (($obj = $this->loadObject(true)) && Validate::isLoadedObject($obj))
                     $this->toolbar_title[] = sprintf($this->l('Editing Province: %s'), Tools::substr($obj->name, 0, 1));
                 break;
+        }
+    }
+
+    public function initProcess() {
+        parent::initProcess();
+
+         if (Tools::isSubmit('changeSelectableVal') && $this->id_object) {
+            if ($this->tabAccess['edit'] === '1')
+                $this->action = 'change_selectable_val';
+            else
+                $this->errors[] = Tools::displayError('You do not have permission to edit this.');
         }
     }
 
@@ -104,6 +138,23 @@ class AdminProvincesController extends AdminController
                             'id' => 'active_off',
                             'value' => 0,
                             'label' => $this->l('Not Active')
+                        )
+                    ),
+                ),
+                array(
+                    'type' => 'switch',
+                    'label' => $this->l('Selectable'),
+                    'name' => 'selectable',
+                    'values' => array(
+                        array(
+                            'id' => 'active_on',
+                            'value' => 1,
+                            'label' => $this->l('Selectable')
+                        ),
+                        array(
+                            'id' => 'active_off',
+                            'value' => 0,
+                            'label' => $this->l('Not Selectable')
                         )
                     ),
                 ),

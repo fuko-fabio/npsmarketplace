@@ -9,6 +9,7 @@ class Province extends ObjectModel
 {
     public $name;
     public $active;
+    public $selectable;
     public $id_feature_value;
 
     /**
@@ -22,6 +23,7 @@ class Province extends ObjectModel
             'name' =>             array('type' => self::TYPE_STRING, 'validate' => 'isGenericName', 'required' => true, 'lang' => true, 'size' => 64),
             'id_feature_value' => array('type' => self::TYPE_INT, 'validate' => 'isUnsignedId', 'required' => true),
             'active' =>           array('type' => self::TYPE_BOOL, 'validate' => 'isBool'),
+            'selectable' =>       array('type' => self::TYPE_BOOL, 'validate' => 'isBool'),
         )
     );
 
@@ -88,18 +90,22 @@ class Province extends ObjectModel
         return $result;
     }
 
-    public static function getActiveProvinces($id_lang, $add_towns = false) {
+    public static function getActiveProvinces($id_lang, $add_towns = false, $selectable = null) {
         $dbquery = new DbQuery();
         $dbquery->select('p.`id_province`, `name`, `id_feature_value`')
             ->from('province', 'p')
             ->leftJoin('province_lang', 'pl', 'p.id_province = pl.id_province')
-            ->where('pl.`id_lang` = '.$id_lang.' AND p.`active` = 1')
             ->orderBy('pl.name ASC');
+        if ($selectable == null) {
+            $dbquery->where('pl.`id_lang` = '.$id_lang.' AND p.`active` = 1');
+        } else {
+            $dbquery->where('pl.`id_lang` = '.$id_lang.' AND p.`active` = 1 AND p.`selectable` = '.$selectable);
+        }
         $result = Db::getInstance()->executeS($dbquery);
 
         if ($add_towns) {
             foreach ($result as $key => $value) {
-                $result[$key]['towns'] = Town::getActiveTowns($id_lang, $value['id_province']);
+                $result[$key]['towns'] = Town::getActiveTowns($id_lang, $value['id_province'], $selectable);
             }
         }
         return $result;

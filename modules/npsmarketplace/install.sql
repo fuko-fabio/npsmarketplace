@@ -37,6 +37,7 @@ CREATE TABLE IF NOT EXISTS `PREFIX_province` (
   `id_province` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `id_feature_value` int(10) unsigned NOT NULL,
   `active` tinyint(1) NOT NULL,
+  `selectable` tinyint(1) NOT NULL,
   PRIMARY KEY (`id_province`)
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;
 
@@ -53,6 +54,7 @@ CREATE TABLE IF NOT EXISTS `PREFIX_town` (
   `id_province` int(10) unsigned NOT NULL,
   `active` tinyint(1) NOT NULL,
   `default` tinyint(1) NOT NULL,
+  `selectable` tinyint(1) NOT NULL,
   PRIMARY KEY (`id_town`)
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;
 
