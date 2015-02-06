@@ -10,6 +10,16 @@ class NpsMarketplaceProductCombinationListModuleFrontController extends ModuleFr
     public $authRedirection = 'my-account';
     public $ssl = true;
 
+    public function setMedia() {
+        parent::setMedia();
+        $this->addJqueryPlugin('footable');
+        $this->addJqueryPlugin('footable-sort');
+        $this->addJqueryPlugin('scrollTo');
+        $this->addJS(_PS_JS_DIR_.'validate.js');
+        $this->addJS(_PS_MODULE_DIR_.'npsmarketplace/js/product_list.js');
+        $this->addCSS(_PS_MODULE_DIR_.'npsmarketplace/npsmarketplace.css');
+    }
+
     public function postProcess() {
         if (Tools::isSubmit('action') && Tools::isSubmit('id_product_attribute') && Tools::isSubmit('id_product')) {
             if (Tools::getValue('action') == 'delete') {
@@ -102,6 +112,7 @@ class NpsMarketplaceProductCombinationListModuleFrontController extends ModuleFr
             'HOOK_MY_ACCOUNT_COLUMN' => Hook::exec('displayMyAccountColumn'),
             'comb_array' => $comb_array,
             'name' => $product->name,
+            'nps_ajax_url' => $this->context->link->getModuleLink('npsmarketplace', 'Ajax'),
             'new_combination_url' => $this->context->link->getModuleLink('npsmarketplace', 'ProductCombination', array('id_product' => $product->id)),
         ));
         $this->setTemplate('product_combinations_list.tpl');

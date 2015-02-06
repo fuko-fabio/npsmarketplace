@@ -52,7 +52,7 @@ function acceptCGV()
 {
 	if ($('#cgv').length && !$('input#cgv:checked').length)
 	{
-        $('.error-terms-of-service').show('slow');
+        $('.error-terms-of-service').slideDown('slow');
         $.fancybox.hideLoading();
 	}
 	else {

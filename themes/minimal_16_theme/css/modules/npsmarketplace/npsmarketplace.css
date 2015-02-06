@@ -269,7 +269,8 @@
       .nps-location-top .location-selector ul li > ul li a:hover {
         color: #ffaa00; }
 
-.sale-event-box .row {
+.sale-event-box .row,
+.quantity-box .row {
   margin: 0 0 50px 0; }
 
 .nps-main-town {

@@ -2,7 +2,7 @@
 function payWithP24() {
     $.fancybox.showLoading();
     if (!$('input#cp24:checked').length) {
-        $('.error-terms-of-p24').show('slow');
+        $('.error-terms-of-p24').slideDown('slow');
         $.fancybox.hideLoading();
     }
     else {

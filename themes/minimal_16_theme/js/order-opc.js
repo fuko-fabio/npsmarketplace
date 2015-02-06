@@ -55,7 +55,7 @@ $(document).ready(function(){
 		else if (isGuest)
 		{
 			$('.is_customer_param').hide();
-			$('#opc_account_form').show('slow');
+			$('#opc_account_form').slideDown('slow');
 			$('#is_new_customer').val('0');
 			$('#opc_account_choice, #opc_invoice_address').hide();
 			$('#new_account_title').html(txtInstantCheckout);

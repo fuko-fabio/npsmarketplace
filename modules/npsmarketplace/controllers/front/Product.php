@@ -158,13 +158,19 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                 }
                 if (empty($quantity))
                     $this -> errors[] = $this->module->l('Product quantity is required', 'Product');
-                else if (!Validate::isInt($quantity))
+                else if (!Validate::isInt($quantity) || $quantity < 1)
                     $this -> errors[] = $this->module->l('Invalid product quantity format', 'Product');
                 if (empty($images))
                     $this -> errors[] = $this->module->l('At least one picture is required', 'Product');
                 else if (count($images) > self::MAX_IMAGES)
                     $this -> errors[] = $this->module->l('You can upload max 4 pictures', 'Product');
             } else {
+                if ($type == 1) {
+                    if (empty($quantity))
+                        $this -> errors[] = $this->module->l('Product quantity is required', 'Product');
+                    else if (!Validate::isInt($quantity) || $quantity < 1)
+                        $this -> errors[] = $this->module->l('Invalid product quantity format', 'Product');
+                }
                 $current_images = Image::getImages($this->context->language->id, $current_id_product);
                 $img_sum = count($current_images) - count($removed_images) + count($images);
                 if ($img_sum < 1)
@@ -255,6 +261,8 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                                     StockAvailable::setQuantity((int) $this->_product->id, null, $quantity);
                                     $this->_product->saveExpiryDate($expiry_date);
                                 }
+                            } else if ($type == 1) {
+                                StockAvailable::setQuantity((int) $this->_product->id, null, $quantity);
                             }
                             $this->updateCategories($categories);
                             $this->_product->persistExtraInfo($type, $lat, $lng, $video_url);
