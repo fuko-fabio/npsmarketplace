@@ -99,7 +99,7 @@ class NpsMailActivation extends Module {
                 NULL,
                 NULL,
                 'modules/npsmailactivation/mails/');
-            Tools::redirect($this->context->link->getModuleLink($this->name, 'info'));
+            Tools::redirect($this->context->link->getModuleLink($this->name, 'info', array('customer' => $customer->id)));
         }
     }
 

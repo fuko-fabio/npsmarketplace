@@ -9,8 +9,9 @@
 <div class="block-center" id="block-account-activation-info">
     <div class="alert alert-info">
         <span class="alert-content">
-    {l s='Your registration requires final activation prior to being fully available. This is so that we can verify your email address. We have sent you an email with an unique activation link for your registration. You will need to click on this link to have your account activated. Once activated, you will be able to login to our shop.' mod='npsmailactivation'}
-    </span>
+            {l s='Activation link has been sent to:' mod='npsmailactivation'} <strong>{$email}</strong>
+            {l s='Your registration requires final activation prior to being fully available. This is so that we can verify your email address. We have sent you an email with an unique activation link for your registration. You will need to click on this link to have your account activated. Once activated, you will be able to login to our shop.' mod='npsmailactivation'}
+        </span>
     </div>
 </div>
 
