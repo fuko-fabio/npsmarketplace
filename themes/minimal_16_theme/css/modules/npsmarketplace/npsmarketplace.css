@@ -259,15 +259,19 @@
         color: #fff;
         text-decoration: none; }
         .nps-location-top .location-selector ul li a:hover {
-          color: #ffaa00; }
+          color: #ffaa00 !important; }
       .nps-location-top .location-selector ul li > ul {
         display: none;
         position: absolute;
         left: 100%;
         z-index: -1;
         background: #36454f; }
-      .nps-location-top .location-selector ul li > ul li a:hover {
-        color: #ffaa00; }
+    .nps-location-top .location-selector .province.selected a {
+      color: #FFC654; }
+    .nps-location-top .location-selector .province .town a {
+      color: #fff; }
+    .nps-location-top .location-selector .province .town.selected a {
+      color: #FFC654; }
 
 .sale-event-box .row,
 .quantity-box .row {

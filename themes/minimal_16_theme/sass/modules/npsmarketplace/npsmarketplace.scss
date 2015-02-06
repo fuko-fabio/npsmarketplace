@@ -346,10 +346,9 @@
         text-decoration: none;
 
         &:hover {
-          color: $primary-color;
+          color: $primary-color !important;
         }
       }
-
       li > ul {
         display: none;
         position: absolute;
@@ -357,9 +356,22 @@
         z-index: -1;
         background: $dark-background;
       }
-  
-      li > ul li a:hover {
-        color: $primary-color;
+    }
+    .province {
+      &.selected {
+        a {
+          color: $primary-color-light;
+        }
+      }
+      .town {
+        a {
+          color: $light-text-color;
+        }
+        &.selected {
+          a {
+            color: $primary-color-light;
+          }
+        }
       }
     }
   }

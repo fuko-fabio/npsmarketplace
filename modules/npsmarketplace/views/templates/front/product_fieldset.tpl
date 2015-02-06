@@ -227,16 +227,27 @@
                 <label class="required" for="product_province">{l s='Province' mod='npsmarketplace'}</label>
                 <select class="form-control" id="product_province" name="province">
                     {foreach from=$provinces item=province}
-                        <option value="{$province.id_feature_value}" {if $product['province'] eq $province.name}selected{/if}>{$province.name}</option> 
+                        <option value="{$province.id_feature_value}" {if isset($smarty.post.province) && $smarty.post.province == $province.id_feature_value}selected{else}{if $product.province eq $province.id_feature_value}selected{/if}{/if}>{$province.name}</option> 
                     {/foreach}
                 </select>
             </div>
             <div class="form-group col-md-6">
                 <label class="required" for="product_town">{l s='Town' mod='npsmarketplace'}</label>
                 <select class="form-control" id="product_town" name="town">
-                    {foreach from=$towns item=town}
-                        <option value="{$town['id_feature_value']}" {if $product['town'] eq $town['name']}selected{/if}>{$town['name']}</option> 
-                    {/foreach}
+                    {if isset($smarty.post.province)}
+                        {foreach from=$provinces item=province}
+                            {if $smarty.post.province eq $province.id_feature_value}
+                                {foreach from=$province.towns item=town}
+                                    <option value="{$town.id_feature_value}" {if isset($smarty.post.town) && $smarty.post.town eq $town.id_feature_value}selected{else}{if $product.town eq $town.id_feature_value}selected{/if}{/if}>{$town.name}</option>
+                                {/foreach}
+                            {/if}
+                        {/foreach}
+                    {else}
+                        {foreach from=$towns item=town}
+                            <option value="{$town.id_feature_value}" {if isset($smarty.post.town) && $smarty.post.town eq $town.id_feature_value}selected{else}{if $product.town eq $town.id_feature_value}selected{/if}{/if}>{$town.name}</option>
+                        {/foreach}
+                    {/if}
+                    <option value="0" {if isset($smarty.post.town) && $smarty.post.town eq 0}selected{else}{if !isset($smarty.post.town) && $product.town eq 0}selected{/if}{/if}>{l s='--Other--' mod='npsmarketplace'}</option>
                 </select>
             </div>
         </div>

@@ -61,6 +61,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             $time = trim(Tools::getValue('time'));
             $expiry_date = trim(Tools::getValue('expiry_date'));
             $town = trim(Tools::getValue('town'));
+            $province = trim(Tools::getValue('province'));
             $district = trim(Tools::getValue('district'));
             $address = trim(Tools::getValue('address'));
             $video_source = trim(Tools::getValue('video_url'));
@@ -114,10 +115,12 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                 $this -> errors[] = $this->module->l('Product name is required', 'Product');
             if (empty($address))
                 $this -> errors[] = $this->module->l('Product address is required', 'Product');
-            if (empty($district))
-                $this -> errors[] = $this->module->l('Product district is required', 'Product');
-            if (empty($town))
+            if (!Validate::isGenericName($district))
+                $this -> errors[] = $this->module->l('Invalid district name', 'Product');
+            if (!isset($town))
                 $this -> errors[] = $this->module->l('Product town is required', 'Product');
+            if (!isset($province))
+                $this -> errors[] = $this->module->l('Product province is required', 'Product');
             if (!isset($price))
                 $this -> errors[] = $this->module->l('Product price is required', 'Product');
             if (!Validate::isFloat($price))
@@ -200,7 +203,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                     $this->module->l('Name too long. Max allowed characters: 128, now is: %d characters. Language: %s', 'Product'),
                     $nl,
                     $lang['iso_code']);
-                
+
                 if (!Validate::isCleanHtml($description_short[$lang['id_lang']]))
                     $this -> errors[] = $this->module->l('Invalid product short description', 'Product');
                 if (!Validate::isCleanHtml($description[$lang['id_lang']]))
@@ -250,7 +253,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                         $this->saveProductImages($images);
                         if (empty($this->errors)) {
                             StockAvailable::setProductOutOfStock($this->_product->id, 0);
-                            $this->saveTicketFeatures($town, $district, $address);
+                            $this->saveTicketFeatures($province, $town, $district, $address);
         
                             if(empty($current_id_product)) {
                                 $this->_seller->assignProduct($this->_product->id);
@@ -361,10 +364,20 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
 
     public function initContent() {
         parent::initContent();
+
+        $id_town = $this->context->cookie->main_town;
+        if (!$id_town) {
+            $id_town = Town::getDefaultTownId();
+        }
+        if (!$id_town) {
+            $sql = 'SELECT id_town FROM '._DB_PREFIX_.'town WHERE active = 1';
+            $id_town = Db::getInstance()->getValue($sql);
+        }
+        $town = new Town($id_town);
         $tpl_product = array(
             'categories' => array(),
-            'province' => $this->context->cookie->main_province,
-            'town' => $this->context->cookie->main_town,
+            'province' => Province::getFeatureValueId($town->id_province),
+            'town' => $id_town ? Town::getFeatureValueId($town->id) : 0,
             'images' => array()
         );
 
@@ -422,7 +435,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             'edit_product' => array_key_exists('id', $tpl_product),
             'current_id_lang' => (int)$this->context->language->id,
             'languages' => Language::getLanguages(),
-            'towns' => Town::getActiveTowns($this->context->language->id),
+            'towns' => Town::getActiveTowns($this->context->language->id, Province::getIdByFeatureValueId($tpl_product['province'])),
             'provinces' => Province::getActiveProvinces($this->context->language->id, true),
             'districts' => $districts,
             'form_token' => $form_token,
@@ -445,13 +458,20 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
         return Db::getInstance()->ExecuteS('SELECT `name` from '._DB_PREFIX_.'district');
     }
 
-    private function saveTicketFeatures($town, $district, $address) {
-        $feature_id = Configuration::get('NPS_FEATURE_TOWN_ID');
-        Product::addFeatureProductImport($this->_product->id, $feature_id, $town);
+    private function saveTicketFeatures($province_id_feature_value, $town_id_feature_value, $district, $address) {
+        $feature_id = Configuration::get('NPS_FEATURE_PROVINCE_ID');
+        Product::addFeatureProductImport($this->_product->id, $feature_id, $province_id_feature_value);
 
-        $feature_id = Configuration::get('NPS_FEATURE_DISTRICT_ID');
-        $feature_value_id = FeatureValue::addFeatureValueImport($feature_id, $district, $this->context->language->id, true);
-        Product::addFeatureProductImport($this->_product->id, $feature_id, $feature_value_id);
+        if ($town_id_feature_value > 0) {
+            $feature_id = Configuration::get('NPS_FEATURE_TOWN_ID');
+            Product::addFeatureProductImport($this->_product->id, $feature_id, $town_id_feature_value);
+        }
+
+        if (!empty($district)) {
+            $feature_id = Configuration::get('NPS_FEATURE_DISTRICT_ID');
+            $feature_value_id = FeatureValue::addFeatureValueImport($feature_id, $district, $this->context->language->id, true);
+            Product::addFeatureProductImport($this->_product->id, $feature_id, $feature_value_id);
+        }
 
         $feature_id = Configuration::get('NPS_FEATURE_ADDRESS_ID');
         $feature_value_id = FeatureValue::addFeatureValueImport($feature_id, $address, $this->context->language->id, true);

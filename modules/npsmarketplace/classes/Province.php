@@ -9,7 +9,6 @@ class Province extends ObjectModel
 {
     public $name;
     public $active;
-    public $default;
     public $id_feature_value;
 
     /**
@@ -23,7 +22,6 @@ class Province extends ObjectModel
             'name' =>             array('type' => self::TYPE_STRING, 'validate' => 'isGenericName', 'required' => true, 'lang' => true, 'size' => 64),
             'id_feature_value' => array('type' => self::TYPE_INT, 'validate' => 'isUnsignedId', 'required' => true),
             'active' =>           array('type' => self::TYPE_BOOL, 'validate' => 'isBool'),
-            'default' =>          array('type' => self::TYPE_BOOL, 'validate' => 'isBool'),
         )
     );
 
@@ -48,11 +46,25 @@ class Province extends ObjectModel
         return parent::update($autodate, $null_values);
     }
 
-    public static function getDefaultProvinceId() {
+    public static function getFeatureValueId($id_province) {
+        if (!$id_province) {
+            return null;
+        }
+        $dbquery = new DbQuery();
+        $dbquery->select('id_feature_value')
+            ->from('province')
+            ->where('`id_province` = '. $id_province);
+        return Db::getInstance()->getValue($dbquery);
+    }
+
+    public static function getIdByFeatureValueId($id_feature_value) {
+        if (!$id_feature_value) {
+            return null;
+        }
         $dbquery = new DbQuery();
         $dbquery->select('id_province')
             ->from('province')
-            ->where('`default` = 1');
+            ->where('`id_feature_value` = '. $id_feature_value);
         return Db::getInstance()->getValue($dbquery);
     }
 

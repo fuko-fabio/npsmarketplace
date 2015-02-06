@@ -16,9 +16,11 @@
 {addJsDefL name=maxImages}{$max_images}{/addJsDefL}
 {addJsDefL name=maxImageSize}{$max_image_size}{/addJsDefL}
 {addJsDefL name=dropzoneServerUrl}{$dropzone_url}{/addJsDefL}
+{addJsDefL name=dictTownsOther}{l s='--Other--' mod='npsmarketplace' js=1}{/addJsDefL}
 
 <script>
     var dropzoneImages = {$product['images']|json_encode};
+    var provincesMap = {json_encode($provinces)};
 </script>
 
 {capture name=path}

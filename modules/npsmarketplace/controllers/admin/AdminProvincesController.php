@@ -49,37 +49,12 @@ class AdminProvincesController extends AdminController
                 'orderby' => false,
                 'filter_key' => 'a!active'
             ),
-            'default' => array(
-                'title' => $this->l('Default'),
-                'align' => 'text-center',
-                'type' => 'bool',
-                'callback' => 'printIcon',
-                'orderby' => false
-            ),
         );
 
         $this->shopLinkType = 'shop';
         $this->shopShareDatas = Shop::SHARE_CUSTOMER;
 
         parent::__construct();
-    }
-
-    public function printIcon($value, $province) {
-        return '<a class="list-action-enable '.($value ? 'action-enabled' : 'action-disabled').'" href="index.php?tab=AdminProvinces&id_province='
-            .(int)$province['id_province'].'&changeDefaultVal&token='.Tools::getAdminTokenLite('AdminProvinces').'">
-                '.($value ? '<i class="icon-check"></i>' : '<i class="icon-remove"></i>').
-            '</a>';
-    }
-
-    public function processChangeDefaultVal() {
-        $err = $this->l('An error occurred while updating province information.');
-        if (!($obj = $this->loadObject(true))) {
-            $this->errors[] = $err;
-            return;
-        }
-        $obj->default = !$obj->default;
-        if (!$obj->update())
-            $this->errors[] = $err;
     }
 
     public function initToolbarTitle() {
@@ -94,17 +69,6 @@ class AdminProvincesController extends AdminController
                 if (($obj = $this->loadObject(true)) && Validate::isLoadedObject($obj))
                     $this->toolbar_title[] = sprintf($this->l('Editing Province: %s'), Tools::substr($obj->name, 0, 1));
                 break;
-        }
-    }
-
-    public function initProcess() {
-        parent::initProcess();
-
-        if (Tools::isSubmit('changeDefaultVal') && $this->id_object) {
-            if ($this->tabAccess['edit'] === '1')
-                $this->action = 'change_default_val';
-            else
-                $this->errors[] = $this->l('You do not have permission to edit this.');
         }
     }
 

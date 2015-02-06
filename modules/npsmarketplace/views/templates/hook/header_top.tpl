@@ -5,10 +5,18 @@
 {addJsDefL name=npsAjaxUrl}{$nps_ajax_url}{/addJsDefL}
 
 <div class="nps-location-top">
-    {if $cookie->main_province == 0}
+    {if $cookie->main_province == 0 && $cookie->main_town == 0}
         <div class="current">
             <span>{l s='All' mod='npsmarketplace'}</span>
         </div>
+    {else if $cookie->main_town != 0}
+        {foreach from=$towns key=k item=town name="towns"}
+            {if $cookie->main_town == $town.id_town}
+                <div class="current">
+                    <span>{$town.name}</span>
+                </div>
+            {/if}
+        {/foreach}
     {else}
         {foreach from=$provinces key=k item=province name="provinces"}
             {if $cookie->main_province == $province.id_province}
@@ -26,9 +34,9 @@
             {foreach from=$provinces key=k item=province name="provinces"}
                 <li class="province {if $cookie->main_province == $province.id_province}selected{/if}">
                     {if count($province.towns) > 1}
-                    <ul class="towns-block_ul toogle_content">
+                    <ul class="towns-block_ul toogle_content"> 
                         {foreach from=$province.towns key=k item=town name="towns"}
-                            <li {if $cookie->main_town == $town.id_town}class="selected"{/if}>
+                            <li class="town {if $cookie->main_town == $town.id_town}selected{/if}">
                                 <a href="#" onclick="changeMainTown({$town.id_town});">{$town.name}</a>
                             </li>
                         {/foreach}

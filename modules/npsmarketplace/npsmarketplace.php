@@ -23,6 +23,7 @@ require_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24SellerCompany.php');
 
 class NpsMarketplace extends Module {
     const INSTALL_SQL_FILE = 'install.sql';
+    const GEO_DATA_FILE_NAME = 'GeoLiteCity.dat';
 
     public function __construct() {
         $this->name = 'npsmarketplace';
@@ -128,18 +129,40 @@ class NpsMarketplace extends Module {
             $this->setCurrentLocation();
         }
         $this->context->smarty->assign(array(
-            'provinces' => Province::getAll($this->context->language->id, true),
+            'towns' => Town::getActiveTowns($this->context->language->id),
+            'provinces' => Province::getActiveProvinces($this->context->language->id, true),
             'nps_ajax_url' => $this->context->link->getModuleLink('npsmarketplace', 'Ajax'),
         ));
         return $this->display(__FILE__, 'views/templates/hook/header_top.tpl');
     }
 
     private function setCurrentLocation() {
-        $id_province = Province::getDefaultProvinceId();
-        $this->context->cookie->__set('main_province', $id_province);
-        //TODO Town based on user location ?
-        $id_town = Town::getDefaultTownId();
-        $this->context->cookie->__set('main_town', $id_town);
+        $georecord = $this->getLocationByIP();
+        $id_town = null;d($georecord);
+        if ($georecord != null) {
+            $id_town = Town::getIdByName($georecord->city);
+        }
+        if ($id_town == null) {
+            $id_town = Town::getDefaultTownId();
+        }
+        if ($id_town != null) {
+            $town = new Town($id_town);
+            $this->context->cookie->__set('main_town', $town->id);
+            $this->context->cookie->__set('main_province', $town->id_province);
+        }
+    }
+
+    private function getLocationByIP() {
+        if (!in_array($_SERVER['SERVER_NAME'], array('localhost', '127.0.0.1'))) {
+            /* Check if Maxmind Database exists */
+            if (file_exists(_PS_GEOIP_DIR_.'GeoLiteCity.dat')) {
+                include_once(_PS_GEOIP_DIR_.'geoipcity.inc');
+
+                $gi = geoip_open(realpath(_PS_GEOIP_DIR_.GEO_DATA_FILE_NAME), GEOIP_STANDARD);
+                return geoip_record_by_addr($gi, Tools::getRemoteAddr());
+            }
+        }
+        return null;
     }
 
     public static function filterByLocation($products, $id_province = null, $id_town = null) {
@@ -821,7 +844,6 @@ class NpsMarketplace extends Module {
               `id_province` int(10) unsigned NOT NULL AUTO_INCREMENT,
               `id_feature_value` int(10) unsigned NOT NULL,
               `active` tinyint(1) NOT NULL,
-              `default` tinyint(1) NOT NULL,
               PRIMARY KEY (`id_province`)
             ) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8;
             

@@ -38,6 +38,10 @@ $(document).ready(function(){
 
     CollapsibleLists.apply();
     $('.collapsibleListClosed').click();
+    
+    $("#product_province").change(function() {
+        populateTowns(this.value);
+    });
 });
 
 function setTicketForm() {
@@ -91,4 +95,18 @@ function setAddForm(type) {
     $('h3.ticket-attributes').hide();
     $('.carnet-attributes').hide();
     $('.ad-attributes').show();
+}
+
+function populateTowns(id_feature_value) {
+    $.each(provincesMap, function(index, province) {
+        if (province.id_feature_value == id_feature_value) {
+            $('#product_town').html('');
+            $.each(province.towns, function(index, town) {
+                $('#product_town').append(new Option(town.name, town.id_feature_value));
+            });
+            $('#product_town').append(new Option(dictTownsOther, 0));
+            $('#product_town').trigger('change');
+            return false;
+        }
+    });
 }

@@ -49,6 +49,28 @@ class Town extends ObjectModel {
         return parent::update($autodate, $null_values);
     }
 
+    public static function getFeatureValueId($id_town) {
+        if (!$id_town) {
+            return null;
+        }
+        $dbquery = new DbQuery();
+        $dbquery->select('id_feature_value')
+            ->from('town')
+            ->where('`id_town` = '. $id_town);
+        return Db::getInstance()->getValue($dbquery);
+    }
+
+    public static function getIdByFeatureValueId($id_feature_value) {
+        if (!$id_feature_value) {
+            return null;
+        }
+        $dbquery = new DbQuery();
+        $dbquery->select('id_town')
+            ->from('town')
+            ->where('`id_feature_value` = '. $id_feature_value);
+        return Db::getInstance()->getValue($dbquery);
+    }
+
     public static function getDefaultTownId() {
         $dbquery = new DbQuery();
         $dbquery->select('id_town')
@@ -86,6 +108,19 @@ class Town extends ObjectModel {
         } else {
             $dbquery->where('tl.`id_lang` = '.$id_lang.' AND t.`active` = 1');
         }
+        return Db::getInstance()->executeS($dbquery);
+    }
+
+    public static function getIdByName($name) {
+        if (!isset($name) || empty($name)) {
+            return null;
+        }
+        $dbquery = new DbQuery();
+        $dbquery->select('t.`id_town`')
+            ->from('town', 't')
+            ->leftJoin('town_lang', 'tl', 't.id_town = tl.id_town')
+            ->orderBy('tl.name ASC')
+            ->where('tl.`name` = '.$name.' AND t.`active` = 1');
         return Db::getInstance()->executeS($dbquery);
     }
 }

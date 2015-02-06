@@ -27,8 +27,13 @@ function initialize() {
   });
 
   $('#product_town').on('change', function() {
-    $('#map-address-input').val(this.text);
-    codeAddress(this.text);
+    var text = '';
+    if (this.value > 0) {
+      text = $('#product_town').find('option[value=' + this.value + ']').text();
+    }
+    $('#map-address-input').val(text);
+    $('#product_district').val('');
+    codeAddress(text);
   });
 
   codeAddress($('#' + inputId).val());
