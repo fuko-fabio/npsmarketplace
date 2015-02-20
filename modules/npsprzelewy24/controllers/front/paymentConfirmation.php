@@ -70,6 +70,23 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
         $this->setTemplate('payment_confirmation.tpl');
     }
 
+    /* Used for tests, do not use on production */
+    private function updateOrderState($id_cart) {
+        $order = new Order(Order::getOrderByCartId($id_cart));
+        $order_state = Configuration::get('NPS_P24_ORDER_STATE_ACCEPTED');
+
+        $history = new OrderHistory();
+        $history->id_order = $order->id;
+        $history->changeIdOrderState($order_state, intval($order->id), true);
+        $history->add();
+
+        $payments = $order->getOrderPaymentCollection();
+        if (count($payments) > 0) {
+            $payments[0]->transaction_id = $id_cart;
+            $payments[0]->update();
+        }
+    }
+
     private function transactionRegister(P24Payment $payment, Cart $cart, $amount, Customer $customer, $currency, Address $address, $s_descr) {
         $p24_id = P24::merchantId();
         $amount = number_format($amount, 2, '.', '') * 100; // From float to int: 10.50 -> 1050

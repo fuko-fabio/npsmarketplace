@@ -76,8 +76,7 @@ class NpsMarketplace extends Module {
         return true;
     }
 
-    public function uninstall() {return $this->initProvinces();
-        return $this->registerHook('extraLogo');
+    public function uninstall() {
         if (!parent::uninstall()
             || !$this->unregisterHook('header')
             || !$this->unregisterHook('displayCustomerAccount')

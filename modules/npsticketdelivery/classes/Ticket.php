@@ -19,6 +19,8 @@ class Ticket extends ObjectModel {
     public $district;
     public $person;
     public $generated;
+    public $from;
+    public $to;
 
     /**
      * @see ObjectModel::$definition

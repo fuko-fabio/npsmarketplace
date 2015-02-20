@@ -33,9 +33,13 @@
                         {/if}
                         <div style="font-size: 10px;width:100px;text-transform: uppercase;float: left;display: inline-block;">{l s='Person' mod='npsticketdelivery'}</div>: <span style="float: left;text-overflow: ellipsis;white-space: nowrap;">{$person|truncate:60}</span><br />
                         <div style="font-size: 10px;width:100px;text-transform: uppercase;float: left;display: inline-block;">{l s='Address' mod='npsticketdelivery'}</div>: <span style="float: left;text-overflow: ellipsis;white-space: nowrap;">{$address|truncate:60}</span><br />
+                        {if isset($district) && !empty($district)}
                         <div style="font-size: 10px;width:100px;text-transform: uppercase;float: left;display: inline-block;">{l s='District' mod='npsticketdelivery'}</div>: <span style="float: left;text-overflow: ellipsis;white-space: nowrap;">{$district|truncate:60}</span><br />
+                        {/if}
+                        {if isset($town) && !empty($town)}
                         <div style="font-size: 10px;width:100px;text-transform: uppercase;float: left;display: inline-block;">{l s='Town' mod='npsticketdelivery'}</div>: <span style="float: left;text-overflow: ellipsis;white-space: nowrap;">{$town|truncate:60}</span><br />
-                        {if isset($seller_name)}
+                        {/if}
+                        {if isset($seller_name) && !empty($seller_name)}
                         <div style="font-size: 10px;width:100px;text-transform: uppercase;float: left;display: inline-block;">{l s='Seller' mod='npsticketdelivery'}</div>: <span style="float: left;text-overflow: ellipsis;white-space: nowrap;">{$seller_name|truncate:60}</span><br />
                         {/if}
                     </div>

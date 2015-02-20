@@ -149,7 +149,6 @@ class NpsTicketDelivery extends Module {
                 $d_from = $this->getFeatureValue($product['features'], Configuration::get('NPS_FEATURE_FROM_ID'));
                 $d_to = $this->getFeatureValue($product['features'], Configuration::get('NPS_FEATURE_TO_ID'));
 
-                
                 for ($x=1; $x<=$qty; $x++) {
                     $t = new Ticket();
                     $t->id_cart_ticket = $c_t->id;
