@@ -362,6 +362,14 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
         }
     }
 
+    private function getFeatureValueId($features, $name) {
+        foreach ($features as $featre) {
+            if ($featre['id_feature'] == Configuration::get('NPS_FEATURE_'.strtoupper($name).'_ID')) {
+                return $featre['id_feature_value'];
+            }
+        }
+    }
+
     public function initContent() {
         parent::initContent();
 
@@ -389,6 +397,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                     'url' => $this->context->link->getImageLink($this->_product->link_rewrite[$this->context->language->id], $image['id_image'], 'medium_default'),
                     'id_image' => $image['id_image']
                 );
+
             $tpl_product = array(
                 'id' => $this->_product->id,
                 'name' => $this->_product->name,
@@ -397,8 +406,8 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                 'price' => $this->_product->getPrice(),
                 'quantity' => Product::getQuantity($this->_product->id),
                 'reference' => $this->_product->reference,
-                'province' => $this->getFeatureValue($features, 'province'),
-                'town' => $this->getFeatureValue($features, 'town'),
+                'province' => $this->getFeatureValueId($features, 'province'),
+                'town' => $this->getFeatureValueId($features, 'town'),
                 'address' => $this->getFeatureValue($features, 'address'),
                 'district' => $this->getFeatureValue($features, 'district'),
                 'categories' => $this->_product->getCategories(),
