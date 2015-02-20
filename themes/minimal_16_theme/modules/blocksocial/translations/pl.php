@@ -31,6 +31,6 @@ $_MODULE['<{blocksocial}minimal_16_theme>blocksocial_5b2c8bfd1bc974966209b7be1cb
 $_MODULE['<{blocksocial}minimal_16_theme>blocksocial_86709a608bd914b28221164e6680ebf7'] = 'Pinterest';
 $_MODULE['<{blocksocial}minimal_16_theme>blocksocial_15db599e0119be476d71bfc1fda72217'] = 'Vimeo';
 $_MODULE['<{blocksocial}minimal_16_theme>blocksocial_55f015a0c5605702f913536afe70cfb0'] = 'Instagram';
-$_MODULE['<{blocksocial}minimal_16_theme>blocksocial_f43af8c49c7b2c6c90b19b27e779a98e'] = 'Bądź na bieżąco z';
 $_MODULE['<{blocksocial}minimal_16_theme>blocksocial_970cfba66b8380fb97b742e4571356c6'] = 'Youtube';
 $_MODULE['<{blocksocial}minimal_16_theme>blocksocial_dda8dc38128a8c843ba9f496d6ee7186'] = 'Google+';
+$_MODULE['<{blocksocial}minimal_16_theme>blocksocial_f43af8c49c7b2c6c90b19b27e779a98e'] = 'Bądź na bieżąco z';

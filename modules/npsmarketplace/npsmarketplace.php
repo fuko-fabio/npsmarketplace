@@ -124,8 +124,8 @@ class NpsMarketplace extends Module {
         return $this->display(__FILE__, 'views/templates/hook/top.tpl');
     }
 
-    public function hookDisplayNav() {
-        if(!isset($this->context->cookie->main_town) || !isset($this->context->cookie->main_province)) {
+    public function hookDisplayNav() { 
+	if(!isset($this->context->cookie->main_town) || !isset($this->context->cookie->main_province)) {
             $this->setCurrentLocation();
         }
         $this->context->smarty->assign(array(
@@ -138,7 +138,7 @@ class NpsMarketplace extends Module {
 
     private function setCurrentLocation() {
         $georecord = $this->getLocationByIP();
-        $id_town = null;d($georecord);
+        $id_town = null;
         if ($georecord != null) {
             $id_town = Town::getIdByName($georecord->city);
         }

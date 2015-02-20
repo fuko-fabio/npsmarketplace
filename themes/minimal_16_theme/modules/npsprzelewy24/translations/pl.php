@@ -81,11 +81,11 @@ $_MODULE['<{npsprzelewy24}minimal_16_theme>adminshopinvoicescontroller_136bdde66
 $_MODULE['<{npsprzelewy24}minimal_16_theme>adminshopinvoicescontroller_cef6871cec9155fbf00650a5ec69c321'] = 'Wygenerowany dnia';
 $_MODULE['<{npsprzelewy24}minimal_16_theme>adminshopinvoicescontroller_bcd1b68617759b1dfcff0403a6b5a8d1'] = 'PDF';
 $_MODULE['<{npsprzelewy24}minimal_16_theme>adminshopinvoicescontroller_e50b4a3c7145864e13fc03432fee57cf'] = 'Generuj raport';
+$_MODULE['<{npsprzelewy24}minimal_16_theme>paymentcancel_7a3b10d463ead79457dbe69b18f7d715'] = 'Nie można zarejestrować transakcji w serwisie Przelewy 24. Prosimy o kontakt z obsługą klienta.';
 $_MODULE['<{npsprzelewy24}minimal_16_theme>paymentconfirmation_49ee145aceecd9a38c7d74b4c713c76f'] = 'Zamówienie o ID %s nie istnieje. Proszę o kontakt z obsługą klienta.';
 $_MODULE['<{npsprzelewy24}minimal_16_theme>paymentconfirmation_f155196e046f8168fc5a377e8a85c819'] = 'Płatność została już zakończona. Przejdź do swojego konta i sprawdź historię zamówień.';
 $_MODULE['<{npsprzelewy24}minimal_16_theme>paymentconfirmation_aeb7b97d4f698f237c49466025f498af'] = 'NIe można zweryfikować płatności. Proszę o kontakt z obsługą klienta.';
 $_MODULE['<{npsprzelewy24}minimal_16_theme>paymentconfirmation_1994c65b552844ccc241928a9a4f7068'] = 'NIe można dokończyć zamówienia. Proszę o kontakt z obsługą klienta.';
-$_MODULE['<{npsprzelewy24}minimal_16_theme>paymentconfirmation_7a3b10d463ead79457dbe69b18f7d715'] = 'Nie można zarejestrować transakcji w serwisie Przelewy24.  Proszę o kontakt z obsługą klienta.';
 $_MODULE['<{npsprzelewy24}minimal_16_theme>paymentsettings_844728e1dc874629bc7450484fa79b73'] = 'Nazwa firmy jest wymagana';
 $_MODULE['<{npsprzelewy24}minimal_16_theme>paymentsettings_f518d6efc432b3756ace71fd696d0b65'] = 'Niepoprawna nazwa firmy';
 $_MODULE['<{npsprzelewy24}minimal_16_theme>paymentsettings_829d443d9e911b2d0586c88111cbb7ed'] = 'Miasto jest wymagane';
