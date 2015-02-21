@@ -35,9 +35,10 @@ if (isset($p24_session_id) && !empty($p24_session_id)) {
             $dispatcher = new P24TransactionDispatcher($id_cart);
             $dispatcher->dispatchMoney();
         } else {
+            PrestaShopLogger::addLog('Background payment. Verification Failed!. '.$result['errorMessage']);
             $history = new OrderHistory();
-            $history->id_order = intval($order_id);
-            $history->changeIdOrderState(8, intval($order_id));
+            $history->id_order = intval($id_order);
+            $history->changeIdOrderState(8, intval($id_order));
             $history->addWithemail(true);
         }
     } else {
