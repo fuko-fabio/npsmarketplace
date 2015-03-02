@@ -9,6 +9,7 @@ class Province extends ObjectModel
 {
     public $name;
     public $active;
+    public $default;
     public $selectable;
     public $id_feature_value;
 
@@ -23,6 +24,7 @@ class Province extends ObjectModel
             'name' =>             array('type' => self::TYPE_STRING, 'validate' => 'isGenericName', 'required' => true, 'lang' => true, 'size' => 64),
             'id_feature_value' => array('type' => self::TYPE_INT, 'validate' => 'isUnsignedId', 'required' => true),
             'active' =>           array('type' => self::TYPE_BOOL, 'validate' => 'isBool'),
+            'default' =>          array('type' => self::TYPE_BOOL, 'validate' => 'isBool'),
             'selectable' =>       array('type' => self::TYPE_BOOL, 'validate' => 'isBool'),
         )
     );
@@ -37,6 +39,14 @@ class Province extends ObjectModel
         $this->id_feature_value = $feature_value->id;
 
         return parent::add($autodate, $null_values);
+    }
+
+    public static function getDefaultId() {
+        $dbquery = new DbQuery();
+        $dbquery->select('id_province')
+            ->from('province')
+            ->where('`default` = 1');
+        return Db::getInstance()->getValue($dbquery);
     }
 
     public function update($autodate = true, $null_values = false) {

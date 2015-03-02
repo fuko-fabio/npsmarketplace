@@ -56,6 +56,13 @@ class AdminProvincesController extends AdminController
                 'callback' => 'printSelectableIcon',
                 'orderby' => false
             ),
+            'default' => array(
+                'title' => $this->l('Default'),
+                'align' => 'text-center',
+                'type' => 'bool',
+                'callback' => 'printIcon',
+                'orderby' => false
+            ),
         );
 
         $this->shopLinkType = 'shop';
@@ -69,6 +76,22 @@ class AdminProvincesController extends AdminController
             .(int)$province['id_province'].'&changeSelectableVal&token='.Tools::getAdminTokenLite('AdminProvinces').'">
                 '.($value ? '<i class="icon-check"></i>' : '<i class="icon-remove"></i>').
             '</a>';
+    }
+
+    public function printIcon($value, $province) {
+        return '<a class="list-action-enable '.($value ? 'action-enabled' : 'action-disabled').'" href="index.php?tab=AdminProvinces&id_province='
+            .(int)$province['id_province'].'&changeDefaultVal&token='.Tools::getAdminTokenLite('AdminProvinces').'">
+                '.($value ? '<i class="icon-check"></i>' : '<i class="icon-remove"></i>').
+            '</a>';
+    }
+
+    public function processChangeDefaultVal() {
+        $prov = new Province($this->id_object);
+        if (!Validate::isLoadedObject($prov))
+            $this->errors[] = Tools::displayError('An error occurred while updating province information.');
+        $prov->default = !$town->default;
+        if (!$prov->update())
+            $this->errors[] = Tools::displayError('An error occurred while updating province information.');
     }
 
     public function processChangeSelectableVal() {
@@ -98,7 +121,12 @@ class AdminProvincesController extends AdminController
     public function initProcess() {
         parent::initProcess();
 
-         if (Tools::isSubmit('changeSelectableVal') && $this->id_object) {
+         if (Tools::isSubmit('changeDefaultVal') && $this->id_object) {
+            if ($this->tabAccess['edit'] === '1')
+                $this->action = 'change_default_val';
+            else
+                $this->errors[] = Tools::displayError('You do not have permission to edit this.');
+        } else if (Tools::isSubmit('changeSelectableVal') && $this->id_object) {
             if ($this->tabAccess['edit'] === '1')
                 $this->action = 'change_selectable_val';
             else

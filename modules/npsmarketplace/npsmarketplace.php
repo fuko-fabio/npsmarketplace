@@ -23,7 +23,6 @@ require_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24SellerCompany.php');
 
 class NpsMarketplace extends Module {
     const INSTALL_SQL_FILE = 'install.sql';
-    const GEO_DATA_FILE_NAME = 'GeoLiteCity.dat';
 
     public function __construct() {
         $this->name = 'npsmarketplace';
@@ -124,8 +123,10 @@ class NpsMarketplace extends Module {
     }
 
     public function hookDisplayNav() { 
-	if(!isset($this->context->cookie->main_town) || !isset($this->context->cookie->main_province)) {
-            $this->setCurrentLocation();
+        if(!isset($this->context->cookie->main_town) || !isset($this->context->cookie->main_province)) {
+            $loc = NpsMarketplace::getDefaultLocation();
+            $this->context->cookie->__set('main_town', $loc['town']);
+            $this->context->cookie->__set('main_province', $loc['province']);
         }
         $this->context->smarty->assign(array(
             'towns' => Town::getActiveTowns($this->context->language->id),
@@ -135,8 +136,36 @@ class NpsMarketplace extends Module {
         return $this->display(__FILE__, 'views/templates/hook/header_top.tpl');
     }
 
-    private function setCurrentLocation() {
-        $georecord = $this->getLocationByIP();
+    public static function getLocation($context = null) {
+        if ($context == null) {
+            $context = Context::getContext();
+        }
+        $result = array(
+            'town' => 0,
+            'province' => 0
+        );
+        $id_town = $context->cookie->main_town;
+        if ($id_town) {
+            $town = new Town($id_town);
+            $result['town'] = $town->id;
+            $result['province'] = $town->id_province;
+        } else {
+            $id_province = $context->cookie->main_province;
+            if ($id_province) {
+                $result['province'] = $id_province;
+            } else {
+                $result = NpsMarketplace::getDefaultLocation();
+            }
+        }
+        return $result;
+    }
+
+    private static function getDefaultLocation() {
+        $result = array(
+            'town' => 0,
+            'province' => 0
+        );
+        $georecord = NpsMarketplace::getLocationByIP();
         $id_town = null;
         if ($georecord != null) {
             $id_town = Town::getIdByName($georecord->city);
@@ -146,18 +175,25 @@ class NpsMarketplace extends Module {
         }
         if ($id_town != null) {
             $town = new Town($id_town);
-            $this->context->cookie->__set('main_town', $town->id);
-            $this->context->cookie->__set('main_province', $town->id_province);
+            $result['town'] = $town->id;
+            $result['province'] = $town->id_province;
+        } else {
+            $id_province = Province::getDefaultId();
+            if ($id_province) {
+                $result['province'] = $id_province;
+            }
         }
+        return $result;
     }
 
-    private function getLocationByIP() {
+    private static function getLocationByIP() {
         if (!in_array($_SERVER['SERVER_NAME'], array('localhost', '127.0.0.1'))) {
             /* Check if Maxmind Database exists */
-            if (file_exists(_PS_GEOIP_DIR_.'GeoLiteCity.dat')) {
+            $geo_dat_file = 'GeoLiteCity.dat';
+            if (file_exists(_PS_GEOIP_DIR_.$geo_dat_file)) {
                 include_once(_PS_GEOIP_DIR_.'geoipcity.inc');
 
-                $gi = geoip_open(realpath(_PS_GEOIP_DIR_.GEO_DATA_FILE_NAME), GEOIP_STANDARD);
+                $gi = geoip_open(realpath(_PS_GEOIP_DIR_.$geo_dat_file), GEOIP_STANDARD);
                 return geoip_record_by_addr($gi, Tools::getRemoteAddr());
             }
         }
@@ -832,50 +868,6 @@ class NpsMarketplace extends Module {
         $ad = new AttributeGroup(Configuration::get('NPS_ATTRIBUTE_DATE_ID'));
         $at = new AttributeGroup(Configuration::get('NPS_ATTRIBUTE_TIME_ID'));
         return $ad->delete() && $at->delete();
-    }
-
-    private function initProvinces() {
-        $sql = '
-            CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'province` (
-              `id_province` int(10) unsigned NOT NULL AUTO_INCREMENT,
-              `id_feature_value` int(10) unsigned NOT NULL,
-              `active` tinyint(1) NOT NULL,
-              `selectable` tinyint(1) NOT NULL,
-              PRIMARY KEY (`id_province`)
-            ) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8;
-            
-            CREATE TABLE IF NOT EXISTS `'._DB_PREFIX_.'province_lang` (
-              `id_lang` int(10) unsigned NOT NULL,
-              `id_province` int(10) unsigned NOT NULL,
-              `name` varchar(64) NOT NULL,
-              KEY `id_province` (`id_province`)
-            ) ENGINE='._MYSQL_ENGINE_.' DEFAULT CHARSET=utf8;';
-        Db::getInstance()->execute($sql);
-
-        $sql = 'ALTER TABLE  `'._DB_PREFIX_.'town` ADD  `id_province` int(10) unsigned NOT NULL AFTER  `id_town`';
-        Db::getInstance()->execute($sql);
-
-        $sql = 'ALTER TABLE  `'._DB_PREFIX_.'town` ADD  `selectable` tinyint(1) NOT NULL DEFAULT 1 AFTER `default`';
-        Db::getInstance()->execute($sql);
-
-        $id = Feature::addFeatureImport('Province');
-        Configuration::updateValue('NPS_FEATURE_PROVINCE_ID', $id);
-
-        $dbquery = new DbQuery();
-        $dbquery->select('id_parent')
-            ->from('tab')
-            ->where('`class_name` = "AdminTowns"');
-        $id = Db::getInstance()->getValue($dbquery);
-        $languages = Language::getLanguages();
-        $sellers_tab = new Tab();
-        $sellers_tab->id_parent = $id;
-        $sellers_tab->position = 0;
-        $sellers_tab->module = $this->name;
-        $sellers_tab->class_name = 'AdminProvinces';
-        foreach ($languages AS $language) {
-            $sellers_tab->{'name'}[intval($language['id_lang'])] = $this->l('Provinces');
-        }
-        return $sellers_tab->add();
     }
 }
 ?>

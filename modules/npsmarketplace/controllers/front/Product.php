@@ -373,19 +373,23 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
     public function initContent() {
         parent::initContent();
 
-        $id_town = $this->context->cookie->main_town;
-        if (!$id_town) {
-            $id_town = Town::getDefaultTownId();
+        $loc = NpsMarketplace::getLocation();
+        $town = new Town($loc['town']);
+        $province = new Province($loc['province']);
+        if (!$town->id) {
+            $id_province = $loc['province'];
+        } else {
+            $id_province = $town->id_province;
         }
-        if (!$id_town) {
-            $sql = 'SELECT id_town FROM '._DB_PREFIX_.'town WHERE active = 1';
-            $id_town = Db::getInstance()->getValue($sql);
+        if (!$id_province) {
+            $sql = 'SELECT id_province FROM '._DB_PREFIX_.'province WHERE active = 1';
+            $id_province = Db::getInstance()->getValue($sql);
         }
-        $town = new Town($id_town);
+        
         $tpl_product = array(
             'categories' => array(),
-            'province' => Province::getFeatureValueId($town->id_province),
-            'town' => $id_town ? Town::getFeatureValueId($town->id) : 0,
+            'province' => Province::getFeatureValueId($id_province),
+            'town' => $town->id ? Town::getFeatureValueId($town->id) : 0,
             'images' => array()
         );
 

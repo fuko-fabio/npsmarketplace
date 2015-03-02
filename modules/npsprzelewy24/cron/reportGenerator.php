@@ -19,8 +19,10 @@ if ( !defined( '_NPS_SELLER_REPORTS_DIR_' ) )
 
 $token = Tools::getValue('token');
 
-if ($token != '733acb9920b35800545d7d3e9c2e9e21')
+if ($token != '733acb9920b35800545d7d3e9c2e9e21') {
+    syslog(LOG_WARNING, 'Could not generate sellers reporst. Invalid token: '.$token);
     exit(1);
+}
 
 $sql = 'SELECT `id_seller` FROM `'._DB_PREFIX_.'seller`';
 $rows = Db::getInstance()->executeS($sql);
@@ -30,7 +32,7 @@ $last_day_of_previous_month = date("Y-m-d", mktime(0, 0, 0, date("m"), 0, date("
 
 $ctx = Context::getContext();
 $summary_report_data = array();
-
+syslog(LOG_DEBUG, 'Generating sellers reporst from: '.$first_day_of_previous_month.' to: '.$last_day_of_previous_month.'...');
 foreach ($rows as $row) {
     $seller = new Seller((int)$row['id_seller']);
     $collector = new SellerReportDataCollector($seller, $first_day_of_previous_month, $last_day_of_previous_month);
@@ -77,6 +79,7 @@ foreach ($rows as $row) {
             '{shop_name}' => Configuration::get('PS_SHOP_NAME'),
             '{shop_url}' => Tools::getHttpHost(true).__PS_BASE_URI__,
         );
+        syslog(LOG_DEBUG, 'Sending generated report to: '.$customer->email);
         Mail::Send($id_lang,
             'sales_report',
             Mail::l('Monthly sales report'),
@@ -90,7 +93,9 @@ foreach ($rows as $row) {
             _PS_MODULE_DIR_.'npsprzelewy24/mails/');
     }
 }
+syslog(LOG_DEBUG, 'Generating sellers reports done.');
 
+syslog(LOG_DEBUG, 'Generating shop report from: '.$first_day_of_previous_month.' to: '.$last_day_of_previous_month.'...');
 if(count($summary_report_data) > 0) {
     $s_i = new ShopInvoice();
     $s_i->start_date = $first_day_of_previous_month;
@@ -108,5 +113,5 @@ if(count($summary_report_data) > 0) {
         $s_i->save();
     }
 }
-
+syslog(LOG_DEBUG, 'Generating shop report done.');
 exit(0);
