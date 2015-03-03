@@ -59,13 +59,8 @@ class NpsCalendar extends Module {
     }
 
     public function hookIframeHomeHeader($params) {
-        $this->context->smarty->assign(array(
-            'calendar_api_url' => $this->context->link->getModuleLink('npscalendar', 'api'),
-            'calendar_page_url' => $this->context->link->getModuleLink('npscalendar', 'calendar'),
-            'css_urls' => array(
-                ($this->_path).'npscalendar.css'
-            ),
-            'js_urls' => array_merge(Media::getJqueryPath(null, null, true), array(
+        $css = array(($this->_path).'npscalendar.css');
+        $js = array_merge(Media::getJqueryPath(null, null, true), array(
                 ($this->_path).'js/underscore-min.js',
                 ($this->_path).'js/backbone-min.js',
                 ($this->_path).'js/backbone-associations-min.js',
@@ -77,7 +72,19 @@ class NpsCalendar extends Module {
                 ($this->_path).'js/calendar/model/calendar.js',
                 ($this->_path).'js/calendar/view/weekCalendar.js',
                 ($this->_path).'js/calendar/weekRouter.js',
-        ))));
+        ));
+        $plugin_path = Media::getJqueryPluginPath('fancybox');
+        if (!empty($plugin_path['js']))
+            $js[] = $plugin_path['js'];
+        if ($css && !empty($plugin_path['css']))
+            $css[] = key($plugin_path['css']);
+
+        $this->context->smarty->assign(array(
+            'calendar_api_url' => $this->context->link->getModuleLink('npscalendar', 'api'),
+            'calendar_page_url' => $this->context->link->getModuleLink('npscalendar', 'calendar'),
+            'css_urls' => $css,
+            'js_urls' => $js
+        ));
         return $this->display(__FILE__, 'iframe_home_header.tpl');
     }
 
