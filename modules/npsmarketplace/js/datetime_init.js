@@ -18,8 +18,14 @@ $(document).ready(function(){
         minuteStepping: 15
     });
 
+    $('#timePicker').on('changeDate', function(e) {
+        $('#availableTimePicker').data("datetimepicker").setDate($('#time_input').val());
+    });
+
     $('#time_input').on('click', function(e) {
-        $('#timePicker').data("datetimepicker").setValue(getDateTime());
+        if ($('#time_input').val().length == 0) {
+            $('#timePicker').data("datetimepicker").setValue(getDateTime());
+        }
         $('#timePicker').datetimepicker('show');
     });
     
@@ -33,6 +39,19 @@ $(document).ready(function(){
 
     $('#availableDatePicker').on('click', function() {
         $('#availableDatePicker').datetimepicker('show');
+    });
+
+    $('#availableTimePicker').datetimepicker({
+        pickDate: false,
+        pickSeconds: false,
+        minuteStepping: 15
+    });
+
+    $('#availableTimePicker').on('click', function(e) {
+        if ($('#expiry_time_input').val().length == 0) {
+            $('#availableTimePicker').data("datetimepicker").setValue(getDateTime());
+        }
+        $('#availableTimePicker').datetimepicker('show');
     });
 
     $('#fromDatePicker').datetimepicker({

@@ -81,9 +81,13 @@ class NpsNewProducts extends Module
 				$output .= $this->displayError($this->l('Invalid number.'));
 			else
 			{
-				Configuration::updateValue('PS_NB_DAYS_NPS_NEW_PRODUCT', (int)(Tools::getValue('PS_NB_DAYS_NPS_NEW_PRODUCT')));
-                Configuration::updateValue('PS_NPS_NEWPRODUCTS_DISPLAY', (int)(Tools::getValue('PS_NPS_NEWPRODUCTS_DISPLAY')));
-				Configuration::updateValue('NPS_NEW_PRODUCTS_NBR', (int)($productNbr));
+				Configuration::updateValue('NPS_NB_DAYS_NEW_PRODUCT', (int)(Tools::getValue('NPS_NB_DAYS_NEW_PRODUCT')));
+                Configuration::updateValue('NPS_NEW_PRODUCTS_DISPLAY', (int)(Tools::getValue('NPS_NEW_PRODUCTS_DISPLAY')));
+                Configuration::updateValue('NPS_NEW_PRODUCTS_NBR', (int)($productNbr));
+                Configuration::updateValue('NPS_NEW_PRODUCTS_DISPLAY_TICKETS', (int)(Tools::getValue('NPS_NEW_PRODUCTS_DISPLAY_TICKETS')));
+                Configuration::updateValue('NPS_NEW_PRODUCTS_DISPLAY_CARNERTS', (int)(Tools::getValue('NPS_NEW_PRODUCTS_DISPLAY_CARNERTS')));
+                Configuration::updateValue('NPS_NEW_PRODUCTS_DISPLAY_ADS', (int)(Tools::getValue('NPS_NEW_PRODUCTS_DISPLAY_ADS')));
+                Configuration::updateValue('NPS_NEW_PRODUCTS_DISPLAY_EXTERNAL_ADS', (int)(Tools::getValue('NPS_NEW_PRODUCTS_DISPLAY_EXTERNAL_ADS')));
 				$this->_clearCache('*');
 				$output .= $this->displayConfirmation($this->l('Settings updated'));
 			}
@@ -91,29 +95,47 @@ class NpsNewProducts extends Module
 		return $output.$this->renderForm();
 	}
 
-	private function getNewProducts()
-	{
-		if (!Configuration::get('NPS_NEW_PRODUCTS_NBR'))
-			return;
-		$newProducts = false;
-		if (Configuration::get('PS_NB_DAYS_NPS_NEW_PRODUCT'))
-			$newProducts = Product::getNewProducts((int) $this->context->language->id, 0, (int)Configuration::get('NPS_NEW_PRODUCTS_NBR'));
+    private function getNewProducts() {
+        if (!Configuration::get('NPS_NEW_PRODUCTS_NBR'))
+            return;
+        $newProducts = false;
+        if (Configuration::get('NPS_NB_DAYS_NEW_PRODUCT')) {
+            $types = array();
+            if (Configuration::get('NPS_NEW_PRODUCTS_DISPLAY_TICKETS'))
+                $types[] = 0;
+            if (Configuration::get('NPS_NEW_PRODUCTS_DISPLAY_CARNERTS'))
+                $types[] = 1;
+            if (Configuration::get('NPS_NEW_PRODUCTS_DISPLAY_ADS'))
+                $types[] = 2;
+            if (Configuration::get('NPS_NEW_PRODUCTS_DISPLAY_EXTERNAL_ADS'))
+                $types[] = 3;
 
-		if (!$newProducts && Configuration::get('PS_NPS_NEWPRODUCTS_DISPLAY'))
-			return;
-		return NpsMarketplace::filterByLocation($newProducts);
-	}
+            if (!empty($types)) {
+                $newProducts = Product::getNewProductsByLocation(
+                    (int)$this->context->language->id,
+                    0,
+                    (int)Configuration::get('NPS_NEW_PRODUCTS_NBR'),
+                    false,
+                    (int)Configuration::get('NPS_NB_DAYS_NEW_PRODUCT'),
+                    null,
+                    null,
+                    $this->context,
+                    $types);
+            }
+        }
+        if (!$newProducts && Configuration::get('NPS_NEW_PRODUCTS_DISPLAY'))
+            return;
+        return $newProducts;
+    }
 
-	protected function getCacheId($name = null)
-	{
-		if ($name === null)
-			$name = 'npsnewproducts';
-		return parent::getCacheId($name.'|'.date('Ymd'));
-	}
+    protected function getCacheId($name = null) {
+        if ($name === null)
+            $name = 'npsnewproducts';
+        return parent::getCacheId($name.'|'.date('Ymd'));
+    }
 
-	public function hookDisplayHome($params)
-	{
-	    if (!isset(NpsNewProducts::$cache_new_products))
+    public function hookDisplayHome($params) {
+        if (!isset(NpsNewProducts::$cache_new_products))
             NpsNewProducts::$cache_new_products = $this->getNewProducts();
 
 		if (!$this->isCached('npsnewproducts_home.tpl', $this->getCacheId($this->name.$this->context->cookie->main_town)))
@@ -180,13 +202,13 @@ class NpsNewProducts extends Module
 					array(
 						'type'  => 'text',
 						'label' => $this->l('Number of days for which the product is considered \'new\''),
-						'name'  => 'PS_NB_DAYS_NPS_NEW_PRODUCT',
+						'name'  => 'NPS_NB_DAYS_NEW_PRODUCT',
 						'class' => 'fixed-width-xs',
 					),
 					array(
 						'type' => 'switch',
 						'label' => $this->l('Always display this block'),
-						'name' => 'PS_NPS_NEWPRODUCTS_DISPLAY',
+						'name' => 'NPS_NEW_PRODUCTS_DISPLAY',
 						'desc' => $this->l('Show the block even if no new products are available.'),
 						'values' => array(
 							array(
@@ -200,7 +222,75 @@ class NpsNewProducts extends Module
 								'label' => $this->l('Disabled')
 							)
 						),
-					)
+					),
+					array(
+                        'type' => 'switch',
+                        'label' => $this->l('Show tickets'),
+                        'name' => 'NPS_NEW_PRODUCTS_DISPLAY_TICKETS',
+                        'values' => array(
+                            array(
+                                'id' => 'active_on',
+                                'value' => 1,
+                                'label' => $this->l('Yes')
+                            ),
+                            array(
+                                'id' => 'active_off',
+                                'value' => 0,
+                                'label' => $this->l('No')
+                            )
+                        ),
+                    ),
+                    array(
+                        'type' => 'switch',
+                        'label' => $this->l('Show carnets'),
+                        'name' => 'NPS_NEW_PRODUCTS_DISPLAY_CARNERTS',
+                        'values' => array(
+                            array(
+                                'id' => 'active_on',
+                                'value' => 1,
+                                'label' => $this->l('Yes')
+                            ),
+                            array(
+                                'id' => 'active_off',
+                                'value' => 0,
+                                'label' => $this->l('No')
+                            )
+                        ),
+                    ),
+                    array(
+                        'type' => 'switch',
+                        'label' => $this->l('Show ads'),
+                        'name' => 'NPS_NEW_PRODUCTS_DISPLAY_ADS',
+                        'values' => array(
+                            array(
+                                'id' => 'active_on',
+                                'value' => 1,
+                                'label' => $this->l('Yes')
+                            ),
+                            array(
+                                'id' => 'active_off',
+                                'value' => 0,
+                                'label' => $this->l('No')
+                            )
+                        ),
+                    ),
+                    array(
+                        'type' => 'switch',
+                        'label' => $this->l('Show external ads'),
+                        'name' => 'NPS_NEW_PRODUCTS_DISPLAY_EXTERNAL_ADS',
+                        'values' => array(
+                            array(
+                                'id' => 'active_on',
+                                'value' => 1,
+                                'label' => $this->l('Yes')
+                            ),
+                            array(
+                                'id' => 'active_off',
+                                'value' => 0,
+                                'label' => $this->l('No')
+                            )
+                        ),
+                    )
 				),
 				'submit' => array(
 					'title' => $this->l('Save'),
@@ -227,12 +317,15 @@ class NpsNewProducts extends Module
 		return $helper->generateForm(array($fields_form));
 	}
 
-	public function getConfigFieldsValues()
-	{
-		return array(
-			'PS_NB_DAYS_NPS_NEW_PRODUCT' => Tools::getValue('PS_NB_DAYS_NPS_NEW_PRODUCT', Configuration::get('PS_NB_DAYS_NPS_NEW_PRODUCT')),
-			'PS_NPS_NEWPRODUCTS_DISPLAY' => Tools::getValue('PS_NPS_NEWPRODUCTS_DISPLAY', Configuration::get('PS_NPS_NEWPRODUCTS_DISPLAY')),
-			'NPS_NEW_PRODUCTS_NBR' => Tools::getValue('NPS_NEW_PRODUCTS_NBR', Configuration::get('NPS_NEW_PRODUCTS_NBR')),
-		);
-	}
+    public function getConfigFieldsValues() {
+        return array(
+            'NPS_NB_DAYS_NEW_PRODUCT' => Tools::getValue('NPS_NB_DAYS_NEW_PRODUCT', Configuration::get('NPS_NB_DAYS_NEW_PRODUCT')),
+            'NPS_NEW_PRODUCTS_DISPLAY' => Tools::getValue('NPS_NEW_PRODUCTS_DISPLAY', Configuration::get('NPS_NEW_PRODUCTS_DISPLAY')),
+            'NPS_NEW_PRODUCTS_NBR' => Tools::getValue('NPS_NEW_PRODUCTS_NBR', Configuration::get('NPS_NEW_PRODUCTS_NBR')),
+            'NPS_NEW_PRODUCTS_DISPLAY_TICKETS' => Tools::getValue('NPS_NEW_PRODUCTS_DISPLAY_TICKETS', Configuration::get('NPS_NEW_PRODUCTS_DISPLAY_TICKETS')),
+            'NPS_NEW_PRODUCTS_DISPLAY_CARNERTS' => Tools::getValue('NPS_NEW_PRODUCTS_DISPLAY_CARNERTS', Configuration::get('NPS_NEW_PRODUCTS_DISPLAY_CARNERTS')),
+            'NPS_NEW_PRODUCTS_DISPLAY_ADS' => Tools::getValue('NPS_NEW_PRODUCTS_DISPLAY_ADS', Configuration::get('NPS_NEW_PRODUCTS_DISPLAY_ADS')),
+            'NPS_NEW_PRODUCTS_DISPLAY_EXTERNAL_ADS' => Tools::getValue('NPS_NEW_PRODUCTS_DISPLAY_EXTERNAL_ADS', Configuration::get('NPS_NEW_PRODUCTS_DISPLAY_EXTERNAL_ADS')),
+        );
+    }
 }

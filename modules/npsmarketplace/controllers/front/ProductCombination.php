@@ -36,6 +36,7 @@ class NpsMarketplaceProductCombinationModuleFrontController extends ModuleFrontC
             $time = trim(Tools::getValue('time'));
             $quantity = trim(Tools::getValue('quantity'));
             $expiry_date = trim(Tools::getValue('expiry_date'));
+            $expiry_time = trim(Tools::getValue('expiry_time'));
             
             if (!$this->isUnique($this->_product, $date, $time))
                 $this -> errors[] = $this->module->l('Event with provided date and time already exists', 'ProductCombination');
@@ -55,13 +56,26 @@ class NpsMarketplaceProductCombinationModuleFrontController extends ModuleFrontC
             else if (!Validate::isTime($time))
                 $this -> errors[] = $this->module->l('Invalid date format', 'ProductCombination');
 
+            if (empty($expiry_time))
+                $this -> errors[] = $this->module->l('Product expiry time is required', 'Product');
+            else if (!Validate::isTime($expiry_time))
+                $this -> errors[] = $this->module->l('Invalid expiry time format', 'Product');
+
+            if (strtotime($date.' '.$time) < time())
+                $this -> errors[] = $this->module->l('You are trying to add event in the past. Check event date and time.', 'Product');
+            if (strtotime($expiry_date.' '.$expiry_time) > strtotime($date.' '.$time))
+                $this -> errors[] = $this->module->l('Expiry date and time cannot be later than event date.', 'Product');
+
             if (empty($quantity))
                 $this -> errors[] = $this->module->l('Product quantity is required', 'ProductCombination');
             else if (!Validate::isInt($quantity))
                 $this -> errors[] = $this->module->l('Invalid product quantity format', 'ProductCombination');
 
             if (empty($this->errors)) {
-                $this->_product->newEventCombination($date, $time, (int)$quantity, $expiry_date, $this->context->shop->id);
+                $dt = new DateTime($expiry_date.' '.$expiry_time);
+                if ($time == $expiry_time)
+                    $dt->modify('-15 min');
+                $this->_product->newEventCombination($date, $time, (int)$quantity, $dt, $this->context->shop->id);
                 $this->enableProductIfNeeded($seller, $this->_product);
                 Tools::redirect('index.php?fc=module&module=npsmarketplace&controller=ProductsList');
             }

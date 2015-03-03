@@ -60,6 +60,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             $date = trim(Tools::getValue('date'));
             $time = trim(Tools::getValue('time'));
             $expiry_date = trim(Tools::getValue('expiry_date'));
+            $expiry_time = trim(Tools::getValue('expiry_time'));
             $town = trim(Tools::getValue('town'));
             $province = trim(Tools::getValue('province'));
             $district = trim(Tools::getValue('district'));
@@ -146,11 +147,17 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                         $this -> errors[] = $this->module->l('Product time is required', 'Product');
                     else if (!Validate::isTime($time))
                         $this -> errors[] = $this->module->l('Invalid time format', 'Product');
+
+                    if (empty($expiry_time))
+                        $this -> errors[] = $this->module->l('Product expiry time is required', 'Product');
+                    else if (!Validate::isTime($expiry_time))
+                        $this -> errors[] = $this->module->l('Invalid expiry time format', 'Product');
                     
                     if (strtotime($date.' '.$time) < time())
                         $this -> errors[] = $this->module->l('You are trying to add event in the past. Check event date and time.', 'Product');
-                    if (strtotime($expiry_date) > strtotime($date))
-                        $this -> errors[] = $this->module->l('Expiry date cannot be later than event date.', 'Product');
+                    if (strtotime($expiry_date.' '.$expiry_time) > strtotime($date.' '.$time))
+                        $this -> errors[] = $this->module->l('Expiry date and time cannot be later than event date.', 'Product');
+
                 } if ($type == 1) {
                     if (isset($date_to) && !empty($date_to) && !Validate::isDateFormat($date_to))
                         $this -> errors[] = $this->module->l('Invalid carnet \'date to\' format', 'Product');
@@ -257,12 +264,15 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
         
                             if(empty($current_id_product)) {
                                 $this->_seller->assignProduct($this->_product->id);
-                                if ($type == 0 || $type == 2 || $type == 3)
-                                    $this->_product->newEventCombination($date, $time, (int)$quantity, $expiry_date, $this->context->shop->id);
-                                else if ($type == 1) {
+                                $dt = new DateTime($expiry_date.' '.$expiry_time);
+                                if ($type == 0 || $type == 2 || $type == 3) {
+                                    if ($time == $expiry_time)
+                                        $dt->modify('-15 min');
+                                    $this->_product->newEventCombination($date, $time, (int)$quantity, $dt,  $this->context->shop->id);
+                                } else if ($type == 1) {
                                     $this->saveCarnetFeatures($entries, $date_from, $date_to);
                                     StockAvailable::setQuantity((int) $this->_product->id, null, $quantity);
-                                    $this->_product->saveExpiryDate($expiry_date);
+                                    $this->_product->saveExpiryDate($dt);
                                 }
                             } else if ($type == 1) {
                                 StockAvailable::setQuantity((int) $this->_product->id, null, $quantity);
