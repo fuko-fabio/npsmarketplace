@@ -36,10 +36,28 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
 
         $address = new Address((int)$cart->id_address_invoice);
         $customer = new Customer((int)($cart->id_customer));
-        $amount = $cart->getOrderTotal(true, Cart::BOTH);
+        $amount = $this->roundPrice($cart->getOrderTotal(true, Cart::BOTH));
         $currencies = $this->module->getCurrency(intval($cart->id_currency));
         $currency = $currencies[0];
 
+        $id_order = Order::getOrderByCartId($cart->id);
+        if (!$id_order) {
+            $s_descr = $this->validatePayment($cart, $customer, $amount);
+            if ($s_descr == null) {
+                $this -> errors[] = $this->module->l('Unable to verify order. Please contact with customer support', 'paymentConfirmation');
+                return;
+            }
+        } else {
+            $s_descr = $this->orderDescription($id_order, $customer);
+            $order = new Order($id_order);
+            $amount = $order->getTotalPaid();
+        }
+
+        $this->transactionRegister($payment, $cart, $amount, $customer, $currency, $address, $s_descr);
+        $this->setTemplate('payment_confirmation.tpl');
+    }
+
+    private function roundPrice($amount) {
         if (isset($currency['decimals']) && $currency['decimals'] == '0') {
             if (Configuration::get('PS_PRICE_ROUND_MODE') != null) {
                 switch (Configuration::get('PS_PRICE_ROUND_MODE')) {
@@ -55,19 +73,7 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
                 }
             }
         }
-
-        $order = Order::getOrderByCartId($cart->id);
-        if ($order == null) {
-            $s_descr = $this->validatePayment($cart, $customer, $amount);
-            if ($s_descr == null) {
-                $this -> errors[] = $this->module->l('Unable to verify order. Please contact with customer support', 'paymentConfirmation');
-                return;
-            }
-        } else {
-            $s_descr = $this->orderDescription($order, $customer);
-        }
-        $this->transactionRegister($payment, $cart, $amount, $customer, $currency, $address, $s_descr);
-        $this->setTemplate('payment_confirmation.tpl');
+        return $amount;
     }
 
     /* Used for tests, do not use on production */
