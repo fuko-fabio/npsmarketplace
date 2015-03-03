@@ -14,12 +14,14 @@ include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24DispatchHistoryDetail.php
 class P24TransactionDispatcher {
 
     private $cart;
+    private $order;
     private $module;
     private $merchant_spid;
     private $payment_summary;
 
     public function __construct($id_cart) {
         $this->cart = new Cart($id_cart);
+        $this->order = new Order(Order::getOrderByCartId($id_cart));
         $this->module = new NpsPrzelewy24();
         $this->merchant_spid = Configuration::get('NPS_P24_MERCHANT_SPID');
         $this->payment_summary = P24PaymentStatement::getSummaryByCartId($id_cart);
@@ -29,7 +31,7 @@ class P24TransactionDispatcher {
         if (!$this->isMerchanSpidValid() || !$this->isPaymentSummaryValid() || $this->alreadyDispatched($retry))
             return false;
 
-        $total = $this->cart->getOrderTotal() * 100;
+        $total = $this->order->getTotalPaid() * 100;
 
         $merchant_amount = $total;
         $currencies = $this->module->getCurrency(intval($this->cart->id_currency));
@@ -38,10 +40,10 @@ class P24TransactionDispatcher {
         $result = array();
         $sllers_invoices_data = array();
 
-        foreach ($this->cart->getProducts() as $product) {
-            $id_seller = Seller::getSellerByProduct($product['id_product']);
+        foreach ($this->order->getProducts() as $product) {
+            $id_seller = Seller::getSellerByProduct($product['product_id']);
             if (!$id_seller) {
-                PrestaShopLogger::addLog('Unable to find owner of product '.$product['name'].'with ID: '.$product['id_product'].' The product will be treated as a store property');
+                PrestaShopLogger::addLog('Unable to find owner of product '.$product['product_name'].'with ID: '.$product['product_id'].' The product will be treated as a store property');
                 continue;
             }
             $seller = new Seller($id_seller);
@@ -54,13 +56,13 @@ class P24TransactionDispatcher {
                 ));
                 return false;
             }
-            $total_product_price = $product['price'] * $product['cart_quantity'];
+            $total_product_price = $product['total_price_tax_incl'];
             $a_f_s = $this->amountForSeller($seller, $total_product_price);
 
             $invoice_data = array(
                 'id_seller' => $seller->id,
-                'id_product' => $product['id_product'],
-                'product_qty' => $product['cart_quantity'],
+                'id_product' => $product['product_id'],
+                'product_qty' => $product['product_quantity'],
                 'id_currency' => intval($this->cart->id_currency),
                 'product_total_price' => $total_product_price * 100,
                 'commission' => ($total_product_price * 100) - $a_f_s,
@@ -112,7 +114,7 @@ class P24TransactionDispatcher {
         } else
             $result[$this->merchant_spid] = $merchant_amount;
 
-        $message = $message.'Merchant amount: '.$merchant_amount.' | '.'Total amount: '.($this->cart->getOrderTotal() * 100).' | Przelewy24 amount: '.$p24_amount;
+        $message = $message.'Merchant amount: '.$merchant_amount.' | '.'Total amount: '.($this->order->getTotalPaid() * 100).' | Przelewy24 amount: '.$p24_amount;
         PrestaShopLogger::addLog($message);
 
         $dispatch_req = array();

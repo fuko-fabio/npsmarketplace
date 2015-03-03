@@ -43,8 +43,8 @@ if (isset($p24_session_id) && !empty($p24_session_id)) {
         }
     } else {
         $history = new OrderHistory();
-        $history->id_order = intval($order_id);
-        $history->changeIdOrderState(8, intval($order_id));
+        $history->id_order = intval($id_order);
+        $history->changeIdOrderState(8, intval($id_order));
         $history->addWithemail(true);
         $m->reportError(array(
             'Background payment. Unabe to verify payment. Error code: '.$p24_error_code,
