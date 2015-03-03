@@ -420,6 +420,31 @@ class NpsMarketplace extends Module {
         return $this->display(__FILE__, 'views/templates/hook/iframe.tpl');
     }
 
+    public function hookIframeHome() {
+        $id_lang = (int)Tools::getValue('id_lang');
+        if (isset($id_lang) && !empty($id_lang))
+            $lang = new Language($id_lang);
+        else
+            $lang = new Language((int)Configuration::get('PS_LANG_DEFAULT'));
+
+        $this->context->smarty->assign(
+            array(
+                'lang' => $lang->iso_code,
+                'title' => $this->l('LabsInTown iframe title.'),
+                'description' => $this->l('LabsInTown iframe promotion text.'),
+                'css_urls' => array(
+                    _THEME_CSS_DIR_.'global.css',
+                    _THEME_CSS_DIR_.'product_list.css'
+                                    ),
+                'js_urls' => array(),
+                'HOOK_IFRAME_HOME' => Hook::exec('iframeHome'),
+                'HOOK_IFRAME_HOME_HEADER' => Hook::exec('iframeHomeHeader')
+            )
+        );
+
+        return $this->display(__FILE__, 'views/templates/hook/iframe_home.tpl');
+    }
+
     public function hookHeader() {
         $this->context->controller->addJS(($this->_path).'js/main_town.js');
         $this->context->controller->addCss(($this->_path).'npsmarketplace.css');

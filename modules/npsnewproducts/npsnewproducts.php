@@ -48,26 +48,32 @@ class NpsNewProducts extends Module
 		$this->ps_versions_compliancy = array('min' => '1.6', 'max' => _PS_VERSION_);
 	}
 
-	public function install()
-	{
-		$success = (parent::install()
-			&& $this->registerHook('header')
-			&& $this->registerHook('addproduct')
-			&& $this->registerHook('updateproduct')
-			&& $this->registerHook('deleteproduct')
-			&& Configuration::updateValue('NPS_NEW_PRODUCTS_NBR', 5)
-			&& $this->registerHook('displayHome')
-		);
-		$this->_clearCache('*');
+    public function install() {
+        $success = parent::install()
+            && $this->registerHook('header')
+            && $this->registerHook('addproduct')
+            && $this->registerHook('updateproduct')
+            && $this->registerHook('deleteproduct')
+            && $this->registerHook('iframeHome')
+            && $this->registerHook('iframeHomeHeader')
+            && $this->registerHook('displayHome')
+            && Configuration::updateValue('NPS_NEW_PRODUCTS_NBR', 5);
+        $this->_clearCache('*');
 
-		return $success;
-	}
+        return $success;
+    }
 
-	public function uninstall()
-	{
-		$this->_clearCache('*');
+    public function uninstall() {
+        $this->_clearCache('*');
 
-		return parent::uninstall();
+        return parent::uninstall()
+            && $this->unregisterHook('header')
+            && $this->unregisterHook('addproduct')
+            && $this->unregisterHook('updateproduct')
+            && $this->unregisterHook('deleteproduct')
+            && $this->unregisterHook('iframeHome')
+            && $this->unregisterHook('iframeHomeHeader')
+            && $this->unregisterHook('displayHome');
 	}
 
 	public function getContent()
@@ -153,38 +159,40 @@ class NpsNewProducts extends Module
 		return $this->display(__FILE__, 'npsnewproducts_home.tpl', $this->getCacheId($this->name.$this->context->cookie->main_town));
 	}
 
-	public function hookHeader($params)
-	{
-		if (isset($this->context->controller->php_self) && $this->context->controller->php_self == 'index')
-			$this->context->controller->addCSS(_THEME_CSS_DIR_.'product_list.css');
+    public function hookIframeHome($params) {
+        return $this->hookDisplayHome($params);
+    }
 
-		$this->context->controller->addCSS($this->_path.'npsnewproducts.css', 'all');
-	}
+    public function hookIframeHomeHeader($params) {
+        return '<link rel="stylesheet" href="'.$this->_path.'npsnewproducts.css">';
+    }
 
-	public function hookAddProduct($params)
-	{
+    public function hookHeader($params) {
+        if (isset($this->context->controller->php_self) && $this->context->controller->php_self == 'index')
+            $this->context->controller->addCSS(_THEME_CSS_DIR_.'product_list.css');
+
+        $this->context->controller->addCSS($this->_path.'npsnewproducts.css', 'all');
+    }
+
+	public function hookAddProduct($params) {
 		$this->_clearCache('*');
 	}
 
-	public function hookUpdateProduct($params)
-	{
+	public function hookUpdateProduct($params) {
 		$this->_clearCache('*');
 	}
 
-	public function hookDeleteProduct($params)
-	{
+	public function hookDeleteProduct($params) {
 		$this->_clearCache('*');
 	}
 
-	public function _clearCache($template, $cache_id = NULL, $compile_id = NULL)
-	{
+	public function _clearCache($template, $cache_id = NULL, $compile_id = NULL) {
 		parent::_clearCache('npsnewproducts.tpl');
 		parent::_clearCache('npsnewproducts_home.tpl', 'npsnewproducts-home');
 		parent::_clearCache('tab.tpl', 'npsnewproducts-tab');
 	}
 
-	public function renderForm()
-	{
+	public function renderForm() {
 		$fields_form = array(
 			'form' => array(
 				'legend' => array(

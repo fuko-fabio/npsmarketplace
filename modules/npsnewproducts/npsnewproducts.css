@@ -49,3 +49,8 @@
 	color:#333;
 }
 #new-products_block_right .button_large:hover {text-decoration:underline}
+
+.nps-best-sell-list h2 {
+  font: 600 21px/24px "Open Sans", sans-serif;
+  color: #333;
+  text-transform: uppercase; }
