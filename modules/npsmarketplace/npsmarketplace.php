@@ -59,6 +59,8 @@ class NpsMarketplace extends Module {
             || !$this->registerHook('displayHome')
             || !$this->registerHook('displayNav')
             || !$this->registerHook('extraLogo')
+            || !$this->registerHook('iframeHome')
+            || !$this->registerHook('iframeHomeHeader')
             || !Configuration::updateValue('NPS_GLOBAL_COMMISION', 3)
             || !Configuration::updateValue('NPS_PRODUCT_GUIDE_URL', $shop_url)
             || !Configuration::updateValue('NPS_SELLER_GUIDE_URL', $shop_url)
@@ -75,7 +77,7 @@ class NpsMarketplace extends Module {
         return true;
     }
 
-    public function uninstall() {
+    public function uninstall() { return $this->registerHook('iframeHome') && $this->registerHook('iframeHomeHeader');
         if (!parent::uninstall()
             || !$this->unregisterHook('header')
             || !$this->unregisterHook('displayCustomerAccount')
@@ -87,6 +89,8 @@ class NpsMarketplace extends Module {
             || !$this->unregisterHook('displayHome')
             || !$this->unregisterHook('displayNav')
             || !$this->unregisterHook('extraLogo')
+            || !$this->unregisterHook('iframeHome')
+            || !$this->unregisterHook('iframeHomeHeader')
             || !$this->_deleteTab()
             || !$this->_deleteTables()
             || !$this->_deleteFeatures()
@@ -375,7 +379,7 @@ class NpsMarketplace extends Module {
         return $this->display(__FILE__, 'views/templates/hook/iframe_template.tpl');
     }
 
-    public function hookIframe() {
+    public function getSellerIframe() {
         $id_seller = (int)Tools::getValue('id_seller');
         $id_lang = (int)Tools::getValue('id_lang');
         $id_town = (int)Tools::getValue('id_town');
@@ -420,7 +424,7 @@ class NpsMarketplace extends Module {
         return $this->display(__FILE__, 'views/templates/hook/iframe.tpl');
     }
 
-    public function hookIframeHome() {
+    public function getShopIframe() {
         $id_lang = (int)Tools::getValue('id_lang');
         if (isset($id_lang) && !empty($id_lang))
             $lang = new Language($id_lang);
@@ -443,6 +447,14 @@ class NpsMarketplace extends Module {
         );
 
         return $this->display(__FILE__, 'views/templates/hook/iframe_home.tpl');
+    }
+
+    public function hookIframeHome($params) {
+        return $this->hookDisplayHome($params);
+    }
+
+    public function hookIframeHomeHeader($params) {
+        return '<link rel="stylesheet" href="'.$this->_path.'npsmarketplace.css">';
     }
 
     public function hookHeader() {

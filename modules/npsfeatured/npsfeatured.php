@@ -61,6 +61,8 @@ class NpsFeatured extends Module
 			|| !$this->registerHook('deleteproduct')
 			|| !$this->registerHook('categoryUpdate')
 			|| !$this->registerHook('displayHome')
+            || !$this->registerHook('iframeHome')
+            || !$this->registerHook('iframeHomeHeader')
 		)
 			return false;
 
@@ -113,6 +115,14 @@ class NpsFeatured extends Module
 
     public function hookHeader() {
         $this->context->controller->addCss(($this->_path).'npsfeatured.css');
+    }
+
+    public function hookIframeHome($params) {
+        return $this->hookDisplayHome($params);
+    }
+
+    public function hookIframeHomeHeader($params) {
+        return '<link rel="stylesheet" href="'.$this->_path.'npsfeatured.css">';
     }
 
 	public function _cacheProducts()

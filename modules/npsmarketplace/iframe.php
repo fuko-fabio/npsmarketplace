@@ -9,4 +9,4 @@ include_once(dirname(__FILE__).'/../../init.php');
 include_once(dirname(__FILE__).'/npsmarketplace.php');
 
 $marketplace = new NpsMarketplace();
-echo $marketplace->hookIframe();
+echo $marketplace->getSellerIframe();
