@@ -139,6 +139,13 @@ sup {
 .main-page-indent {
   margin-bottom: $base-page-indent;
 }
+.hint {
+  padding: 5px;
+  border: 1px solid $state-info-border;
+  font-size: 14px;
+  color: $state-info-border;
+  margin-bottom: 10px;
+}
 
 .alert {
   padding: 5px;
