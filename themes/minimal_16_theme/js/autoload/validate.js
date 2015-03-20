@@ -60,5 +60,5 @@ function validate_isQuantity(s) {
 }
 
 function validate_isPercent(s) {
-    return validate_isInteger(s) && s >= 0 && s <= 100;
+    return validate_isPrice(s) && s >= 0 && s <= 100;
 }

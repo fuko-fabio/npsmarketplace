@@ -41,7 +41,8 @@ $primary-color-light: #FFC654;
 $primary-red-color: #cc1010;
 $input-color: $base-text-color;
 $input-border-color: #bbb;
-
+$secondary-color: #009999;
+$secondary-color-light: #46B3B3;
 //--------- Indents
 $base-page-indent: $grid-gutter-width;
 $base-box-padding: 14px 18px 13px;
@@ -64,6 +65,8 @@ $btn-primary-color: $primary-color;
 $btn-primary-color-hover: $primary-color-light;
 $btn-color: #DBDBDB;
 $btn-color-hover: #E8E8E8;
+$btn-secondary-color: $secondary-color;
+$btn-secondary-color-hover: $secondary-color-light;
 $btn-text-color: $dark-text-color;
 
 //------ Buttons +/- ---

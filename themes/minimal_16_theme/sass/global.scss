@@ -261,6 +261,20 @@ label {
   }
 }
 
+.form-buttons {
+  border-top: 1px solid $base-border-color;
+  margin-top: 10px;
+  padding-top: 10px;
+  
+  .pull-right {
+    margin-left: 10px
+  }
+  
+  .pull-left {
+    margin-right: 10px
+  }
+}
+
 //buttons
 input.button_mini,
 input.button_small,
@@ -381,7 +395,14 @@ span.exclusive {
 .button.ccl {
   background: $btn-color !important;
   &:hover {
-    background: $btn-color-hover;
+    background: $btn-color-hover !important;
+  }
+}
+
+.button.secondary {
+  background: $btn-secondary-color !important;
+  &:hover {
+    background: $btn-secondary-color-hover !important;
   }
 }
 
@@ -2984,9 +3005,15 @@ div.star.star_hover {
       }
     }
     .ccl {
-      background: $btn-color;
+      background: $btn-color !important;
       &:hover {
-        background: $btn-color-hover;
+        background: $btn-color-hover !important;
+      }
+    }
+    .secondary {
+      background: $btn-secondary-color !important;
+      &:hover {
+        background: $btn-secondary-color-hover !important;
       }
     }
   }
@@ -3257,7 +3284,8 @@ div.star.star_hover {
 }
 
 #block-seller-products-list,
-#nps_tickets_block {
+#nps_tickets_block,
+#block-seller-vouchers {
   .content_sortPagiBar {
     .sortPagiBar {
       border: none;
