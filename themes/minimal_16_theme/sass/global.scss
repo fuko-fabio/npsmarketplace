@@ -2983,14 +2983,9 @@ div.star.star_hover {
   -moz-border-radius: 0px !important;
   border-radius: 0px !important;
 
-  .fancybox-inner {
-    min-width: 400px;
-    min-height: 200px;
-  }
   .submit {
-    position: absolute;
-    bottom: 0;
-    right: 0;
+    float: right;
+    margin-top: 10px;
 
     .button {
       border: none;

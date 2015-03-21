@@ -7497,13 +7497,9 @@ div.star.star_hover:after {
   -webkit-border-radius: 0px !important;
   -moz-border-radius: 0px !important;
   border-radius: 0px !important; }
-  .fancybox-skin .fancybox-inner {
-    min-width: 400px;
-    min-height: 200px; }
   .fancybox-skin .submit {
-    position: absolute;
-    bottom: 0;
-    right: 0; }
+    float: right;
+    margin-top: 10px; }
     .fancybox-skin .submit .button {
       border: none;
       min-width: 80px;
