@@ -71,12 +71,17 @@
                             <div id="send_vouchers_box_{$voucher.id_cart_rule}" class="send-voucher-box">
                                 <h2 class="page-subheading">{l s='Send vouchers' mod='npsvouchers'}</h2>
                                 <p id="send_vouchers_error_{$voucher.id_cart_rule}" class="alert alert-error voucher-error"><span class="alert-content">{l s='Unable to send vouchers. Try again or contact with customer support.' mod='npsvouchers'}</span></p>
+                                <p id="send_vouchers_email_error_{$voucher.id_cart_rule}" class="alert alert-error voucher-error"><span class="alert-content">{l s='Please provide at least one email address or check (newsletter users)' mod='npsvouchers'}</span></p>
                                 <p class="checkbox">
                                     <input type="checkbox" name="allCustomers" id="send_vouchers_input_{$voucher.id_cart_rule}"/>
                                     <label for="send_vouchers_input_{$voucher.id_cart_rule}">{l s='Send to all labsintown registered users. (Newsletter wanted users only)' mod='npsvouchers'}</label>
                                 </p>
                                 <label>{l s='Email adresses' mod='npsvouchers'}</label>
                                 <textarea id="vouchers_emails_{$voucher.id_cart_rule}" class="emails"></textarea>
+                                <div class="form-group">
+                                    <label for="vouchers_message_{$voucher.id_cart_rule}">{l s='Message to customer' mod='npsvouchers'}</label>
+                                    <textarea id="vouchers_message_{$voucher.id_cart_rule}" class="validate form-control" data-validate="isMessage"></textarea>
+                                </div>
                                 <p class="submit">
                                     <input class="button ccl" type="button" value="{l s='Cancel' mod='npsvouchers'}" onclick="$.fancybox.close();"/>
                                     <input class="button" onclick="sendVouchers({$voucher.id_cart_rule});" value="{l s='Send' mod='npsvouchers'}"/>

@@ -2,6 +2,9 @@ Witaj!,
 
 Przesyłamy kupon rabatowy do wykorzystania w naszym butiku.
 
+Wiadomość od butiku:
+{seller_message}
+
 Butik {seller_name}: [{seller_link}]
 Wydarzenie {product_name}: [{product_link}]
 

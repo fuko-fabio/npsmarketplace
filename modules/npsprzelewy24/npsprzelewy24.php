@@ -14,6 +14,7 @@ if ( !defined( '_NPS_SELLER_REPORTS_DIR_' ) )
 
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
 include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24PaymentStatement.php');
+include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24TransactionDispatcher.php');
 
 class NpsPrzelewy24 extends PaymentModule {
 
@@ -577,6 +578,56 @@ class NpsPrzelewy24 extends PaymentModule {
             Configuration::updateValue($s['config'], $os->id);
         }
         return $result;
+    }
+
+    public function validateP24Response($p24_error_code, $p24_token, $p24_session_id, $p24_amount,
+            $p24_currency, $p24_order_id, $p24_method, $p24_statement, $p24_sign) {
+        if (isset($p24_session_id) && !empty($p24_session_id)) {
+            $session_id_array = explode('|', $p24_session_id);
+            $id_cart = $session_id_array[1];
+            $id_order = Order::getOrderByCartId($id_cart);
+            if (empty($p24_error_code)) {
+                $validator = new P24PaymentValodator(
+                    $p24_session_id,
+                    $p24_amount,
+                    $p24_currency,
+                    $p24_order_id,
+                    $p24_method,
+                    $p24_statement,
+                    $p24_sign
+                );
+                $result = $validator->validate($p24_token, true);
+                if ($result['error'] == 0) {
+                    PrestaShopLogger::addLog('Background payment. Verification success. Session ID: '.$p24_session_id.' Dispatching money.');
+                    $dispatcher = new P24TransactionDispatcher($id_cart);
+                    $dispatcher->dispatchMoney();
+                } else {
+                    PrestaShopLogger::addLog('Background payment. Verification Failed!. '.$result['errorMessage']);
+                    $history = new OrderHistory();
+                    $history->id_order = intval($id_order);
+                    $history->changeIdOrderState(8, intval($id_order));
+                    $history->addWithemail(true);
+                }
+            } else {
+                $history = new OrderHistory();
+                $history->id_order = intval($id_order);
+                $history->changeIdOrderState(8, intval($id_order));
+                $history->addWithemail(true);
+                $this->reportError(array(
+                    'Background payment. Unabe to verify payment. Error code: '.$p24_error_code,
+                    'Requested URL: '.Context::getContext()->link->getModuleLink('npsprzelewy24', 'paymentState'),
+                    'GET params: '.implode(' | ', $_GET),
+                    'POST params: '.implode(' | ', $_POST),
+                ));
+            }
+        } else {
+            $this->reportError(array(
+                'Background payment. Unabe to verify payment. Missing session ID.',
+                'Requested URL: '.Context::getContext()->link->getModuleLink('npsprzelewy24', 'paymentState'),
+                'GET params: '.implode(' | ', $_GET),
+                'POST params: '.implode(' | ', $_POST),
+            ));
+        }
     }
 
     private function deleteOrderStates() {

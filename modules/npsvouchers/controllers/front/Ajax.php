@@ -29,6 +29,7 @@ class NpsVouchersAjaxModuleFrontController extends ModuleFrontController {
         }
         $id_voucher = Tools::getValue('id_voucher');
         $newsletter_users = Tools::getValue('newsletter_users');
+        $message = Tools::getValue('message');
         
         if ($newsletter_users) {
             $dbquery = new DbQuery();
@@ -65,6 +66,7 @@ class NpsVouchersAjaxModuleFrontController extends ModuleFrontController {
                 '{product_link}' => $product_link,
                 '{voucher_name}' => $cart_rule->name,
                 '{voucher_code}' => $cart_rule->code,
+                '{seller_message}' => $message,
                 '{shop_name}' => Configuration::get('PS_SHOP_NAME'),
                 '{shop_url}' => Tools::getHttpHost(true).__PS_BASE_URI__,
             );

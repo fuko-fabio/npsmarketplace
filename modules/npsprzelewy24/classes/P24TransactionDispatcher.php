@@ -39,6 +39,7 @@ class P24TransactionDispatcher {
         $currency = $currencies[0];
         $result = array();
         $sllers_invoices_data = array();
+        $cart_rules = $this->order->getCartRules();
 
         foreach ($this->order->getProducts() as $product) {
             $id_seller = Seller::getSellerByProduct($product['product_id']);
@@ -57,6 +58,9 @@ class P24TransactionDispatcher {
                 return false;
             }
             $total_product_price = $product['total_price_tax_incl'];
+            //TODO Reduce product price based on cart rules
+            $cart_rule = $this->cartRuleForProduct($cart_rules, $product['id_product']);
+
             $a_f_s = $this->amountForSeller($seller, $total_product_price);
 
             $invoice_data = array(
@@ -206,6 +210,21 @@ class P24TransactionDispatcher {
             }
         }
         return floor($result * 100);
+    }
+
+    //TODO finish me!
+    private function cartRuleForProduct($cart_rules, $id_product) {
+        $ids = array();
+        foreach ($cart_rules as $key => $value) {
+            $ids[] = $value['id_cart_rule'];
+        }
+        $dbquery = new DbQuery();
+        $dbquery->select('ocr.id_cart_rule, ocr.value')
+            ->from('order_cart_rule', 'ocr')
+            ->leftJoin('seller_cart_rule', 'scr', 'ocr.id_cart_rule = scr.id_cart_rule')
+            ->leftJoin('cart_rule', 'cr', 'ocr.id_cart_rule = cr.id_cart_rule')
+            ->where('ocr.`id_cart_rule` IN('.implode(',', $ids).') AND cr.`reduction_product` = '.$id_product);
+        $result = Db::getInstance()->executeS($dbquery);
     }
 
     private function checkFunds($total) {

@@ -106,6 +106,10 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
         if (empty($phone)) {
             $phone = $address->phone_mobile;
         }
+        $return_url = $this->context->link->getModuleLink('npsprzelewy24', 'paymentResult', array('id_cart' => $cart->id));
+        if (Configuration::get('NPS_P24_SANDBOX_MODE') == 1) {
+            $return_url = $this->context->link->getModuleLink('npsprzelewy24', 'paymentResult', array('id_cart' => $cart->id, 'p24_token' => $p24_token));
+        }
         $data = array(
             'p24_merchant_id' => $p24_id,
             'p24_pos_id' => $p24_id,
@@ -125,7 +129,7 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
             'p24_zip' => $address->postcode,
             'p24_city' => $address->city,
             'p24_url_cancel' => $this->context->link->getModuleLink('npsprzelewy24', 'paymentCancel'),
-            'p24_url_return' => $this->context->link->getModuleLink('npsprzelewy24', 'paymentResult', array('id_cart' => $cart->id)),
+            'p24_url_return' => $return_url,
             'p24_url_status' => Tools::getHttpHost(true).__PS_BASE_URI__.'modules/npsprzelewy24/paymentState.php?p24_token='.$p24_token,
             'p24_shipping' => $cart->getTotalShippingCost(),
         );

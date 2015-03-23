@@ -17,6 +17,21 @@ class NpsPrzelewy24PaymentResultModuleFrontController extends ModuleFrontControl
         $this->display_column_right = false;
         parent::initContent();
 
+        if (Configuration::get('NPS_P24_SANDBOX_MODE') == 1) {
+            PrestaShopLogger::addLog('Starting payment validation. GET params: '.implode(' | ', $_GET).' POST params: '.implode(' | ', $_POST));
+            $this->module->validateP24Response(
+                Tools::getValue('p24_error_code'),
+                Tools::getValue('p24_token'),
+                Tools::getValue('p24_session_id'),
+                Tools::getValue('p24_amount'),
+                Tools::getValue('p24_currency'),
+                Tools::getValue('p24_order_id'),
+                Tools::getValue('p24_method'),
+                Tools::getValue('p24_statement'),
+                Tools::getValue('p24_sign')
+            );
+        }
+
         $id_cart = Tools::getValue('id_cart');
         if (isset($id_cart) && !empty($id_cart)) {
             $id_order = Order::getOrderByCartId($id_cart);

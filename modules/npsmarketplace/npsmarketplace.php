@@ -803,6 +803,16 @@ class NpsMarketplace extends Module {
             $sellers_tab->{'name'}[intval($language['id_lang'])] = $this->l('Districts');
         }
         $success = $success && $sellers_tab->add();
+        
+        $sellers_tab = new Tab();
+        $sellers_tab->id_parent = $tab->id;
+        $sellers_tab->position = 0;
+        $sellers_tab->module = $this->name;
+        $sellers_tab->class_name = 'AdminProvinces';
+        foreach ($languages AS $language) {
+            $sellers_tab->{'name'}[intval($language['id_lang'])] = $this->l('Provinces');
+        }
+        $success = $success && $sellers_tab->add();
         return $success;
     }
 

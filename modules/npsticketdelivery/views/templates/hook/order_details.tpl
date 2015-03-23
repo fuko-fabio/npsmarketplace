@@ -3,13 +3,14 @@
 *  @copyright 2014 npsoftware
 *}
 {if $tickets}
+{if isset($invoice_url)}
 <h1 class="page-heading">{l s='Invoice' mod='npsticketdelivery'}</h1>
 <div class="box">
     <p>{l s='Transaction summary can be downloaded here.' mod='npsticketdelivery'}</p>
     <a class="btn btn-default button button-medium pull-right" href="{$invoice_url}">{l s='Download' mod='npsticketdelivery'} <i class="icon-file-text"></i></a>
     <br />
 </div>
-
+{/if}
 <h1 class="page-heading">{l s='Tickets' mod='npsticketdelivery'}</h1>
 <div id="nps_tickets_block" class="box">
     <ul class="grid row">

@@ -132,6 +132,8 @@ class NpsVouchersVoucherModuleFrontController extends ModuleFrontController {
     }
 
     public function initContent() {
+        $this->display_column_left = false;
+        $this->display_column_right = false;
         parent::initContent();
         $id_voucher = trim(Tools::getValue('id_voucher'));
         $products = $this->getProducts();
@@ -150,7 +152,7 @@ class NpsVouchersVoucherModuleFrontController extends ModuleFrontController {
         ));
 
         if (empty($products)) {
-            $this->errors[] = $this->module->l('You do not have any active product!', 'Voucher');
+            $this->errors[] = $this->module->l('You do not have any active product or for all products vouchers are already defined.', 'Voucher');
         }
         $this -> setTemplate('voucher.tpl');
     }
@@ -181,21 +183,41 @@ class NpsVouchersVoucherModuleFrontController extends ModuleFrontController {
     }
 
     private function getProducts() {
-        $ids = Seller::getSellerProducts($this->seller->id, 0, 0, true);
-        $dbquery = new DbQuery();
-        $dbquery->select('p.`id_product`, p.`price`, pl.`name`, MAX(paed.`expiry_date`) AS date_to')
-            ->from('product', 'p')
-            ->leftJoin('product_lang', 'pl', 'p.id_product = pl.id_product')
-            ->leftJoin('product_attribute_expiry_date', 'paed', 'p.id_product = paed.id_product')
-            ->where('p.`id_product` IN ('.implode(',', $ids).') AND pl.`id_lang` = '.$this->context->language->id)
-            ->groupBy('p.id_product')
-            ->orderBy('pl.name ASC');
-        $result = Db::getInstance()->executeS($dbquery);
-        
-        foreach ($result as $key => $value) {
-            $result[$key]['quantity'] = Product::getQuantity($result[$key]['id_product']);
+        $result = array();
+        $ids = array_diff(
+            Seller::getSellerProducts($this->seller->id, 0, 0, true),
+            $this->getProductsIdsForSellerVouchers()
+        );
+        if (!empty($ids)) {
+            $dbquery = new DbQuery();
+            $dbquery->select('p.`id_product`, p.`price`, pl.`name`, MAX(paed.`expiry_date`) AS date_to')
+                ->from('product', 'p')
+                ->leftJoin('product_lang', 'pl', 'p.id_product = pl.id_product')
+                ->leftJoin('product_attribute_expiry_date', 'paed', 'p.id_product = paed.id_product')
+                ->where('p.`id_product` IN ('.implode(',', $ids).') AND pl.`id_lang` = '.$this->context->language->id)
+                ->groupBy('p.id_product')
+                ->orderBy('pl.name ASC');
+            $result = Db::getInstance()->executeS($dbquery);
+            
+            foreach ($result as $key => $value) {
+                $result[$key]['quantity'] = Product::getQuantity($result[$key]['id_product']);
+            }
         }
         return $result;
+    }
+
+    private function getProductsIdsForSellerVouchers() {
+        $dbquery = new DbQuery();
+        $dbquery->select('reduction_product')
+            ->from('cart_rule', 'cr')
+            ->leftJoin('seller_cart_rule', 'scr', 'cr.id_cart_rule = scr.id_cart_rule')
+            ->where('scr.`id_seller` = '.$this->seller->id);
+        $result = Db::getInstance()->executeS($dbquery);
+        $ids = array();
+        foreach ($result as $key => $value) {
+            $ids[] = $value['reduction_product'];
+        }
+        return $ids;
     }
 
     private function processDelete() {
