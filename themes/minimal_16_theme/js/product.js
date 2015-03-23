@@ -724,31 +724,33 @@ function updatePrice()
 }
 
 function updateTypeData() {
-    var type;
+    var type = 'unknown';
     var name;
     var time;
     var date;
-    $.each(attributesCombinations, function(key, attributeCombination) {
-        $.each(selectedCombination['attributes'], function(key, idAttribute) {
-            if (attributeCombination['id_attribute'] == idAttribute) {
-                switch(attributeCombination['id_attribute_group']) {
-                    case type_id_attribute_group:
-                        type = attributeCombination['attribute'];
-                        break;
-                    case name_id_attribute_group:
-                        name = groups[name_id_attribute_group]['attributes'][attributeCombination['id_attribute']];
-                        break;
-                    case time_id_attribute_group:
-                        time = groups[time_id_attribute_group]['attributes'][attributeCombination['id_attribute']];
-                        break;
-                    case date_id_attribute_group:
-                        date = groups[date_id_attribute_group]['attributes'][attributeCombination['id_attribute']];
-                        break;
+    if (attributesCombinations !== 'undefined' && attributesCombinations.length > 0
+            && selectedCombination['attributes'] !== 'undefined' && selectedCombination['attributes'].length > 0) {
+        $.each(attributesCombinations, function(key, attributeCombination) {
+            $.each(selectedCombination['attributes'], function(key, idAttribute) {
+                if (attributeCombination['id_attribute'] == idAttribute) {
+                    switch(attributeCombination['id_attribute_group']) {
+                        case type_id_attribute_group:
+                            type = attributeCombination['attribute'];
+                            break;
+                        case name_id_attribute_group:
+                            name = groups[name_id_attribute_group]['attributes'][attributeCombination['id_attribute']];
+                            break;
+                        case time_id_attribute_group:
+                            time = groups[time_id_attribute_group]['attributes'][attributeCombination['id_attribute']];
+                            break;
+                        case date_id_attribute_group:
+                            date = groups[date_id_attribute_group]['attributes'][attributeCombination['id_attribute']];
+                            break;
+                    }
                 }
-            }
+            });
         });
-    });
-
+    }
     switch(type) {
         case "ticket":
             $('p.ticket, .product_attributes, #add_to_cart, .price').show();
