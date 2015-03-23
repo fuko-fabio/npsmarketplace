@@ -109,13 +109,13 @@ class NpsNewProducts extends Module
         if (Configuration::get('NPS_NB_DAYS_NEW_PRODUCT')) {
             $types = array();
             if (Configuration::get('NPS_NEW_PRODUCTS_DISPLAY_TICKETS'))
-                $types[] = 0;
+                $types[] = 'ticket';
             if (Configuration::get('NPS_NEW_PRODUCTS_DISPLAY_CARNERTS'))
-                $types[] = 1;
+                $types[] = 'carnet';
             if (Configuration::get('NPS_NEW_PRODUCTS_DISPLAY_ADS'))
-                $types[] = 2;
+                $types[] = 'ad';
             if (Configuration::get('NPS_NEW_PRODUCTS_DISPLAY_EXTERNAL_ADS'))
-                $types[] = 3;
+                $types[] = 'externalad';
 
             if (!empty($types)) {
                 $newProducts = Product::getNewProductsByLocation(

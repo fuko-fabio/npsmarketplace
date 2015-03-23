@@ -508,8 +508,6 @@ class Product extends ProductCore {
         $sql->leftJoin('manufacturer', 'm', 'm.`id_manufacturer` = p.`id_manufacturer`');
 
         $sql->where('product_shop.`active` = 1');
-        if ($types && !empty($types))
-            $sql->where('p.`type` IN ('.implode(',', $types).')');
         if ($front)
             $sql->where('product_shop.`visibility` IN ("both", "catalog")');
 
