@@ -728,8 +728,8 @@ function updateTypeData() {
     var name;
     var time;
     var date;
-    if (attributesCombinations !== 'undefined' && attributesCombinations.length > 0
-            && selectedCombination['attributes'] !== 'undefined' && selectedCombination['attributes'].length > 0) {
+    if (typeof attributesCombinations !== 'undefined' && attributesCombinations.length > 0
+            && typeof selectedCombination['attributes'] !== 'undefined' && selectedCombination['attributes'].length > 0) {
         $.each(attributesCombinations, function(key, attributeCombination) {
             $.each(selectedCombination['attributes'], function(key, idAttribute) {
                 if (attributeCombination['id_attribute'] == idAttribute) {
