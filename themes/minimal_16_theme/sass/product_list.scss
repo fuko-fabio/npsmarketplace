@@ -127,7 +127,7 @@ ul.product_list.grid {
           background: url(../img/price-container-bg.png);
           margin: 5px;
           display: none;
-          font-family: $font-montser;
+          font-family: $font-price;
           span {
             color: $light-text-color;
             &.old-price {
@@ -154,7 +154,7 @@ ul.product_list.grid {
         }
       }
       .content_price {
-        font-family: $font-montser;
+        font-family: $font-price;
         margin: 5px;
         line-height: 21px;
         cursor: pointer;

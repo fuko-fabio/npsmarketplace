@@ -893,7 +893,7 @@ table.table-product-discounts {
   font-weight: bold;
   font-size: 29px;
   line-height: 32px;
-  font-family: $font-montser;
+  font-family: $font-price;
   text-align: right;
   color: $product-price-color;
   @media (max-width: $screen-sm-max) {
@@ -906,7 +906,7 @@ table.table-product-discounts {
 #old_price {
   font-size: 17px;
   text-decoration: line-through;
-  font-family: $font-montser;
+  font-family: $font-price;
   text-align: right;
   color: $product-old-price-color;
 }
@@ -917,7 +917,7 @@ table.table-product-discounts {
   margin-right: 10px;
   padding: 1px 2px;
   font-weight: bold;
-  font-family: $font-montser;
+  font-family: $font-price;
   font-size: 21px;
   line-height: 23px;
   color: $light-text-color;

@@ -100,7 +100,7 @@ ul.product_list.grid > li {
         background: url(../img/price-container-bg.png);
         margin: 5px;
         display: none;
-        font-family: "Montserrat", sans-serif; }
+        font-family: "Doppio One", sans-serif; }
         ul.product_list.grid > li .product-container .product-image-container .content_price span {
           color: #fff; }
           ul.product_list.grid > li .product-container .product-image-container .content_price span.old-price {
@@ -118,7 +118,7 @@ ul.product_list.grid > li {
     ul.product_list.grid > li .product-container .comments_note .star_content {
       margin: 0 3px 12px 59px; }
     ul.product_list.grid > li .product-container .content_price {
-      font-family: "Montserrat", sans-serif;
+      font-family: "Doppio One", sans-serif;
       margin: 5px;
       line-height: 21px;
       cursor: pointer; }

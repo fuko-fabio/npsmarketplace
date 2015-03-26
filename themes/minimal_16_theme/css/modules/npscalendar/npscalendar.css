@@ -27,15 +27,13 @@
   padding-right: 10px;
   padding-bottom: 25px; }
   .nps-calendar .header {
-    font: 600 21px/24px "Open Sans", sans-serif;
+    font: 600 24px/24px "Open Sans", sans-serif;
     color: #333;
     text-transform: uppercase;
     padding-bottom: 10px; }
   .nps-calendar .left {
-    font-family: "Montserrat", sans-serif;
     padding-top: 15px;
-    padding-left: 5px;
-    font-size: 24px; }
+    padding-left: 5px; }
     .nps-calendar .left a:hover {
       color: #ffaa00; }
   .nps-calendar .right {
@@ -50,7 +48,7 @@
       font-family: "Hammersmith One", sans-serif;
       font-size: 32px; }
     .nps-calendar .right .year {
-      font-family: "Montserrat", sans-serif;
+      font-family: "Doppio One", sans-serif;
       color: #ffaa00;
       font-size: 32px;
       font-weight: bold; }
@@ -75,7 +73,7 @@
       white-space: nowrap;
       background: #d6d4d4; }
       .nps-calendar .content .day .top .number {
-        font-family: "Montserrat", sans-serif;
+        font-family: "Doppio One", sans-serif;
         font-weight: 700;
         font-size: 20px;
         line-height: 20px;
@@ -118,7 +116,7 @@
     .nps-calendar .event p {
       margin: 0; }
     .nps-calendar .event .time {
-      font-family: "Montserrat", sans-serif;
+      font-family: "Doppio One", sans-serif;
       font-weight: bold; }
   .nps-calendar a {
     color: #333; }
@@ -154,7 +152,7 @@
       font-family: "Hammersmith One", sans-serif;
       font-size: 28px; }
     .nps-calendar-big .left .year {
-      font-family: "Montserrat", sans-serif;
+      font-family: "Doppio One", sans-serif;
       color: #ffaa00;
       font-size: 28px;
       font-weight: bold; }
@@ -182,7 +180,7 @@
       padding-top: 5px;
       padding-bottom: 5px; }
       .nps-calendar-big .row .item .item-content .number {
-        font-family: "Montserrat", sans-serif;
+        font-family: "Doppio One", sans-serif;
         font-weight: bold;
         font-size: 18px;
         line-height: 20px;

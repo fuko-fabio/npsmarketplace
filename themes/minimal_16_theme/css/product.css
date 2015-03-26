@@ -732,7 +732,7 @@ table.table-product-discounts {
   font-weight: bold;
   font-size: 29px;
   line-height: 32px;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Doppio One", sans-serif;
   text-align: right;
   color: #36454f; }
   @media (max-width: 991px) {
@@ -743,7 +743,7 @@ table.table-product-discounts {
 #old_price {
   font-size: 17px;
   text-decoration: line-through;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Doppio One", sans-serif;
   text-align: right;
   color: #6f6f6f; }
 
@@ -753,7 +753,7 @@ table.table-product-discounts {
   margin-right: 10px;
   padding: 1px 2px;
   font-weight: bold;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Doppio One", sans-serif;
   font-size: 21px;
   line-height: 23px;
   color: #fff;

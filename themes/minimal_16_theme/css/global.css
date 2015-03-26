@@ -1,4 +1,9 @@
 @charset "UTF-8";
+@import url(http:/\/fonts.googleapis.com/css?family=Poiret+One&subset=latin,latin-ext);
+@import url(http:/\/fonts.googleapis.com/css?family=Hammersmith+One&subset=latin,latin-ext);
+@import url(http:/\/fonts.googleapis.com/css?family=Open+Sans:300,600&subset=latin,latin-ext);
+@import url(http:/\/fonts.googleapis.com/css?family=Quicksand:300);
+@import url(http:/\/fonts.googleapis.com/css?family=Doppio+One&subset=latin,latin-ext);
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -3812,9 +3817,6 @@ td.visible-print {
 @font-face {
   font-family: 'Danube';
   src: url("../font/DANUBE__.TTF"); }
-@font-face {
-  font-family: 'Quicksand';
-  src: url("../font/Quicksand_Light.otf"); }
 /* FONT AWESOME CORE
  * -------------------------- */
 [class^="icon-"],
@@ -5546,10 +5548,11 @@ span.exclusive {
   background: #ffaa00;
   min-width: 80px;
   text-align: center;
-  -webkit-border-radius: 0;
   -moz-border-radius: 0;
+  -webkit-border-radius: 0;
   border-radius: 0;
   border: none;
+  -moz-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
   -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16); }
   .button.button-small span {
@@ -5572,9 +5575,10 @@ span.exclusive {
   font-weight: bold;
   border: none;
   background: #ffaa00;
-  -webkit-border-radius: 0;
   -moz-border-radius: 0;
+  -webkit-border-radius: 0;
   border-radius: 0;
+  -moz-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
   -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16); }
   .button.button-medium span {
@@ -5665,6 +5669,7 @@ span.exclusive {
   height: 27px;
   border-color: #bbb;
   padding: 6px;
+  -moz-box-shadow: none;
   -webkit-box-shadow: none;
   box-shadow: none; }
   .form-control.grey {
@@ -5833,8 +5838,8 @@ table.table_block td {
 .product-box {
   width: 178px;
   float: left;
-  -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
   box-sizing: border-box; }
   .product-box .product-image {
     border: 1px solid #d6d4d4;
@@ -6497,8 +6502,9 @@ div.star a:hover {
       width: 18px;
       height: 18px;
       text-indent: -5000px;
-      -webkit-transform: rotate(45deg);
+      -moz-transform: rotate(45deg);
       -ms-transform: rotate(45deg);
+      -webkit-transform: rotate(45deg);
       transform: rotate(45deg); }
     .breadcrumb a:before {
       display: inline-block;
@@ -6510,8 +6516,9 @@ div.star a:hover {
       height: 18px;
       background: transparent;
       text-indent: -5000px;
-      -webkit-transform: rotate(45deg);
+      -moz-transform: rotate(45deg);
       -ms-transform: rotate(45deg);
+      -webkit-transform: rotate(45deg);
       transform: rotate(45deg); }
     .breadcrumb a:hover {
       color: #555454; }
@@ -6717,6 +6724,7 @@ div.star a:hover {
       margin-right: 8px; }
     .cart_navigation .button-exclusive:hover, .cart_navigation .button-exclusive:focus, .cart_navigation .button-exclusive:active {
       color: #4465cf;
+      -moz-box-shadow: none;
       -webkit-box-shadow: none;
       box-shadow: none; }
   @media (max-width: 480px) {
@@ -7070,8 +7078,8 @@ p.payment_module {
   p.payment_module a {
     display: block;
     border: 1px solid #d6d4d4;
-    -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
     border-radius: 4px;
     font-size: 17px;
     line-height: 23px;
@@ -7497,6 +7505,7 @@ div.star.star_hover:after {
       text-align: center;
       background: #ffaa00;
       color: #353535;
+      -moz-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
       -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16); }
       .fancybox-skin .submit .button:hover {
@@ -7618,8 +7627,8 @@ div.star.star_hover:after {
     line-height: 60px;
     text-align: center;
     background: #6f6d6d;
-    -webkit-border-radius: 100px;
     -moz-border-radius: 100px;
+    -webkit-border-radius: 100px;
     border-radius: 100px; }
     @media (max-width: 991px) {
       #cmsinfo_block em {
@@ -7646,8 +7655,8 @@ div.star.star_hover:after {
         padding-bottom: 0; } }
   #cmsinfo_block p em {
     background: none;
-    -webkit-border-radius: 0;
     -moz-border-radius: 0;
+    -webkit-border-radius: 0;
     border-radius: 0;
     margin: 0;
     font-size: 13px;
