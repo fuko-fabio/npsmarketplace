@@ -68,11 +68,12 @@ class NpsVouchersVoucherModuleFrontController extends ModuleFrontController {
                 $this -> errors[] = $this->module->l('Voucher \'quantity\' is required', 'Voucher');
             else if (!Validate::isInt($quantity) || $quantity < 1)
                 $this -> errors[] = $this->module->l('Invalid voucher \'quantity\' format', 'Voucher');
-            if (empty($id_product))
-                $this -> errors[] = $this->module->l('Voucher \'product\' is required', 'Voucher');
-            else if (!Validate::isInt($id_product))
-                $this -> errors[] = $this->module->l('Invalid voucher \'product\'', 'Voucher');
-    
+            if ($is_new) {
+                if (empty($id_product))
+                    $this -> errors[] = $this->module->l('Voucher \'product\' is required', 'Voucher');
+                else if (!Validate::isInt($id_product))
+                    $this -> errors[] = $this->module->l('Invalid voucher \'product\' value', 'Voucher');
+            }
             if ($type == 'percent') {
                 if (empty($discount))
                     $this->errors[] = $this->module->l('Voucher discount value is required', 'Voucher');
@@ -91,7 +92,6 @@ class NpsVouchersVoucherModuleFrontController extends ModuleFrontController {
                 $cart_rule->code = $code;
                 $cart_rule->name = array($this->context->language->id => $name);
                 $cart_rule->quantity = $quantity;
-                $cart_rule->reduction_product = $id_product;
                 $cart_rule->date_from = $from.' 00:00:01';
                 $cart_rule->date_to = $to.' 23:59:59';
                 if ($type == 'percent') {
@@ -102,6 +102,7 @@ class NpsVouchersVoucherModuleFrontController extends ModuleFrontController {
                     $cart_rule->reduction_percent = null;
                 }
                 if ($is_new) {
+                    $cart_rule->reduction_product = $id_product;
                     $cart_rule->active = 1;
                     $cart_rule->partial_use = 0;
                     $cart_rule->quantity_per_user = 1;
@@ -184,10 +185,11 @@ class NpsVouchersVoucherModuleFrontController extends ModuleFrontController {
 
     private function getProducts() {
         $result = array();
-        $ids = array_diff(
-            Seller::getSellerProducts($this->seller->id, 0, 0, true),
-            $this->getProductsIdsForSellerVouchers()
-        );
+        //$ids = array_diff(
+        //    Seller::getSellerProducts($this->seller->id, 0, 0, true),
+        //    $this->getProductsIdsForSellerVouchers()
+        //);
+        $ids = Seller::getSellerProducts($this->seller->id, 0, 0, true);
         if (!empty($ids)) {
             $dbquery = new DbQuery();
             $dbquery->select('p.`id_product`, p.`price`, pl.`name`, MAX(paed.`expiry_date`) AS date_to')

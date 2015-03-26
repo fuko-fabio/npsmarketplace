@@ -16,11 +16,17 @@ ILOŚĆ
 
 CENA KOŃCOWA
 
-{products_txt} 
+{products_txt}
+
+{discounts_txt}
 
 WYDARZENIA 
 
 {total_products} 
+
+RABATY 
+
+{total_discounts} 
 
 DO ZAPŁATY W SUMIE 
 

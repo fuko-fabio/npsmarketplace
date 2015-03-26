@@ -129,7 +129,7 @@
      * Lazy-loaded regex (parse the structure and construct the regular expression the first time we need it for validation)
      */
     Specification.prototype._regex = function(){
-        return this._cachedRegex || (this._cachedRegex = parseStructure(this.structure))
+        return this._cachedRegex || (this._cachedRegex = parseStructure(this.structure));
     };
 
     /**

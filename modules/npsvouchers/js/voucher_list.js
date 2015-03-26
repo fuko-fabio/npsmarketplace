@@ -80,3 +80,26 @@ function validate(voucherId) {
     });
     return valid;
 };
+
+function startVoucherSendTour(scope) {
+    var tour = introJs();
+    tour.setOption('tooltipPosition', 'auto');
+    tour.setOption('positionPrecedence', ['top', 'left', 'right']);
+    tour.setOption('showProgress', true);
+    tour.setOption('exitOnOverlayClick', false);
+    tour.setOption('showBullets', false);
+    tour.setOption('scrollToElement', true);
+    tour.setOption('disableInteraction', false);
+    tour.setOption('showStepNumbers', false);
+    tour.setOption('nextLabel', npsTourNext);
+    tour.setOption('prevLabel', npsTourPrev);
+    tour.setOption('skipLabel', npsTourSkip);
+    tour.setOption('doneLabel', npsTourDone);
+    tour.oncomplete(endVoucherSendTour);
+    tour.onexit(endVoucherSendTour);
+    tour.start(scope);
+}
+
+function endVoucherSendTour() {
+    localStorage.setItem("voucherSendTour", true);
+}

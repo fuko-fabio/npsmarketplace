@@ -33,11 +33,6 @@ textarea {
   resize: none;
 }
 
-//structure
-#header {
-  z-index: 5003;
-}
-
 .top-header-container {
   border-bottom: 1px solid $base-border-color;
 }
@@ -59,7 +54,6 @@ textarea {
 }
 
 header {
-  z-index: 1;
   position: relative;
   background: $light-background;
   padding-bottom: 0px;
@@ -1516,7 +1510,6 @@ div.star a:hover {
   overflow: hidden;
   margin-bottom: 0px;
   position: relative;
-  z-index: 1;
   color: $base-text-color;
   .navigation-pipe {
     color: transparent;
@@ -1530,13 +1523,11 @@ div.star a:hover {
   a {
     display: inline-block;
     position: relative;
-    z-index: 2;
     color: $base-text-color;
     &.home {
       text-align: center;
       padding: 0;
       margin: 0 0 0 -10px;
-      z-index: 99;
       line-height: 22px;
       display: inline-block;
       height: 25px;
@@ -1559,7 +1550,6 @@ div.star a:hover {
       width: 18px;
       height: 18px;
       text-indent: -5000px;
-      z-index: -1;
       @include rotate(45deg);
     }
     &:before {
@@ -1572,7 +1562,6 @@ div.star a:hover {
       height: 18px;
       background: transparent;
       text-indent: -5000px;
-      z-index: -1;
       @include rotate(45deg);
     }
     &:hover {

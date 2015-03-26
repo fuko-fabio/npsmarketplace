@@ -5237,9 +5237,6 @@ body {
 textarea {
   resize: none; }
 
-#header {
-  z-index: 5003; }
-
 .top-header-container {
   border-bottom: 1px solid #d6d4d4; }
 
@@ -5255,7 +5252,6 @@ textarea {
   margin-bottom: 34px; }
 
 header {
-  z-index: 1;
   position: relative;
   background: #fff;
   padding-bottom: 0px;
@@ -6467,7 +6463,6 @@ div.star a:hover {
   overflow: hidden;
   margin-bottom: 0px;
   position: relative;
-  z-index: 1;
   color: #333; }
   .breadcrumb .navigation-pipe {
     color: transparent;
@@ -6479,13 +6474,11 @@ div.star a:hover {
   .breadcrumb a {
     display: inline-block;
     position: relative;
-    z-index: 2;
     color: #333; }
     .breadcrumb a.home {
       text-align: center;
       padding: 0;
       margin: 0 0 0 -10px;
-      z-index: 99;
       line-height: 22px;
       display: inline-block;
       height: 25px; }
@@ -6504,7 +6497,6 @@ div.star a:hover {
       width: 18px;
       height: 18px;
       text-indent: -5000px;
-      z-index: -1;
       -webkit-transform: rotate(45deg);
       -ms-transform: rotate(45deg);
       transform: rotate(45deg); }
@@ -6518,7 +6510,6 @@ div.star a:hover {
       height: 18px;
       background: transparent;
       text-indent: -5000px;
-      z-index: -1;
       -webkit-transform: rotate(45deg);
       -ms-transform: rotate(45deg);
       transform: rotate(45deg); }

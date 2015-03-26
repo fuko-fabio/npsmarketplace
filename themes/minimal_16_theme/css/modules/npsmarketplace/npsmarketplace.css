@@ -273,10 +273,6 @@
     .nps-location-top .location-selector .province .town.selected a {
       color: #FFC654; }
 
-.sale-event-box .row,
-.quantity-box .row {
-  margin: 0 0 50px 0; }
-
 .nps-main-town {
   font-weight: 700;
   font-size: 22px;
@@ -292,3 +288,14 @@
   @media (max-width: 1199px) {
     .nps-main-town {
       right: 20px; } }
+
+.get-tour-button {
+  border-radius: 50%;
+  border: 1px solid #4b80c3;
+  background: none;
+  color: #4b80c3;
+  width: 30px;
+  height: 30px; }
+
+.bootstrap-datetimepicker-widget {
+  z-index: 1000001 !important; }

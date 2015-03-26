@@ -44,7 +44,11 @@ class NpsMarketplaceOrdersModuleFrontController extends ModuleFrontController {
     private function getOrders($seller, $showHiddenStatus = false) {
         $result = array();
         $products = $seller -> getProducts();
-        $sql = 'SELECT DISTINCT `id_order` FROM `'._DB_PREFIX_.'order_detail` WHERE `product_id` IN (SELECT DISTINCT id_product FROM `'._DB_PREFIX_.'seller_product` WHERE `id_seller` = '.$seller->id.')';
+        $sql = 'SELECT DISTINCT `id_order`
+                FROM `'._DB_PREFIX_.'order_detail`
+                WHERE `product_id` IN 
+                    (SELECT DISTINCT id_product FROM `'._DB_PREFIX_.'seller_product` WHERE `id_seller` = '.$seller->id.')
+                ORDER BY id_order DESC';
         $rows = Db::getInstance()->executeS($sql);
 
         if($rows && !empty($rows)) {

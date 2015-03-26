@@ -3,6 +3,10 @@
 * @copyright 2014 npsoftware
 *}
 {addJsDefL name=npsAjaxUrl}{$nps_ajax_url}{/addJsDefL}
+{addJsDefL name=npsTourNext}{l s='Next' mod='npsmarketplace'}{/addJsDefL}
+{addJsDefL name=npsTourPrev}{l s='Prev' mod='npsmarketplace'}{/addJsDefL}
+{addJsDefL name=npsTourSkip}{l s='Skip' mod='npsmarketplace'}{/addJsDefL}
+{addJsDefL name=npsTourDone}{l s='Done' mod='npsmarketplace'}{/addJsDefL}
 
 <div class="nps-location-top">
     {if $cookie->main_province == 0 && $cookie->main_town == 0}

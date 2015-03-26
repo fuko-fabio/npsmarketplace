@@ -38,7 +38,6 @@ class NpsMarketplaceOrderViewModuleFrontController extends ModuleFrontController
             'products' => $products,
             'HOOK_ORDERDETAILDISPLAYED' => Hook::exec('displaySellerOrderDetail', array('seller' => $seller, 'order' => $order))
         ));
-
         $this->setTemplate('order_view.tpl');
     }
 

@@ -69,22 +69,24 @@
                         <!-- Fancybox -->
                         <div style="display:none">
                             <div id="send_vouchers_box_{$voucher.id_cart_rule}" class="send-voucher-box">
-                                <h2 class="page-subheading">{l s='Send vouchers' mod='npsvouchers'}</h2>
+                                <h2 class="page-subheading">{l s='Send vouchers' mod='npsvouchers'}<button class="get-tour-button pull-right" type="button" onclick="startVoucherSendTour('.send_voucher_tour_{$voucher.id_cart_rule}');"><i class="icon-info"></i></button></h2>
                                 <p id="send_vouchers_error_{$voucher.id_cart_rule}" class="alert alert-error voucher-error"><span class="alert-content">{l s='Unable to send vouchers. Try again or contact with customer support.' mod='npsvouchers'}</span></p>
                                 <p id="send_vouchers_email_error_{$voucher.id_cart_rule}" class="alert alert-error voucher-error"><span class="alert-content">{l s='Please provide at least one email address or check (newsletter users)' mod='npsvouchers'}</span></p>
-                                <p class="checkbox">
+                                <p class="checkbox send_voucher_tour_{$voucher.id_cart_rule}" data-step="1" data-intro="{l s='Select this option if you want send voucher to all labsintown registered users. Only newsletter wanted users will recive an email with voucher code.' mod='npsvouchers'}">
                                     <input type="checkbox" name="allCustomers" id="send_vouchers_input_{$voucher.id_cart_rule}"/>
                                     <label for="send_vouchers_input_{$voucher.id_cart_rule}">{l s='Send to all labsintown registered users. (Newsletter wanted users only)' mod='npsvouchers'}</label>
                                 </p>
-                                <label>{l s='Email adresses' mod='npsvouchers'}</label>
-                                <textarea id="vouchers_emails_{$voucher.id_cart_rule}" class="emails"></textarea>
-                                <div class="form-group">
+                                <div class="form-group send_voucher_tour_{$voucher.id_cart_rule}" data-step="2" data-intro="{l s='Here you can provide any email adress to send voucher code. Simply type an email address and press space or enter to add next one.' mod='npsvouchers'}">
+                                    <label>{l s='Email adresses' mod='npsvouchers'}</label>
+                                    <textarea id="vouchers_emails_{$voucher.id_cart_rule}" class="emails"></textarea>
+                                </div>
+                                <div class="form-group send_voucher_tour_{$voucher.id_cart_rule}" data-step="3" data-intro="{l s='Here you can type custom message to customer.'}">
                                     <label for="vouchers_message_{$voucher.id_cart_rule}">{l s='Message to customer' mod='npsvouchers'}</label>
                                     <textarea id="vouchers_message_{$voucher.id_cart_rule}" class="validate form-control" data-validate="isMessage"></textarea>
                                 </div>
                                 <p class="submit">
                                     <input class="button ccl" type="button" value="{l s='Cancel' mod='npsvouchers'}" onclick="$.fancybox.close();"/>
-                                    <input class="button" onclick="sendVouchers({$voucher.id_cart_rule});" value="{l s='Send' mod='npsvouchers'}"/>
+                                    <input class="button send_voucher_tour_{$voucher.id_cart_rule}" onclick="sendVouchers({$voucher.id_cart_rule});" value="{l s='Send' mod='npsvouchers'}" data-step="4" data-intro="{l s='Thats it! Click this button to send vouchers via email.'}"/>
                                 </p>
                             </div>
                         </div>

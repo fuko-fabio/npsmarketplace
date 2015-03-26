@@ -54,6 +54,10 @@ $(document).ready(function(){
     });
     
     onProductSelected(false);
+    
+    if (!localStorage.getItem("voucherAddTour")) {
+        startVoucherTour();
+    }
 });
 
 function onProductSelected(reset) {
@@ -135,4 +139,27 @@ function getDateTime() {
     now.setMinutes(0);
     now.setSeconds(0);
     return now;
+}
+
+function startVoucherTour() {
+    var tour = introJs();
+    tour.setOption('tooltipPosition', 'auto');
+    tour.setOption('positionPrecedence', ['top', 'left', 'right']);
+    tour.setOption('showProgress', true);
+    tour.setOption('exitOnOverlayClick', false);
+    tour.setOption('showBullets', false);
+    tour.setOption('scrollToElement', true);
+    tour.setOption('disableInteraction', false);
+    tour.setOption('showStepNumbers', false);
+    tour.setOption('nextLabel', npsTourNext);
+    tour.setOption('prevLabel', npsTourPrev);
+    tour.setOption('skipLabel', npsTourSkip);
+    tour.setOption('doneLabel', npsTourDone);
+    tour.oncomplete(endVoucherTour);
+    tour.onexit(endVoucherTour);
+    tour.start();
+}
+
+function endVoucherTour() {
+    localStorage.setItem("voucherAddTour", true);
 }

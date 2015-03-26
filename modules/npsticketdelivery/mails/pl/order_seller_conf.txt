@@ -9,7 +9,37 @@ SZCZEGÓŁY ZAMÓWIENIA:
 
 {seller_products_txt}
 
-ZAPŁACONO W SUMIE: {total_paid} 
+ZAPŁACONO W SUMIE: {total_paid}
+
+INDEX
+
+WYDARZENIE
+
+CENA JEDNOSTKOWA
+
+ILOŚĆ
+
+CENA KOŃCOWA
+
+{products_txt} 
+
+{discounts} 
+
+WYDARZENIA 
+
+{total_products} 
+
+RABATY 
+
+{total_discounts} 
+
+ZAPŁACONO W SUMIE
+
+{total_paid} 
+
+PŁATNOŚĆ: {payment}
+
+{invoice_block_txt} 
 
 Możesz obejrzeć swoje zamówienie i pobrać fakturę w "Historia
 zamówień" [{history_url}] logując się do konta

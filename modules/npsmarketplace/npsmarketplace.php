@@ -463,7 +463,9 @@ class NpsMarketplace extends Module {
 
     public function hookHeader() {
         $this->context->controller->addJS(($this->_path).'js/main_town.js');
+        $this->context->controller->addJS(($this->_path).'js/intro.min.js');
         $this->context->controller->addCss(($this->_path).'npsmarketplace.css');
+        $this->context->controller->addCss(($this->_path).'css/introjs.css');
     }
 
     public function hookDisplayHome() {

@@ -102,14 +102,12 @@
                                                         <h2 class="page-subheading">
                                                             {l s='Sale tickets!' mod='npsmarketplace'}
                                                         </h2>
-                                                        <div class="row">
-                                                            <p id="sale_error_{$product.id_product}" class="alert alert-error" style="display:none;padding:15px 25px"></p>
-                                                            <p class="alert alert-info"><span class="alert-content">{l s='Please enter price reduction value.' mod='npsmarketplace'}</span></p>
-                                                            <div class="form-group">
-                                                                <label class="required">{l s='Reduction' mod='npsmarketplace'}</label>
-                                                                <input class="is_required validate form-control" data-validate="isPrice" type="text" id="reduction{$product.id_product}" required=""/>
-                                                                <span class="form_info">{l s='Example: 10.50' mod='npsmarketplace'}</span>
-                                                            </div>
+                                                        <p id="sale_error_{$product.id_product}" class="alert alert-error" style="display:none;padding:15px 25px"></p>
+                                                        <p class="alert alert-info"><span class="alert-content">{l s='Please enter price reduction value.' mod='npsmarketplace'}</span></p>
+                                                        <div class="form-group">
+                                                             <label class="required">{l s='Reduction' mod='npsmarketplace'}</label>
+                                                            <input class="is_required validate form-control" data-validate="isPrice" type="text" id="reduction{$product.id_product}" required=""/>
+                                                            <span class="form_info">{l s='Example: 10.50' mod='npsmarketplace'}</span>
                                                         </div>
                                                         <p class="submit">
                                                             <input class="button ccl" type="button" value="{l s='Cancel' mod='npsmarketplace'}" onclick="$.fancybox.close();"/>
