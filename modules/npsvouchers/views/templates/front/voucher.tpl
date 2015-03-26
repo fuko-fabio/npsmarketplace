@@ -98,7 +98,7 @@
                     <li>
                         <label class="top">
                             <input type="radio" name="type" value="percent" {if isset($smarty.post.type) && $smarty.post.type eq 'percent'}checked=""{else}{if !isset($voucher.type) || $voucher.type eq 'percent'}checked=""{/if}{/if}/>
-                            {l s='Percentage' mod='npsmarketplace'}
+                            {l s='Percentage' mod='npsvouchers'}
                         </label>
                     </li>
                     <li>

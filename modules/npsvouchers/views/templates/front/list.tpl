@@ -80,13 +80,13 @@
                                     <label>{l s='Email adresses' mod='npsvouchers'}</label>
                                     <textarea id="vouchers_emails_{$voucher.id_cart_rule}" class="emails"></textarea>
                                 </div>
-                                <div class="form-group send_voucher_tour_{$voucher.id_cart_rule}" data-step="3" data-intro="{l s='Here you can type custom message to customer.'}">
+                                <div class="form-group send_voucher_tour_{$voucher.id_cart_rule}" data-step="3" data-intro="{l s='Here you can type custom message to customer.' mod='npsvouchers'}">
                                     <label for="vouchers_message_{$voucher.id_cart_rule}">{l s='Message to customer' mod='npsvouchers'}</label>
                                     <textarea id="vouchers_message_{$voucher.id_cart_rule}" class="validate form-control" data-validate="isMessage"></textarea>
                                 </div>
                                 <p class="submit">
                                     <input class="button ccl" type="button" value="{l s='Cancel' mod='npsvouchers'}" onclick="$.fancybox.close();"/>
-                                    <input class="button send_voucher_tour_{$voucher.id_cart_rule}" onclick="sendVouchers({$voucher.id_cart_rule});" value="{l s='Send' mod='npsvouchers'}" data-step="4" data-intro="{l s='Thats it! Click this button to send vouchers via email.'}"/>
+                                    <input class="button send_voucher_tour_{$voucher.id_cart_rule}" onclick="sendVouchers({$voucher.id_cart_rule});" value="{l s='Send' mod='npsvouchers'}" data-step="4" data-intro="{l s='Thats it! Click this button to send vouchers via email.' mod='npsvouchers'}"/>
                                 </p>
                             </div>
                         </div>
