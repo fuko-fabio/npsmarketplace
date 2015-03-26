@@ -11,10 +11,12 @@
     {/if}
     <li><a {if $page_name == 'addresses'}class="active"{/if} href="{$link->getPageLink('addresses', true)|escape:'html':'UTF-8'}" title="{l s='Addresses' mod='npsmarketplace'}" onclick="$.fancybox.showLoading();"><i class="icon-building"></i><span>{l s='My addresses' mod='npsmarketplace'}</span></a></li>
     <li><a {if $page_name == 'history'}class="active"{/if} href="{$link->getPageLink('history', true)|escape:'html':'UTF-8'}" title="{l s='Orders' mod='npsmarketplace'}" onclick="$.fancybox.showLoading();"><i class="icon-list-ol"></i><span>{l s='Order history' mod='npsmarketplace'}</span></a></li>
-    {if $voucherAllowed || isset($HOOK_CUSTOMER_ACCOUNT) && $HOOK_CUSTOMER_ACCOUNT !=''}
-    {if $voucherAllowed}
-    <li><a {if $page_name == 'discount'}class="active"{/if} href="{$link->getPageLink('discount', true)|escape:'html':'UTF-8'}" title="{l s='Vouchers' mod='npsmarketplace'}" onclick="$.fancybox.showLoading();"><i class="icon-barcode"></i><span>{l s='My vouchers' mod='npsmarketplace'}</span></a></li>
-    {/if}
+    {*
+    *{if $voucherAllowed}
+    *<li><a {if $page_name == 'discount'}class="active"{/if} href="{$link->getPageLink('discount', true)|escape:'html':'UTF-8'}" title="{l s='Vouchers' mod='npsmarketplace'}" onclick="$.fancybox.showLoading();"><i class="icon-barcode"></i><span>{l s='My vouchers' mod='npsmarketplace'}</span></a></li>
+    *{/if}
+    *}
+    {if isset($HOOK_CUSTOMER_ACCOUNT) && $HOOK_CUSTOMER_ACCOUNT !=''}
     {$HOOK_CUSTOMER_ACCOUNT}
     {/if}
 </ul>
