@@ -7518,6 +7518,9 @@ div.star.star_hover:after {
       background: #009999 !important; }
       .fancybox-skin .submit .secondary:hover {
         background: #46B3B3 !important; }
+  .fancybox-skin .row {
+    margin-left: 0;
+    margin-right: 0; }
 
 #fancybox-loading {
   top: 0 !important;

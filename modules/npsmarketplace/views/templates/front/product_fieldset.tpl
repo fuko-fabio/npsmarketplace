@@ -2,61 +2,50 @@
 *  @author Norbert Pabian <norbert.pabian@gmail.com>
 *  @copyright 2014 npsoftware
 *}
+ <script type="text/x-tmpl" id="ticket-tmpl">
+    <tr class="item variant-index-{literal}{%=o.index%}{/literal}">
+        <td>
+            {literal}
+            {% if (o.type == 0) { %}
+            {/literal}
+            {l s='Ticket' mod='npsmarketplace'}
+            {literal}
+            {% } %}
+            {% if (o.type == 1) { %}
+            {/literal}
+            {l s='Carnet' mod='npsmarketplace'}
+            {literal}
+            {% } %}
+        </td>
+        <td>{%=o.name%}</td>
+        <td>{%=o.date%} {%=o.time%}</td>
+        <td>{%=o.expiry_date%} {%=o.expiry_time%}</td>
+        <td>{%=o.quantity%}</td>
+        <td>{%=o.price%}{/literal} {$currency->sign}</td>
+        <td>
+            <button type="button" class="btn btn-default button button-small pull-right" onclick="removeVariant({literal}{%=o.index%}{/literal});"><i class="icon-trash right"></i></button>
+            {literal}
+            <input type="hidden" name="name[{%=o.index%}]" value="{%=o.name%}" />
+            <input type="hidden" name="type[{%=o.index%}]" value="{%=o.type%}" />
+            <input type="hidden" name="date[{%=o.index%}]" value="{%=o.date%}" />
+            <input type="hidden" name="time[{%=o.index%}]" value="{%=o.time%}" />
+            <input type="hidden" name="expiry_date[{%=o.index%}]" value="{%=o.expiry_date%}" />
+            <input type="hidden" name="expiry_time[{%=o.index%}]" value="{%=o.expiry_time%}" />
+            <input type="hidden" name="quantity[{%=o.index%}]" value="{%=o.quantity%}" />
+            <input type="hidden" name="price[{%=o.index%}]" value="{%=o.price%}" />
+            {/literal}
+        </td>
+    </tr>
+</script>
+
 <fieldset>
-    {if $edit_product == 1 && $product['type'] == 0}
-    <div class="alert alert-info">
-        <span class="alert-content">
-        <a class="alert-link" href="{$new_tem_link}">{l s='Click here' mod='npsmarketplace'}</a> {l s='to add new event term' mod='npsmarketplace'}
-        </span>
-    </div>
-    {/if}
     <div class="box">
         <h3 class="page-heading">{l s='Informations' mod='npsmarketplace'}</h3>
-        {if $edit_product == 0}
-        <label>{l s='Type of advertisement' mod='npsmarketplace'}</label>
-        <div>
-            <div class="radio-inline">
-                <label class="top">
-                    <input type="radio" name="product_type" {if $edit_product == 1}disabled=""{/if} value="0"{if (isset($smarty.post.product_type) && $smarty.post.product_type == 0) || empty($smarty.post.product_type)} checked="checked" {/if}/>
-                    {l s='Ticket' mod='npsmarketplace'}
-                </label>
-            </div>
-            <div class="radio-inline">
-                <label class="top">
-                    <input type="radio" name="product_type" {if $edit_product == 1}disabled=""{/if} value="1"{if isset($smarty.post.product_type) && $smarty.post.product_type == 1} checked="checked" {/if}/>
-                    {l s='Carnet' mod='npsmarketplace'}
-                </label>
-            </div>
-            <div class="radio-inline">
-                <label class="top">
-                    <input type="radio" name="product_type" {if $edit_product == 1}disabled=""{/if} value="2"{if isset($smarty.post.product_type) && $smarty.post.product_type == 2} checked="checked" {/if}/>
-                    {l s='Advertisement' mod='npsmarketplace'}
-                </label>
-            </div>
-            {if $seller->outer_adds}
-                <div class="radio-inline">
-                    <label class="top">
-                        <input type="radio" name="product_type" {if $edit_product == 1}disabled=""{/if} value="3"{if isset($smarty.post.product_type) && $smarty.post.product_type == 3} checked="checked" {/if}/>
-                        {l s='External Advertisement' mod='npsmarketplace'}
-                    </label>
-                </div>
-            {/if}
-        </div>
-        <p class="alert alert-info type-info-ticket" style="display: none;"><span class="alert-content">{l s='Allows you to sell tickets for event in selected tem. You can define multiple terms for one event. You can use this event type for free events when registration is required in this case set price to 0.' mod='npsmarketplace'}</span></p>
-        <p class="alert alert-info type-info-carnet" style="display: none;"><span class="alert-content">{l s='Allows you to sell carnet for event. Carnet can be defined for number of entries (eg. this carnter allows you to enter 5 times to this event) or for period of time (eg. carnet is valid since 01.06 to 01.07).' mod='npsmarketplace'}</span></p>
-        <p class="alert alert-info type-info-ad" style="display: none;"><span class="alert-content">{l s='Allows you to add free event advertisment which is organized by you.' mod='npsmarketplace'}</span></p>
-        <p class="alert alert-info type-info-outer-ad" style="display: none;"><span class="alert-content">{l s='Allows you to add free event advertisment which is not organized by you. No information about your shop will be attached to this event.' mod='npsmarketplace'}</span></p>
-        {else}
-            <input type="hidden" name="product_type" value="{if isset($smarty.post.product_type)}{$smarty.post.product_type}{else}{if isset($product['type'])}{$product['type']|escape:'html':'UTF-8'}{/if}{/if}"/>
-        {/if}
-        <!-- Nav tabs -->
-        <ul class="nav nav-tabs" role="tablist">
+        <ul class="nav nav-tabs {if count($languages) < 2}hidden{/if}" role="tablist">
           {foreach from=$languages item=lang}
               <li {if $lang.id_lang == $current_id_lang}class="active"{/if}><a href="#lang{$lang.id_lang}" role="tab" data-toggle="tab">{$lang.iso_code}</a></li>
           {/foreach}
         </ul>
-    
-        <!-- Tab panes -->
         <div class="tab-content">
             {foreach from=$languages item=lang}
                 <div class="tab-pane {if $lang.id_lang == $current_id_lang}active{/if}" id="lang{$lang.id_lang}">
@@ -79,156 +68,7 @@
             {/foreach}
         </div>
     </div>
-    {if $edit_product == 0}
-    <div class="box">
-        <h3 class="page-heading ticket-attributes">{l s='Ticket' mod='npsmarketplace'}</h3>
-        <h3 class="page-heading carnet-attributes">{l s='Carnet' mod='npsmarketplace'}</h3>
-        <h3 class="page-heading ad-attributes">{l s='Advertisment' mod='npsmarketplace'}</h3>
 
-        <div class="carnet-attributes">
-            <p class="alert alert-info"><span class="alert-content">{l s='You will not be able to change the type of carnet and the specific values for selection.' mod='npsmarketplace'}</span></p>
-            <label>{l s='Carnet type' mod='npsmarketplace'}</label>
-            <div>
-                <div class="radio-inline">
-                    <label class="top">
-                        <input type="radio" name="carnet_type" value="0"{if (isset($smarty.post.carnet_type) && $smarty.post.carnet_type == 0) || empty($smarty.post.carnet_type)} checked="checked" {/if}/>
-                        {l s='Number of entries' mod='npsmarketplace'}
-                    </label>
-                </div>
-                <div class="radio-inline">
-                    <label class="top">
-                        <input type="radio" name="carnet_type" value="1"{if isset($smarty.post.carnet_type) && $smarty.post.carnet_type == 1} checked="checked" {/if}/>
-                        {l s='Validity time period' mod='npsmarketplace'}
-                    </label>
-                </div>
-            </div>
-        </div>
-        <div class="row carnet-attributes number-entries">
-            <div class="form-group col-md-6">
-                <label for="entries">{l s='Number of entries' mod='npsmarketplace'}</label>
-                <input class="validate form-control" data-validate="isInteger" type="number" id="entries" name="entries"
-                    value="{if isset($smarty.post.entries)}{$smarty.post.entries}{else}{if isset($product['entries'])}{$product['entries']|escape:'html':'UTF-8'}{/if}{/if}"/>
-            </div>
-        </div>
-        <div class="row carnet-attributes time-period">
-            <div id="fromDatePicker" class="form-group col-md-6 input-append">
-                <label for="date_from">{l s='Valid fom' mod='npsmarketplace'}</label>
-                <input class="form-control validate" data-validate="isDate" id="date_from" name="from" data-format="yyyy-MM-dd" type="text"
-                    value="{if isset($smarty.post.from)}{$smarty.post.from}{else}{if isset($product['from'])}{$product['from']|escape:'html':'UTF-8'}{/if}{/if}"/>
-                <span class="form_info">{l s='Format: YYYY-MM-DD' mod='npsmarketplace'}</span>
-                <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
-            </div>
-            <div id="toDatePicker" class="form-group col-md-6 input-append">
-                <label for="date_to">{l s='To' mod='npsmarketplace'}</label>
-                <input class="form-control validate" data-validate="isDate" id="date_to" name="to" data-format="yyyy-MM-dd" type="text"
-                    value="{if isset($smarty.post.to)}{$smarty.post.to}{else}{if isset($product['to'])}{$product['to']|escape:'html':'UTF-8'}{/if}{/if}"/>
-                <span class="form_info">{l s='Format: YYYY-MM-DD' mod='npsmarketplace'}</span>
-                <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
-            </div>
-        </div>
-        <hr class="carnet-attributes"/>
-        
-        <div class="row price-amount">
-            <div class="form-group col-md-6">
-                <label class="required" for="product_price">{l s='Price' mod='npsmarketplace'}</label>
-                <input class="is_required validate form-control" data-validate="isPrice" type="text" id="product_price" name="price" required=""
-                    value="{if isset($smarty.post.price)}{$smarty.post.price}{else}{if isset($product['price'])}{$product['price']|escape:'html':'UTF-8'}{/if}{/if}"/>
-                <span class="form_info">{l s='Final price visible for customers. Example: 120.50' mod='npsmarketplace'}</span>
-            </div>
-            <div class="form-group col-md-6">
-                <label class="required" for="product_amount">{l s='Quantity' mod='npsmarketplace'}</label>
-                <input class="is_required validate form-control" data-validate="isQuantity" type="number" id="product_amount" name="quantity" required=""
-                    value="{if isset($smarty.post.quantity)}{$smarty.post.quantity}{else}{if isset($product['quantity'])}{$product['quantity']|escape:'html':'UTF-8'}{/if}{/if}"/>
-                <span class="form_info">{l s='Warning: Check quantity before submit' mod='npsmarketplace'}</span>
-            </div>
-        </div>
-        <div class="row ticket-attributes">
-            <div id="datePicker" class="form-group col-md-6 input-append">
-                <label class="required" for="date_input">{l s='Event date' mod='npsmarketplace'}</label>
-                <input class="is_required validate form-control" data-validate="isDate" id="date_input" name="date" data-format="yyyy-MM-dd" type="text" required=""
-                    value="{if isset($smarty.post.date)}{$smarty.post.date}{else}{if isset($product['date'])}{$product['date']|escape:'html':'UTF-8'}{/if}{/if}"/>
-                <span class="form_info">{l s='Format: YYYY-MM-DD' mod='npsmarketplace'}</span>
-                <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
-            </div>
-            <div id="timePicker" class="form-group col-md-6 input-append">
-                <label class="required" for="time_input">{l s='Event hour' mod='npsmarketplace'}</label>
-                <input class="is_required validate form-control" data-validate="isTime" id="time_input" name="time" data-format="hh:mm" type="text" required=""
-                    value="{if isset($smarty.post.time)}{$smarty.post.time}{else}{if isset($product['time'])}{$product['time']|escape:'html':'UTF-8'}{/if}{/if}"/>
-                <span class="form_info">{l s='Format: HH:MM' mod='npsmarketplace'}</span>
-                <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
-            </div>
-        </div>
-        <div class="row">
-            <div id="availableDatePicker" class="form-group col-md-6 input-append">
-                <label class="required" for="expiry_date_input">{l s='Expiration date of announcement' mod='npsmarketplace'}</label>
-                <input class="is_required validate form-control" data-validate="isDate" id="expiry_date_input" name="expiry_date" data-format="yyyy-MM-dd" type="text" required=""
-                    value="{if isset($smarty.post.expiry_date)}{$smarty.post.expiry_date}{else}{if isset($product['expiry_date'])}{$product['expiry_date']|escape:'html':'UTF-8'}{/if}{/if}"/>
-                <span class="form_info">{l s='Format: YYYY-MM-DD' mod='npsmarketplace'}</span>
-                <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
-            </div>
-            <div id="availableTimePicker" class="form-group col-md-6 input-append">
-                <label class="required" for="expiry_time_input">{l s='Expiration hour' mod='npsmarketplace'}</label>
-                <input class="is_required validate form-control" data-validate="isTime" id="expiry_time_input" name="expiry_time" data-format="hh:mm" type="text" required=""
-                    value="{if isset($smarty.post.expiry_time)}{$smarty.post.expiry_time}{else}{if isset($product['expiry_time'])}{$product['expiry_time']|escape:'html':'UTF-8'}{/if}{/if}"/>
-                <span class="form_info">{l s='Format: HH:MM' mod='npsmarketplace'}</span>
-                <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
-            </div>
-        </div>
-        <div class="row">
-            <div class="form-group col-md-6">
-                <label for="product_code">{l s='Ticket reference' mod='npsmarketplace'}</label>
-                <input class="validate form-control" data-validate="isMessage" type="text" id="product_code" name="reference"
-                    value="{if isset($smarty.post.reference)}{$smarty.post.reference}{else}{if isset($product['reference'])}{$product['reference']|escape:'html':'UTF-8'}{/if}{/if}"/>
-                <span class="form_info">{l s='You can create your custom event identifier which will be visible for customers. Example: EV001KR' mod='npsmarketplace'}</span>
-            </div>
-        </div>
-    </div>
-
-    {else}
-        {if $product['type'] == 0}
-        <div class="box">
-            <h3 class="page-heading">{l s='Price' mod='npsmarketplace'}</h3>
-            <div class="row">
-                <div class="form-group col-md-6">
-                    <label class="required" for="product_price">{l s='Price' mod='npsmarketplace'}</label>
-                    <input class="is_required validate form-control" data-validate="isPrice" type="text" id="product_price" name="price" required=""
-                        value="{if isset($smarty.post.price)}{$smarty.post.price}{else}{if isset($product['price'])}{$product['price']|escape:'html':'UTF-8'}{/if}{/if}"/>
-                    <span class="form_info">{l s='Example: 120.50' mod='npsmarketplace'}</span>
-                </div>
-                <div class="form-group col-md-6">
-                    <label for="product_code">{l s='Ticket reference' mod='npsmarketplace'}</label>
-                    <input class="validate form-control" data-validate="isMessage" type="text" id="product_code" name="reference"
-                        value="{if isset($smarty.post.reference)}{$smarty.post.reference}{else}{if isset($product['reference'])}{$product['reference']|escape:'html':'UTF-8'}{/if}{/if}"/>
-                </div>
-            </div>
-        </div>
-        {else if $product['type'] == 1}
-        <div class="box">
-            <h3 class="page-heading">{l s='Price' mod='npsmarketplace'}</h3>
-            <div class="row">
-                <div class="form-group col-md-6">
-                    <label class="required" for="product_price">{l s='Price' mod='npsmarketplace'}</label>
-                    <input class="is_required validate form-control" data-validate="isPrice" type="text" id="product_price" name="price" required=""
-                        value="{if isset($smarty.post.price)}{$smarty.post.price}{else}{if isset($product['price'])}{$product['price']|escape:'html':'UTF-8'}{/if}{/if}"/>
-                    <span class="form_info">{l s='Example: 120.50' mod='npsmarketplace'}</span>
-                </div>
-                <div class="form-group col-md-6">
-                    <label class="required" for="product_amount">{l s='Quantity' mod='npsmarketplace'}</label>
-                    <input class="is_required validate form-control" data-validate="isQuantity" type="number" id="product_amount" name="quantity" required=""
-                        value="{if isset($smarty.post.quantity)}{$smarty.post.quantity}{else}{if isset($product['quantity'])}{$product['quantity']|escape:'html':'UTF-8'}{/if}{/if}"/>
-                    <span class="form_info">{l s='Warning: Check quantity before submit' mod='npsmarketplace'}</span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="form-group col-md-6">
-                    <label for="product_code">{l s='Ticket reference' mod='npsmarketplace'}</label>
-                    <input class="validate form-control" data-validate="isMessage" type="text" id="product_code" name="reference"
-                        value="{if isset($smarty.post.reference)}{$smarty.post.reference}{else}{if isset($product['reference'])}{$product['reference']|escape:'html':'UTF-8'}{/if}{/if}"/>
-                </div>
-            </div>
-        </div>
-        {/if}
-    {/if}
     <div class="box">
         <h3 class="page-heading">{l s='Event location' mod='npsmarketplace'}</h3>
         <div class="row">
@@ -287,6 +127,25 @@
             <span class="form_info">{l s='Drag move and drop marker on your even location' mod='npsmarketplace'}</span>
         </div>
     </div>
+
+    <div class="box">
+        <h3 class="page-heading with-button">{l s='Variants' mod='npsmarketplace'}<a class="btn btn-default button button-small pull-right add-variant-btn" href="#event_combination">{l s='Add' mod='npsmarketplace'} <i class="icon-plus"></i></a></h3>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>{l s='Name' mod='npsmarketplace'}</th>
+                    <th>{l s='Event date' mod='npsmarketplace'}</th>
+                    <th>{l s='Expiry date' mod='npsmarketplace'}</th>
+                    <th>{l s='Quantity' mod='npsmarketplace'}</th>
+                    <th>{l s='Price' mod='npsmarketplace'}</th>
+                </tr>
+            </thead>
+            <tbody class="variants-container">
+            </tbody>
+        </table>
+    </div>
+
     <div class="box">
         <h3 class="page-heading">{l s='Media' mod='npsmarketplace'}</h3>
         <div class="form-group">
@@ -308,6 +167,7 @@
             </div>
         </div>
     </div>
+
     <div class="box">
         <h3 class="page-heading">{l s='Identification' mod='npsmarketplace'}</h3>
         <p class="alert alert-info"><span class="alert-content">{l s='You can select more than one category.' mod='npsmarketplace'}</span></p>

@@ -42,6 +42,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
         $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/tinymce_init.js');
         $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/product.js');
         $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/CollapsibleLists.compressed.js');
+        $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/tmpl.min.js');
         
         $this->addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/dropzone.css');
         $this->addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/bootstrap-datetimepicker.min.css');
@@ -474,6 +475,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             'vide_how_to_url' => Configuration::get('NPS_EVENT_VIDEO_GUIDE_URL'),
             'description_how_to_url' => Configuration::get('NPS_EVENT_DESC_GUIDE_URL'),
             'images_how_to_url' => Configuration::get('NPS_EVENT_IMAGE_GUIDE_URL'),
+            'currency' => $this->context->currency
         ));
 
         $this->setTemplate('product.tpl');

@@ -137,13 +137,17 @@ class NpsVouchersVoucherModuleFrontController extends ModuleFrontController {
         $this->display_column_right = false;
         parent::initContent();
         $id_voucher = trim(Tools::getValue('id_voucher'));
-        $products = $this->getProducts();
-
+        $voucher = $this->getVoucher($id_voucher);
+        if (!empty($voucher)) {
+            $products = $this->getProductsByIds(array($voucher['id_product']));
+        } else {
+            $products = $this->getProducts();
+        }
         $this->context->smarty->assign(array(
             'HOOK_MY_ACCOUNT_COLUMN' => Hook::exec('displayMyAccountColumn'),
             'user_agreement_url' => Configuration::get('NPS_SELLER_AGREEMENT_URL'),
             'products' => $products,
-            'voucher' => $this->getVoucher($id_voucher),
+            'voucher' => $voucher,
             'id_currency' => $this->context->currency->id,
             'back_url' => $this->context->link->getModuleLink('npsvouchers', 'List'),
             'delete_url' => $this->context->link->getModuleLink('npsvouchers', 'Voucher', array(
@@ -184,12 +188,16 @@ class NpsVouchersVoucherModuleFrontController extends ModuleFrontController {
     }
 
     private function getProducts() {
-        $result = array();
         //$ids = array_diff(
         //    Seller::getSellerProducts($this->seller->id, 0, 0, true),
         //    $this->getProductsIdsForSellerVouchers()
         //);
         $ids = Seller::getSellerProducts($this->seller->id, 0, 0, true);
+        return $this->getProductsByIds($ids);
+    }
+
+    private function getProductsByIds($ids) {
+        $result = array();
         if (!empty($ids)) {
             $dbquery = new DbQuery();
             $dbquery->select('p.`id_product`, p.`price`, pl.`name`, MAX(paed.`expiry_date`) AS date_to')
