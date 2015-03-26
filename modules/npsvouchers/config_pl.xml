@@ -3,7 +3,7 @@
 	<name>npsvouchers</name>
 	<displayName><![CDATA[nps Vouchers generation for sellers]]></displayName>
 	<version><![CDATA[1]]></version>
-	<description><![CDATA[This module allows your sellers to generate vouchers for their products]]></description>
+	<description><![CDATA[This module allows your sellers to generate vouchers for products]]></description>
 	<author><![CDATA[Norbert Pabian]]></author>
 	<tab><![CDATA[administration]]></tab>
 	<is_configurable>0</is_configurable>

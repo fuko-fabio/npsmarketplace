@@ -16,6 +16,8 @@ $_MODULE['<{npsmarketplace}minimal_16_theme>npsmarketplace_f9f9ea92a1c84d1a93af3
 $_MODULE['<{npsmarketplace}minimal_16_theme>npsmarketplace_ab67ef5a0a4ee1619c9a867d1f37f911'] = 'Identyfikatory sprcjalnych kategorii';
 $_MODULE['<{npsmarketplace}minimal_16_theme>npsmarketplace_fbbe3f507f7c3cd2015ccf884ccd7d42'] = 'Identyfikatory niewidocznych kategorii';
 $_MODULE['<{npsmarketplace}minimal_16_theme>npsmarketplace_78a6fcaf1fe0b63f12626efb2bb4aadd'] = 'Identyfikator darmowej kategorii';
+$_MODULE['<{npsmarketplace}minimal_16_theme>npsmarketplace_93cba07454f06a4a960172bbd6e2a435'] = 'Tak';
+$_MODULE['<{npsmarketplace}minimal_16_theme>npsmarketplace_bafd7322c6e97d25b6299b5d6fe8920b'] = 'Nie';
 $_MODULE['<{npsmarketplace}minimal_16_theme>npsmarketplace_43a0cf02192baf87ccea7de85585bc84'] = 'Adres URL przewodnika użytkownika';
 $_MODULE['<{npsmarketplace}minimal_16_theme>npsmarketplace_c586046849c022438832b8bda9263c8e'] = 'Adres URL regulaminu sprzedawcy';
 $_MODULE['<{npsmarketplace}minimal_16_theme>npsmarketplace_cc6b784e02e0be73a401fccdd1ba0e87'] = 'Adres URL przewodnika użytkownika';
@@ -51,6 +53,7 @@ $_MODULE['<{npsmarketplace}minimal_16_theme>adminprovincescontroller_b718adec73e
 $_MODULE['<{npsmarketplace}minimal_16_theme>adminprovincescontroller_49ee3087348e8d44e1feda1917443987'] = 'Nazwa';
 $_MODULE['<{npsmarketplace}minimal_16_theme>adminprovincescontroller_00d23a76e43b46dae9ec7aa9dcbebb32'] = 'Włączone';
 $_MODULE['<{npsmarketplace}minimal_16_theme>adminprovincescontroller_8318ce1c96df6ce21eb2ed428c6d0f85'] = 'Widoczne';
+$_MODULE['<{npsmarketplace}minimal_16_theme>adminprovincescontroller_7a1920d61156abc05a60135aefe8bc67'] = 'Domyślne';
 $_MODULE['<{npsmarketplace}minimal_16_theme>adminprovincescontroller_2bf28d44d49b618e32c6b7920fcf88b7'] = 'Zarządzaj województwami';
 $_MODULE['<{npsmarketplace}minimal_16_theme>adminprovincescontroller_b6e7ff05b9e68e0495e60db2c419e5e5'] = 'Edytuj: %s';
 $_MODULE['<{npsmarketplace}minimal_16_theme>adminprovincescontroller_c6b5d0bb9a0c3f077863fdaef9773f7c'] = 'Województwo';
@@ -139,6 +142,10 @@ $_MODULE['<{npsmarketplace}minimal_16_theme>productcombination_e96b62ce80b992c8e
 $_MODULE['<{npsmarketplace}minimal_16_theme>productcombination_52a68cff1bb9990d63988c1c03cbd234'] = 'Data wydarzenia jest wymagana';
 $_MODULE['<{npsmarketplace}minimal_16_theme>productcombination_adc58f1d615417a70417cd447f17ea91'] = 'Niepoprawny format daty wydarzenia';
 $_MODULE['<{npsmarketplace}minimal_16_theme>productcombination_8f4c564a445b50e73f809b10af242fc2'] = 'Godzina wydarzenia jest wymagana';
+$_MODULE['<{npsmarketplace}minimal_16_theme>productcombination_f46d2a535bfeffac2008eccda5d95532'] = 'Godzina wygaśnięcia wydażenia jest wymagana';
+$_MODULE['<{npsmarketplace}minimal_16_theme>productcombination_81a4516cf97e680e1373812127d687a4'] = 'Niepoprawny format godziny wygaśnięcia wydarzenia';
+$_MODULE['<{npsmarketplace}minimal_16_theme>productcombination_b4a4420c7aa0a5348cf54e49bdbf8b4d'] = 'Próbujesz dodać wydażenie z przeszłości. Sprzawdź ponownie datę i godzinę wydarzenia';
+$_MODULE['<{npsmarketplace}minimal_16_theme>productcombination_2bd8b56f7dc73eb99cb91f8ecd7a8c3d'] = 'Data i godzina wygaśnięcia wydażenia nie mogą być późniejsze niż data i godzina wydarzenia';
 $_MODULE['<{npsmarketplace}minimal_16_theme>productcombination_c52876e3592a705b6783255e410eda6b'] = 'Ilość biletów jest wymagana';
 $_MODULE['<{npsmarketplace}minimal_16_theme>productcombination_32df66177440f9817b034cd5a174b2d1'] = 'Niepoprawna wartość ilości biletów';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_f0a4148ab2d7dbc6468bdc5bf8036303'] = 'Wydarzenie zostało dodane . Formularz nie może być zapisany ponownie. Przejdz na swoje konto i sprawdź listę dodanych wydarzeń.';
@@ -157,8 +164,10 @@ $_MODULE['<{npsmarketplace}minimal_16_theme>product_52a68cff1bb9990d63988c1c03cb
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_adc58f1d615417a70417cd447f17ea91'] = 'Niepoprawny format daty wydarzenia';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_8f4c564a445b50e73f809b10af242fc2'] = 'Godzina wydarzenia jest wymagana';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_8fd03b6cd0cec59cde38dbef63031e63'] = 'Niepoprawny format godziny';
+$_MODULE['<{npsmarketplace}minimal_16_theme>product_f46d2a535bfeffac2008eccda5d95532'] = 'Data wygaśnięcia wydażenia jest wymagana';
+$_MODULE['<{npsmarketplace}minimal_16_theme>product_81a4516cf97e680e1373812127d687a4'] = 'Niepoprawna wartość godziny wygaśnięcia';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_b4a4420c7aa0a5348cf54e49bdbf8b4d'] = 'Próbujesz dodać wydarzenie w przeszłości. Sprawdź datę i godzinę wydarzenia.';
-$_MODULE['<{npsmarketplace}minimal_16_theme>product_c4a6b3bbe2f746bc73193f0ae6b77798'] = 'Data wygaśnięcia wydarzenia nie może być późniejsza niż data wydarzenia.';
+$_MODULE['<{npsmarketplace}minimal_16_theme>product_2bd8b56f7dc73eb99cb91f8ecd7a8c3d'] = 'Data i godzina wygaśnięcia wydażenia nie mogą być późniejsze niż data i godzina wydarzenia';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_b8ca564fbe976cc20cc9d5f8617e4b24'] = 'Niepoprawny format daty karnetu \' Data do\'.';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_671a23f637dc01ad86077c3a762114cc'] = 'Niepoprawny format daty karnetu \' Data od\'.';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_b20b08a6fda29d9f2071bb2d3cf5b837'] = 'Niepoprawna wartość karnetu \'Ilość wejść\'';
@@ -306,12 +315,13 @@ $_MODULE['<{npsmarketplace}minimal_16_theme>product_combination_3601146c4e948c32
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_combination_c16dac173aa8377a1c07aed8e0472f7c'] = 'Miasto';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_combination_e0bb2f66e5b61be3235bf8969979de19'] = 'Dzielnica';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_combination_dd7bf230fde8d4836917806aff6a6b27'] = 'Adres';
+$_MODULE['<{npsmarketplace}minimal_16_theme>product_combination_694e8d1f2ee056f98ee488bdc4982d73'] = 'Ilość';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_combination_44749712dbec183e983dcd78a7736c41'] = 'Data';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_combination_2b05e1a0e6c62dbf0018af09ed38f4e0'] = 'Format: YYYY-MM-DD';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_combination_a76d4ef5f3f6a672bbfab2865563e530'] = 'Godzina';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_combination_00c5dad1d6e5fc772f10d2b3433e8a76'] = 'Format: HH:MM';
-$_MODULE['<{npsmarketplace}minimal_16_theme>product_combination_694e8d1f2ee056f98ee488bdc4982d73'] = 'Ilość';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_combination_c9d707ddf1f20c9c07eabe3058f21ff8'] = 'Data wygaśnięcia';
+$_MODULE['<{npsmarketplace}minimal_16_theme>product_combination_0d1e55cb3c3a8a90c2a097b4274eae08'] = 'Godzina wygaśnięcia';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_combination_e7dc20d7713ca8e8461ebb00a7838824'] = 'Klikając \"Dodaj\" akceptuję';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_combination_0c58867fe38122907552ade326f584b9'] = 'regulamin';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_combination_ec211f7c20af43e742bf2570c3cb84f9'] = 'Dodaj';
@@ -348,6 +358,7 @@ $_MODULE['<{npsmarketplace}minimal_16_theme>product_fieldset_359ff4ae83f885f7d32
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_fieldset_ebf8c6ad06d0246a3182799d95190f01'] = 'Godzina wydarzenia';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_fieldset_00c5dad1d6e5fc772f10d2b3433e8a76'] = 'Format: HH:MM';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_fieldset_3430a5363df0023906b701cf80afa03d'] = 'Data wygaśnięcia oferty';
+$_MODULE['<{npsmarketplace}minimal_16_theme>product_fieldset_0d1e55cb3c3a8a90c2a097b4274eae08'] = 'Godzina wygaśnięcia';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_fieldset_08f676de94c28954676f87d2dabbe614'] = 'Numer referencyjny oferty';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_fieldset_d7142e2d2b7967c3d5320e62b587135a'] = 'Możesz nadać własny numer lub nazwę swojemu wydarzeniu, która będzie widoczna w zamówieniach.';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_fieldset_8beb41d3a028d4eb025f58bfa68fbfe9'] = 'Przykład: 120.50';
@@ -461,6 +472,10 @@ $_MODULE['<{npsmarketplace}minimal_16_theme>unlock_account_3397fe898961aabdb6c88
 $_MODULE['<{npsmarketplace}minimal_16_theme>unlock_account_b78a3223503896721cca1303f776159b'] = 'Tytuł wiadomości';
 $_MODULE['<{npsmarketplace}minimal_16_theme>unlock_account_4c2a8fe7eaf24721cc7a9f0175115bd4'] = 'Treść wiadomości';
 $_MODULE['<{npsmarketplace}minimal_16_theme>unlock_account_94966d90747b97d1f0f206c98a8b1ac3'] = 'Wyślij';
+$_MODULE['<{npsmarketplace}minimal_16_theme>header_top_10ac3d04253ef7e1ddc73e6091c0cd55'] = 'Dajel';
+$_MODULE['<{npsmarketplace}minimal_16_theme>header_top_14230d11143a03f4330c6433d5032a9d'] = 'Wstecz';
+$_MODULE['<{npsmarketplace}minimal_16_theme>header_top_72ef2b9b6965d078e3c7f95487a82d1c'] = 'Pomiń';
+$_MODULE['<{npsmarketplace}minimal_16_theme>header_top_f92965e2c8a7afb3c1b9a5c09a263636'] = 'Gotowe';
 $_MODULE['<{npsmarketplace}minimal_16_theme>header_top_b1c94ca2fbc3e78fc30069c8d0f01680'] = 'Wszystkie';
 $_MODULE['<{npsmarketplace}minimal_16_theme>header_top_3068c5a98c003498f1fec0c489212e8b'] = 'Dodaj wydarzenie';
 $_MODULE['<{npsmarketplace}minimal_16_theme>home_sellers_4107fcb1113b8396a84ef5f61362ecb1'] = 'Nasze LABy';
