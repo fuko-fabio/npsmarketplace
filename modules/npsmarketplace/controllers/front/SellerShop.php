@@ -7,6 +7,8 @@
 class NpsMarketplaceSellerShopModuleFrontController extends ModuleFrontController {
 
     public function initContent() {
+        $this->display_column_left = false;
+        $this->display_column_right = false;
         parent::initContent();
         $id_seller = (int)Tools::getValue('id_seller', 0);
         $tpl_seller = array();

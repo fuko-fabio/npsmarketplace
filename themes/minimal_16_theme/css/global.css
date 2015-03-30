@@ -5237,9 +5237,6 @@ body {
 textarea {
   resize: none; }
 
-#header {
-  z-index: 5003; }
-
 .top-header-container {
   border-bottom: 1px solid #d6d4d4; }
 
@@ -5255,7 +5252,6 @@ textarea {
   margin-bottom: 34px; }
 
 header {
-  z-index: 1;
   position: relative;
   background: #fff;
   padding-bottom: 0px;
@@ -5319,6 +5315,13 @@ sup {
 
 .main-page-indent {
   margin-bottom: 30px; }
+
+.hint {
+  padding: 5px;
+  border: 1px solid #4b80c3;
+  font-size: 14px;
+  color: #4b80c3;
+  margin-bottom: 10px; }
 
 .alert {
   padding: 5px;
@@ -5408,6 +5411,15 @@ label {
   opacity: 1; }
   .close:hover {
     opacity: 1; }
+
+.form-buttons {
+  border-top: 1px solid #d6d4d4;
+  margin-top: 10px;
+  padding-top: 10px; }
+  .form-buttons .pull-right {
+    margin-left: 10px; }
+  .form-buttons .pull-left {
+    margin-right: 10px; }
 
 input.button_mini,
 input.button_small,
@@ -5521,7 +5533,12 @@ span.exclusive {
 .button.ccl {
   background: #DBDBDB !important; }
   .button.ccl:hover {
-    background: #E8E8E8; }
+    background: #E8E8E8 !important; }
+
+.button.secondary {
+  background: #009999 !important; }
+  .button.secondary:hover {
+    background: #46B3B3 !important; }
 
 .button.button-small {
   font: bold 13px/17px Arial, Helvetica, sans-serif;
@@ -6446,7 +6463,6 @@ div.star a:hover {
   overflow: hidden;
   margin-bottom: 0px;
   position: relative;
-  z-index: 1;
   color: #333; }
   .breadcrumb .navigation-pipe {
     color: transparent;
@@ -6458,13 +6474,11 @@ div.star a:hover {
   .breadcrumb a {
     display: inline-block;
     position: relative;
-    z-index: 2;
     color: #333; }
     .breadcrumb a.home {
       text-align: center;
       padding: 0;
       margin: 0 0 0 -10px;
-      z-index: 99;
       line-height: 22px;
       display: inline-block;
       height: 25px; }
@@ -6483,7 +6497,6 @@ div.star a:hover {
       width: 18px;
       height: 18px;
       text-indent: -5000px;
-      z-index: -1;
       -webkit-transform: rotate(45deg);
       -ms-transform: rotate(45deg);
       transform: rotate(45deg); }
@@ -6497,7 +6510,6 @@ div.star a:hover {
       height: 18px;
       background: transparent;
       text-indent: -5000px;
-      z-index: -1;
       -webkit-transform: rotate(45deg);
       -ms-transform: rotate(45deg);
       transform: rotate(45deg); }
@@ -7476,13 +7488,9 @@ div.star.star_hover:after {
   -webkit-border-radius: 0px !important;
   -moz-border-radius: 0px !important;
   border-radius: 0px !important; }
-  .fancybox-skin .fancybox-inner {
-    min-width: 400px;
-    min-height: 200px; }
   .fancybox-skin .submit {
-    position: absolute;
-    bottom: 0;
-    right: 0; }
+    float: right;
+    margin-top: 10px; }
     .fancybox-skin .submit .button {
       border: none;
       min-width: 80px;
@@ -7494,9 +7502,13 @@ div.star.star_hover:after {
       .fancybox-skin .submit .button:hover {
         background: #FFC654; }
     .fancybox-skin .submit .ccl {
-      background: #DBDBDB; }
+      background: #DBDBDB !important; }
       .fancybox-skin .submit .ccl:hover {
-        background: #E8E8E8; }
+        background: #E8E8E8 !important; }
+    .fancybox-skin .submit .secondary {
+      background: #009999 !important; }
+      .fancybox-skin .submit .secondary:hover {
+        background: #46B3B3 !important; }
 
 #fancybox-loading {
   top: 0 !important;
@@ -7696,7 +7708,8 @@ div.star.star_hover:after {
   padding: 0px 0px 5px 0px; }
 
 #block-seller-products-list .content_sortPagiBar .sortPagiBar,
-#nps_tickets_block .content_sortPagiBar .sortPagiBar {
+#nps_tickets_block .content_sortPagiBar .sortPagiBar,
+#block-seller-vouchers .content_sortPagiBar .sortPagiBar {
   border: none; }
 
 #nps_tickets_block .nps-ticket {

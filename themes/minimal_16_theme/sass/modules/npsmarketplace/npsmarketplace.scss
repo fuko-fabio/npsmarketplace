@@ -377,13 +377,6 @@
   }
 }
 
-.sale-event-box,
-.quantity-box {
-  .row {
-    margin: 0 0 50px 0;
-  }
-}
-
 .nps-main-town {
   font-weight: 700;
   font-size: 22px;
@@ -401,4 +394,16 @@
   @media (max-width: $screen-md-max) {
     right: 20px;
   }
+}
+
+.get-tour-button {
+  border-radius: 50%;
+  border: 1px solid $state-info-border;
+  background: none;
+  color: $state-info-border;
+  width: 30px;
+  height: 30px;
+}
+.bootstrap-datetimepicker-widget {
+  z-index: 1000001 !important;
 }

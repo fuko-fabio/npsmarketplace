@@ -33,11 +33,6 @@ textarea {
   resize: none;
 }
 
-//structure
-#header {
-  z-index: 5003;
-}
-
 .top-header-container {
   border-bottom: 1px solid $base-border-color;
 }
@@ -59,7 +54,6 @@ textarea {
 }
 
 header {
-  z-index: 1;
   position: relative;
   background: $light-background;
   padding-bottom: 0px;
@@ -138,6 +132,13 @@ sup {
 
 .main-page-indent {
   margin-bottom: $base-page-indent;
+}
+.hint {
+  padding: 5px;
+  border: 1px solid $state-info-border;
+  font-size: 14px;
+  color: $state-info-border;
+  margin-bottom: 10px;
 }
 
 .alert {
@@ -251,6 +252,20 @@ label {
   opacity: 1;
   &:hover {
     opacity: 1;
+  }
+}
+
+.form-buttons {
+  border-top: 1px solid $base-border-color;
+  margin-top: 10px;
+  padding-top: 10px;
+  
+  .pull-right {
+    margin-left: 10px
+  }
+  
+  .pull-left {
+    margin-right: 10px
   }
 }
 
@@ -374,7 +389,14 @@ span.exclusive {
 .button.ccl {
   background: $btn-color !important;
   &:hover {
-    background: $btn-color-hover;
+    background: $btn-color-hover !important;
+  }
+}
+
+.button.secondary {
+  background: $btn-secondary-color !important;
+  &:hover {
+    background: $btn-secondary-color-hover !important;
   }
 }
 
@@ -1488,7 +1510,6 @@ div.star a:hover {
   overflow: hidden;
   margin-bottom: 0px;
   position: relative;
-  z-index: 1;
   color: $base-text-color;
   .navigation-pipe {
     color: transparent;
@@ -1502,13 +1523,11 @@ div.star a:hover {
   a {
     display: inline-block;
     position: relative;
-    z-index: 2;
     color: $base-text-color;
     &.home {
       text-align: center;
       padding: 0;
       margin: 0 0 0 -10px;
-      z-index: 99;
       line-height: 22px;
       display: inline-block;
       height: 25px;
@@ -1531,7 +1550,6 @@ div.star a:hover {
       width: 18px;
       height: 18px;
       text-indent: -5000px;
-      z-index: -1;
       @include rotate(45deg);
     }
     &:before {
@@ -1544,7 +1562,6 @@ div.star a:hover {
       height: 18px;
       background: transparent;
       text-indent: -5000px;
-      z-index: -1;
       @include rotate(45deg);
     }
     &:hover {
@@ -2955,14 +2972,9 @@ div.star.star_hover {
   -moz-border-radius: 0px !important;
   border-radius: 0px !important;
 
-  .fancybox-inner {
-    min-width: 400px;
-    min-height: 200px;
-  }
   .submit {
-    position: absolute;
-    bottom: 0;
-    right: 0;
+    float: right;
+    margin-top: 10px;
 
     .button {
       border: none;
@@ -2977,9 +2989,15 @@ div.star.star_hover {
       }
     }
     .ccl {
-      background: $btn-color;
+      background: $btn-color !important;
       &:hover {
-        background: $btn-color-hover;
+        background: $btn-color-hover !important;
+      }
+    }
+    .secondary {
+      background: $btn-secondary-color !important;
+      &:hover {
+        background: $btn-secondary-color-hover !important;
       }
     }
   }
@@ -3250,7 +3268,8 @@ div.star.star_hover {
 }
 
 #block-seller-products-list,
-#nps_tickets_block {
+#nps_tickets_block,
+#block-seller-vouchers {
   .content_sortPagiBar {
     .sortPagiBar {
       border: none;

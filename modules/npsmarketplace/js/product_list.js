@@ -1,3 +1,8 @@
+/*
+*  @author Norbert Pabian <norbert.pabian@gmail.com>
+*  @copyright 2014 npsoftware
+*/
+
 $(document).ready(function(){
     $('.sale-event-btn, .quantity-btn').fancybox({
         'hideOnContentClick' : false

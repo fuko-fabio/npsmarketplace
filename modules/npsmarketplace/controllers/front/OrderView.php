@@ -18,6 +18,8 @@ class NpsMarketplaceOrderViewModuleFrontController extends ModuleFrontController
     }
 
     public function initContent() {
+        $this->display_column_left = false;
+        $this->display_column_right = false;
         parent::initContent();
 
         $seller = new Seller(null, $this->context->customer->id);
@@ -36,7 +38,6 @@ class NpsMarketplaceOrderViewModuleFrontController extends ModuleFrontController
             'products' => $products,
             'HOOK_ORDERDETAILDISPLAYED' => Hook::exec('displaySellerOrderDetail', array('seller' => $seller, 'order' => $order))
         ));
-
         $this->setTemplate('order_view.tpl');
     }
 

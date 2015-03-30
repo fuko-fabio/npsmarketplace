@@ -45,47 +45,52 @@ class NpsCalendar extends Module {
         if (Tools::isSubmit('submit')) {
             Configuration::updateValue('NPS_EVENTS_PER_DAY', (int)Tools::getValue('NPS_EVENTS_PER_DAY'));
             Configuration::updateValue('NPS_EVENTS_SEARCH', (int)Tools::getValue('NPS_EVENTS_SEARCH'));
+            Configuration::updateValue('NPS_CALENDAR_HOOK_IFRAME', (int)Tools::getValue('NPS_CALENDAR_HOOK_IFRAME'));
             $output .= $this->displayConfirmation($this->l('Settings updated successfully'));
         }
         return $output.$this->displayForm();
     }
 
     public function hookIframeHome($params) {
-        $this->context->smarty->assign(array(
-            'calendar_api_url' => $this->context->link->getModuleLink('npscalendar', 'api'),
-            'calendar_page_url' => $this->context->link->getModuleLink('npscalendar', 'calendar')
-        ));
-        return $this->display(__FILE__, 'calendar_home.tpl');
+        if (Configuration::get('NPS_CALENDAR_HOOK_IFRAME')) {
+            $this->context->smarty->assign(array(
+                'calendar_api_url' => $this->context->link->getModuleLink('npscalendar', 'api'),
+                'calendar_page_url' => $this->context->link->getModuleLink('npscalendar', 'calendar')
+            ));
+            return $this->display(__FILE__, 'calendar_home.tpl');
+        }
     }
 
     public function hookIframeHomeHeader($params) {
-        $css = array(($this->_path).'npscalendar.css');
-        $js = array_merge(Media::getJqueryPath(null, null, true), array(
-                ($this->_path).'js/underscore-min.js',
-                ($this->_path).'js/backbone-min.js',
-                ($this->_path).'js/backbone-associations-min.js',
-                ($this->_path).'js/calendar/template/weekCalendar.js',
-                ($this->_path).'js/calendar/model/event.js',
-                ($this->_path).'js/calendar/collection/events.js',
-                ($this->_path).'js/calendar/model/day.js',
-                ($this->_path).'js/calendar/collection/days.js',
-                ($this->_path).'js/calendar/model/calendar.js',
-                ($this->_path).'js/calendar/view/weekCalendar.js',
-                ($this->_path).'js/calendar/weekRouter.js',
-        ));
-        $plugin_path = Media::getJqueryPluginPath('fancybox');
-        if (!empty($plugin_path['js']))
-            $js[] = $plugin_path['js'];
-        if ($css && !empty($plugin_path['css']))
-            $css[] = key($plugin_path['css']);
-
-        $this->context->smarty->assign(array(
-            'calendar_api_url' => $this->context->link->getModuleLink('npscalendar', 'api'),
-            'calendar_page_url' => $this->context->link->getModuleLink('npscalendar', 'calendar'),
-            'css_urls' => $css,
-            'js_urls' => $js
-        ));
-        return $this->display(__FILE__, 'iframe_home_header.tpl');
+        if (Configuration::get('NPS_CALENDAR_HOOK_IFRAME')) {
+            $css = array(($this->_path).'npscalendar.css');
+            $js = array_merge(Media::getJqueryPath(null, null, true), array(
+                    ($this->_path).'js/underscore-min.js',
+                    ($this->_path).'js/backbone-min.js',
+                    ($this->_path).'js/backbone-associations-min.js',
+                    ($this->_path).'js/calendar/template/weekCalendar.js',
+                    ($this->_path).'js/calendar/model/event.js',
+                    ($this->_path).'js/calendar/collection/events.js',
+                    ($this->_path).'js/calendar/model/day.js',
+                    ($this->_path).'js/calendar/collection/days.js',
+                    ($this->_path).'js/calendar/model/calendar.js',
+                    ($this->_path).'js/calendar/view/weekCalendar.js',
+                    ($this->_path).'js/calendar/weekRouter.js',
+            ));
+            $plugin_path = Media::getJqueryPluginPath('fancybox');
+            if (!empty($plugin_path['js']))
+                $js[] = $plugin_path['js'];
+            if ($css && !empty($plugin_path['css']))
+                $css[] = key($plugin_path['css']);
+    
+            $this->context->smarty->assign(array(
+                'calendar_api_url' => $this->context->link->getModuleLink('npscalendar', 'api'),
+                'calendar_page_url' => $this->context->link->getModuleLink('npscalendar', 'calendar'),
+                'css_urls' => $css,
+                'js_urls' => $js
+            ));
+            return $this->display(__FILE__, 'iframe_home_header.tpl');
+        }
     }
 
     public function hookDisplayTopColumn($params) {
@@ -140,6 +145,7 @@ class NpsCalendar extends Module {
         return array(
             'NPS_EVENTS_PER_DAY' => Tools::getValue('NPS_EVENTS_PER_DAY', Configuration::get('NPS_EVENTS_PER_DAY')),
             'NPS_EVENTS_SEARCH' => Tools::getValue('NPS_EVENTS_SEARCH', Configuration::get('NPS_EVENTS_SEARCH')),
+            'NPS_CALENDAR_HOOK_IFRAME' => Tools::getValue('NPS_CALENDAR_HOOK_IFRAME', Configuration::get('NPS_CALENDAR_HOOK_IFRAME')),
         );
     }
 
@@ -160,6 +166,24 @@ class NpsCalendar extends Module {
                         'type' => 'text',
                         'label' => $this->l('Max search events'),
                         'name' => 'NPS_EVENTS_SEARCH',
+                    ),
+                    array( 
+                        'type' => 'switch',
+                        'label' => $this->l('Hook on shop iframe'),
+                        'name' => 'NPS_CALENDAR_HOOK_IFRAME',
+                        'class' => 'fixed-width-xs',
+                        'values' => array(
+                            array(
+                                'id' => 'active_on',
+                                'value' => 1,
+                                'label' => $this->l('Yes')
+                            ),
+                            array(
+                                'id' => 'active_off',
+                                'value' => 0,
+                                'label' => $this->l('No')
+                            )
+                        ),
                     ),
                 ),
             'submit' => array(

@@ -235,6 +235,8 @@ class NpsMarketplaceAccountRequestModuleFrontController extends ModuleFrontContr
     }
 
     public function initContent() {
+        $this->display_column_left = false;
+        $this->display_column_right = false;
         parent::initContent();
         
         $id_address = (int)Address::getFirstCustomerAddressId($this->context->customer->id);

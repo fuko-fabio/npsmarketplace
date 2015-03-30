@@ -128,72 +128,38 @@
               <td align="center" class="titleblock" style="padding:7px 0">
                 <font size="2" face="Open-sans, sans-serif" color="#555454">
                   <span class="title" style="font-weight:500;font-size:28px;text-transform:uppercase;line-height:33px">
-                    Witaj {firstname}
+                    Witaj!
                   </span>
                   <br/>
                   <span class="subtitle" style="font-weight:500;font-size:16px;text-transform:uppercase;line-height:25px">
-                  Dokonano zakupów w twoim butiku {name}!
+                  Przesyłamy kupon rabatowy do wykorzystania w naszym butiku.
                   </span>
                 </font>
               </td>
             </tr>
-          <tr>
-            <td>
-            <table class="table" style="width:100%">
-              <tr>
-                <td><font size="2" face="Open-sans, sans-serif" color="#555454">
-                  <p data-html-only="1" style="border-bottom:1px solid #ffaa00;margin:3px 0 7px;text-transform:uppercase;font-weight:500;font-size:14px;padding-bottom:10px">
-                    Szczegóły zamówienia
-                  </p> <span style="color:#777"> <span style="color:#333"><strong>Zamówienie:</strong></span> {order_name} dokonane {date}
-                    <br />
-                    <br />
-                    <span style="color:#333"><strong>Płatność:</strong></span> {payment} </span> </font></td>
-              </tr>
-            </table>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <font size="2" face="Open-sans, sans-serif" color="#555454">
-              <table class="table table-recap" bgcolor="#ffffff" style="width:100%;border-collapse:collapse">
-                <!-- Title -->
-                <thead>
-                  <tr>
-                    <th style="border:1px solid #D6D4D4;background-color:#fbfbfb;font-family:Arial;color:#333;font-size:13px;padding:10px">Indeks</th>
-                    <th style="border:1px solid #D6D4D4;background-color:#fbfbfb;font-family:Arial;color:#333;font-size:13px;padding:10px">Wydarzenie</th>
-                    <th style="border:1px solid #D6D4D4;background-color:#fbfbfb;font-family:Arial;color:#333;font-size:13px;padding:10px">Cena jednostkowa</th>
-                    <th style="border:1px solid #D6D4D4;background-color:#fbfbfb;font-family:Arial;color:#333;font-size:13px;padding:10px">Ilość</th>
-                    <th style="border:1px solid #D6D4D4;background-color:#fbfbfb;font-family:Arial;color:#333;font-size:13px;padding:10px">Cena końcowa</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td colspan="5" style="border:1px solid #D6D4D4;color:#777;padding:7px 0"> &nbsp;&nbsp;{products} </td>
-                  </tr>
-                </tbody>
-              </table> </font>
-            </td>
-          </tr>
-          <tr>
-            <td class="space_footer" style="padding:0!important">&nbsp;</td>
-          </tr>
-          <tr>
-            <td>
-            <table class="table" style="width:100%">
-              <tr>
-                <td class="box address" width="310">
-                <table class="table" style="width:100%">
-                  <tr>
-                    <td style="padding:7px 0"><font size="2" face="Open-sans, sans-serif" color="#555454">
-                      <p data-html-only="1" style="border-bottom:1px solid #ffaa00;margin:3px 0 7px;text-transform:uppercase;font-weight:500;font-size:14px;padding-bottom:10px">
-                        {invoice_info}
-                      </p> <span data-html-only="1" style="color:#777"> {invoice_block_html} </span> </font></td>
-                  </tr>
-                </table></td>
-              </tr>
-            </table></td>
-          </tr>
-            
+            <tr>
+                <td>
+                    <font size="2" face="Open-sans, sans-serif" color="#555454">
+                        Wiadomość od butiku:<br />
+                        {seller_message}<br />
+                        <br />
+                        Wydarzenie: 
+                        <a href="{product_link}" style="color:#337ff1">{product_name}</a>
+                        <br />
+                        Butik:
+                        <a href="{seller_link}" style="color:#337ff1">{seller_name}</a>
+                        <br />
+                        Kupon rabatowy: {voucher_name}
+                        </br />
+                        Jednorazowy kod kuponu:
+                        <br />
+                    </font>
+                    </br />
+                    <span class="title" style="font-weight:500;font-size:28px;line-height:33px;text-align: center">
+                    {voucher_code}
+                    </span>
+                </td>
+            </tr>
             <tr>
               <td class="space_footer" style="padding:0!important">&nbsp;</td>
             </tr>
@@ -206,7 +172,6 @@
                       Pozdrawiamy,<br />
                       Zespół Labs in Town!<br />
                       <br />
-                      To jest automatyczna wiadomość. Prosimy na nią NIE odpowiadać<br />
                       Masz pytania? Napisz do nas: kontakt@labsintown.pl<br />
                       <br />
                       Odwiedź nas:<br />

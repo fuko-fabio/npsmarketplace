@@ -77,7 +77,7 @@ class NpsMarketplace extends Module {
         return true;
     }
 
-    public function uninstall() { return $this->registerHook('iframeHome') && $this->registerHook('iframeHomeHeader');
+    public function uninstall() {
         if (!parent::uninstall()
             || !$this->unregisterHook('header')
             || !$this->unregisterHook('displayCustomerAccount')
@@ -450,16 +450,22 @@ class NpsMarketplace extends Module {
     }
 
     public function hookIframeHome($params) {
-        return $this->hookDisplayHome($params);
+        if (Configuration::get('NPS_HOOK_IFRAME')) {
+            return $this->hookDisplayHome($params);
+        }
     }
 
     public function hookIframeHomeHeader($params) {
-        return '<link rel="stylesheet" href="'.$this->_path.'npsmarketplace.css">';
+        if (Configuration::get('NPS_HOOK_IFRAME')) {
+            return '<link rel="stylesheet" href="'.$this->_path.'npsmarketplace.css">';
+        }
     }
 
     public function hookHeader() {
         $this->context->controller->addJS(($this->_path).'js/main_town.js');
+        $this->context->controller->addJS(($this->_path).'js/intro.min.js');
         $this->context->controller->addCss(($this->_path).'npsmarketplace.css');
+        $this->context->controller->addCss(($this->_path).'css/introjs.css');
     }
 
     public function hookDisplayHome() {
@@ -494,6 +500,7 @@ class NpsMarketplace extends Module {
             Configuration::updateValue('NPS_SPECIAL_CATEGORIES', Tools::getValue('NPS_SPECIAL_CATEGORIES'));
             Configuration::updateValue('NPS_INVISIBLE_CATEGORIES', Tools::getValue('NPS_INVISIBLE_CATEGORIES'));
             Configuration::updateValue('NPS_FREE_CATEGORY_ID', Tools::getValue('NPS_FREE_CATEGORY_ID'));
+            Configuration::updateValue('NPS_HOOK_IFRAME', Tools::getValue('NPS_HOOK_IFRAME'));
             $output .= $this->displayConfirmation($this->l('General settings updated'));
         } elseif (Tools::isSubmit('submitUrls')) {
             Configuration::updateValue('NPS_SELLER_AGREEMENT_URL', Tools::getValue('NPS_SELLER_AGREEMENT_URL'));
@@ -645,6 +652,24 @@ class NpsMarketplace extends Module {
                         'name' => 'NPS_FREE_CATEGORY_ID',
                         'required' => false
                     ),
+                    array( 
+                        'type' => 'switch',
+                        'label' => $this->l('Hook on shop iframe'),
+                        'name' => 'NPS_HOOK_IFRAME',
+                        'class' => 'fixed-width-xs',
+                        'values' => array(
+                            array(
+                                'id' => 'active_on',
+                                'value' => 1,
+                                'label' => $this->l('Yes')
+                            ),
+                            array(
+                                'id' => 'active_off',
+                                'value' => 0,
+                                'label' => $this->l('No')
+                            )
+                        ),
+                    ),
                 ),
                 'submit' => array(
                     'title' => $this->l('Save'),
@@ -735,6 +760,7 @@ class NpsMarketplace extends Module {
             'NPS_SPECIAL_CATEGORIES' => Tools::getValue('NPS_SPECIAL_CATEGORIES', Configuration::get('NPS_SPECIAL_CATEGORIES')),
             'NPS_INVISIBLE_CATEGORIES' => Tools::getValue('NPS_INVISIBLE_CATEGORIES', Configuration::get('NPS_INVISIBLE_CATEGORIES')),
             'NPS_FREE_CATEGORY_ID' => Tools::getValue('NPS_FREE_CATEGORY_ID', Configuration::get('NPS_FREE_CATEGORY_ID')),
+            'NPS_HOOK_IFRAME' => Tools::getValue('NPS_HOOK_IFRAME', Configuration::get('NPS_HOOK_IFRAME')),
         );
     }
 
@@ -777,6 +803,16 @@ class NpsMarketplace extends Module {
         $sellers_tab->class_name = 'AdminDistricts';
         foreach ($languages AS $language) {
             $sellers_tab->{'name'}[intval($language['id_lang'])] = $this->l('Districts');
+        }
+        $success = $success && $sellers_tab->add();
+        
+        $sellers_tab = new Tab();
+        $sellers_tab->id_parent = $tab->id;
+        $sellers_tab->position = 0;
+        $sellers_tab->module = $this->name;
+        $sellers_tab->class_name = 'AdminProvinces';
+        foreach ($languages AS $language) {
+            $sellers_tab->{'name'}[intval($language['id_lang'])] = $this->l('Provinces');
         }
         $success = $success && $sellers_tab->add();
         return $success;

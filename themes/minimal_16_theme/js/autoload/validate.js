@@ -58,3 +58,7 @@ function validate_isNrb(nrb) {
 function validate_isQuantity(s) {
     return validate_isInteger(s) && s > 0;
 }
+
+function validate_isPercent(s) {
+    return validate_isPrice(s) && s >= 0 && s <= 100;
+}

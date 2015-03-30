@@ -16,6 +16,7 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
         $this->display_column_left = false;
         $this->display_column_right = false;
         parent::initContent();
+        $this->setTemplate('payment_confirmation.tpl');
         $is_renew = Tools::getValue('renew');
 
         if(isset($_GET['order_id'])) {
@@ -30,7 +31,7 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
 
         $payment = new P24Payment(null, $cart->id);
         if ($payment->id != null && !$is_renew) {
-            $this -> errors[] = $this->module->l('Payment already finalized. Go to your account and check orders history.', 'paymentConfirmation');
+            $this->errors[] = $this->module->l('Payment already finalized. Go to your account and check orders history.', 'paymentConfirmation');
             return;
         }
 
@@ -54,7 +55,6 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
         }
 
         $this->transactionRegister($payment, $cart, $amount, $customer, $currency, $address, $s_descr);
-        $this->setTemplate('payment_confirmation.tpl');
     }
 
     private function roundPrice($amount) {
@@ -106,6 +106,10 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
         if (empty($phone)) {
             $phone = $address->phone_mobile;
         }
+        $return_url = $this->context->link->getModuleLink('npsprzelewy24', 'paymentResult', array('id_cart' => $cart->id));
+        if (Configuration::get('NPS_P24_SANDBOX_MODE') == 1) {
+            $return_url = $this->context->link->getModuleLink('npsprzelewy24', 'paymentResult', array('id_cart' => $cart->id, 'p24_token' => $p24_token));
+        }
         $data = array(
             'p24_merchant_id' => $p24_id,
             'p24_pos_id' => $p24_id,
@@ -125,7 +129,7 @@ class NpsPrzelewy24PaymentConfirmationModuleFrontController extends ModuleFrontC
             'p24_zip' => $address->postcode,
             'p24_city' => $address->city,
             'p24_url_cancel' => $this->context->link->getModuleLink('npsprzelewy24', 'paymentCancel'),
-            'p24_url_return' => $this->context->link->getModuleLink('npsprzelewy24', 'paymentResult', array('id_cart' => $cart->id)),
+            'p24_url_return' => $return_url,
             'p24_url_status' => Tools::getHttpHost(true).__PS_BASE_URI__.'modules/npsprzelewy24/paymentState.php?p24_token='.$p24_token,
             'p24_shipping' => $cart->getTotalShippingCost(),
         );

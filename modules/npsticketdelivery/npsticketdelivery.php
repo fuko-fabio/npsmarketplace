@@ -198,6 +198,20 @@ class NpsTicketDelivery extends Module {
             'lastname'  => '<span style="font-weight:bold;">%s</span>'
         ));
 
+        $cart_rules_list = array();
+        foreach ($order->getCartRules() as $cart_rule) {
+            $cart_rules_list[] = array(
+                'voucher_name' => $cart_rule['name'],
+                'voucher_reduction' => ($cart_rule['value'] != 0.00 ? '-' : '').Tools::displayPrice($cart_rule['value'], $this->context->currency, false)
+            );
+        }
+
+        $cart_rules_list_txt = '';
+        $cart_rules_list_html = '';
+        if (count($cart_rules_list) > 0) {
+            $cart_rules_list_txt = $this->getEmailTemplateContent('order_conf_cart_rules.txt', Mail::TYPE_TEXT, $cart_rules_list);
+            $cart_rules_list_html = $this->getEmailTemplateContent('order_conf_cart_rules.tpl', Mail::TYPE_HTML, $cart_rules_list);
+        }
         $confirmation_data = array();
 
         foreach ($info_seller as $data) {
@@ -254,6 +268,22 @@ class NpsTicketDelivery extends Module {
             }
             $product_var_tpl_list = array();
 
+            $hooks_results = Hook::exec('displaySellerOrderCartRules', array('seller' => $seller, 'order' => $order), null ,true);
+            $seller_cart_rules_list = array();
+            foreach ($hooks_results as $seller_cart_rules) {
+                foreach ($seller_cart_rules as $key => $value) {
+                    $seller_cart_rules_list[] = array(
+                        'voucher_name' => $value['name'],
+                        'voucher_reduction' => ($value['value'] != 0.00 ? '-' : '').Tools::displayPrice($value['value'], $this->context->currency, false)
+                    );
+                }
+            }
+            $seller_cart_rules_list_txt = '';
+            $seller_cart_rules_list_html = '';
+            if (count($seller_cart_rules_list) > 0) {
+                $seller_cart_rules_list_txt = $this->getEmailTemplateContent('order_conf_cart_rules.txt', Mail::TYPE_TEXT, $seller_cart_rules_list);
+                $seller_cart_rules_list_html = $this->getEmailTemplateContent('order_conf_cart_rules.tpl', Mail::TYPE_HTML, $seller_cart_rules_list);
+            }
             $data = array(
                 '{name}' => $seller->name,
                 '{email}' => $seller_customer->email,
@@ -279,6 +309,8 @@ class NpsTicketDelivery extends Module {
                 '{products_txt}' => $product_list_txt,
                 '{delivery_email}' => $cart_ticket->email,
                 '{seller_orders_url}' => $this->context->link->getModuleLink('npsmarketplace', 'Orders'),
+                '{discounts}' => $seller_cart_rules_list_html,
+                '{discounts_txt}' => $seller_cart_rules_list_txt,
             );
 
             if (Validate::isEmail($seller_customer->email)) {
@@ -361,8 +393,8 @@ class NpsTicketDelivery extends Module {
             '{payment}' => Tools::substr($order->payment, 0, 32),
             '{seller_products}' => $seller_product_list_html,
             '{seller_products_txt}' => $seller_product_list_txt,
-            //'{discounts}' => $cart_rules_list_html,
-            //'{discounts_txt}' => $cart_rules_list_txt,
+            '{discounts}' => $cart_rules_list_html,
+            '{discounts_txt}' => $cart_rules_list_txt,
             '{total_paid}' => Tools::displayPrice($order->total_paid, $this->context->currency, false),
             '{total_products}' => Tools::displayPrice($order->total_paid - $order->total_shipping - $order->total_wrapping + $order->total_discounts, $this->context->currency, false),
             '{total_discounts}' => Tools::displayPrice($order->total_discounts, $this->context->currency, false),
@@ -372,7 +404,7 @@ class NpsTicketDelivery extends Module {
 
         // Join PDF invoice
         if ((int)$order_state->invoice) {
-            $pdf = new PDF($order, 'SellerOrderConfirmation', Context::getContext()->smarty);
+            $pdf = new PDF($order->getInvoicesCollection(), 'SellerOrderConfirmation', Context::getContext()->smarty);
             $file_attachement['content'] = $pdf->render(false);
             $file_attachement['name'] = Configuration::get('PS_INVOICE_PREFIX', (int)$order->id_lang, null, $order->id_shop).sprintf('%06d', $order->id).'.pdf';
             $file_attachement['mime'] = 'application/pdf';

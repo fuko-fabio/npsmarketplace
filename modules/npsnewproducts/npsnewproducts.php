@@ -94,6 +94,7 @@ class NpsNewProducts extends Module
                 Configuration::updateValue('NPS_NEW_PRODUCTS_DISPLAY_CARNERTS', (int)(Tools::getValue('NPS_NEW_PRODUCTS_DISPLAY_CARNERTS')));
                 Configuration::updateValue('NPS_NEW_PRODUCTS_DISPLAY_ADS', (int)(Tools::getValue('NPS_NEW_PRODUCTS_DISPLAY_ADS')));
                 Configuration::updateValue('NPS_NEW_PRODUCTS_DISPLAY_EXTERNAL_ADS', (int)(Tools::getValue('NPS_NEW_PRODUCTS_DISPLAY_EXTERNAL_ADS')));
+                Configuration::updateValue('NPS_NEW_PRODUCTS_HOOK_IFRAME', (int)(Tools::getValue('NPS_NEW_PRODUCTS_HOOK_IFRAME')));
 				$this->_clearCache('*');
 				$output .= $this->displayConfirmation($this->l('Settings updated'));
 			}
@@ -160,11 +161,15 @@ class NpsNewProducts extends Module
 	}
 
     public function hookIframeHome($params) {
-        return $this->hookDisplayHome($params);
+        if (Configuration::get('NPS_NEW_PRODUCTS_HOOK_IFRAME')) {
+            return $this->hookDisplayHome($params);
+        }
     }
 
     public function hookIframeHomeHeader($params) {
-        return '<link rel="stylesheet" href="'.$this->_path.'npsnewproducts.css">';
+        if (Configuration::get('NPS_NEW_PRODUCTS_HOOK_IFRAME')) {
+            return '<link rel="stylesheet" href="'.$this->_path.'npsnewproducts.css">';
+        }
     }
 
     public function hookHeader($params) {
@@ -298,7 +303,25 @@ class NpsNewProducts extends Module
                                 'label' => $this->l('No')
                             )
                         ),
-                    )
+                    ),
+                    array( 
+                        'type' => 'switch',
+                        'label' => $this->l('Hook on shop iframe'),
+                        'name' => 'NPS_NEW_PRODUCTS_HOOK_IFRAME',
+                        'class' => 'fixed-width-xs',
+                        'values' => array(
+                            array(
+                                'id' => 'active_on',
+                                'value' => 1,
+                                'label' => $this->l('Yes')
+                            ),
+                            array(
+                                'id' => 'active_off',
+                                'value' => 0,
+                                'label' => $this->l('No')
+                            )
+                        ),
+                    ),
 				),
 				'submit' => array(
 					'title' => $this->l('Save'),
@@ -334,6 +357,7 @@ class NpsNewProducts extends Module
             'NPS_NEW_PRODUCTS_DISPLAY_CARNERTS' => Tools::getValue('NPS_NEW_PRODUCTS_DISPLAY_CARNERTS', Configuration::get('NPS_NEW_PRODUCTS_DISPLAY_CARNERTS')),
             'NPS_NEW_PRODUCTS_DISPLAY_ADS' => Tools::getValue('NPS_NEW_PRODUCTS_DISPLAY_ADS', Configuration::get('NPS_NEW_PRODUCTS_DISPLAY_ADS')),
             'NPS_NEW_PRODUCTS_DISPLAY_EXTERNAL_ADS' => Tools::getValue('NPS_NEW_PRODUCTS_DISPLAY_EXTERNAL_ADS', Configuration::get('NPS_NEW_PRODUCTS_DISPLAY_EXTERNAL_ADS')),
+            'NPS_NEW_PRODUCTS_HOOK_IFRAME' => Tools::getValue('NPS_NEW_PRODUCTS_HOOK_IFRAME', Configuration::get('NPS_NEW_PRODUCTS_HOOK_IFRAME')),
         );
     }
 }

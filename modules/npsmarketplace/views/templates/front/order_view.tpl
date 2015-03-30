@@ -74,7 +74,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <h4>{l s='Products' mod='npsmarketplace'}</h4>
+            <h1 class="page-heading">{l s='Products' mod='npsmarketplace'}</h1>
             <div class="table-responsive">
                 <table class="table table-bordered">
                     <thead>

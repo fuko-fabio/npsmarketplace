@@ -52,7 +52,8 @@ class NpsFeatured extends Module
 		$this->_clearCache('*');
 		Configuration::updateValue('NPS_HOME_FEATURED_NBR', 8);
 		Configuration::updateValue('NPS_HOME_FEATURED_CAT', (int)Context::getContext()->shop->getCategory());
-		Configuration::updateValue('NPS_HOME_FEATURED_RANDOMIZE', false);
+        Configuration::updateValue('NPS_HOME_FEATURED_RANDOMIZE', false);
+        Configuration::updateValue('NPS_HOME_FEATURED_HOOK_IFRAME', true);
 
 		if (!parent::install()
 			|| !$this->registerHook('header')
@@ -99,7 +100,8 @@ class NpsFeatured extends Module
 			{
 				Configuration::updateValue('NPS_HOME_FEATURED_NBR', (int)$nbr);
 				Configuration::updateValue('NPS_HOME_FEATURED_CAT', (int)$cat);
-				Configuration::updateValue('NPS_HOME_FEATURED_RANDOMIZE', (bool)$rand);
+                Configuration::updateValue('NPS_HOME_FEATURED_RANDOMIZE', (bool)$rand);
+                Configuration::updateValue('NPS_HOME_FEATURED_HOOK_IFRAME', (bool)Tools::getValue('NPS_HOME_FEATURED_HOOK_IFRAME'));
 				Tools::clearCache(Context::getContext()->smarty, $this->getTemplatePath('npsfeatured.tpl'));
 				$output = $this->displayConfirmation($this->l('Your settings have been updated.'));
 			}
@@ -118,11 +120,15 @@ class NpsFeatured extends Module
     }
 
     public function hookIframeHome($params) {
-        return $this->hookDisplayHome($params);
+        if (Configuration::get('NPS_HOME_FEATURED_HOOK_IFRAME')) {
+            return $this->hookDisplayHome($params);
+        }
     }
 
     public function hookIframeHomeHeader($params) {
-        return '<link rel="stylesheet" href="'.$this->_path.'npsfeatured.css">';
+        if (Configuration::get('NPS_HOME_FEATURED_HOOK_IFRAME')) {
+            return '<link rel="stylesheet" href="'.$this->_path.'npsfeatured.css">';
+        }
     }
 
 	public function _cacheProducts()
@@ -230,6 +236,24 @@ class NpsFeatured extends Module
 							)
 						),
 					),
+					array( 
+                        'type' => 'switch',
+                        'label' => $this->l('Hook on shop iframe'),
+                        'name' => 'NPS_HOME_FEATURED_HOOK_IFRAME',
+                        'class' => 'fixed-width-xs',
+                        'values' => array(
+                            array(
+                                'id' => 'active_on',
+                                'value' => 1,
+                                'label' => $this->l('Yes')
+                            ),
+                            array(
+                                'id' => 'active_off',
+                                'value' => 0,
+                                'label' => $this->l('No')
+                            )
+                        ),
+                    ),
 				),
 				'submit' => array(
 					'title' => $this->l('Save'),
@@ -263,7 +287,8 @@ class NpsFeatured extends Module
 		return array(
 			'NPS_HOME_FEATURED_NBR' => Tools::getValue('NPS_HOME_FEATURED_NBR', (int)Configuration::get('NPS_HOME_FEATURED_NBR')),
 			'NPS_HOME_FEATURED_CAT' => Tools::getValue('NPS_HOME_FEATURED_CAT', (int)Configuration::get('NPS_HOME_FEATURED_CAT')),
-			'NPS_HOME_FEATURED_RANDOMIZE' => Tools::getValue('NPS_HOME_FEATURED_RANDOMIZE', (bool)Configuration::get('NPS_HOME_FEATURED_RANDOMIZE')),
+            'NPS_HOME_FEATURED_RANDOMIZE' => Tools::getValue('NPS_HOME_FEATURED_RANDOMIZE', (bool)Configuration::get('NPS_HOME_FEATURED_RANDOMIZE')),
+            'NPS_HOME_FEATURED_HOOK_IFRAME' => Tools::getValue('NPS_HOME_FEATURED_HOOK_IFRAME', (bool)Configuration::get('NPS_HOME_FEATURED_HOOK_IFRAME')),
 		);
 	}
 }

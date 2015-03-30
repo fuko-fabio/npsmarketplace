@@ -48,21 +48,19 @@
                 <div style="display:none">
                     <div id="quantity_box{$comb.id_product_attribute}" class="quantity-box">
                         <h2 class="page-subheading"> {l s='Edit quantity' mod='npsmarketplace'} </h2>
-                        <div class="row">
-                            <p id="quantity_error_{$comb.id_product_attribute}" class="alert alert-error" style="display:none;">
-                                <span class="alert-content">{l s='Unable to change quantity. Try again or contact with customer support.' mod='npsmarketplace'}</span>
-                            </p>
-                            <p id="quantity_validation_error_{$comb.id_product_attribute}" class="alert alert-error" style="display:none;">
-                                <span class="alert-content">{l s='Quantity cannot be less than one.' mod='npsmarketplace'}</span>
-                            </p>
-                            <p class="alert alert-info">
-                                <span class="alert-content">{l s='Please enter new quantity.' mod='npsmarketplace'}</span>
-                            </p>
-                            <div class="form-group">
-                                <label class="required">{l s='Quantity' mod='npsmarketplace'}</label>
-                                <input class="is_required validate form-control" data-validate="isQuantity" type="number" id="quantity{$comb.id_product_attribute}" required="" value="{$comb.quantity}"/>
-                                <span class="form_info">{l s='Example: 15' mod='npsmarketplace'}</span>
-                            </div>
+                        <p id="quantity_error_{$comb.id_product_attribute}" class="alert alert-error" style="display:none;">
+                            <span class="alert-content">{l s='Unable to change quantity. Try again or contact with customer support.' mod='npsmarketplace'}</span>
+                        </p>
+                        <p id="quantity_validation_error_{$comb.id_product_attribute}" class="alert alert-error" style="display:none;">
+                            <span class="alert-content">{l s='Quantity cannot be less than one.' mod='npsmarketplace'}</span>
+                        </p>
+                        <p class="alert alert-info">
+                            <span class="alert-content">{l s='Please enter new quantity.' mod='npsmarketplace'}</span>
+                        </p>
+                        <div class="form-group">
+                            <label class="required">{l s='Quantity' mod='npsmarketplace'}</label>
+                            <input class="is_required validate form-control" data-validate="isQuantity" type="number" id="quantity{$comb.id_product_attribute}" required="" value="{$comb.quantity}"/>
+                            <span class="form_info">{l s='Example: 15' mod='npsmarketplace'}</span>
                         </div>
                         <p class="submit">
                             <input class="button ccl" type="button" value="{l s='Cancel' mod='npsmarketplace'}" onclick="$.fancybox.close();"/>

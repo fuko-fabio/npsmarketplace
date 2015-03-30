@@ -87,6 +87,8 @@ class NpsMarketplaceSellerAccountModuleFrontController extends ModuleFrontContro
     }
 
     public function initContent() {
+        $this->display_column_left = false;
+        $this->display_column_right = false;
         parent::initContent();
 
         $seller = new Seller(null, $this->context->customer->id);

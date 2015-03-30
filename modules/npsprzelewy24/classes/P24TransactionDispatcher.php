@@ -38,7 +38,9 @@ class P24TransactionDispatcher {
         $date_now = date("Y-m-d H:i:s");
         $currency = $currencies[0];
         $result = array();
-        $sllers_invoices_data = array();
+        $sellers_invoices_data = array();
+        $cart_rules_invoices_data = array();
+        $cart_rules = $this->order->getCartRules();
 
         foreach ($this->order->getProducts() as $product) {
             $id_seller = Seller::getSellerByProduct($product['product_id']);
@@ -57,9 +59,21 @@ class P24TransactionDispatcher {
                 return false;
             }
             $total_product_price = $product['total_price_tax_incl'];
+            if (!empty($cart_rules)) {
+                $c_r = $this->cartRulesForProduct($cart_rules, $product['id_product']);
+                if ($c_r && !empty($c_r)) {
+                    $discount = 0;
+                    foreach ($c_r as $key => $value) {
+                        $discount = $discount + $value['value'];
+                    }
+                    $total_product_price = $total_product_price - $discount;
+                }
+                $cart_rules_invoices_data[$seller->id] =  $c_r;
+            }
+
             $a_f_s = $this->amountForSeller($seller, $total_product_price);
 
-            $invoice_data = array(
+            $sellers_invoices_data[] = array(
                 'id_seller' => $seller->id,
                 'id_product' => $product['product_id'],
                 'product_qty' => $product['product_quantity'],
@@ -68,7 +82,6 @@ class P24TransactionDispatcher {
                 'commission' => ($total_product_price * 100) - $a_f_s,
                 'date' => $date_now,
             );
-            $sllers_invoices_data[] = $invoice_data;
 
             if (array_key_exists($spid, $result)) {
                 $current_amount = $result[$spid];
@@ -138,11 +151,11 @@ class P24TransactionDispatcher {
 
         $success = $res->error->errorCode ? false : true;
 
-        $history->sellers_amount = $sellers_amount;
+        $history->sellers_amount = $sellers_amount > 0 ? $sellers_amount : 0;
         $history->sellers_number = $sellers_number;
-        $history->p24_amount = $p24_amount;
-        $history->merchant_amount = $merchant_amount;
-        $history->total_amount = $total;
+        $history->p24_amount = $p24_amount > 0 ? $p24_amount : 0;
+        $history->merchant_amount = $merchant_amount > 0 ? $merchant_amount : 0;
+        $history->total_amount = $total > 0 ? $total : 0;
         $history->date = $date_now;
         $history->id_payment = $this->payment_summary['id_payment'];
         $h_s = $success;
@@ -159,7 +172,7 @@ class P24TransactionDispatcher {
             $h->id_seller = P24SellerCompany::getIdSellerBySpid($r->sellerId);
             $h->session_id = $r->sessionId;
             $h->spid = $r->sellerId;
-            $h->amount = $r->amount;
+            $h->amount = $r->amount > 0 ? $r->amount : 0;
             $h->status = $r->status;
             $h->error = $r->error;
             $h->merchant = $r->sellerId == $this->merchant_spid;
@@ -167,13 +180,13 @@ class P24TransactionDispatcher {
         }
         
         if ($success) {
-            $this->persistInvoicesData($sllers_invoices_data);
+            $this->persistInvoicesData($sellers_invoices_data);
         }
         return $success;
     }
 
-    private function persistInvoicesData($sllers_invoices_data) {
-        foreach ($sllers_invoices_data as $data) {
+    private function persistInvoicesData($sellers_invoices_data) {
+        foreach ($sellers_invoices_data as $data) {
             $sql = 'INSERT INTO `'._DB_PREFIX_.'seller_invoice_data`
             (`id_seller`, `id_product`, `id_currency`, `product_qty`, `product_total_price`, `commission`, `date`)
             VALUES ('.$data['id_seller']
@@ -206,6 +219,24 @@ class P24TransactionDispatcher {
             }
         }
         return floor($result * 100);
+    }
+
+    private function cartRulesForProduct($cart_rules, $id_product) {
+        if (Module::isInstalled('npsvouchers')) {
+            $ids = array();
+            foreach ($cart_rules as $key => $value) {
+                $ids[] = $value['id_cart_rule'];
+            }
+            if (!empty($ids)) {
+                $dbquery = new DbQuery();
+                $dbquery->select('ocr.value, ocr.name')
+                    ->from('order_cart_rule', 'ocr')
+                    ->leftJoin('order_seller_cart_rule', 'oscr', 'ocr.id_order_cart_rule = oscr.id_order_cart_rule')
+                    ->where('ocr.`id_cart_rule` IN('.implode(',', $ids).') AND ocr.`id_order` = '.$this->order->id.' AND oscr.`id_product` = '.$id_product);
+                return Db::getInstance()->executeS($dbquery);
+            }
+        }
+        return array();
     }
 
     private function checkFunds($total) {

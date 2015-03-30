@@ -7,7 +7,7 @@ Dokonano zakupów w twoim butiku {name}!
 
 ZAMÓWIENIE: {order_name} dokonane {date}
 
-PŁATNOŚĆ: {payment} 		 
+PŁATNOŚĆ: {payment}
 
 INDEKS
 
@@ -21,7 +21,7 @@ CENA KOŃCOWA
 
 {products_txt} 
 
-PŁATNOŚĆ: {payment} 		 
+PŁATNOŚĆ: {payment}
 
 {invoice_block_txt} 
 

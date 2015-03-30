@@ -130,20 +130,35 @@
                   <span class="title" style="font-weight:500;font-size:28px;text-transform:uppercase;line-height:33px">
                     Witaj!
                   </span>
+                  <br/>
+                  <span class="subtitle" style="font-weight:500;font-size:16px;text-transform:uppercase;line-height:25px">
+                  Przesyłamy kupon rabatowy do wykorzystania w naszym butiku.
+                  </span>
                 </font>
               </td>
             </tr>
             <tr>
-              <td>
-                <font size="2" face="Open-sans, sans-serif" color="#555454">
-                W załączniku przezyłamy bilety zakupione w naszym serwisie.<br />
-                <br />
-                {gift_message}
-                <br />
-                <br />
-                Dziękujemy i serdecznie zapraszamy do ponownych odwiedzin!
-                </font>
-              </td>
+                <td>
+                    <font size="2" face="Open-sans, sans-serif" color="#555454">
+                        Wiadomość od butiku:<br />
+                        {seller_message}<br />
+                        <br />
+                        Wydarzenie: 
+                        <a href="{product_link}" style="color:#337ff1">{product_name}</a>
+                        <br />
+                        Butik:
+                        <a href="{seller_link}" style="color:#337ff1">{seller_name}</a>
+                        <br />
+                        Kupon rabatowy: {voucher_name}
+                        </br />
+                        Jednorazowy kod kuponu:
+                        <br />
+                    </font>
+                    </br />
+                    <span class="title" style="font-weight:500;font-size:28px;line-height:33px;text-align: center">
+                    {voucher_code}
+                    </span>
+                </td>
             </tr>
             <tr>
               <td class="space_footer" style="padding:0!important">&nbsp;</td>
@@ -157,7 +172,6 @@
                       Pozdrawiamy,<br />
                       Zespół Labs in Town!<br />
                       <br />
-                      To jest automatyczna wiadomość. Prosimy na nią NIE odpowiadać<br />
                       Masz pytania? Napisz do nas: kontakt@labsintown.pl<br />
                       <br />
                       Odwiedź nas:<br />
