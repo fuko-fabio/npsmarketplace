@@ -91,10 +91,11 @@ $_MODULE['<{npsticketdelivery}minimal_16_theme>invoice_03ab340b3f99e03cff9e84314
 $_MODULE['<{npsticketdelivery}minimal_16_theme>invoice_96b0141273eabab320119c467cdcaf17'] = 'Razem';
 $_MODULE['<{npsticketdelivery}minimal_16_theme>invoice_3dd42bfc8345e82c43b4a40a3426ec49'] = 'Nr referencyjny';
 $_MODULE['<{npsticketdelivery}minimal_16_theme>invoice_1d744a9ad1dac20645cfc4a36b77323b'] = 'zdjęcia';
+$_MODULE['<{npsticketdelivery}minimal_16_theme>invoice_a82868319826fb092b73968e661b5b38'] = 'Kupony rabatowe';
 $_MODULE['<{npsticketdelivery}minimal_16_theme>invoice_7926243ab60a08b15932021bf108c578'] = 'Razem za wydarzenia (z vat)';
 $_MODULE['<{npsticketdelivery}minimal_16_theme>invoice_984a93f9899bf0b0a250ba66f022c630'] = 'Razem za wydarzenia (bez vat)';
 $_MODULE['<{npsticketdelivery}minimal_16_theme>invoice_5082245495aa792b3d0874088d2b111b'] = 'Razem za wydarzenia';
-$_MODULE['<{npsticketdelivery}minimal_16_theme>invoice_19abe6c02a26dcd93020396df8d0721c'] = 'Kupony rabatowe';
+$_MODULE['<{npsticketdelivery}minimal_16_theme>invoice_19abe6c02a26dcd93020396df8d0721c'] = 'Razem kupony rabatowe';
 $_MODULE['<{npsticketdelivery}minimal_16_theme>invoice_ced2da7b2baf942c0ffd4b8e45ec0fad'] = 'Koszt pakowania';
 $_MODULE['<{npsticketdelivery}minimal_16_theme>invoice_a5e35abc0c9e2d2784d0ef619b36448b'] = 'Koszt przesyłki';
 $_MODULE['<{npsticketdelivery}minimal_16_theme>invoice_b602e0d0c6a72053d0a5be60cb2f8126'] = 'Razem (vat)';
