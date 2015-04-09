@@ -78,6 +78,7 @@ class NpsMarketplace extends Module {
     }
 
     public function uninstall() {
+        return $this->upgrade();
         if (!parent::uninstall()
             || !$this->unregisterHook('header')
             || !$this->unregisterHook('displayCustomerAccount')
@@ -911,29 +912,25 @@ class NpsMarketplace extends Module {
     }
 
     private function _createAttributes() {
-        $d = array();
-        $t = array();
-        foreach (Language::getLanguages() as $key => $lang) {
-            $d[$lang['id_lang']] = 'Date';
-            $t[$lang['id_lang']] = 'Time';
+        $names = array('Date', 'Time', 'Name', 'Type');
+        $attrs = array();
+        $langs = Language::getLanguages();
+        foreach ($names as $name) {
+            $n = array();
+            foreach ($langs as $key => $lang) {
+                $n[$lang['id_lang']] = $name;
+            }
+            $attrs[$name] = $n;
         }
-
-        $ag = new AttributeGroup();
-        $ag->name = $d;
-        $ag->public_name = $d;
-        $ag->group_type = 'select';
-        $ag->position = -1;
-        $ag->save();
-        Configuration::updateValue('NPS_ATTRIBUTE_DATE_ID', $ag->id);
-
-        $ag = new AttributeGroup();
-        $ag->name = $t;
-        $ag->public_name = $t;
-        $ag->group_type = 'select';
-        $ag->position = -1;
-        $ag->save();
-        Configuration::updateValue('NPS_ATTRIBUTE_TIME_ID', $ag->id);
-        
+        foreach ($attrs as $key => $names) {
+            $ag = new AttributeGroup();
+            $ag->name = $names;
+            $ag->public_name = $names;
+            $ag->group_type = 'select';
+            $ag->position = -1;
+            $ag->save();
+            Configuration::updateValue('NPS_ATTRIBUTE_'.strtoupper($key).'_ID', $ag->id);
+        }
         return true;
     }
 
@@ -941,6 +938,29 @@ class NpsMarketplace extends Module {
         $ad = new AttributeGroup(Configuration::get('NPS_ATTRIBUTE_DATE_ID'));
         $at = new AttributeGroup(Configuration::get('NPS_ATTRIBUTE_TIME_ID'));
         return $ad->delete() && $at->delete();
+    }
+
+    private function upgrade() {
+        $names = array('Name', 'Type');
+        $attrs = array();
+        $langs = Language::getLanguages();
+        foreach ($names as $name) {
+            $n = array();
+            foreach ($langs as $key => $lang) {
+                $n[$lang['id_lang']] = $name;
+            }
+            $attrs[$name] = $n;
+        }
+        foreach ($attrs as $key => $names) {
+            $ag = new AttributeGroup();
+            $ag->name = $names;
+            $ag->public_name = $names;
+            $ag->group_type = 'select';
+            $ag->position = -1;
+            $ag->save();
+            Configuration::updateValue('NPS_ATTRIBUTE_'.strtoupper($key).'_ID', $ag->id);
+        }
+        return true;
     }
 }
 ?>

@@ -24,11 +24,19 @@ class ProductAttributeExpiryDate extends ObjectModel {
     );
 
     public static function deleteByProductId($id_product) {
-        return Db::getInstance()->delete('product_attribute_expiry_date', 'id_product = '.(int)$id_product);
+        return Db::getInstance()->delete(
+            'product_attribute_expiry_date', 'id_product = '.(int)$id_product);
     }
 
     public static function deleteByProductAttribute($id_product_attribute) {
-        return Db::getInstance()->delete('product_attribute_expiry_date', 'id_product_attribute = '.(int)$id_product_attribute);
+        return Db::getInstance()->delete(
+            'product_attribute_expiry_date', 'id_product_attribute = '.(int)$id_product_attribute);
+    }
+
+    public static function getByProductAttribute($id_product_attribute) {
+        return Db::getInstance()->getValue(
+            'SELECT expiry_date FROM '._DB_PREFIX_.'product_attribute_expiry_date
+            WHERE id_product_attribute = '.(int)$id_product_attribute);
     }
 }
 

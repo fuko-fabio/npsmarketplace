@@ -299,3 +299,19 @@
 
 .bootstrap-datetimepicker-widget {
   z-index: 1000001 !important; }
+
+.variants-box .page-heading {
+  padding-bottom: 13px; }
+.variants-box .dropdown .dropdown-toggle {
+  background: #ffaa00; }
+  .variants-box .dropdown .dropdown-toggle:hover {
+    background: #FFC654; }
+.variants-box .dropdown a .caret,
+.variants-box .dropdown a:hover .caret {
+  color: #353535;
+  border-top-color: #353535;
+  border-bottom-color: #353535; }
+.variants-box .variants-container td input {
+  max-width: 50px; }
+.variants-box .variants-container td .button-small {
+  min-width: 40px; }

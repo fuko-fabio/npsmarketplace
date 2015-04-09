@@ -56,28 +56,38 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             $name = $_POST['name'];
             $description_short = $_POST['description_short'];
             $description = $_POST['description'];
-            $price = trim(Tools::getValue('price'));
-            $quantity = trim(Tools::getValue('quantity'));
-            $date = trim(Tools::getValue('date'));
-            $time = trim(Tools::getValue('time'));
-            $expiry_date = trim(Tools::getValue('expiry_date'));
-            $expiry_time = trim(Tools::getValue('expiry_time'));
+
+            //$price = trim(Tools::getValue('price'));
+            //$quantity = trim(Tools::getValue('quantity'));
+            //$date = trim(Tools::getValue('date'));
+            //$time = trim(Tools::getValue('time'));
+            //$expiry_date = trim(Tools::getValue('expiry_date'));
+            //$expiry_time = trim(Tools::getValue('expiry_time'));
+
             $town = trim(Tools::getValue('town'));
             $province = trim(Tools::getValue('province'));
             $district = trim(Tools::getValue('district'));
             $address = trim(Tools::getValue('address'));
             $video_source = trim(Tools::getValue('video_url'));
+
             $lat = trim(Tools::getValue('lat'));
             $lng = trim(Tools::getValue('lng'));
-            $reference = trim(Tools::getValue('reference'));
-            $type = (int)Tools::getValue('product_type');
-            $entries = Tools::getValue('entries');
-            $date_from = Tools::getValue('from');
-            $date_to = Tools::getValue('to');
+
+            //$type = (int)Tools::getValue('product_type');
+            //$entries = Tools::getValue('entries');
+            //$date_from = Tools::getValue('from');
+            //$date_to = Tools::getValue('to');
+
+            $combinations = array();
             $categories = array();
             $link_rewrite = array();
             $images = array();
             $removed_images = array();
+            
+            if (isset($_POST['combinations'])) {
+                $combinations = $_POST['combinations'];
+            }
+
             if (isset($_POST['category'])) {
                 $categs = $_POST['category'];
                 foreach ($categs as $key => $value) {
@@ -96,10 +106,10 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             if(isset($_POST['removed_images']))
                 $removed_images = $_POST['removed_images'];
 
-            if($type == 2 || $type == 3) {
-                $quantity = 1;
-                $price = 0;
-            }
+            //if($type == 2 || $type == 3) {
+            //    $quantity = 1;
+            //    $price = 0;
+            //}
 
             if(Tools::getValue('form_token') != $this->context->cookie->__get('form_token')) {
                 $this -> errors[] = $this->module->l('This form has been already saved. Go to your profile page and check list of events.', 'Product');
@@ -123,65 +133,65 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                 $this -> errors[] = $this->module->l('Product town is required', 'Product');
             if (!isset($province))
                 $this -> errors[] = $this->module->l('Product province is required', 'Product');
-            if (!isset($price))
-                $this -> errors[] = $this->module->l('Product price is required', 'Product');
-            if (!Validate::isFloat($price))
-                $this -> errors[] = $this->module->l('Invalid product price', 'Product');
-            if (!Validate::isMessage($reference))
-                $this -> errors[] = $this->module->l('Invalid product reference', 'Product');
+            //if (!isset($price))
+            //    $this -> errors[] = $this->module->l('Product price is required', 'Product');
+            //if (!Validate::isFloat($price))
+            //    $this -> errors[] = $this->module->l('Invalid product price', 'Product');
+            //if (!Validate::isMessage($reference))
+            //    $this -> errors[] = $this->module->l('Invalid product reference', 'Product');
             if (empty($categories))
                 $this -> errors[] = $this->module->l('At least one category must be selected', 'Product');
 
             if(empty($current_id_product)) {
-                if (empty($expiry_date))
-                    $this -> errors[] = $this->module->l('Product expiry date is required', 'Product');
-                else if (!Validate::isDateFormat($expiry_date))
-                    $this -> errors[] = $this->module->l('Invalid expiry date format', 'Product');
+                //if (empty($expiry_date))
+                //    $this -> errors[] = $this->module->l('Product expiry date is required', 'Product');
+                //else if (!Validate::isDateFormat($expiry_date))
+                //    $this -> errors[] = $this->module->l('Invalid expiry date format', 'Product');
     
-                if ($type != 1) {
-                    if(empty($date))
-                        $this -> errors[] = $this->module->l('Product date is required', 'Product');
-                    else if (!Validate::isDateFormat($date))
-                        $this -> errors[] = $this->module->l('Invalid date format', 'Product');
+                //if ($type != 1) {
+                //    if(empty($date))
+                //        $this -> errors[] = $this->module->l('Product date is required', 'Product');
+                //    else if (!Validate::isDateFormat($date))
+                //        $this -> errors[] = $this->module->l('Invalid date format', 'Product');
         
-                    if (empty($time))
-                        $this -> errors[] = $this->module->l('Product time is required', 'Product');
-                    else if (!Validate::isTime($time))
-                        $this -> errors[] = $this->module->l('Invalid time format', 'Product');
+                //    if (empty($time))
+                //        $this -> errors[] = $this->module->l('Product time is required', 'Product');
+                //    else if (!Validate::isTime($time))
+                //        $this -> errors[] = $this->module->l('Invalid time format', 'Product');
 
-                    if (empty($expiry_time))
-                        $this -> errors[] = $this->module->l('Product expiry time is required', 'Product');
-                    else if (!Validate::isTime($expiry_time))
-                        $this -> errors[] = $this->module->l('Invalid expiry time format', 'Product');
-                    
-                    if (strtotime($date.' '.$time) < time())
-                        $this -> errors[] = $this->module->l('You are trying to add event in the past. Check event date and time.', 'Product');
-                    if (strtotime($expiry_date.' '.$expiry_time) > strtotime($date.' '.$time))
-                        $this -> errors[] = $this->module->l('Expiry date and time cannot be later than event date.', 'Product');
+                //    if (empty($expiry_time))
+                //        $this -> errors[] = $this->module->l('Product expiry time is required', 'Product');
+                //    else if (!Validate::isTime($expiry_time))
+                //        $this -> errors[] = $this->module->l('Invalid expiry time format', 'Product');
+                //    
+                //    if (strtotime($date.' '.$time) < time())
+                //        $this -> errors[] = $this->module->l('You are trying to add event in the past. Check event date and time.', 'Product');
+                //    if (strtotime($expiry_date.' '.$expiry_time) > strtotime($date.' '.$time))
+                //        $this -> errors[] = $this->module->l('Expiry date and time cannot be later than event date.', 'Product');
 
-                } if ($type == 1) {
-                    if (isset($date_to) && !empty($date_to) && !Validate::isDateFormat($date_to))
-                        $this -> errors[] = $this->module->l('Invalid carnet \'date to\' format', 'Product');
-                    if (isset($date_from) && !empty($date_from) && !Validate::isDateFormat($date_from))
-                        $this -> errors[] = $this->module->l('Invalid carnet \'date from\' format', 'Product');
-                    if (isset($entries) && !empty($entries) && !Validate::isInt($entries))
-                        $this -> errors[] = $this->module->l('Invalid entries value', 'Product');
-                }
-                if (empty($quantity))
-                    $this -> errors[] = $this->module->l('Product quantity is required', 'Product');
-                else if (!Validate::isInt($quantity) || $quantity < 1)
-                    $this -> errors[] = $this->module->l('Invalid product quantity format', 'Product');
+                //} if ($type == 1) {
+                //    if (isset($date_to) && !empty($date_to) && !Validate::isDateFormat($date_to))
+                //        $this -> errors[] = $this->module->l('Invalid carnet \'date to\' format', 'Product');
+                //    if (isset($date_from) && !empty($date_from) && !Validate::isDateFormat($date_from))
+                //        $this -> errors[] = $this->module->l('Invalid carnet \'date from\' format', 'Product');
+                //    if (isset($entries) && !empty($entries) && !Validate::isInt($entries))
+                //        $this -> errors[] = $this->module->l('Invalid entries value', 'Product');
+                //}
+                //if (empty($quantity))
+                //    $this -> errors[] = $this->module->l('Product quantity is required', 'Product');
+                //else if (!Validate::isUnsignedInt($quantity) || $quantity < 1)
+                //    $this -> errors[] = $this->module->l('Invalid product quantity format', 'Product');
                 if (empty($images))
                     $this -> errors[] = $this->module->l('At least one picture is required', 'Product');
                 else if (count($images) > self::MAX_IMAGES)
                     $this -> errors[] = $this->module->l('You can upload max 4 pictures', 'Product');
             } else {
-                if ($type == 1) {
-                    if (empty($quantity))
-                        $this -> errors[] = $this->module->l('Product quantity is required', 'Product');
-                    else if (!Validate::isInt($quantity) || $quantity < 1)
-                        $this -> errors[] = $this->module->l('Invalid product quantity format', 'Product');
-                }
+                //if ($type == 1) {
+                //    if (empty($quantity))
+                //        $this -> errors[] = $this->module->l('Product quantity is required', 'Product');
+                //    else if (!Validate::isInt($quantity) || $quantity < 1)
+                //        $this -> errors[] = $this->module->l('Invalid product quantity format', 'Product');
+                //}
                 $current_images = Image::getImages($this->context->language->id, $current_id_product);
                 $img_sum = count($current_images) - count($removed_images) + count($images);
                 if ($img_sum < 1)
@@ -229,23 +239,23 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             }
 
             $free_cat_id = Configuration::get('NPS_FREE_CATEGORY_ID');
-            if (isset($free_cat_id) && !empty($free_cat_id)){
-                if ($price == 0) {
-                        $categories[] = $free_cat_id;
-                } else {
-                    if (in_array($free_cat_id, $categories)) {
-                        $categories = array_diff($categories, $free_cat_id);
-                    }
-                }
-            }
+            //if (isset($free_cat_id) && !empty($free_cat_id)){
+            //    if ($price == 0) {
+            //            $categories[] = $free_cat_id;
+            //    } else {
+            //        if (in_array($free_cat_id, $categories)) {
+            //            $categories = array_diff($categories, $free_cat_id);
+            //        }
+            //    }
+            //}
 
             if (empty($this->errors)) {
-                $this->_product -> price = $price;
+                //$this->_product -> price = $price;
                 $this->_product -> name = $name;
                 $this->_product -> description = $description;
                 $this->_product -> description_short = $description_short;
                 $this->_product -> link_rewrite = $link_rewrite;
-                $this->_product -> reference = $reference;
+                //$this->_product -> reference = $reference;
                 $this->_product -> id_category_default = $categories[0];
                 if(empty($current_id_product)) {
                     $this->_product -> is_virtual = true;
@@ -261,26 +271,15 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                         $this->saveProductImages($images);
                         if (empty($this->errors)) {
                             StockAvailable::setProductOutOfStock($this->_product->id, 0);
-                            $this->saveTicketFeatures($province, $town, $district, $address);
-        
+                            $this->saveLocationFeatures($province, $town, $district, $address);
+
                             if(empty($current_id_product)) {
                                 $this->_seller->assignProduct($this->_product->id);
-                                $dt = new DateTime($expiry_date.' '.$expiry_time);
-                                if ($type == 0 || $type == 2 || $type == 3) {
-                                    if ($time == $expiry_time)
-                                        $dt->modify('-15 min');
-                                    $this->_product->newEventCombination($date, $time, (int)$quantity, $dt,  $this->context->shop->id);
-                                } else if ($type == 1) {
-                                    $this->saveCarnetFeatures($entries, $date_from, $date_to);
-                                    StockAvailable::setQuantity((int) $this->_product->id, null, $quantity);
-                                    $this->_product->saveExpiryDate($dt);
-                                }
-                            } else if ($type == 1) {
-                                StockAvailable::setQuantity((int) $this->_product->id, null, $quantity);
                             }
                             $this->updateCategories($categories);
-                            $this->_product->persistExtraInfo($type, $lat, $lng, $video_url);
+                            $this->_product->persistExtraInfo($lat, $lng, $video_url);
                             $this->removeProductImages($removed_images, $current_id_product);
+                            $this->saveCombinations($combinations);
                         } else {
                             $done = false;
                         }
@@ -292,7 +291,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                     if ($done) {
                         $this->context->cookie->__unset('form_token');
                         Tools::redirect($this->context->link->getModuleLink('npsmarketplace', 'ProductsList'));
-                    } else {
+                    } else if (empty($current_id_product)) {
                         $this->_product->delete();
                         $this->_product = new Product();
                     }
@@ -317,6 +316,43 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
         }
         return false;
     }
+
+    private function saveCombinations($combinations) {
+        $current = $this->_product->getAttributesIds();
+        $updated = array();
+        foreach ($combinations as $key => $combination) {
+            if (isset($combination['id_product_attribute'])) {
+                $comb = new Combination($combination['id_product_attribute']);
+                $comb->price = $combination['price'];
+                $comb->default_on = $combination['default'];
+                $comb->save();
+                StockAvailable::setQuantity((int)$this->_product->id, (int)$combination['id_product_attribute'], $combination['quantity'], $this->context->shop->id);
+                $updated[] = $combination['id_product_attribute'];
+            } else {
+                $dt = new DateTime($combination['expiry_date'].' '.$combination['expiry_time']);
+                if ($combination['type'] == 0 && $combination['time'] == $combination['expiry_time']) {
+                    $dt->modify('-15 min');
+                }
+                $this->_product->createCombination($combination, $dt,  $this->context->shop->id);
+            }
+        }
+        $removed = array_diff($current, $updated);
+        foreach ($removed as $key => $value) {
+            $this->_product->deleteAttributeCombination((int)$value);
+        }
+        if (!$this->_product->hasAttributes()) {
+            $this->_product->cache_default_attribute = 0;
+            $this->_product->update();
+            if($this->_product->active)
+                $this->_product->toggleStatus();
+        } else {
+            if(!$this->_product->active)
+                $this->_product->toggleStatus();
+        }
+        $this->_product->checkDefaultAttributes();
+        Product::updateDefaultAttribute($this->_product->id);
+    }
+
     /**
      * Initialize product controller
      * @see FrontController::init()
@@ -403,7 +439,8 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             'categories' => array(),
             'province' => Province::getFeatureValueId($id_province),
             'town' => $town->id ? Town::getFeatureValueId($town->id) : 0,
-            'images' => array()
+            'images' => array(),
+            'combinations' => array()
         );
 
         if ($this->_product->id) {
@@ -429,6 +466,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                 'district' => $this->getFeatureValue($features, 'district'),
                 'categories' => $this->_product->getCategories(),
                 'images' => $images,
+                'combinations' => $this->getCombinations()
             );
             $extras = Product::getExtras($this->_product->id, $this->context->language->id);
             if ($extras) {
@@ -456,6 +494,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             'special_categories_tree' => $s_cat,
             'category_partial_tpl_path' =>_PS_MODULE_DIR_.'npsmarketplace/views/templates/front/category_tree_partial.tpl',
             'product_fieldset_tpl_path'=> _PS_MODULE_DIR_.'npsmarketplace/views/templates/front/product_fieldset.tpl',
+            'variants_tpl_path' => _PS_MODULE_DIR_.'npsmarketplace/views/templates/front/variants.tpl',
             'free_category_id' => Configuration::get('NPS_FREE_CATEGORY_ID'),
             'product' => $tpl_product,
             'edit_product' => array_key_exists('id', $tpl_product),
@@ -485,7 +524,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
         return Db::getInstance()->ExecuteS('SELECT `name` from '._DB_PREFIX_.'district');
     }
 
-    private function saveTicketFeatures($province_id_feature_value, $town_id_feature_value, $district, $address) {
+    private function saveLocationFeatures($province_id_feature_value, $town_id_feature_value, $district, $address) {
         $feature_id = Configuration::get('NPS_FEATURE_PROVINCE_ID');
         Product::addFeatureProductImport($this->_product->id, $feature_id, $province_id_feature_value);
 
@@ -507,21 +546,32 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
         return true;
     }
 
-    private function saveCarnetFeatures($entries, $date_from, $date_to) {
-        if (isset($entries) && !empty($entries)) {
-            $feature_id = Configuration::get('NPS_FEATURE_ENTRIES_ID');
-            $feature_value_id = FeatureValue::addFeatureValueImport($feature_id, $entries, $this->context->language->id, true);
-            Product::addFeatureProductImport($this->_product->id, $feature_id, $feature_value_id);
-        } else if (isset($date_from) && !empty($date_from) && isset($date_to) && !empty($date_to)) {
-            $feature_id = Configuration::get('NPS_FEATURE_FROM_ID');
-            $feature_value_id = FeatureValue::addFeatureValueImport($feature_id, $date_from, $this->context->language->id, true);
-            Product::addFeatureProductImport($this->_product->id, $feature_id, $feature_value_id);
-
-            $feature_id = Configuration::get('NPS_FEATURE_TO_ID');
-            $feature_value_id = FeatureValue::addFeatureValueImport($feature_id, $date_to, $this->context->language->id, true);
-            Product::addFeatureProductImport($this->_product->id, $feature_id, $feature_value_id);
+    private function getCombinations() {
+        $result = array();
+        foreach($this->_product->getAttributeCombinations($this->context->language->id) as $key => $comb) {
+            $id = $comb['id_product_attribute'];
+            $group = $comb['id_attribute_group'];
+            if ($group == Configuration::get('NPS_ATTRIBUTE_DATE_ID'))
+                $result[$id]['date'] = $comb['attribute_name'];
+            else if ($group == Configuration::get('NPS_ATTRIBUTE_TIME_ID'))
+                $result[$id]['time'] = $comb['attribute_name'];
+            else if ($group == Configuration::get('NPS_ATTRIBUTE_TYPE_ID'))
+                $result[$id]['type'] = $comb['attribute_name'];
+            else if ($group == Configuration::get('NPS_ATTRIBUTE_NAME_ID')) {
+                $result[$id]['id_product_attribute'] = $id;
+                $result[$id]['name'] = $comb['attribute_name'];
+                $result[$id]['price'] = $comb['price'];
+                $result[$id]['quantity'] = $comb['quantity'];
+                $result[$id]['default'] = $comb['default_on'];
+                $query = ProductAttributeExpiryDate::getByProductAttribute($id);
+                if ($query) {
+                    $date_time = new DateTime($query);
+                    $result[$id]['expiry_date'] = $date_time->format('Y-m-d');
+                    $result[$id]['expiry_time'] = $date_time->format('H:i');
+                }
+            }
         }
-        return true;
+        return $result;
     }
 
     private function removeProductImages($images_ids, $id_product) {

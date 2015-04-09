@@ -407,3 +407,35 @@
 .bootstrap-datetimepicker-widget {
   z-index: 1000001 !important;
 }
+
+.variants-box {
+  .page-heading {
+    padding-bottom: 13px;
+  }
+  
+  .dropdown {
+    .dropdown-toggle {
+      background: $primary-color;
+      &:hover {
+        background: $primary-color-light;
+      }
+    }
+
+    a .caret,
+    a:hover .caret {
+      color: $dark-text-color;
+      border-top-color: $dark-text-color;
+      border-bottom-color: $dark-text-color;
+    }
+  }
+  .variants-container {
+    td {
+      input {
+        max-width: 50px;
+      }
+      .button-small {
+        min-width: 40px;
+      }
+    }
+  }
+}

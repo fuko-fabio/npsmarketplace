@@ -4,61 +4,17 @@
 */
 
 $(document).ready(function(){
-    $('#date_picker').datetimepicker({
-        pickTime: false
-    });
+    initDatePicker('#date_picker', '#t_expiry_date_picker');
+    initDatePicker('#t_expiry_date_picker');
+    initTimePicker('#time_picker', '#t_expiry_time_picker');
+    initTimePicker('#t_expiry_time_picker');
 
-    $('#date_picker').on('changeDate', function(e) {
-        $('#date_picker').datetimepicker('hide');
-        $('#expiry_date_picker').data("datetimepicker").setDate($('[name=date]').val());
-    });
-
-    $('[name=date]').on('click', function() {
-        $('#date_picker').datetimepicker('show');
-    });
-
-    $('#time_picker').datetimepicker({
-        pickDate: false,
-        pickSeconds: false,
-        minuteStepping: 15
-    });
-
-    $('#time_picker').on('changeDate', function(e) {
-        $('#expiry_time_picker').data("datetimepicker").setDate($('[name=time]').val());
-    });
-
-    $('[name=time]').on('click', function(e) {
-        if ($('[name=time]').val().length == 0) {
-            $('#time_picker').data("datetimepicker").setValue(getDateTime());
-        }
-        $('#time_picker').datetimepicker('show');
-    });
-    
-    $('#expiry_date_picker').datetimepicker({
-        pickTime: false
-    });
-
-    $('#expiry_date_picker').on('changeDate', function(e) {
-        $('#expiry_date_picker').datetimepicker('hide');
-    });
-
-    $('[name=expiry_date]').on('click', function() {
-        $('#expiry_date_picker').datetimepicker('show');
-    });
-
-    $('#expiry_time_picker').datetimepicker({
-        pickDate: false,
-        pickSeconds: false,
-        minuteStepping: 15
-    });
-
-    $('[name=expiry_time]').on('click', function(e) {
-        if ($('[name=expiry_time]').val().length == 0) {
-            $('#expiry_time_picker').data("datetimepicker").setValue(getDateTime());
-        }
-        $('#expiry_time_picker').datetimepicker('show');
-    });
-/*
+    initDatePicker('#c_expiry_date_picker');
+    initTimePicker('#c_expiry_time_picker');
+    initDatePicker('#a_expiry_date_picker');
+    initTimePicker('#a_expiry_time_picker');
+    initDatePicker('#oa_expiry_date_picker');
+    initTimePicker('#oa_expiry_time_picker');
 
     $('#fromDatePicker').datetimepicker({
         pickTime: false
@@ -82,9 +38,47 @@ $(document).ready(function(){
 
     $('#toDatePicker').on('click', function() {
         $('#toDatePicker').datetimepicker('show');
-    });*/
+    });
 
 });
+
+function initDatePicker(id_el, target_id_el) {
+    $(id_el).datetimepicker({
+        pickTime: false
+    });
+    
+    $(id_el + ' input').on('click', function() {
+        $(id_el).datetimepicker('show');
+    });
+    
+    $(id_el).on('changeDate', function(e) {
+        $(id_el).datetimepicker('hide');
+        if (target_id_el) {
+            $(target_id_el).data("datetimepicker").setDate(e.date.valueOf());
+        }
+    });
+}
+
+function initTimePicker(id_el, target_id_el) {
+    $(id_el).datetimepicker({
+        pickDate: false,
+        pickSeconds: false,
+        minuteStepping: 15
+    });
+
+    $(id_el).on('changeDate', function(e) {
+        if (target_id_el) {
+            $(target_id_el).data("datetimepicker").setDate(e.date.valueOf());
+        }
+    });
+
+    $(id_el + ' input').on('click', function() {
+        if ($(this).val().length == 0) {
+            $(id_el).data("datetimepicker").setValue(getDateTime());
+        }
+        $(id_el).datetimepicker('show');
+    });
+}
 
 function getDateTime() {
     var now = new Date(); 

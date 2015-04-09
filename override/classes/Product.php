@@ -24,6 +24,65 @@ class Product extends ProductCore {
         return ProductAttributeExpiryDate::deleteByProductId($this->id);
     }
 
+    public function createCombination($combination, DateTime $date_time, $id_shop = null) {
+        $attributes_ids = array();
+        $id_lang = (int)Configuration::get('PS_LANG_DEFAULT');
+        if ($combination['type'] == 0) {
+            $attributes_ids[] = $this->saveAttribute(Configuration::get('NPS_ATTRIBUTE_DATE_ID'), $combination['date'], $id_lang);
+            $attributes_ids[] = $this->saveAttribute(Configuration::get('NPS_ATTRIBUTE_TIME_ID'), $combination['time'], $id_lang);
+        }
+        $attributes_ids[] = $this->saveAttribute(Configuration::get('NPS_ATTRIBUTE_NAME_ID'), $combination['name'], $id_lang);
+        $attributes_ids[] = $this->saveAttribute(Configuration::get('NPS_ATTRIBUTE_TYPE_ID'), $combination['type'], $id_lang);
+
+        if ($combination['type'] > 1 ) {
+            $combination['price'] = 0;
+            $combination['quantity'] = 1;
+        }
+
+        $id_product_attribute = $this->addAttribute(
+            $combination['price'],//$price,
+            null,//$weight,
+            null,//$unit_impact,
+            null,//$ecotax,
+            null,//$id_images,
+            null,//$reference,
+            null,//$ean13,
+            $combination['default'],//$default
+            null,//$location
+            null,//$upc 
+            1,//$minimal_quantity
+            array(),//$id_shop_list
+            null);//$available_date
+
+        $comb = new Combination((int)$id_product_attribute);
+        $comb->setAttributes($attributes_ids);
+        StockAvailable::setQuantity((int)$this->id, (int)$id_product_attribute, $combination['quantity'], $id_shop);
+        $this->saveExpiryDate($date_time, $id_product_attribute);
+        Db::getInstance()->execute('UPDATE '._DB_PREFIX_.'product SET date_add = NOW() WHERE id_product = '.$this->id);
+        Search::indexation(false, $this->id);
+    }
+
+    private function saveAttribute($id_attribute_group, $value, $id_lang) {
+        $res = $this->getAttributeId($id_attribute_group, $value, $id_lang);
+        if (!$res)
+            $id_attribute = null;
+        else
+            $id_attribute = $res['id_attribute'];
+
+        $attr = new Attribute($id_attribute);
+        if ($id_attribute == null) {
+            $v = array();
+            foreach (Language::getLanguages() as $key => $lang) {
+                $v[$lang['id_lang']] = $value;
+            }
+            $attr->name = $v;
+            $attr->id_attribute_group = $id_attribute_group;
+            $attr->position = -1;
+            $attr->save();
+        }
+        return $attr->id;
+    }
+ 
     public function newEventCombination($date, $time, $quantity, DateTime $date_time, $id_shop = null) {
         $d = array();
         $t = array();
@@ -95,6 +154,19 @@ class Product extends ProductCore {
         $e_d->id_product_attribute = $id_product_attribute;
         $e_d->id_product = $this->id;
         $e_d->save();
+    }
+
+    public function getAttributesIds() {
+        $result = array();
+        if ($this->id) {
+            $r = Db::getInstance()->executeS(
+                'SELECT id_product_attribute FROM '._DB_PREFIX_.'product_attribute WHERE id_product = '.$this->id
+            );
+            foreach ($r as $key => $value) {
+                $result[] = $value['id_product_attribute'];
+            }
+        }
+        return $result;
     }
 
     private function getAttributeId($id_attribute_group, $name, $id_lang) {
@@ -317,9 +389,8 @@ class Product extends ProductCore {
         return $result;
     }
 
-    public function persistExtraInfo($type, $lat, $lng, $video_url) {
+    public function persistExtraInfo($lat, $lng, $video_url) {
         return Db::getInstance()->update('product', array(
-            'type' => $type,
             'lng' => $lng,
             'lat' => $lat,
             'video' => $video_url
