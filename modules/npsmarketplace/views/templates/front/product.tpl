@@ -18,9 +18,15 @@
 {addJsDefL name=dropzoneServerUrl}{$dropzone_url}{/addJsDefL}
 {addJsDefL name=dictTownsOther}{l s='--Other--' mod='npsmarketplace' js=1}{/addJsDefL}
 
+{if isset($smarty.post.combinations)}
+{assign var="combinations" value=$smarty.post.combinations}
+{else}
+{assign var="combinations" value=$product.combinations}
+{/if}
 <script>
     var dropzoneImages = {$product['images']|json_encode};
     var provincesMap = {json_encode($provinces)};
+    var productCombinations = {json_encode(array_values($combinations))};
 </script>
 
 {capture name=path}

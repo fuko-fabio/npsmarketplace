@@ -42,7 +42,6 @@
                     <th class="item">{l s='Price' mod='npsmarketplace'}</th>
                     <th class="item">{l s='Quantity' mod='npsmarketplace'}</th>
                     <th class="item">{l s='State' mod='npsmarketplace'}</th>
-                    <th class="item">{l s='Type' mod='npsmarketplace'}</th>
                     <th class="last_item" data-sort-ignore="true" width="150px"></th>
                 </tr>
             </thead>
@@ -58,8 +57,8 @@
                     </td>
                     <td>{$product.name}</td>
                     <td>{$product.description}</td>
-                    <td>{displayPrice price=$product.price currency=$id_currency}</td>
-                    <td>{$product.quantity}</td>
+                    <td>{if !$product.advertisment }{displayPrice price=$product.price currency=$id_currency}{else}{l s='Advertisment' mod='npsmarketplace'}{/if}</td>
+                    <td>{if !$product.advertisment }{$product.quantity}{/if}</td>
                     <td>
                         {if $product.active == 1}
                         <i class="icon-ok"></i>
@@ -68,32 +67,13 @@
                         {/if}
                     </td>
                     <td>
-                        {if isset($product.type)}
-                            {if $product.type == 0}
-                                {l s='Ticket' mod='npsmarketplace'}
-                            {else if $product.type == 1}
-                                {l s='Carnet' mod='npsmarketplace'}
-                            {else if $product.type == 2}
-                                {l s='Ad' mod='npsmarketplace'}
-                            {else if $product.type == 3}
-                                {l s='External Ad' mod='npsmarketplace'}
-                            {/if}
-                        {/if}
-                    </td>
-                    <td>
                         <ul class="nav navbar-nav">
                             <li class="dropdown">
                                 <a href="#" data-toggle="dropdown" class="dropdown-toggle"><i class="icon-list"></i> {l s='Options' mod='npsmarketplace'}<b class="caret"></b></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="{$product.edit_url}" onclick="$.fancybox.showLoading();"> <i class="icon-pencil"></i> {l s='Edit' mod='npsmarketplace'}</a></li>
-                                    {if $seler_active && $product.type == 0}
-                                        <li><a href="{$product.new_combination_url}" onclick="$.fancybox.showLoading();"> <i class="icon-calendar"></i> {l s='New Term' mod='npsmarketplace'}</a></li>
-                                    {/if}
-                                    {if $product.type == 0 && $product.active == 1}
-                                        <li><a href="{$product.edit_combination_url}" onclick="$.fancybox.showLoading();"> <i class="icon-calendar"></i> {l s='List of Terms' mod='npsmarketplace'}</a></li>
-                                    {/if}
                                     {if $product.active == 1}
-                                        {if $product.type == 0 || $product.type == 1 }
+                                        {if !$product.advertisment }
                                             {if !$product.on_sale}
                                                 <li><a class="sale-event-btn" href="#sale_event_box{$product.id_product}"> <i class="icon-chevron-down"></i> {l s='Sale' mod='npsmarketplace'}</a></li>
                                                 <!-- Fancybox -->

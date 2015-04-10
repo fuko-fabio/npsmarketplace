@@ -11,35 +11,16 @@ $(document).ready(function(){
 
     initDatePicker('#c_expiry_date_picker');
     initTimePicker('#c_expiry_time_picker');
+    
+    initDatePicker('#a_date_picker', '#a_expiry_date_picker');
     initDatePicker('#a_expiry_date_picker');
+    initTimePicker('#a_time_picker', '#a_expiry_time_picker');
     initTimePicker('#a_expiry_time_picker');
+
+    initDatePicker('#oa_date_picker', '#oa_expiry_date_picker');
     initDatePicker('#oa_expiry_date_picker');
+    initTimePicker('#oa_time_picker', '#oa_expiry_time_picker');
     initTimePicker('#oa_expiry_time_picker');
-
-    $('#fromDatePicker').datetimepicker({
-        pickTime: false
-    });
-
-    $('#fromDatePicker').on('changeDate', function(e) {
-        $('#fromDatePicker').datetimepicker('hide');
-    });
-
-    $('#fromDatePicker').on('click', function() {
-        $('#fromDatePicker').datetimepicker('show');
-    });
-
-    $('#toDatePicker').datetimepicker({
-        pickTime: false
-    });
-
-    $('#toDatePicker').on('changeDate', function(e) {
-        $('#toDatePicker').datetimepicker('hide');
-    });
-
-    $('#toDatePicker').on('click', function() {
-        $('#toDatePicker').datetimepicker('show');
-    });
-
 });
 
 function initDatePicker(id_el, target_id_el) {

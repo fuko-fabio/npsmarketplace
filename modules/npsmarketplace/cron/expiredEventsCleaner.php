@@ -27,8 +27,6 @@ foreach ($rows as $row) {
         $outdated_ids[] = (int)$attr_id;
         continue;
     }
-    if (isset($p_id) && !empty($p_id))
-        $products_ids[] = (int)$p_id;
 }
 
 $outdated_ids = array_unique($outdated_ids);
@@ -47,12 +45,8 @@ $products_ids = array_unique($products_ids);
 syslog(LOG_INFO, 'Outdated products ids: '.implode('|', $products_ids));
 $to_disable = array();
 foreach ($products_ids as $id) {
-    $extras = Product::getExtras($id);
-    if ($extras['type'] == 0) {
-        $attrs_ids = Product::getProductAttributesIds($id);
-        if(empty($attrs_ids))
-            $to_disable[] = $id;
-    } else 
+    $attrs_ids = Product::getProductAttributesIds($id);
+    if(empty($attrs_ids))
         $to_disable[] = $id;
 }
 syslog(LOG_INFO, 'Disabling products: '.implode('|', $to_disable));

@@ -2,7 +2,6 @@
 *  @author Norbert Pabian <norbert.pabian@gmail.com>
 *  @copyright 2014 npsoftware
 */
-var vIndex = 0;
 
 $(document).ready(function(){
     $(".textarea-autosize").autosize();
@@ -20,7 +19,48 @@ $(document).ready(function(){
         height      : 'auto',
         autoSize    : false,
     });
+    populateCombinations();
+    updateCombinationsDropdown();
 });
+
+function updateCombinationsDropdown() {
+    if (productCombinations.length > 0) {
+        var types = [];
+        $.each(productCombinations, function(index, combination) {
+            types.push(combination['type']);
+        });
+        if (types.indexOf('0') != -1 || types.indexOf('1') != -1) {
+            $('.variants-dropdown').show();
+            $('.add-ticket, .add-carnet').show();
+            $('.add-ad, .add-ext-ad').hide();
+        } else if (types.indexOf('2') != -1 || types.indexOf('3') != -1) {
+            $('.variants-dropdown').hide();
+        }
+    } else {
+        $('.variants-dropdown').show();
+        $('.add-ticket, .add-carnet, .add-ad, .add-ext-ad').show();
+    }
+}
+
+function populateCombinations() {
+    if (productCombinations.length > 0) {
+        $('.no-variants').hide();
+        $.each(productCombinations, function(index, combination) {
+            combination['index'] = index;
+            renderCombination(combination);
+        });
+    } else {
+        $('.no-variants').show();
+    }
+}
+
+function renderCombination(combination) {
+    $('.variants-container').append(tmpl("ticket-tmpl", combination));
+}
+
+function clearCombinations() {
+    $('.variants-container').empty();
+}
 
 function populateTowns(id_feature_value) {
     $.each(provincesMap, function(index, province) {
@@ -49,14 +89,16 @@ function addVariant(id_form) {
           }
         });
         data['type'] = $(id_form + ' [name=type]').val();
-        data['index'] = vIndex;
-        console.log(data);
-        $('.variants-container').append(tmpl("ticket-tmpl", data));
+        productCombinations.push(data);
+        clearCombinations();
+        populateCombinations();
+        updateCombinationsDropdown();
         $.fancybox.close();
-        vIndex = vIndex + 1;
         clearFancyboxForm(id_form);
-        $('body').scrollTo('.variants-box');
-        $("input[type='checkbox']:not(.comparator)").uniform();
+        setTimeout(function() {
+            $('body').scrollTo('.variants-box');
+            $("input[type='checkbox']:not(.comparator)").uniform();
+        }, 500);
     }
 }
 
@@ -68,7 +110,10 @@ function clearFancyboxForm(id_form) {
 }
 
 function removeVariant(index) {
-    $('.variant-index-' + index).remove();
+    productCombinations.splice(index, 1);
+    clearCombinations();
+    populateCombinations();
+    updateCombinationsDropdown();
 }
 
 function validateVariant(id_form) {

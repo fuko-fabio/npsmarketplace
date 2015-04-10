@@ -27,7 +27,7 @@
             {literal}
             {% } %}
         </td>
-        <td><div class="checkbox"><input type="checkbox" name="combinations[{%=o.index%}][default]" value="1" /></div></td>
+        <td><div class="checkbox"><input type="checkbox" name="combinations[{%=o.index%}][default]" value="1" {% if (o.default == 1) { %}checked=""{% } %}/></div></td>
         <td>{%=o.name%}</td>
         <td>{%=o.date%} {%=o.time%}</td>
         <td>{%=o.expiry_date%} {%=o.expiry_time%}</td>
@@ -37,12 +37,15 @@
             <button type="button" class="btn btn-default button button-small pull-right" onclick="removeVariant({literal}{%=o.index%}{/literal});"><i class="icon-trash right"></i></button>
             <input type="hidden" name="combinations[{%=o.index%}][name]" value="{%=o.name%}" />
             <input type="hidden" name="combinations[{%=o.index%}][type]" value="{%=o.type%}" />
-            {% if (o.type == 0) { %}
+            {% if (o.type != 1) { %}
             <input type="hidden" name="combinations[{%=o.index%}][date]" value="{%=o.date%}" />
             <input type="hidden" name="combinations[{%=o.index%}][time]" value="{%=o.time%}" />
             {% } %}
             <input type="hidden" name="combinations[{%=o.index%}][expiry_date]" value="{%=o.expiry_date%}" />
             <input type="hidden" name="combinations[{%=o.index%}][expiry_time]" value="{%=o.expiry_time%}" />
+            {% if (o.id_product_attribute) { %}
+            <input type="hidden" name="combinations[{%=o.index%}][id_product_attribute]" value="{%=o.id_product_attribute%}" />
+            {% } %}
             {/literal}
         </td>
     </tr>
@@ -138,6 +141,47 @@
         </div>
     </div>
 
+    <div class="box variants-box">
+      <ul class="nav navbar-nav pull-right variants-dropdown">
+        <li class="dropdown">
+          <a href="#" data-toggle="dropdown" class="dropdown-toggle"><i class="icon-plus"></i> {l s='Add' mod='npsmarketplace'}<b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li>
+              <a href="#ticket_combination" class="add-variant-btn add-ticket">{l s='Ticket' mod='npsmarketplace'}</a>
+            </li>
+            <li>
+              <a href="#carnet_combination" class="add-variant-btn add-carnet">{l s='Carnet' mod='npsmarketplace'}</a>
+            </li>
+            <li>
+              <a href="#ad_combination" class="add-variant-btn add-ad">{l s='Advertisment' mod='npsmarketplace'}</a>
+            </li>
+            {if $seller->outer_adds}
+            <li>
+              <a href="#outer_ad_combination" class="add-variant-btn add-ext-ad">{l s='Outer Advertisment' mod='npsmarketplace'}</a>
+            </li>
+            {/if}
+          </ul>
+        </li>
+      </ul>
+      <h3 class="page-heading">{l s='Variants' mod='npsmarketplace'}</h3>
+      <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>{l s='Default' mod='npsmarketplace'}</th>
+                    <th>{l s='Name' mod='npsmarketplace'}</th>
+                    <th>{l s='Event date' mod='npsmarketplace'}</th>
+                    <th>{l s='Expiry date' mod='npsmarketplace'}</th>
+                    <th>{l s='Quantity' mod='npsmarketplace'}</th>
+                    <th>{l s='Price' mod='npsmarketplace'}</th>
+                </tr>
+            </thead>
+            <tbody class="variants-container">
+            </tbody>
+        </table>
+        <p class="alert alert-warning no-variants"><span class="alert-content">{l s='No wariants' mod='npsmarketplace'}</span></p>
+    </div>
+
     <div class="box">
         <h3 class="page-heading">{l s='Media' mod='npsmarketplace'}</h3>
         <div class="form-group">
@@ -210,79 +254,5 @@
                 {/if}
             </div>
         </div>
-    </div>
-    <div class="box variants-box">
-      <ul class="nav navbar-nav pull-right">
-        <li class="dropdown">
-          <a href="#" data-toggle="dropdown" class="dropdown-toggle"><i class="icon-plus"></i> {l s='Add' mod='npsmarketplace'}<b class="caret"></b></a>
-          <ul class="dropdown-menu">
-            <li>
-              <a href="#ticket_combination" class="add-variant-btn">{l s='Ticket' mod='npsmarketplace'}</a>
-            </li>
-            <li>
-              <a href="#carnet_combination" class="add-variant-btn">{l s='Carnet' mod='npsmarketplace'}</a>
-            </li>
-            <li>
-              <a href="#ad_combination" class="add-variant-btn">{l s='Advertisment' mod='npsmarketplace'}</a>
-            </li>
-            {if $seller->outer_adds}
-            <li>
-              <a href="#outer_ad_combination" class="add-variant-btn">{l s='Outer Advertisment' mod='npsmarketplace'}</a>
-            </li>
-            {/if}
-          </ul>
-        </li>
-      </ul>
-      <h3 class="page-heading">{l s='Variants' mod='npsmarketplace'}</h3>
-      <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>{l s='Default' mod='npsmarketplace'}</th>
-                    <th>{l s='Name' mod='npsmarketplace'}</th>
-                    <th>{l s='Event date' mod='npsmarketplace'}</th>
-                    <th>{l s='Expiry date' mod='npsmarketplace'}</th>
-                    <th>{l s='Quantity' mod='npsmarketplace'}</th>
-                    <th>{l s='Price' mod='npsmarketplace'}</th>
-                </tr>
-            </thead>
-            <tbody class="variants-container">
-                {if isset($product.combinations)}
-                {foreach from=$product.combinations item=comb key=id}
-                <tr class="item variant-index-{$id}">
-                    <td>
-                        {if $comb.type == 0}
-                        {l s='Ticket' mod='npsmarketplace'}
-                        {elseif $comb.type == 1}
-                        {l s='Carnet' mod='npsmarketplace'}
-                        {elseif $comb.type == 2}
-                        {l s='Advertisment' mod='npsmarketplace'}
-                        {elseif $comb.type == 3}
-                        {l s='Outer advertisment' mod='npsmarketplace'}
-                        {/if}
-                    </td>
-                    <td><div class="checkbox"><input type="checkbox" name="combinations[{$id}][default]" value="1" {if $comb.default}checked="checked"{/if}/></div></td>
-                    <td>{$comb.name}</td>
-                    <td>{if isset($comb.date) && isset($comb.time)}{$comb.date} {$comb.time}{/if}</td>
-                    <td>{$comb.expiry_date} {$comb.expiry_time}</td>
-                    <td>{if $comb.type < 2}<input type="number" name="combinations[{$id}][quantity]" value="{$comb.quantity}" />{/if}</td>
-                    <td>{if $comb.type < 2}<input type="text" name="combinations[{$id}][price]" value="{round($comb.price, 2)}" />{/if}</td>
-                    <td>
-                        <button type="button" class="btn btn-default button button-small pull-right" onclick="removeVariant({$id});"><i class="icon-trash right"></i></button>
-                        <input type="hidden" name="combinations[{$id}][id_product_attribute]" value="{$comb.id_product_attribute}" />
-                        <input type="hidden" name="combinations[{$id}][name]" value="{$comb.name}" />
-                        <input type="hidden" name="combinations[{$id}][type]" value="{$comb.type}" />
-                        {if $comb.type == 0}
-                        <input type="hidden" name="combinations[{$id}][date]" value="{$comb.date}" />
-                        <input type="hidden" name="combinations[{$id}][time]" value="{$comb.time}" />
-                        {/if}
-                        <input type="hidden" name="combinations[{$id}][expiry_date]" value="{$comb.expiry_date}" />
-                        <input type="hidden" name="combinations[{$id}][expiry_time]" value="{$comb.expiry_time}" />
-                    </td>
-                </tr>
-                {/foreach}
-                {/if}
-            </tbody>
-        </table>
     </div>
 </fieldset>

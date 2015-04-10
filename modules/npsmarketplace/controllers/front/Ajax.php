@@ -87,18 +87,6 @@ class NpsMarketplaceAjaxModuleFrontController extends ModuleFrontController {
         die('0');
     }
 
-    protected function ajaxProcessCombinationQuantity() {
-        $id_product_attribute = Tools::getValue('id_product_attribute');
-        $quantity =  Tools::getValue('quantity');
-        $combination = new Combination($id_product_attribute);
-        if ($combination->id && Validate::isUnsignedInt($quantity) && $quantity > 0) {
-            StockAvailable::setQuantity($combination->id_product, $combination->id, $quantity);
-        } else {
-            die('0');
-        }
-        die('1');
-    }
-
     protected function ajaxProcessChangeTown() {
         $town = new Town(Tools::getValue('id_town'));
         $this->context->cookie->__set('main_town', $town->id);

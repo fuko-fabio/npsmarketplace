@@ -27,17 +27,24 @@ class Product extends ProductCore {
     public function createCombination($combination, DateTime $date_time, $id_shop = null) {
         $attributes_ids = array();
         $id_lang = (int)Configuration::get('PS_LANG_DEFAULT');
-        if ($combination['type'] == 0) {
-            $attributes_ids[] = $this->saveAttribute(Configuration::get('NPS_ATTRIBUTE_DATE_ID'), $combination['date'], $id_lang);
-            $attributes_ids[] = $this->saveAttribute(Configuration::get('NPS_ATTRIBUTE_TIME_ID'), $combination['time'], $id_lang);
-        }
-        $attributes_ids[] = $this->saveAttribute(Configuration::get('NPS_ATTRIBUTE_NAME_ID'), $combination['name'], $id_lang);
-        $attributes_ids[] = $this->saveAttribute(Configuration::get('NPS_ATTRIBUTE_TYPE_ID'), $combination['type'], $id_lang);
 
         if ($combination['type'] > 1 ) {
             $combination['price'] = 0;
             $combination['quantity'] = 1;
+            $combination['name'] = 'advertisment';
         }
+
+        if ($combination['type'] != 1) {
+            if (isset($combination['date']) && !empty($combination['date']))
+                $attributes_ids[] = $this->saveAttribute(Configuration::get('NPS_ATTRIBUTE_DATE_ID'), $combination['date'], $id_lang);
+            if (isset($combination['time']) && !empty($combination['time']))
+                $attributes_ids[] = $this->saveAttribute(Configuration::get('NPS_ATTRIBUTE_TIME_ID'), $combination['time'], $id_lang);
+        }
+        if (isset($combination['name']) && !empty($combination['name']))
+            $attributes_ids[] = $this->saveAttribute(Configuration::get('NPS_ATTRIBUTE_NAME_ID'), $combination['name'], $id_lang);
+
+        if (isset($combination['type']) && !empty($combination['type']))
+            $attributes_ids[] = $this->saveAttribute(Configuration::get('NPS_ATTRIBUTE_TYPE_ID'), $combination['type'], $id_lang);
 
         $id_product_attribute = $this->addAttribute(
             $combination['price'],//$price,
@@ -314,10 +321,13 @@ class Product extends ProductCore {
     * @param integer $id_lang Language id
     * @return array Product attributes combinations
     */
-    public static function getStaticAttributeCombinations($id_product, $id_lang)
+    public static function getStaticAttributeCombinations($id_product, $id_lang = null)
     {
         if (!Combination::isFeatureActive())
             return array();
+
+        if ($id_lang == null)
+            $id_lang = (int)Configuration::get('PS_LANG_DEFAULT');
 
         $sql = 'SELECT pa.*, product_attribute_shop.*, ag.`id_attribute_group`, ag.`is_color_group`, agl.`name` AS group_name, al.`name` AS attribute_name,
                     a.`id_attribute`, pa.`unit_price_impact`
@@ -352,40 +362,34 @@ class Product extends ProductCore {
     }
 
     public static function showSellerDetails($id_product) {
-        $extras = Product::getExtras($id_product, null, false);
-        return $extras['type'] != 3;
+        foreach(Product::getStaticAttributeCombinations($id_product) as $key => $value) {
+            if ($value['id_attribute_group'] == Configuration::get('NPS_ATTRIBUTE_TYPE_ID') && $value['attribute_name'] == 3)
+                return false;
+        }
+        return true;
     }
 
-    public static function getExtras($id_product, $id_lang = null, $all = true) {
+    public static function isAdvertisment($id_product) {
+        foreach(Product::getStaticAttributeCombinations($id_product) as $key => $value) {
+            if ($value['id_attribute_group'] == Configuration::get('NPS_ATTRIBUTE_TYPE_ID') && $value['attribute_name'] > 1)
+                return true;
+        }
+        return false;
+    }
+
+    public static function getExtras($id_product, $id_lang = null) {
         if (!isset($id_product))
             return null;
         
         if ($id_lang == null)
             $id_lang = (int)Configuration::get('PS_LANG_DEFAULT');
 
-        $sql = 'SELECT `type`, `video`, `lat`, `lng`
+        $sql = 'SELECT `video`, `lat`, `lng`
                 FROM `'._DB_PREFIX_.'product`
                 WHERE `id_product` = '.$id_product;
         $result = Db::getInstance()->getRow($sql);
-
-        $features = Product::getFeaturesStatic((int)$id_product);
-        if ($all && $result['type'] == 1) {
-            foreach($features as $feature) {
-                if ($feature['id_feature'] == Configuration::get('NPS_FEATURE_ENTRIES_ID')) {
-                    $entries = new FeatureValue($feature['id_feature_value']);
-                    $result['entries'] = $entries->value[$id_lang];
-                    continue;
-                } else if ($feature['id_feature'] == Configuration::get('NPS_FEATURE_FROM_ID')) {
-                    $from = new FeatureValue($feature['id_feature_value']);
-                    $result['from'] = $from->value[$id_lang];
-                    continue;
-                } else if ($feature['id_feature'] == Configuration::get('NPS_FEATURE_TO_ID')) {
-                    $to = new FeatureValue($feature['id_feature_value']);
-                    $result['to'] = $to->value[$id_lang];
-                    continue;
-                }
-            }
-        }
+        $result['advertisment'] = Product::isAdvertisment($id_product);
+        $result['external_advertisment'] = !Product::showSellerDetails($id_product);
         return $result;
     }
 

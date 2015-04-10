@@ -1,0 +1,12 @@
+.combinations-list .row {
+  margin-left: 0px;
+  margin-right: 0px; }
+.combinations-list .combinations-header {
+  font-weight: bold;
+  padding: 10px 0;
+  background-color: #eee; }
+.combinations-list .combinations-item {
+  padding: 10px 0;
+  border-bottom: 1px solid #d6d4d4; }
+.combinations-list button {
+  margin-top: 10px; }

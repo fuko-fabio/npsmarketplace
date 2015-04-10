@@ -34,6 +34,10 @@
         {assign var='productPrice' value=$product->getPrice(false, $smarty.const.NULL, $priceDisplayPrecision)}
         {assign var='productPriceWithoutReduction' value=$product->getPriceWithoutReduct(true, $smarty.const.NULL)}
     {/if}
+    {addJsDefL name=time_id_attribute_group}{$time_id_attribute_group}{/addJsDefL}
+    {addJsDefL name=date_id_attribute_group}{$date_id_attribute_group}{/addJsDefL}
+    {addJsDefL name=type_id_attribute_group}{$type_id_attribute_group}{/addJsDefL}
+    {addJsDefL name=name_id_attribute_group}{$name_id_attribute_group}{/addJsDefL}
     <div class="primary_block row" itemscope itemtype="http://schema.org/Product">
     {if !$content_only}
         <div class="container">
@@ -200,7 +204,7 @@
                     <div class="tab-pane fade active in" id="product-more-info">
                         <!-- full description -->
                         <div class="rte">{$product->description}</div>
-                        {if $extras.type == 0 || $extras.type == 1 }
+                        {if !$extras.advertisment}
                         <h3 class="page-heading">{l s='Delivery'}</h3>
                         {l s='Free shipping on given e-mail address.'}
                         <h3 class="page-heading">{l s='Payment'}</h3>
@@ -301,16 +305,10 @@
 
         <div class="box-info-product">
         <div class="content_prices clearfix">
-            {if $extras.type == 0}
-                <p class="product-type ticket">{l s='Ticket'}</p>
-            {/if}
-            {if $extras.type == 1}
-                <p class="product-type carnet">{l s='Carnet'}</p>
-            {/if}
-            {if $extras.type == 2 || $extras.type == 3}
-                <p class="product-type ad">{l s='Advertisment'}</p>
-            {/if}
-            {if $product->show_price && !isset($restricted_country_mode) && !$PS_CATALOG_MODE && ($extras.type == 0 || $extras.type == 1)}
+             <p class="product-type ticket">{l s='Ticket'}</p>
+             <p class="product-type carnet">{l s='Carnet'}</p>
+             <p class="product-type ad">{l s='Advertisment'}</p>
+            {if $product->show_price && !isset($restricted_country_mode) && !$PS_CATALOG_MODE && !$extras.advertisment}
                 <!-- prices -->
                 <div class="price">
                     <p class="our_price_display" itemprop="offers" itemscope
@@ -368,8 +366,8 @@
         <!-- end content_prices -->
         <div class="product_attributes clearfix">
             <!-- quantity wanted -->
-            {if !$PS_CATALOG_MODE && ($extras.type == 0 || $extras.type == 1)}
-                <div id="quantity_wanted_p"{if (!$allow_oosp && $product->quantity <= 0) || !$product->available_for_order || $PS_CATALOG_MODE} style="display: none;"{/if}>
+            {if !$PS_CATALOG_MODE && !$extras.advertisment}
+                <div id="quantity_wanted_p" class="unvisible" {if (!$allow_oosp && $product->quantity <= 0) || !$product->available_for_order || $PS_CATALOG_MODE} style="display: none;"{/if}>
                     <label>{l s='Quantity:'}</label>
                     <div class="qty-inputs">
                         <a href="#" data-field-qty="qty"
@@ -406,11 +404,7 @@
                             {if $allow_oosp}
                                 {$product->available_later}
                             {else}
-                                {if $extras.type == 0}
-                                    {l s='Tickets are currently not available'}
-                                {else if $extras.type == 1}
-                                    {l s='Carnets are currently not available'}
-                                {/if}
+                                {l s='Tickets are currently not available'}
                             {/if}
                         {else}
                             {$product->available_now}
@@ -431,67 +425,12 @@
                 {l s='This product is not sold individually. You must select at least'} <b
                         id="minimal_quantity_label">{$product->minimal_quantity}</b> {l s='quantity for this product.'}
             </p>
-            {if $extras.type == 1}
-                <div class="carnet-info-block">
-                {if isset($extras.entries)}
-                <span>{l s='Number of entries'}:</span> {$extras.entries}
-                {/if}
-                {if isset($extras.from) && isset($extras.to)}
-                <span>{l s='Valid from'}:</span> {$extras.from} <span>{l s='to'}:</span> {$extras.to}
-                {/if}
-                </div>
-            {/if}
             {if isset($groups)}
                 <div id="current_term">
-                <label>{if $extras.type == 1}{l s='First meeting:'}{else}{l s='Term:'}{/if}</label>
                 <div class="term-inputs">
-                    {assign var="combination_name" value=""}
-                    {foreach from=$groups key=id_attribute_group item=group}
-                        {if $group.attributes|@count}
-                            {foreach from=$group.attributes key=id_attribute item=group_attribute}
-                                {if $group.default == $id_attribute}
-                                    {$combination_name = $combination_name|cat:" "|cat:$group_attribute }
-                                {/if}
-                            {/foreach}
-                        {/if}
-                    {/foreach}
-                    <span class="combination_info">{$combination_name|escape:'html':'UTF-8'}</span>
-                    <div{if (!$allow_oosp && $product->quantity <= 0) || !$product->available_for_order || (isset($restricted_country_mode) && $restricted_country_mode) || $PS_CATALOG_MODE} class="unvisible"{/if}>
-                        {if $combinations|@count > 1}
-                        <p id="change_term">
-                            <a id="select_combination_button" class="exclusive light" href="#select_combination_form">
-                                <span><i class="icon-calendar"></i> {l s='Change term'}</span>
-                            </a>
-                        </p>
-                        {/if}
-                        <div style="display: none;">
-                            <div id="select_combination_form">
-                                <h2 class="title">{l s='Select term'}</h2>
-
-                                <div class="select_combination_form_content">
-                                    <p class="alert alert-info"><span class="alert-content">{l s='Please select event term from list below'}</span></p>
-                                    <div class="form_container">
-                                        <ul>
-                                        {foreach from=$combinations key=key item=combination}
-                                            {assign var="combination_name" value=""}
-                                            {foreach from=$combination.attributes_values item=value}
-                                                {$combination_name = $combination_name|cat:" "|cat:$value }
-                                            {/foreach}
-                                            <li>
-                                                <input type="radio" name="combination" value="{$key}" title="{$combination_name}"/>
-                                                <span>{$combination_name}</span>
-                                            </li>
-                                        {/foreach}
-                                        </ul>
-                                    </div>
-                                    <p class="submit">
-                                        <input class="button ccl" type="button" value="{l s='Cancel'}" onclick="$.fancybox.close();"/>
-                                        <input id="selectCombination" class="button" type="button" value="{l s='Ok'}"/>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <span class="combination_info"></span>
+                    <span class="combination_name"></span>
+                </div>
                 </div>
                 <!-- attributes -->
                 <div id="attributes" class="unvisible">
@@ -560,7 +499,7 @@
             {/if}
         </div>
         <!-- end product_attributes -->
-        {if $extras.type == 0 || $extras.type == 1}
+        {if !$extras.advertisment}
         <div class="box-cart-bottom">
             <div{if (!$allow_oosp && $product->quantity <= 0) || !$product->available_for_order || (isset($restricted_country_mode) && $restricted_country_mode) || $PS_CATALOG_MODE} class="unvisible"{/if}>
                 <p id="add_to_cart">
@@ -860,6 +799,7 @@
         {if isset($combinationImages) && $combinationImages}
             {addJsDef combinationImages=$combinationImages}
         {/if}
+        {addJsDef groups=$groups}
         {addJsDef customizationFields=$customizationFields}
         {addJsDef default_eco_tax=$product->ecotax|floatval}
         {addJsDef displayPrice=$priceDisplay|intval}

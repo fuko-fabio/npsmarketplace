@@ -282,23 +282,6 @@ $(document).ready(function () {
     $('#select_combination_button').fancybox({
         'hideOnContentClick': false
     });
-
-    $(document).on('click', '#selectCombination', function (e) {
-        e.preventDefault();
-        var option = $("#select_combination_form input[type='radio']:checked");
-        var combination = option.val();
-        $.each(combinations, function (key, comb) {
-            if (comb['idCombination'] == combination) {
-                $.each(comb['idsAttributes'], function (key, id) {
-                    var option = $("#attributes option[value='" + id + "']");
-                    option.parent().val(option.val());
-                });
-            }
-            findCombination();
-            getProductAttribute();
-            $.fancybox.close();
-        });
-    });
 });
 
 function arrayUnique(a) {
@@ -357,15 +340,6 @@ function findCombination(firstTime) {
         choice.push(parseInt($(this).val()));
     });
 
-    // update term value
-    var displayTerm = {};
-    $.each(attributesCombinations, function (key, attrComb) {
-        if (in_array(attrComb['id_attribute'], choice)) {
-            displayTerm[attrComb['id_attribute_group']] = attrComb['attribute'];
-        }
-    });
-    $('span.combination_info').text(displayTerm[date_id_attribute_group].replace(/_/g , "-") + ' ' + displayTerm[time_id_attribute_group].replace(/_/g , ":"));
-
     if (typeof combinations == 'undefined' || !combinations)
         combinations = [];
     //testing every combination to find the conbination's attributes' case of the user
@@ -393,6 +367,7 @@ function findCombination(firstTime) {
 
             //get the data of product with these attributes
             quantityAvailable = combinations[combination]['quantity'];
+            selectedCombination['attributes'] = combinations[combination]['idsAttributes'];
             selectedCombination['price'] = combinations[combination]['price'];
             selectedCombination['unit_price'] = combinations[combination]['unit_price'];
             selectedCombination['specific_price'] = combinations[combination]['specific_price'];
@@ -682,6 +657,58 @@ function updateDisplay() {
 
 
         updateDiscountTable(productPriceDisplay);
+    }
+    updateTypeData();
+}
+
+function updateTypeData() {
+    var type;
+    var name;
+    var time;
+    var date;
+    $.each(attributesCombinations, function(key, attributeCombination) {
+        $.each(selectedCombination['attributes'], function(key, idAttribute) {
+            if (attributeCombination['id_attribute'] == idAttribute) {
+                switch(attributeCombination['id_attribute_group']) {
+                    case type_id_attribute_group:
+                        type = attributeCombination['attribute'];
+                        break;
+                    case name_id_attribute_group:
+                        name = groups[name_id_attribute_group]['attributes'][attributeCombination['id_attribute']];
+                        break;
+                    case time_id_attribute_group:
+                        time = groups[time_id_attribute_group]['attributes'][attributeCombination['id_attribute']];
+                        break;
+                    case date_id_attribute_group:
+                        date = groups[date_id_attribute_group]['attributes'][attributeCombination['id_attribute']];
+                        break;
+                }
+            }
+        });
+    });
+
+    switch(type) {
+        case "0":
+            $('p.ticket, .product_attributes, #add_to_cart, .price').show();
+            $('p.carnet, p.ad').hide();
+            if (date && time) {
+                $('span.combination_info').text(date + ' ' + time);
+            }
+            $('span.combination_name').text(name);
+            break;
+        case "1":
+            $('p.carnet, .product_attributes, #add_to_cart, .price').show();
+            $('p.ticket, p.ad').hide();
+            $('span.combination_name').text(name);
+            break;
+        case "2":
+        case "3":
+            $('p.ad').show();
+            $('p.ticket, p.carnet, .product_attributes, #add_to_cart, .price').hide();
+            if (date && time) {
+                $('span.combination_info').text(date + ' ' + time);
+            }
+            break;
     }
 }
 

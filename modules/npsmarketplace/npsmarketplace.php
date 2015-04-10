@@ -267,8 +267,6 @@ class NpsMarketplace extends Module {
                 'sts_secure_key' => $this->secure_key,
                 'sts_product_id' => $product->id,
                 'nps_ajax_url' => $this->context->link->getModuleLink('npsmarketplace', 'Ajax'),
-                'date_id_attribute_group' => Configuration::get('NPS_ATTRIBUTE_DATE_ID'),
-                'time_id_attribute_group' => Configuration::get('NPS_ATTRIBUTE_TIME_ID')
             ));
             return $this->display(__FILE__, 'views/templates/hook/product_seller_info.tpl');
         }
@@ -526,7 +524,7 @@ class NpsMarketplace extends Module {
             $extras = Product::getExtras($product->id, $this->context->language->id);
             $this->context->smarty->assign(array(
                 'video_url' => $extras['video'],
-                'show_seller_details' => $extras['type'] != 3
+                'show_seller_details' => Product::showSellerDetails($product->id)
             ));
             return ($this->display(__FILE__, '/tab.tpl'));
         }
@@ -564,7 +562,7 @@ class NpsMarketplace extends Module {
                 'product_town' => isset($town) ? $town->value[$lang_id] : '',
                 'product_district' => isset($district) ? $district->value[$lang_id] : '',
                 'video_url' => $extras['video'],
-                'show_seller_details' => $extras['type'] != 3
+                'show_seller_details' => Product::showSellerDetails($product->id)
             ));
             return ($this->display(__FILE__, '/tab_content.tpl'));
         }

@@ -81,15 +81,11 @@ class NpsMarketplaceProductsListModuleFrontController extends ModuleFrontControl
                 'price' => $product->getPrice(),
                 'quantity' => Product::getQuantity($product->id),
                 'active' => $product->active,
+                'advertisment' => Product::isAdvertisment($product->id),
                 'view_url' => $this->context->link->getProductLink($product),
                 'delete_url' => $this->context->link->getModuleLink('npsmarketplace', 'ProductsList', array('id_product' => $product->id, 'action' => 'delete')),
                 'edit_url' => $this->context->link->getModuleLink('npsmarketplace', 'Product', array('id_product' => $product->id)),
-                'new_combination_url' => $this->context->link->getModuleLink('npsmarketplace', 'ProductCombination', array('id_product' => $product->id)),
-                'edit_combination_url' => $this->context->link->getModuleLink('npsmarketplace', 'ProductCombinationList', array('id_product' => $product->id)),
             );
-            $extras = Product::getExtras($product->id, $this->context->language->id);
-            if (!empty($extras)) 
-                $item = array_merge($item, $extras);
             $sp = SpecificPrice::getIdsByProductId($product->id);
             if ($sp && !empty($sp))
                 $item['on_sale'] = 1;
