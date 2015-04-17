@@ -34,6 +34,10 @@
 
 {if $show_seller_details}
 <div class="tab-pane fade" id="seller_regulations_tab">
-    <div class="rte">{$regulations[$current_id_lang]}</div>
+    {if empty($regulations[$current_id_lang])}
+        <p class="alert alert-warning"><span class="alert-content">{l s='Company Privacy Policy has not been completed.' mod='npsmarketplace'}</span></p>
+    {else}
+        <div class="rte">{$regulations[$current_id_lang]}</div>
+    {/if}
 </div>
 {/if}

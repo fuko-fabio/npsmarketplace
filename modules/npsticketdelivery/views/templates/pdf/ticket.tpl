@@ -24,12 +24,11 @@
                             {/if}
                         </div>
                         <div style="font-weight:700;font-size:22px;text-overflow: ellipsis;white-space: nowrap;">{$name|truncate:40}</div>
+                        {if isset($combination_name) && !empty($combination_name)}
+                        <div style="font-size: 10px;width:100px;text-transform: uppercase;float: left;display: inline-block;">{l s='Combination' mod='npsticketdelivery'}</div>: <span style="float: left;text-overflow: ellipsis;white-space: nowrap;">{$combination_name|truncate:60}</span><br />
+                        {/if}
                         {if $type == 0 && isset($date)}
                         <div style="font-size: 10px;width:100px;text-transform: uppercase;float: left;display: inline-block;">{l s='Term' mod='npsticketdelivery'}</div>: <span style="font-weight: 700;float: left">{date_format(date_create($date), 'Y-m-d H:i')}</span><br />
-                        {else if $type == 1 && isset($entries) && $entries > 0}
-                        <div style="font-size: 10px;width:100px;text-transform: uppercase;float: left;display: inline-block;">{l s='Entries' mod='npsticketdelivery'}</div>: <span style="font-weight: 700;float: left">{$entries}</span><br />
-                        {else if $type == 1 && strtotime($from) > 0 && strtotime($to) > 0}
-                        <div style="font-size: 10px;width:100px;text-transform: uppercase;float: left;display: inline-block;">{l s='Valid' mod='npsticketdelivery'}</div>: <span style="font-weight: 700;float: left">{date_format(date_create($from), 'Y-m-d')} - {date_format(date_create($to), 'Y-m-d')}</span><br />
                         {/if}
                         <div style="font-size: 10px;width:100px;text-transform: uppercase;float: left;display: inline-block;">{l s='Person' mod='npsticketdelivery'}</div>: <span style="float: left;text-overflow: ellipsis;white-space: nowrap;">{$person|truncate:60}</span><br />
                         <div style="font-size: 10px;width:100px;text-transform: uppercase;float: left;display: inline-block;">{l s='Address' mod='npsticketdelivery'}</div>: <span style="float: left;text-overflow: ellipsis;white-space: nowrap;">{$address|truncate:60}</span><br />

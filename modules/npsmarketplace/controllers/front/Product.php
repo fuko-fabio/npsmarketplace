@@ -276,7 +276,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             if (isset($combination['id_product_attribute'])) {
                 $comb = new Combination($combination['id_product_attribute']);
                 $comb->price = $combination['price'];
-                $comb->default_on = $combination['default'];
+                $comb->default_on = Tools::getIsset($combination['default']);
                 $comb->save();
                 StockAvailable::setQuantity((int)$this->_product->id, (int)$combination['id_product_attribute'], $combination['quantity'], $this->context->shop->id);
                 $updated[] = $combination['id_product_attribute'];
@@ -511,7 +511,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             else if ($group == Configuration::get('NPS_ATTRIBUTE_NAME_ID')) {
                 $result[$id]['id_product_attribute'] = $id;
                 $result[$id]['name'] = $comb['attribute_name'];
-                $result[$id]['price'] = $comb['price'];
+                $result[$id]['price'] = round($comb['price'], 2);
                 $result[$id]['quantity'] = $comb['quantity'];
                 $result[$id]['default'] = $comb['default_on'];
                 $query = ProductAttributeExpiryDate::getByProductAttribute($id);

@@ -709,6 +709,8 @@ function updateTypeData() {
                 $('span.combination_info').text(date + ' ' + time);
             }
             break;
+        default:
+            $('p.ticket, p.carnet, p.ad').hide();
     }
 }
 

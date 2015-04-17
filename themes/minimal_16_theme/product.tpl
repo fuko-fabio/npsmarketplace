@@ -428,8 +428,8 @@
             {if isset($groups)}
                 <div id="current_term">
                 <div class="term-inputs">
-                    <span class="combination_info"></span>
                     <span class="combination_name"></span>
+                    <span class="combination_info"></span>
                 </div>
                 </div>
                 <!-- attributes -->

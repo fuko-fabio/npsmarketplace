@@ -135,25 +135,50 @@ class NpsTicketDelivery extends Module {
                     $info_seller[$seller->id] = array('seller' => $seller, 'products' => array($product));
                 }
                 $date = null;
-                if (isset($product['attributes_small']) && !empty($product['attributes_small'])) {
-                    $attrs = explode(',', $product['attributes_small']);
-                    $date = date_create($attrs[0].$attrs[1]);
-                    $date = date_format($date, 'Y-m-d H:i:s');
+                $time = null;
+                $date_time = null;
+                $type = null;
+                $combination_name = null;
+                if (isset($product['attributes']) && !empty($product['attributes'])) {
+                    $attrs = explode(',', $product['attributes']);
+                    foreach ($attrs as $key => $value) {
+                        $data = explode(':', $value);
+                        if (isset($data[0]) && !empty($data[0])) {
+                            $sql = 'SELECT DISTINCT `id_attribute_group` FROM `'._DB_PREFIX_.'attribute_group_lang` WHERE public_name = \''.trim($data[0]).'\'';
+                            $result = Db::getInstance()->getValue($sql);
+                            if ($result) {
+                                switch ($result) {
+                                    case Configuration::get('NPS_ATTRIBUTE_TYPE_ID'):
+                                        $type = trim($data[1]);
+                                        break;
+                                    case Configuration::get('NPS_ATTRIBUTE_NAME_ID'):
+                                        $combination_name = trim($data[1]);
+                                        break;
+                                    case Configuration::get('NPS_ATTRIBUTE_DATE_ID'):
+                                        $date = trim($data[1]);
+                                        break;
+                                    case Configuration::get('NPS_ATTRIBUTE_TIME_ID'):
+                                        $time = trim($data[1]).':'.trim($data[2]);
+                                        break;
+                                }
+                            }
+                        }
+                    }
+                }
+                if ($date && $time) {
+                    $date_time = date_create($date.' '.$time);
                 }
                 $address = $this->getFeatureValue($product['features'], Configuration::get('NPS_FEATURE_ADDRESS_ID'));
                 $town = $this->getFeatureValue($product['features'], Configuration::get('NPS_FEATURE_TOWN_ID'));
                 $district = $this->getFeatureValue($product['features'], Configuration::get('NPS_FEATURE_DISTRICT_ID'));
-                $extras = Product::getExtras($product['id_product'], $this->context->language->id);
-
-                $entries = $this->getFeatureValue($product['features'], Configuration::get('NPS_FEATURE_ENTRIES_ID'));
-                $d_from = $this->getFeatureValue($product['features'], Configuration::get('NPS_FEATURE_FROM_ID'));
-                $d_to = $this->getFeatureValue($product['features'], Configuration::get('NPS_FEATURE_TO_ID'));
 
                 for ($x=1; $x<=$qty; $x++) {
                     $t = new Ticket();
                     $t->id_cart_ticket = $c_t->id;
                     $t->id_seller = $seller->id;
-                    $t->date = $date;
+                    if ($date_time) {
+                        $t->date = date_format($date_time, 'Y-m-d H:i:s');
+                    }
                     $t->generated = date("Y-m-d H:i:s");
                     $t->price = $product['price'];
                     $t->name = $product['name'];
@@ -161,10 +186,8 @@ class NpsTicketDelivery extends Module {
                     $t->town = $town;
                     $t->district = $district;
                     $t->person = $persons->$product['id_product']->$x;
-                    $t->type = $extras['type'];
-                    $t->entries = $entries;
-                    $t->to = $d_to;
-                    $t->from = $d_from;
+                    $t->type = $type;
+                    $t->combination_name = $combination_name;
                     $t->save();
                 }
             }

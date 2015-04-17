@@ -7743,13 +7743,25 @@ div.star.star_hover:after {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden; }
-  #nps_tickets_block .nps-ticket .buttons {
-    position: absolute;
-    top: 15px;
-    right: 25px; }
   #nps_tickets_block .nps-ticket .code {
     margin-top: 10px;
     font-weight: 700; }
+  #nps_tickets_block .nps-ticket .downloadticket {
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    color: #36454f;
+    font-size: 28px; }
+    #nps_tickets_block .nps-ticket .downloadticket:hover {
+      color: #5E6A72; }
+  #nps_tickets_block .nps-ticket .qs {
+    position: absolute;
+    top: 15px;
+    right: 55px; }
+  #nps_tickets_block .nps-ticket .addtocalendar {
+    position: absolute;
+    top: 20px;
+    right: 90px; }
 
 #new_seller_comment_form {
   overflow: hidden;
@@ -7794,3 +7806,72 @@ div.star.star_hover:after {
 .nav li a:hover,
 .nav li a:focus {
   background: none; }
+
+/* The element to hover over */
+.qs {
+  color: #36454f;
+  cursor: default;
+  display: inline-block;
+  font-size: 28px;
+  font-weight: bold;
+  position: relative;
+  text-align: center;
+  width: 30px; }
+  .qs .popover {
+    color: #333;
+    background-color: #fff;
+    bottom: 35px;
+    display: none;
+    font-size: 12px;
+    left: -86px;
+    padding: 7px 10px;
+    position: absolute;
+    width: 200px;
+    border: 1px solid #d6d4d4;
+    z-index: 4; }
+    .qs .popover:before {
+      border-top: 7px solid #d6d4d4;
+      border-right: 7px solid transparent;
+      border-left: 7px solid transparent;
+      bottom: -7px;
+      content: '';
+      display: block;
+      left: 50%;
+      margin-left: -7px;
+      position: absolute; }
+  .qs:hover .popover {
+    display: block;
+    -webkit-animation: fade-in .3s linear 1, move-up .3s linear 1;
+    -moz-animation: fade-in .3s linear 1, move-up .3s linear 1;
+    -ms-animation: fade-in .3s linear 1, move-up .3s linear 1; }
+
+@-webkit-keyframes fade-in {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
+@-moz-keyframes fade-in {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
+@-ms-keyframes fade-in {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
+@-webkit-keyframes move-up {
+  from {
+    bottom: 30px; }
+  to {
+    bottom: 35px; } }
+@-moz-keyframes move-up {
+  from {
+    bottom: 30px; }
+  to {
+    bottom: 35px; } }
+@-ms-keyframes move-up {
+  from {
+    bottom: 30px; }
+  to {
+    bottom: 35px; } }

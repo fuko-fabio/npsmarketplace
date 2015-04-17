@@ -23,8 +23,6 @@
 *  International Registered Trademark & Property of PrestaShop SA
 *}
 
-{capture name=path}{l s='My tickets'}{/capture}
-
 <h1 class="page-heading">{l s='My tickets'}</h1>
 {if isset($account_created)}
 	<p class="alert alert-success">
@@ -33,6 +31,7 @@
 		</span>
 	</p>
 {/if}
+
 <div id="nps_tickets_block">
     {if $myTickets}
         <div class="content_sortPagiBar">
@@ -51,26 +50,35 @@
                             <div class="name">{$ticket.name}</div>
                             {if $ticket.type == 0}
                                 <div class="term"><span>{l s='Term'}:</span>{date_format(date_create($ticket.date), 'Y-m-d H:i')}</div>
-                            {else if $ticket.type == 1}
-                                {if isset($ticket.entries) && ! empty($ticket.entries)}
-                                    <div class="term"><span>{l s='Entries'}:</span>{$ticket.entries}</div>
-                                {else if strtotime($ticket.from) > 0 && strtotime($ticket.to) > 0}
-                                    <div class="term"><span>{l s='Valid'}:</span>{date_format(date_create($ticket.from), 'Y-m-d')} - {date_format(date_create($ticket.to), 'Y-m-d')}</div>
-                                {else}
-                                    <div class="term"><span></span>{l s='Validity not specified'}</div>
-                                {/if}
+                            {else}
+                                <div class="term">{l s='Carnet'}</div>
                             {/if}
-                            <div><span>{l s='Adress'}:</span>{$ticket.address}</div>
-                            <div><span>{l s='District'}:</span>{$ticket.district}</div>
-                            <div><span>{l s='Town'}:</span>{$ticket.town}</div>
+                            <div><span>{l s='Combination'}:</span>{$ticket.combination_name}</div>
                             <div><span>{l s='Price'}:</span>{displayPrice price=$ticket.price currency=$ticket.id_currency}</div>
                             <div><span>{l s='Seller'}:</span><a href="{$ticket.seller_shop}">{$ticket.seller}</a></div>
                             <div class="code">{$ticket.code}</div>
                         </div>
-                        <div class="buttons">
-                            {assign var=url value=['id_ticket'=>$ticket.id_ticket]}
-                            <a href="{$link->getModuleLink('npsticketdelivery', 'Tickets', $url)|escape:'html'}" class="btn btn-default button button-small pull-right"><i class="icon-download"></i> {l s='Download'}</a>
-                        </div>
+                        {assign var=url value=['id_ticket'=>$ticket.id_ticket]}
+                        <a href="{$link->getModuleLink('npsticketdelivery', 'Tickets', $url)|escape:'html'}" title="{l s='Download ticket'}" class="downloadticket"><i class="icon-download"></i></a>
+                        {if $ticket.type == 0}
+                        <span class="addtocalendar atc-style-blue">
+                            <var class="atc_event">
+                                <var class="atc_date_start">{date_format(date_create($ticket.date), 'Y-m-d H:i')}</var>
+                                <var class="atc_date_end">{date_format(date_modify(date_create($ticket.date), '+ 1 hour'), 'Y-m-d H:i')}</var>
+                                <var class="atc_timezone">Europe/Warsaw</var>
+                                <var class="atc_title">{$ticket.name}</var>
+                                <var class="atc_description">{$ticket.name}</var>
+                                <var class="atc_location">{$ticket.address}</var>
+                                <var class="atc_organizer">{$ticket.seller}</var>
+                            </var>
+                        </span>
+                        {/if}
+                        <span class="qs"><i class="icon-map-marker"></i>
+                            <span class="popover above">
+                                {$ticket.address}<br />
+                                <a href="http://maps.google.com/?q={$ticket.address}" target="_blank">{l s="View on Google maps"}</a>
+                            </span>
+                        </span>
                     </div>
                 </li>
             {/foreach}

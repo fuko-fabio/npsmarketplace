@@ -16,18 +16,20 @@
     {foreach from=$npscombinations item=combination}
         <div class="row combinations-item" >
           <div class="col-sm-1">
-          {if $combination.type == 0}
-            {l s='Ticket' mod='npscombinations'}
-          {elseif $combination.type == 1}
-            {l s='Carnet' mod='npscombinations'}
+          {if isset($combination.type)}
+              {if $combination.type == 0}
+                {l s='Ticket' mod='npscombinations'}
+              {elseif $combination.type == 1}
+                {l s='Carnet' mod='npscombinations'}
+              {/if}
           {/if}
           </div>
-          <div class="col-sm-3">{$combination.name}</div>
-          <div class="col-sm-2">{if $combination.type == 0}{$combination.date} {$combination.time}{/if}</div>
-          <div class="col-sm-2">{$combination.expiry_date} {$combination.expiry_time}</div>
-          <div class="col-sm-2">{if $combination.type < 2}{displayPrice price=$combination.price currency=$currency->id}{/if}</div>
+          <div class="col-sm-3">{if isset($combination.name)}{$combination.name}{/if}</div>
+          <div class="col-sm-2">{if isset($combination.type) && $combination.type == 0}{$combination.date} {$combination.time}{/if}</div>
+          <div class="col-sm-2">{if isset($combination.expiry_date) && isset($combination.expiry_time)}{$combination.expiry_date} {$combination.expiry_time}{/if}</div>
+          <div class="col-sm-2">{if isset($combination.price) && (!isset($combination.type) || $combination.type < 2)}{displayPrice price=$combination.price currency=$currency->id}{/if}</div>
           <div class="col-sm-2">
-            {if $combination.type < 2}
+            {if !isset($combination.type) || $combination.type < 2}
             <select class="form-control" data-target="{$combination.id_product_attribute}" name="qty[]" {if ($PS_CATALOG_MODE || !$product->available_for_order || $combination.quantity <=0)}disabled=""{/if}>
                {for $i=0 to $combination.quantity}
                     <option value="{$i}">{$i}</option>

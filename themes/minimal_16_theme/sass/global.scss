@@ -511,7 +511,7 @@ span.exclusive {
     padding: 4px 0 0 0;
   }
   &:hover {
-    color: $dark-background-hoover;
+    color: $dark-background-hover;
     background: $light-background;
   }
 }
@@ -3309,14 +3309,29 @@ div.star.star_hover {
         overflow: hidden;
       }
     }
-    .buttons {
-      position: absolute;
-      top: 15px;
-      right: 25px;
-    }
     .code {
       margin-top: 10px;
       font-weight: 700;
+    }
+    .downloadticket {
+      position: absolute;
+      top: 15px;
+      right: 25px;
+      color: $dark-background;
+      font-size: 28px;
+      &:hover {
+        color: $dark-background-hover;
+      }
+    }
+    .qs {
+      position: absolute;
+      top: 15px;
+      right: 55px;
+    }
+    .addtocalendar {
+      position: absolute;
+      top: 20px;
+      right: 90px;
     }
   }
 }
@@ -3394,4 +3409,77 @@ div.star.star_hover {
       background: none;
     }
   }
+}
+
+
+/* The element to hover over */
+.qs {
+  color: $dark-background;
+  cursor: default;
+  display: inline-block;
+  font-size: 28px;
+  font-weight: bold;
+  position: relative;
+  text-align: center;
+  width: 30px;
+
+  .popover {
+    color: $base-text-color;
+    background-color: $light-background;
+    bottom: 35px;
+    display: none;
+    font-size: 12px;
+    left: -86px;
+    padding: 7px 10px;
+    position: absolute;
+    width: 200px;
+    border: 1px solid $base-border-color;
+    z-index: 4;
+
+    &:before {
+        border-top: 7px solid $base-border-color;
+        border-right: 7px solid transparent;
+        border-left: 7px solid transparent;
+        bottom: -7px;
+        content: '';
+        display: block;
+        left: 50%;
+        margin-left: -7px;
+        position: absolute;
+      }
+  }
+  
+  &:hover {
+      .popover {
+        display: block;
+        -webkit-animation: fade-in .3s linear 1, move-up .3s linear 1;
+        -moz-animation: fade-in .3s linear 1, move-up .3s linear 1;
+        -ms-animation: fade-in .3s linear 1, move-up .3s linear 1;
+      }
+    }
+}
+
+@-webkit-keyframes fade-in {
+  from   { opacity: 0; }
+  to { opacity: 1; }
+}
+@-moz-keyframes fade-in {
+  from   { opacity: 0; }
+  to { opacity: 1; }
+}
+@-ms-keyframes fade-in {
+  from   { opacity: 0; }
+  to { opacity: 1; }
+}
+@-webkit-keyframes move-up {
+  from   { bottom: 30px; }
+  to { bottom: 35px; }
+}
+@-moz-keyframes move-up {
+  from   { bottom: 30px; }
+  to { bottom: 35px; }
+}
+@-ms-keyframes move-up {
+  from   { bottom: 30px; }
+  to { bottom: 35px; }
 }

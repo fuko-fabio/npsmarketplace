@@ -237,7 +237,7 @@ span.view_scroll_spacer {
       //min 768px max 991px
       float: none !important;
     }
-    border: 1px solid $dark-background-hoover;
+    border: 1px solid $dark-background-hover;
     @include box-shadow(0 2px 8px rgba(0, 0, 0, 0.16));
     text-align: center;
     padding: 5px;
@@ -531,12 +531,12 @@ span.view_scroll_spacer {
       }
     }
     &.dark:hover {
-      background: $dark-background-hoover;
+      background: $dark-background-hover;
     }
     &.light {
       background: $light-background;
-      color: $dark-background-hoover;
-      border: 1px solid $dark-background-hoover;
+      color: $dark-background-hover;
+      border: 1px solid $dark-background-hover;
       span {
         padding: 5px 0px;
         font-size: 16px;
@@ -753,17 +753,16 @@ table.table-product-discounts {
 }
 
 #current_term {
-  padding-top: 10px;
   padding-bottom: 10px;
   .term-inputs {
-    .combination_info {
+    span {
       font-weight: bold;
       font-size: 21px;
       color: $dark-text-color;
-      margin-right: 5px;
+      display: block;
     }
-    div {
-      padding-top: 10px;
+    .combination_info {
+      margin-top: 10px;
     }
   }
   label {
@@ -1234,7 +1233,6 @@ Quick View Styles
 
 .tabs-container {
   .nav-tabs {
-    border: none;
     margin-top: 20px;
     li {
       a {
@@ -1242,29 +1240,39 @@ Quick View Styles
         font-weight: 700;
         color: $base-text-color;
         font-size: 14px;
+        padding: 10px 10px 15px;
+        white-space: nowrap;
+      }
 
-        &:hover {
-          background: none;
+      &:hover,
+      &.active {
+        a {
           color: $primary-color;
-          border: none;
-        }
-        @media (max-width: $screen-xs-max) {
-          font-size: 12px;
-          padding: 10px 10px;
         }
       }
-      &.active {
-        border-color: transparent;
-        border-bottom: 3px solid $primary-color;
-
+      
+      @media (max-width: $screen-sm-max) {
         a {
-          border: none;
-          background: none;
+          padding: 10px 10px;
+        }
+        float: none;
+        &.active > a,
+        &.active > a:hover,
+        &.active > a:focus {
+          border-color: $input-border-color;
+
+          a {
+            color: $primary-color;
+          }
+        }
+        a:hover {
+          border-color: transparent;
         }
       }
     }
   }
 }
+
 .carnet-info {
   font-weight: bold;
   font-size: 21px;

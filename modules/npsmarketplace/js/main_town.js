@@ -54,3 +54,4 @@ function changeMainTown(id_town) {
         }
     });
 }
+

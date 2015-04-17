@@ -611,15 +611,14 @@ table.table-product-discounts {
   margin-right: 10px; }
 
 #current_term {
-  padding-top: 10px;
   padding-bottom: 10px; }
-  #current_term .term-inputs .combination_info {
+  #current_term .term-inputs span {
     font-weight: bold;
     font-size: 21px;
     color: #353535;
-    margin-right: 5px; }
-  #current_term .term-inputs div {
-    padding-top: 10px; }
+    display: block; }
+  #current_term .term-inputs .combination_info {
+    margin-top: 10px; }
   #current_term label {
     float: left;
     margin-right: 10px; }
@@ -991,27 +990,27 @@ Quick View Styles
       border-top-width: 1px;
       min-height: 1px; } }
 .tabs-container .nav-tabs {
-  border: none;
   margin-top: 20px; }
   .tabs-container .nav-tabs li a {
     text-transform: uppercase;
     font-weight: 700;
     color: #333;
-    font-size: 14px; }
-    .tabs-container .nav-tabs li a:hover {
-      background: none;
-      color: #ffaa00;
-      border: none; }
-    @media (max-width: 767px) {
+    font-size: 14px;
+    padding: 10px 10px 15px;
+    white-space: nowrap; }
+  .tabs-container .nav-tabs li:hover a, .tabs-container .nav-tabs li.active a {
+    color: #ffaa00; }
+  @media (max-width: 991px) {
+    .tabs-container .nav-tabs li {
+      float: none; }
       .tabs-container .nav-tabs li a {
-        font-size: 12px;
-        padding: 10px 10px; } }
-  .tabs-container .nav-tabs li.active {
-    border-color: transparent;
-    border-bottom: 3px solid #ffaa00; }
-    .tabs-container .nav-tabs li.active a {
-      border: none;
-      background: none; }
+        padding: 10px 10px; }
+      .tabs-container .nav-tabs li.active > a, .tabs-container .nav-tabs li.active > a:hover, .tabs-container .nav-tabs li.active > a:focus {
+        border-color: #bbb; }
+        .tabs-container .nav-tabs li.active > a a, .tabs-container .nav-tabs li.active > a:hover a, .tabs-container .nav-tabs li.active > a:focus a {
+          color: #ffaa00; }
+      .tabs-container .nav-tabs li a:hover {
+        border-color: transparent; } }
 
 .carnet-info {
   font-weight: bold;
