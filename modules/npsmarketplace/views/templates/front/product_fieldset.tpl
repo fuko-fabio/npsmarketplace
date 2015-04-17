@@ -46,6 +46,13 @@
             {% if (o.id_product_attribute) { %}
             <input type="hidden" name="combinations[{%=o.index%}][id_product_attribute]" value="{%=o.id_product_attribute%}" />
             {% } %}
+            {% if (o.reduction) { %}
+                <input type="hidden" name="combinations[{%=o.index%}][reduction_price]" value="{%=o.reduction_price%}" />
+                <input type="hidden" name="combinations[{%=o.index%}][start_reduction_date]" value="{%=o.start_reduction_date%}" />
+                <input type="hidden" name="combinations[{%=o.index%}][start_reduction_time]" value="{%=o.start_reduction_time%}" />
+                <input type="hidden" name="combinations[{%=o.index%}][end_reduction_date]" value="{%=o.end_reduction_date%}" />
+                <input type="hidden" name="combinations[{%=o.index%}][end_reduction_time]" value="{%=o.end_reduction_time%}" />
+            {% } %}
             {/literal}
         </td>
     </tr>

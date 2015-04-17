@@ -54,6 +54,49 @@
                     <span class="form_info">{l s='Warning: Check quantity before submit' mod='npsmarketplace'}</span>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-12 checkbox">
+                    <label>
+                        <input type="checkbox" name="reduction" value="1" />
+                        {l s='I want add specific price for selected period of time'  mod='npsmarketplace'}
+                    </label>
+                </div>
+            </div>
+            <div class="row reduction">
+                <div id="t_reduction_start_date" class="form-group col-md-6 input-append">
+                    <label class="required">{l s='Applay reduction from date' mod='npsmarketplace'}</label>
+                    <input class="is_required validate form-control" data-validate="isDate" name="start_reduction_date" data-format="yyyy-MM-dd" type="text"/>
+                    <span class="form_info">{l s='Format: YYYY-MM-DD' mod='npsmarketplace'}</span>
+                    <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
+                </div>
+                <div id="t_reduction_start_time" class="form-group col-md-6 input-append">
+                    <label class="required">{l s='time' mod='npsmarketplace'}</label>
+                    <input class="is_required validate form-control" data-validate="isTime" name="start_reduction_time" data-format="hh:mm" type="text"/>
+                    <span class="form_info">{l s='Format: HH:MM' mod='npsmarketplace'}</span>
+                    <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
+                </div>
+            </div>
+            <div class="row reduction">
+                <div id="t_reduction_end_date" class="form-group col-md-6 input-append">
+                    <label class="required">{l s='Applay reduction to date' mod='npsmarketplace'}</label>
+                    <input class="is_required validate form-control" data-validate="isDate" name="end_reduction_date" data-format="yyyy-MM-dd" type="text"/>
+                    <span class="form_info">{l s='Format: YYYY-MM-DD' mod='npsmarketplace'}</span>
+                    <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
+                </div>
+                <div id="t_reduction_end_time" class="form-group col-md-6 input-append">
+                    <label class="required">{l s='time' mod='npsmarketplace'}</label>
+                    <input class="is_required validate form-control" data-validate="isTime" name="end_reduction_time" data-format="hh:mm" type="text"/>
+                    <span class="form_info">{l s='Format: HH:MM' mod='npsmarketplace'}</span>
+                    <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
+                </div>
+            </div>
+            <div class="row reduction">
+                <div class="form-group col-md-6">
+                    <label class="required">{l s='Reduction' mod='npsmarketplace'}</label>
+                    <input class="is_required validate form-control" data-validate="isPrice" type="text" name="reduction_price"/>
+                    <span class="form_info">{l s='Example: 10.50' mod='npsmarketplace'}</span>
+               </div>
+            </div>
         </form>
 
         <p class="submit">
@@ -100,6 +143,49 @@
                     <span class="form_info">{l s='Warning: Check quantity before submit' mod='npsmarketplace'}</span>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-12 checkbox">
+                    <label>
+                        <input type="checkbox" name="reduction" value="1" />
+                        {l s='I want add specific price for selected period of time'  mod='npsmarketplace'}
+                    </label>
+                </div>
+            </div>
+            <div class="row reduction">
+                <div id="c_reduction_start_date" class="form-group col-md-6 input-append">
+                    <label class="required">{l s='Applay reduction from date' mod='npsmarketplace'}</label>
+                    <input class="is_required validate form-control" data-validate="isDate" name="start_reduction_date" data-format="yyyy-MM-dd" type="text"/>
+                    <span class="form_info">{l s='Format: YYYY-MM-DD' mod='npsmarketplace'}</span>
+                    <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
+                </div>
+                <div id="c_reduction_start_time" class="form-group col-md-6 input-append">
+                    <label class="required">{l s='time' mod='npsmarketplace'}</label>
+                    <input class="is_required validate form-control" data-validate="isTime" name="start_reduction_time" data-format="hh:mm" type="text"/>
+                    <span class="form_info">{l s='Format: HH:MM' mod='npsmarketplace'}</span>
+                    <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
+                </div>
+            </div>
+            <div class="row reduction">
+                <div id="c_reduction_end_date" class="form-group col-md-6 input-append">
+                    <label class="required">{l s='Applay reduction to date' mod='npsmarketplace'}</label>
+                    <input class="is_required validate form-control" data-validate="isDate" name="end_reduction_date" data-format="yyyy-MM-dd" type="text"/>
+                    <span class="form_info">{l s='Format: YYYY-MM-DD' mod='npsmarketplace'}</span>
+                    <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
+                </div>
+                <div id="c_reduction_end_time" class="form-group col-md-6 input-append">
+                    <label class="required">{l s='time' mod='npsmarketplace'}</label>
+                    <input class="is_required validate form-control" data-validate="isTime" name="end_reduction_time" data-format="hh:mm" type="text"/>
+                    <span class="form_info">{l s='Format: HH:MM' mod='npsmarketplace'}</span>
+                    <span class="add-on"> <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i> </span>
+                </div>
+            </div>
+            <div class="row reduction">
+                <div class="form-group col-md-6">
+                    <label class="required">{l s='Reduction' mod='npsmarketplace'}</label>
+                    <input class="is_required validate form-control" data-validate="isPrice" type="text" name="reduction_price"/>
+                    <span class="form_info">{l s='Example: 10.50' mod='npsmarketplace'}</span>
+               </div>
+            </div>
         </form>
 
         <p class="submit">
@@ -108,6 +194,7 @@
         </p>
     </div>
 </div>
+
 
 <div style="display:none">
     <div id="ad_combination" class="event-combination">

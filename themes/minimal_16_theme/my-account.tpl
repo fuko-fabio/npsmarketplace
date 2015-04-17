@@ -47,36 +47,47 @@
                 <li class="col-xs-12 col-sm-12 col-md-6">
                     <div class="nps-ticket">
                         <div class="info">
-                            <div class="name">{$ticket.name}</div>
+                            <div class="name">{$ticket.name|truncate:25}</div>
                             {if $ticket.type == 0}
                                 <div class="term"><span>{l s='Term'}:</span>{date_format(date_create($ticket.date), 'Y-m-d H:i')}</div>
                             {else}
                                 <div class="term">{l s='Carnet'}</div>
                             {/if}
-                            <div><span>{l s='Combination'}:</span>{$ticket.combination_name}</div>
+                            <div><span>{l s='Combination'}:</span>{$ticket.combination_name|truncate:30}</div>
                             <div><span>{l s='Price'}:</span>{displayPrice price=$ticket.price currency=$ticket.id_currency}</div>
-                            <div><span>{l s='Seller'}:</span><a href="{$ticket.seller_shop}">{$ticket.seller}</a></div>
                             <div class="code">{$ticket.code}</div>
                         </div>
+                        <a class="ticket-seller" href="{$ticket.seller_shop}">{$ticket.seller|truncate:20}</a>
                         {assign var=url value=['id_ticket'=>$ticket.id_ticket]}
-                        <a href="{$link->getModuleLink('npsticketdelivery', 'Tickets', $url)|escape:'html'}" title="{l s='Download ticket'}" class="downloadticket"><i class="icon-download"></i></a>
+                        <span class="qs ticket-pdf">
+                            <a href="{$link->getModuleLink('npsticketdelivery', 'Tickets', $url)|escape:'html'}"><i class="icon-download"></i></a>
+                            <span class="popover above">
+                                {l s="Click to download ticket as PDF file"}
+                            </span>
+                        </span>
                         {if $ticket.type == 0}
-                        <span class="addtocalendar atc-style-blue">
-                            <var class="atc_event">
-                                <var class="atc_date_start">{date_format(date_create($ticket.date), 'Y-m-d H:i')}</var>
-                                <var class="atc_date_end">{date_format(date_modify(date_create($ticket.date), '+ 1 hour'), 'Y-m-d H:i')}</var>
-                                <var class="atc_timezone">Europe/Warsaw</var>
-                                <var class="atc_title">{$ticket.name}</var>
-                                <var class="atc_description">{$ticket.name}</var>
-                                <var class="atc_location">{$ticket.address}</var>
-                                <var class="atc_organizer">{$ticket.seller}</var>
-                            </var>
+                        <span class="qs ticket-calendar">
+                            <span class="addtocalendar atc-style-blue">
+                                <var class="atc_event">
+                                    <var class="atc_date_start">{date_format(date_create($ticket.date), 'Y-m-d H:i')}</var>
+                                    <var class="atc_date_end">{date_format(date_modify(date_create($ticket.date), '+ 1 hour'), 'Y-m-d H:i')}</var>
+                                    <var class="atc_timezone">Europe/Warsaw</var>
+                                    <var class="atc_title">{$ticket.name}</var>
+                                    <var class="atc_description">{$ticket.name}</var>
+                                    <var class="atc_location">{$ticket.address}</var>
+                                    <var class="atc_organizer">{$ticket.seller}</var>
+                                </var>
+                            </span>
+                            <span class="popover above">
+                                {l s="Add event to your calendar. Click and select calendar"}</a>
+                            </span>
                         </span>
                         {/if}
-                        <span class="qs"><i class="icon-map-marker"></i>
+                        <span class="qs ticket-location">
+                            <a href="http://maps.google.com/?q={$ticket.address}" target="_blank"><i class="icon-map-marker"></i></a>
                             <span class="popover above">
                                 {$ticket.address}<br />
-                                <a href="http://maps.google.com/?q={$ticket.address}" target="_blank">{l s="View on Google maps"}</a>
+                                {l s="Click to view on Google maps"}</a>
                             </span>
                         </span>
                     </div>

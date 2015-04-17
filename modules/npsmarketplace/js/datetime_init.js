@@ -8,10 +8,18 @@ $(document).ready(function(){
     initDatePicker('#t_expiry_date_picker');
     initTimePicker('#time_picker', '#t_expiry_time_picker');
     initTimePicker('#t_expiry_time_picker');
+    initDatePicker('#t_reduction_start_date');
+    initTimePicker('#t_reduction_start_time');
+    initDatePicker('#t_reduction_end_date');
+    initTimePicker('#t_reduction_end_time');
 
     initDatePicker('#c_expiry_date_picker');
     initTimePicker('#c_expiry_time_picker');
-    
+    initDatePicker('#c_reduction_start_date');
+    initTimePicker('#c_reduction_start_time');
+    initDatePicker('#c_reduction_end_date');
+    initTimePicker('#c_reduction_end_time');
+
     initDatePicker('#a_date_picker', '#a_expiry_date_picker');
     initDatePicker('#a_expiry_date_picker');
     initTimePicker('#a_time_picker', '#a_expiry_time_picker');
@@ -25,7 +33,8 @@ $(document).ready(function(){
 
 function initDatePicker(id_el, target_id_el) {
     $(id_el).datetimepicker({
-        pickTime: false
+        pickTime: false,
+        orientation: 'left'
     });
     
     $(id_el + ' input').on('click', function() {

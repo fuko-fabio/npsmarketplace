@@ -39,7 +39,8 @@
 
 .atcb-item {
   float: none;
-  text-align: left; }
+  text-align: left;
+  font: normal 13px/18px Arial, Helvetica, sans-serif; }
 
 .atcb-item-link {
   text-decoration: none;

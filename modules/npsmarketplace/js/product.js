@@ -21,7 +21,23 @@ $(document).ready(function(){
     });
     populateCombinations();
     updateCombinationsDropdown();
+    initVariantReductions('#ticket_combination_form');
+    initVariantReductions('#carnet_combination_form');
 });
+
+function initVariantReductions(scope) {
+    $(scope + ' [name="reduction"]').change(function() {
+        if ($(this).is(':checked')) {
+            $(scope + ' .reduction').show();
+            $(scope + ' .reduction input').addClass('is_required');
+        } else {
+            $(scope + ' .reduction').hide();
+            $(scope + ' .reduction input').removeClass('is_required');
+        }
+        $.fancybox.update();
+    });
+    $(scope + ' .reduction').hide();
+}
 
 function updateCombinationsDropdown() {
     if (productCombinations.length > 0) {
@@ -89,6 +105,8 @@ function addVariant(id_form) {
           }
         });
         data['type'] = $(id_form + ' [name=type]').val();
+        data['reduction'] = $(id_form + ' [name=reduction]').is(':checked');
+        console.log(data);
         productCombinations.push(data);
         clearCombinations();
         populateCombinations();

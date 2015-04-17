@@ -54,7 +54,7 @@ class Product extends ProductCore {
             null,//$id_images,
             null,//$reference,
             null,//$ean13,
-            $combination['default'],//$default
+            isset($combination['default']) ? $combination['default'] : false,//$default
             null,//$location
             null,//$upc 
             1,//$minimal_quantity
@@ -67,6 +67,7 @@ class Product extends ProductCore {
         $this->saveExpiryDate($date_time, $id_product_attribute);
         Db::getInstance()->execute('UPDATE '._DB_PREFIX_.'product SET date_add = NOW() WHERE id_product = '.$this->id);
         Search::indexation(false, $this->id);
+        return $comb;
     }
 
     private function saveAttribute($id_attribute_group, $value, $id_lang) {
@@ -88,71 +89,6 @@ class Product extends ProductCore {
             $attr->save();
         }
         return $attr->id;
-    }
- 
-    public function newEventCombination($date, $time, $quantity, DateTime $date_time, $id_shop = null) {
-        $d = array();
-        $t = array();
-        foreach (Language::getLanguages() as $key => $lang) {
-            $d[$lang['id_lang']] = $date;
-            $t[$lang['id_lang']] = $time;
-        }
-        $lang_id = (int)Configuration::get('PS_LANG_DEFAULT');
-        $date_attr_group_id = Configuration::get('NPS_ATTRIBUTE_DATE_ID');
-        $time_attr_group_id = Configuration::get('NPS_ATTRIBUTE_TIME_ID');
-
-        $res = $this->getAttributeId($date_attr_group_id, $date, $lang_id);
-        if(!$res)
-            $date_attr_id = null;
-        else
-            $date_attr_id = $res['id_attribute'];
-        $date_attr = new Attribute($date_attr_id);
-        if ($date_attr_id == null) {
-            $date_attr->name = $d;
-            $date_attr->id_attribute_group = $date_attr_group_id;
-            $date_attr->position = -1;
-            $date_attr->save();
-        }
-
-        $res = $this->getAttributeId($time_attr_group_id, $time, $lang_id);
-        if(!$res)
-            $time_attr_id = null;
-        else
-            $time_attr_id = $res['id_attribute'];
-        $time_attr = new Attribute($time_attr_id);
-        if ($time_attr_id == null) {
-            $time_attr->name = $t;
-            $time_attr->id_attribute_group = $time_attr_group_id;
-            $time_attr->position = -1;
-            $time_attr->save();
-        }
-        
-        $default_attribute = Product::getDefaultAttribute($this->id);
-        $default = true;
-        if ($default_attribute)
-            $default = false;
-
-        $id_product_attribute = $this->addAttribute(
-            0,//$price,
-            null,//$weight,
-            null,//$unit_impact,
-            null,//$ecotax,
-            null,//$id_images,
-            null,//$reference,
-            null,//$ean13,
-            $default,//$default
-            null,//$location
-            null,//$upc 
-            1,//$minimal_quantity
-            array(),//$id_shop_list
-            null);//$available_date
-
-        $combination = new Combination((int)$id_product_attribute);
-        $combination->setAttributes(array($date_attr->id, $time_attr->id));
-        StockAvailable::setQuantity((int)$this->id, (int)$id_product_attribute, $quantity, $id_shop);
-        $this->saveExpiryDate($date_time, $id_product_attribute);
-        Db::getInstance()->execute('UPDATE '._DB_PREFIX_.'product SET date_add = NOW() WHERE id_product = '.$this->id);
-        Search::indexation(false, $this->id);
     }
 
     public function saveExpiryDate(DateTime $date_time, $id_product_attribute = null) {
@@ -412,8 +348,7 @@ class Product extends ProductCore {
         );
     }
     
-    public static function addSpecialPrice($id_product, $reduction) {
-        $id_product_attribute = 0;
+    public static function addSpecialPrice($id_product, $id_product_attribute, $reduction, $from = '0000-00-00 00:00:00', $to = '0000-00-00 00:00:00') {
         $id_shop = 0;
         $id_currency = 0;
         $id_country = 0;
@@ -423,9 +358,7 @@ class Product extends ProductCore {
         $price = -1;
         $from_quantity = 1;
         $reduction_type = 'amount';
-        $from = '0000-00-00 00:00:00';
-        $to = '0000-00-00 00:00:00';
-        
+
         $nps = new NpsMarketplace();
         $errors = array();
         $prices = SpecificPrice::getIdsByProductId($id_product);

@@ -3313,25 +3313,35 @@ div.star.star_hover {
       margin-top: 10px;
       font-weight: 700;
     }
-    .downloadticket {
-      position: absolute;
-      top: 15px;
-      right: 25px;
-      color: $dark-background;
-      font-size: 28px;
-      &:hover {
-        color: $dark-background-hover;
-      }
-    }
-    .qs {
+    .ticket-location {
       position: absolute;
       top: 15px;
       right: 55px;
     }
-    .addtocalendar {
+    .qs {
+      a {
+        color: $dark-background;
+        &:hover {
+          color: $dark-background-hover;
+        }
+      }
+    }
+    .ticket-pdf {
+      position: absolute;
+      top: 15px;
+      right: 25px;
+    }
+    .ticket-calendar {
       position: absolute;
       top: 20px;
       right: 90px;
+    }
+    .ticket-seller {
+      position: absolute;
+      bottom: 25px;
+      right: 25px;
+      font-size: 18px;
+      font-family: $font-extra;
     }
   }
 }

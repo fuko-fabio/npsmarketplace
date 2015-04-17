@@ -7746,22 +7746,28 @@ div.star.star_hover:after {
   #nps_tickets_block .nps-ticket .code {
     margin-top: 10px;
     font-weight: 700; }
-  #nps_tickets_block .nps-ticket .downloadticket {
-    position: absolute;
-    top: 15px;
-    right: 25px;
-    color: #36454f;
-    font-size: 28px; }
-    #nps_tickets_block .nps-ticket .downloadticket:hover {
-      color: #5E6A72; }
-  #nps_tickets_block .nps-ticket .qs {
+  #nps_tickets_block .nps-ticket .ticket-location {
     position: absolute;
     top: 15px;
     right: 55px; }
-  #nps_tickets_block .nps-ticket .addtocalendar {
+  #nps_tickets_block .nps-ticket .qs a {
+    color: #36454f; }
+    #nps_tickets_block .nps-ticket .qs a:hover {
+      color: #5E6A72; }
+  #nps_tickets_block .nps-ticket .ticket-pdf {
+    position: absolute;
+    top: 15px;
+    right: 25px; }
+  #nps_tickets_block .nps-ticket .ticket-calendar {
     position: absolute;
     top: 20px;
     right: 90px; }
+  #nps_tickets_block .nps-ticket .ticket-seller {
+    position: absolute;
+    bottom: 25px;
+    right: 25px;
+    font-size: 18px;
+    font-family: "Poiret One", sans-serif; }
 
 #new_seller_comment_form {
   overflow: hidden;

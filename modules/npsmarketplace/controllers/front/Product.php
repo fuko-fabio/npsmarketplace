@@ -276,7 +276,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             if (isset($combination['id_product_attribute'])) {
                 $comb = new Combination($combination['id_product_attribute']);
                 $comb->price = $combination['price'];
-                $comb->default_on = Tools::getIsset($combination['default']);
+                $comb->default_on = isset($combination['default']) ? $combination['default'] : false;
                 $comb->save();
                 StockAvailable::setQuantity((int)$this->_product->id, (int)$combination['id_product_attribute'], $combination['quantity'], $this->context->shop->id);
                 $updated[] = $combination['id_product_attribute'];
@@ -285,7 +285,18 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                 if ($combination['type'] != 1 && isset($combination['time']) && $combination['time'] == $combination['expiry_time']) {
                     $dt->modify('-15 min');
                 }
-                $this->_product->createCombination($combination, $dt,  $this->context->shop->id);
+                $comb = $this->_product->createCombination($combination, $dt,  $this->context->shop->id);
+            }
+            // Save new specific price
+            if (isset($combination['reduction_price']) && !isset($combination['id_specific_price'])) {
+                $start = new DateTime($combination['start_reduction_date'].' '.$combination['start_reduction_time']);
+                $end = new DateTime($combination['end_reduction_date'].' '.$combination['end_reduction_time']);
+                Product::addSpecialPrice(
+                    $this->_product->id,
+                    $comb->id,
+                    $combination['reduction_price'],
+                    $start->format('Y-m-d H:i:s'),
+                    $end->format('Y-m-d H:i:s'));
             }
         }
         $removed = array_diff($current, $updated);
