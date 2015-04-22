@@ -17,27 +17,31 @@
         <div class="row combinations-item" >
           <div class="col-sm-1">
           {if isset($combination.type)}
-              {if $combination.type == 0}
+              {if $combination.type == 'ticket'}
                 {l s='Ticket' mod='npscombinations'}
-              {elseif $combination.type == 1}
+              {elseif $combination.type == 'carnet'}
                 {l s='Carnet' mod='npscombinations'}
               {/if}
           {/if}
           </div>
           <div class="col-sm-3">{if isset($combination.name)}{$combination.name}{/if}</div>
-          <div class="col-sm-2">{if isset($combination.type) && $combination.type == 0}{$combination.date} {$combination.time}{/if}</div>
+          <div class="col-sm-2">{if isset($combination.type) && $combination.type == 'ticket'}{$combination.date} {$combination.time}{/if}</div>
           <div class="col-sm-2">{if isset($combination.expiry_date) && isset($combination.expiry_time)}{$combination.expiry_date} {$combination.expiry_time}{/if}</div>
-          <div class="col-sm-2">{if isset($combination.price) && (!isset($combination.type) || $combination.type < 2)}{displayPrice price=$combination.price currency=$currency->id}{/if}</div>
+          <div class="col-sm-2">{if isset($combination.price) && (!isset($combination.type) || $combination.type == 'ticket' || $combination.type == 'carnet')}{displayPrice price=$combination.price currency=$currency->id}{/if}</div>
           <div class="col-sm-2">
-            {if !isset($combination.type) || $combination.type < 2}
-            <select class="form-control" data-target="{$combination.id_product_attribute}" name="qty[]" {if ($PS_CATALOG_MODE || !$product->available_for_order || $combination.quantity <=0)}disabled=""{/if}>
-               {for $i=0 to $combination.quantity}
-                    <option value="{$i}">{$i}</option>
-                    {if $i >= 10}
-                      {break}
-                    {/if}
-               {/for}
-            </select>
+            {if isset($combination.type) && ($combination.type == 'ticket' || $combination.type == 'carnet') }
+                {if $combination.quantity > 0}
+                    <select class="form-control" data-target="{$combination.id_product_attribute}" name="qty[]" {if ($PS_CATALOG_MODE || !$product->available_for_order || $combination.quantity <=0)}disabled=""{/if}>
+                       {for $i=0 to $combination.quantity}
+                            <option value="{$i}">{$i}</option>
+                            {if $i >= 10}
+                              {break}
+                            {/if}
+                       {/for}
+                    </select>
+                {else}
+                    {l s='Sold out!' mod='npscombinations'}
+                {/if}
             {/if}
           </div>
         </div>

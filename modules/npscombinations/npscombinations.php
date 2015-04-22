@@ -73,7 +73,8 @@ class NpsCombinations extends Module {
             else if ($group == Configuration::get('NPS_ATTRIBUTE_NAME_ID')) {
                 $result[$id]['id_product_attribute'] = $id;
                 $result[$id]['name'] = $comb['attribute_name'];
-                $result[$id]['price'] = $comb['price'];
+                $result[$id]['price'] = $product->getPrice(true, $id, 2);
+                $result[$id]['full_price'] =  $product->getPriceWithoutReduct(false, $id);
                 $result[$id]['quantity'] = $comb['quantity'];
                 $query = ProductAttributeExpiryDate::getByProductAttribute($id);
                 if ($query) {

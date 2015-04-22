@@ -30,23 +30,24 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
     public function setMedia() {
         parent::setMedia();
         $this->addjQueryPlugin('autosize');
-        $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/dropzone.js');
-        $this->addJS ("https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places");
-        $this->addJS(_PS_JS_DIR_.'validate.js');
-        $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/edit_map.js');
-        $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/base64.js');
-        $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/dropzone_init.js');
-        $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/datetime_init.js');
-        $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/bootstrap-datetimepicker.min.js');
-        $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/tinymce/tinymce.min.js');
-        $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/tinymce_init.js');
-        $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/product.js');
-        $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/CollapsibleLists.compressed.js');
-        $this->addJS (_PS_MODULE_DIR_.'npsmarketplace/js/tmpl.min.js');
-        
-        $this->addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/dropzone.css');
-        $this->addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/bootstrap-datetimepicker.min.css');
-        $this->addCSS (_PS_MODULE_DIR_.'npsmarketplace/css/map.css');
+        $this->addJqueryUI(array('ui.slider', 'ui.datepicker'));
+        $this->addJS(array(
+            _PS_JS_DIR_.'jquery/plugins/timepicker/jquery-ui-timepicker-addon.js',
+            _PS_MODULE_DIR_.'npsmarketplace/js/dropzone.js',
+            "https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places",
+            _PS_JS_DIR_.'validate.js',
+            _PS_MODULE_DIR_.'npsmarketplace/js/edit_map.js',
+            _PS_MODULE_DIR_.'npsmarketplace/js/base64.js',
+            _PS_MODULE_DIR_.'npsmarketplace/js/dropzone_init.js',
+            _PS_MODULE_DIR_.'npsmarketplace/js/tinymce/tinymce.min.js',
+            _PS_MODULE_DIR_.'npsmarketplace/js/tinymce_init.js',
+            _PS_MODULE_DIR_.'npsmarketplace/js/product.js',
+            _PS_MODULE_DIR_.'npsmarketplace/js/CollapsibleLists.compressed.js',
+            _PS_MODULE_DIR_.'npsmarketplace/js/tmpl.min.js'
+        ));
+
+        $this->addCSS(_PS_MODULE_DIR_.'npsmarketplace/css/dropzone.css');
+        $this->addCSS(_PS_MODULE_DIR_.'npsmarketplace/css/map.css');
     }
 
     public function postProcess() {
@@ -189,7 +190,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             if (isset($free_cat_id) && !empty($free_cat_id)){
                 $is_free = true;
                 foreach ($combinations as $key => $value) {
-                    if ($value['type'] < 2 && $value['price'] == 0) {
+                    if (($value['type'] == 'ticket' || $value['type'] == 'carnet') && $value['price'] == 0) {
                         $is_free = true;
                         break;
                     }
@@ -281,22 +282,43 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                 StockAvailable::setQuantity((int)$this->_product->id, (int)$combination['id_product_attribute'], $combination['quantity'], $this->context->shop->id);
                 $updated[] = $combination['id_product_attribute'];
             } else {
-                $dt = new DateTime($combination['expiry_date'].' '.$combination['expiry_time']);
-                if ($combination['type'] != 1 && isset($combination['time']) && $combination['time'] == $combination['expiry_time']) {
+                $dt = new DateTime($combination['expiry_date']);
+                if ($combination['type'] != 'carnet' && isset($combination['date']) && $combination['date'] == $combination['expiry_date']) {
                     $dt->modify('-15 min');
                 }
                 $comb = $this->_product->createCombination($combination, $dt,  $this->context->shop->id);
             }
             // Save new specific price
-            if (isset($combination['reduction_price']) && !isset($combination['id_specific_price'])) {
-                $start = new DateTime($combination['start_reduction_date'].' '.$combination['start_reduction_time']);
-                $end = new DateTime($combination['end_reduction_date'].' '.$combination['end_reduction_time']);
-                Product::addSpecialPrice(
-                    $this->_product->id,
-                    $comb->id,
-                    $combination['reduction_price'],
-                    $start->format('Y-m-d H:i:s'),
-                    $end->format('Y-m-d H:i:s'));
+            $current_specific_prices = array();
+            foreach(SpecificPrice::getByProductId($this->_product->id, $comb->id) as $key => $value) {
+                $current_specific_prices[] = $value['id_specific_price'];
+            }
+            $updated_specific_prices = array();
+            if (isset($combination['specific_prices'])) {
+                foreach ($combination['specific_prices'] as $key => $value) {
+                    $from = new DateTime($value['from']);
+                    $to = new DateTime($value['to']);
+                    if (isset($value['id_specific_price'])) {
+                        $sp = new SpecificPriceCore($value['id_specific_price']);
+                        $sp->from = $from->format('Y-m-d H:i:s');
+                        $sp->to = $to->format('Y-m-d H:i:s');
+                        $sp->reduction = $value['reduction'];
+                        $sp->save();
+                        $updated_specific_prices[] = $sp->id;
+                    } else {
+                        Product::addSpecialPrice(
+                            $this->_product->id,
+                            $comb->id,
+                            $value['reduction'],
+                            $from->format('Y-m-d H:i:s'),
+                            $to->format('Y-m-d H:i:s'));
+                    }
+                }
+            }
+            $removed_specific_prices = array_diff($current_specific_prices, $updated_specific_prices);
+            foreach ($removed_specific_prices as $key => $value) {
+                $sp = new SpecificPriceCore($value);
+                $sp->delete();
             }
         }
         $removed = array_diff($current, $updated);
@@ -513,6 +535,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
         foreach($this->_product->getAttributeCombinations($this->context->language->id) as $key => $comb) {
             $id = $comb['id_product_attribute'];
             $group = $comb['id_attribute_group'];
+
             if ($group == Configuration::get('NPS_ATTRIBUTE_DATE_ID'))
                 $result[$id]['date'] = $comb['attribute_name'];
             else if ($group == Configuration::get('NPS_ATTRIBUTE_TIME_ID'))
@@ -528,9 +551,25 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                 $query = ProductAttributeExpiryDate::getByProductAttribute($id);
                 if ($query) {
                     $date_time = new DateTime($query);
-                    $result[$id]['expiry_date'] = $date_time->format('Y-m-d');
-                    $result[$id]['expiry_time'] = $date_time->format('H:i');
+                    $result[$id]['expiry_date'] = $date_time->format('Y-m-d H:i');
                 }
+            }
+            $sprices = SpecificPrice::getByProductId($this->_product->id, $id);
+            $sp = array();
+            if ($sprices) {
+                foreach ($sprices as $key => $value) {
+                    $value['reduction'] = round($value['reduction'], 2);
+                    $value['from'] = date_format(date_create($value['from']), 'Y-m-d H:i');
+                    $value['to'] = date_format(date_create($value['to']), 'Y-m-d H:i');
+                    $sp[] = $value;
+                }
+            }
+            $result[$id]['specific_prices'] = $sp;
+        }
+        foreach ($result as $key => $value) {
+            if (isset($value['date']) && isset($value['time'])) {
+                $date_time = new DateTime($value['date'].' '.$value['time']);
+                $result[$key]['date'] = $date_time->format('Y-m-d H:i');
             }
         }
         return $result;

@@ -31,7 +31,7 @@ class Ticket extends ObjectModel {
             'id_seller' =>        array('type' => self::TYPE_INT,    'validate' => 'isUnsignedId',  'required' => true),
             'price' =>            array('type' => self::TYPE_FLOAT,  'validate' => 'isPrice',       'required' => true),
             'tax' =>              array('type' => self::TYPE_INT,    'validate' => 'isUnsignedId'),
-            'type' =>             array('type' => self::TYPE_INT,    'validate' => 'isUnsignedId'),
+            'type' =>             array('type' => self::TYPE_STRING, 'validate' => 'isGenericName'),
             'name' =>             array('type' => self::TYPE_STRING, 'validate' => 'isGenericName', 'required' => true),
             'combination_name' => array('type' => self::TYPE_STRING, 'validate' => 'isGenericName'),
             'address' =>          array('type' => self::TYPE_STRING, 'required' => true),

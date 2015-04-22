@@ -19,14 +19,90 @@ $(document).ready(function(){
         height      : 'auto',
         autoSize    : false,
     });
+
+    initDatetimePickers();
     populateCombinations();
     updateCombinationsDropdown();
     initVariantReductions('#ticket_combination_form');
     initVariantReductions('#carnet_combination_form');
 });
 
+function initDatetimePickers() {
+    // Ticket
+    initDatetimePicker('#ticket_date', function(selectedDate) {
+        $( "#ticket_expiry_date" ).datepicker( "option", "maxDate", selectedDate );
+        $( "#ticket_expiry_date" ).datepicker( "setDate", selectedDate );
+        $( "#ticket_to" ).datepicker( "option", "maxDate", selectedDate );
+        $( "#ticket_from" ).datepicker( "option", "maxDate", selectedDate );
+    });
+    initDatetimePicker('#ticket_expiry_date', function(selectedDate) {
+        $( "#ticket_to" ).datepicker( "option", "maxDate", selectedDate );
+        $( "#ticket_from" ).datepicker( "option", "maxDate", selectedDate );
+    });
+    initDatetimePicker('#ticket_from', function(selectedDate) {
+        $( "#ticket_to" ).datepicker( "option", "minDate", selectedDate );
+    });
+    initDatetimePicker('#ticket_to', function(selectedDate) {
+        $( "#ticket_from" ).datepicker( "option", "maxDate", selectedDate );
+    });
+
+    // Carnet
+    initDatetimePicker('#carnet_expiry_date', function(selectedDate) {
+        $( "#carnet_to" ).datepicker( "option", "maxDate", selectedDate );
+        $( "#carnet_from" ).datepicker( "option", "maxDate", selectedDate );
+    });
+    initDatetimePicker('#carnet_from', function(selectedDate) {
+        $( "#carnet_to" ).datepicker( "option", "minDate", selectedDate );
+    });
+    initDatetimePicker('#carnet_to', function(selectedDate) {
+        $( "#carnet_from" ).datepicker( "option", "maxDate", selectedDate );
+    });
+
+    // Ad
+    initDatetimePicker('#ad_date', function(selectedDate) {
+        $( "#ad_expiry_date" ).datepicker( "option", "maxDate", selectedDate );
+        $( "#ad_expiry_date" ).datepicker( "setDate", selectedDate );
+    });
+    initDatetimePicker('#ad_expiry_date', function(selectedDate) {});
+
+    // External Ad
+    initDatetimePicker('#ead_date', function(selectedDate) {
+        $( "#ead_expiry_date" ).datepicker( "option", "maxDate", selectedDate );
+        $( "#ead_expiry_date" ).datepicker( "setDate", selectedDate );
+    });
+    initDatetimePicker('#ad_expiry_date', function(selectedDate) {});
+}
+
+function initDatetimePicker(selector, onCloseCallback) {
+    var coeff = 1000 * 60 * 5;
+    var date = new Date();
+    var rounded = new Date(Math.round(date.getTime() / coeff) * coeff);
+
+    $(selector).datetimepicker({
+        showButtonPanel: true,
+        changeMonth: true,
+        changeYear: true,
+        minDateTime: rounded,
+        dateFormat: 'yy-mm-dd',
+        stepMinute: 5,
+        minute: 0,
+        currentText: dictNow,
+        closeText: dictDone,
+        ampm: false,
+        amNames: ['AM', 'A'],
+        pmNames: ['PM', 'P'],
+        timeFormat: 'hh:mm',
+        timeSuffix: '',
+        timeOnlyTitle: dictChooseTime,
+        timeText: dictTime,
+        hourText: dictHour,
+        minuteText: dictMinute,
+        onClose: onCloseCallback
+    });
+}
+
 function initVariantReductions(scope) {
-    $(scope + ' [name="reduction"]').change(function() {
+    $(scope + ' [name="add_reduction"]').change(function() {
         if ($(this).is(':checked')) {
             $(scope + ' .reduction').show();
             $(scope + ' .reduction input').addClass('is_required');
@@ -45,11 +121,11 @@ function updateCombinationsDropdown() {
         $.each(productCombinations, function(index, combination) {
             types.push(combination['type']);
         });
-        if (types.indexOf('0') != -1 || types.indexOf('1') != -1) {
+        if (types.indexOf('ticket') != -1 || types.indexOf('carnet') != -1) {
             $('.variants-dropdown').show();
             $('.add-ticket, .add-carnet').show();
             $('.add-ad, .add-ext-ad').hide();
-        } else if (types.indexOf('2') != -1 || types.indexOf('3') != -1) {
+        } else if (types.indexOf('ad') != -1 || types.indexOf('extternalad') != -1) {
             $('.variants-dropdown').hide();
         }
     } else {
@@ -63,6 +139,11 @@ function populateCombinations() {
         $('.no-variants').hide();
         $.each(productCombinations, function(index, combination) {
             combination['index'] = index;
+            if (combination['specific_prices']) {
+                $.each(combination['specific_prices'], function(i, specific_price) {
+                    specific_price['index'] = i;
+                });
+            }
             renderCombination(combination);
         });
     } else {
@@ -72,6 +153,11 @@ function populateCombinations() {
 
 function renderCombination(combination) {
     $('.variants-container').append(tmpl("ticket-tmpl", combination));
+    if (combination['specific_prices'].length > 0) {
+        $('.variant-index-'+ combination['index'] +' .no-specific-prices').hide();
+    } else {
+        $('.variant-index-'+ combination['index'] +' .no-specific-prices').show();
+    }
 }
 
 function clearCombinations() {
@@ -105,8 +191,16 @@ function addVariant(id_form) {
           }
         });
         data['type'] = $(id_form + ' [name=type]').val();
-        data['reduction'] = $(id_form + ' [name=reduction]').is(':checked');
-        console.log(data);
+        if ($(id_form + ' [name=add_reduction]').is(':checked')) {
+            var array = [{
+                reduction: data['reduction'],
+                from: data['from'],
+                to: data['to']
+            }];
+            data['specific_prices'] = array;
+        } else {
+            data['specific_prices'] = [];
+        }
         productCombinations.push(data);
         clearCombinations();
         populateCombinations();
@@ -120,6 +214,15 @@ function addVariant(id_form) {
     }
 }
 
+function closeVariantBox() {
+    $.fancybox.close();
+    clearFancyboxForm(id_form);
+    setTimeout(function() {
+        $('body').scrollTo('.variants-box');
+        $("input[type='checkbox']:not(.comparator)").uniform();
+    }, 500);
+}
+
 function clearFancyboxForm(id_form) {
     $(id_form + ' input.validate').each( function(index) {
         $(this).val('');
@@ -129,6 +232,13 @@ function clearFancyboxForm(id_form) {
 
 function removeVariant(index) {
     productCombinations.splice(index, 1);
+    clearCombinations();
+    populateCombinations();
+    updateCombinationsDropdown();
+}
+
+function removeSpecialPrice(cominationIndex, specificPriceIndex) {
+    productCombinations[cominationIndex]['specific_prices'].splice(specificPriceIndex, 1);
     clearCombinations();
     populateCombinations();
     updateCombinationsDropdown();

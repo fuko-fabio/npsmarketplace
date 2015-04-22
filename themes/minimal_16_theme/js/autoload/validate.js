@@ -3,6 +3,11 @@ function validate_isInteger(s) {
     return reg.test(s);
 }
 
+function validate_isDateTime(s) {
+    var reg = /\b\d{4}[\/-]\d{1,2}[\/-]\b\d{1,2} ([01]?[0-9]|2[0-3]):[0-5][0-9]/;
+    return reg.test(s);
+}
+
 function validate_isDate(s) {
     var reg = /^\d{4}-\d{2}-\d{2}$/;
     return reg.test(s);

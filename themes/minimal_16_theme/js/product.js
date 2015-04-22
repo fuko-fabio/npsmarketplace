@@ -688,7 +688,7 @@ function updateTypeData() {
     });
 
     switch(type) {
-        case "0":
+        case "ticket":
             $('p.ticket, .product_attributes, #add_to_cart, .price').show();
             $('p.carnet, p.ad').hide();
             if (date && time) {
@@ -696,13 +696,13 @@ function updateTypeData() {
             }
             $('span.combination_name').text(name);
             break;
-        case "1":
+        case "carnet":
             $('p.carnet, .product_attributes, #add_to_cart, .price').show();
             $('p.ticket, p.ad').hide();
             $('span.combination_name').text(name);
             break;
-        case "2":
-        case "3":
+        case "ad":
+        case "externalad":
             $('p.ad').show();
             $('p.ticket, p.carnet, .product_attributes, #add_to_cart, .price').hide();
             if (date && time) {

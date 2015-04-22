@@ -17,6 +17,12 @@
 {addJsDefL name=maxImageSize}{$max_image_size}{/addJsDefL}
 {addJsDefL name=dropzoneServerUrl}{$dropzone_url}{/addJsDefL}
 {addJsDefL name=dictTownsOther}{l s='--Other--' mod='npsmarketplace' js=1}{/addJsDefL}
+{addJsDefL name=dictNow}{l s='Now' mod='npsmarketplace' js=1}{/addJsDefL}
+{addJsDefL name=dictDone}{l s='Done' mod='npsmarketplace' js=1}{/addJsDefL}
+{addJsDefL name=dictChooseTime}{l s='Choose Time' mod='npsmarketplace' js=1}{/addJsDefL}
+{addJsDefL name=dictTime}{l s='Time' mod='npsmarketplace' js=1}{/addJsDefL}
+{addJsDefL name=dictHour}{l s='Hour' mod='npsmarketplace' js=1}{/addJsDefL}
+{addJsDefL name=dictMinute}{l s='Minute' mod='npsmarketplace' js=1}{/addJsDefL}
 
 {if isset($smarty.post.combinations)}
 {assign var="combinations" value=$smarty.post.combinations}

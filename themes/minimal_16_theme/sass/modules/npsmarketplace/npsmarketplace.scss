@@ -416,6 +416,7 @@
   .dropdown {
     .dropdown-toggle {
       background: $primary-color;
+      font-weight: bold;
       &:hover {
         background: $primary-color-light;
       }
@@ -429,12 +430,47 @@
     }
   }
   .variants-container {
-    td {
-      input {
-        max-width: 50px;
+    .item {
+      border: $main_border;
+      background-color: #f3f3f3;
+      padding: 10px;
+      margin-bottom: 15px;
+
+      .icon-btn {
+        color: black;
+        font-size: 28px;
+        
+        &:hover {
+          color: $primary-color;
+        }
       }
-      .button-small {
-        min-width: 40px;
+      
+      .name {
+        display: block;
+        font-size: 18px;
+        color: $dark-text-color;
+        font-weight: bold;
+      }
+      
+      .special-prices-collapse {
+        color: $base-text-color;
+        border-color: $base-border-color;
+        background: $base-box-bg;
+        border-bottom: none;
+      }
+      
+      .special-prices-container {
+        padding: 10px;
+        margin-bottom: 0;
+        background-color: $base-box-bg;
+        @include box-shadow(none);
+        
+        .special-item {
+          border: $main_border;
+          padding: 10px;
+          margin-bottom: 15px;
+          background-color: #f3f3f3;
+        }
       }
     }
   }

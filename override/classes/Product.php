@@ -28,17 +28,18 @@ class Product extends ProductCore {
         $attributes_ids = array();
         $id_lang = (int)Configuration::get('PS_LANG_DEFAULT');
 
-        if ($combination['type'] > 1 ) {
+        if ($combination['type'] != 'ticket' && $combination['type'] != 'carnet') {
             $combination['price'] = 0;
             $combination['quantity'] = 1;
             $combination['name'] = 'advertisment';
         }
 
-        if ($combination['type'] != 1) {
-            if (isset($combination['date']) && !empty($combination['date']))
-                $attributes_ids[] = $this->saveAttribute(Configuration::get('NPS_ATTRIBUTE_DATE_ID'), $combination['date'], $id_lang);
-            if (isset($combination['time']) && !empty($combination['time']))
-                $attributes_ids[] = $this->saveAttribute(Configuration::get('NPS_ATTRIBUTE_TIME_ID'), $combination['time'], $id_lang);
+        if ($combination['type'] != 'carnet') {
+            if (isset($combination['date']) && !empty($combination['date'])) {
+                $dt = new DateTime($combination['date']);
+                $attributes_ids[] = $this->saveAttribute(Configuration::get('NPS_ATTRIBUTE_DATE_ID'), $dt->format('Y-m-d'), $id_lang);
+                $attributes_ids[] = $this->saveAttribute(Configuration::get('NPS_ATTRIBUTE_TIME_ID'), $dt->format('H:i'), $id_lang);
+            }
         }
         if (isset($combination['name']) && !empty($combination['name']))
             $attributes_ids[] = $this->saveAttribute(Configuration::get('NPS_ATTRIBUTE_NAME_ID'), $combination['name'], $id_lang);

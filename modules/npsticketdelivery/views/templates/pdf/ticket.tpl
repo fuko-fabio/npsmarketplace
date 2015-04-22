@@ -17,9 +17,9 @@
                 <td style="padding-left:130px; font-size: 14px;border-top: 1px dashed black;border-bottom: 1px dashed black;width: 500px">
                     <div style="margin-left: 10px">
                         <div style="font-weight:700;text-transform: uppercase;position:absolute;top:5px;right:10px;padding:5px;border:1px solid black;background: white">
-                            {if $type == 0}
+                            {if $type == 'ticket'}
                                 {l s='Ticket' mod='npsticketdelivery'}
-                            {else if $type == 1}
+                            {else if $type == 'carnet'}
                                 {l s='Carnet' mod='npsticketdelivery'}
                             {/if}
                         </div>
@@ -27,7 +27,7 @@
                         {if isset($combination_name) && !empty($combination_name)}
                         <div style="font-size: 10px;width:100px;text-transform: uppercase;float: left;display: inline-block;">{l s='Combination' mod='npsticketdelivery'}</div>: <span style="float: left;text-overflow: ellipsis;white-space: nowrap;">{$combination_name|truncate:60}</span><br />
                         {/if}
-                        {if $type == 0 && isset($date)}
+                        {if $type == 'ticket' && isset($date)}
                         <div style="font-size: 10px;width:100px;text-transform: uppercase;float: left;display: inline-block;">{l s='Term' mod='npsticketdelivery'}</div>: <span style="font-weight: 700;float: left">{date_format(date_create($date), 'Y-m-d H:i')}</span><br />
                         {/if}
                         <div style="font-size: 10px;width:100px;text-transform: uppercase;float: left;display: inline-block;">{l s='Person' mod='npsticketdelivery'}</div>: <span style="float: left;text-overflow: ellipsis;white-space: nowrap;">{$person|truncate:60}</span><br />
