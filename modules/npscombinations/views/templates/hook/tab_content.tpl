@@ -54,7 +54,7 @@
         </div>
     {/foreach}
     <button type="button" onclick="addCombinationToCart({$product->id});" class="btn btn-default button button-small pull-right cart-add-combinations">
-        <span><i class="icon-shopping-cart"></i> {l s='Add to cart'}</span>
+        <span><i class="icon-shopping-cart"></i> {l s='Add to cart' mod='npscombinations'}</span>
     </button>
   </div>
 </div>
