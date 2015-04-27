@@ -70,7 +70,7 @@
     <!-- left infos-->
     <div class="pb-left-column col-xs-12 col-sm-8">
         <div class="row">
-            <div class="col-xs-9">
+            <div class="col-xs-{if isset($images) && count($images) > 1}9{else}11{/if}">
                 {if isset($HOOK_EXTRA_PRODUCT_IMAGE) && $HOOK_EXTRA_PRODUCT_IMAGE}{$HOOK_EXTRA_PRODUCT_IMAGE}{/if}
 
                 <!-- product img-->
@@ -122,9 +122,8 @@
                 </div>
                 <!-- end image-block -->
             </div>
+            {if isset($images) && count($images) > 0}
             <div class="col-xs-3">
-
-                {if isset($images) && count($images) > 0}
                     <!-- thumbnails -->
                     <div id="views_block" class="clearfix {if isset($images) && count($images) < 2}hidden{/if}">
                         {if isset($images) && count($images) > 4}
@@ -176,7 +175,6 @@
                     </div>
                     <!-- end views-block -->
                     <!-- end thumbnails -->
-                {/if}
                 {if isset($images) && count($images) > 1}
                     <p class="resetimg clear no-print">
 					<span id="wrapResetImages" style="display: none;">
@@ -188,6 +186,7 @@
                     </p>
                 {/if}
             </div>
+            {/if}
         </div>
         <div class="row">
             <!--HOOK_PRODUCT_TAB -->
@@ -327,7 +326,11 @@
                     </p>
                     <p id="old_price"{if (!$product->specificPrice || !$product->specificPrice.reduction) && $group_reduction == 0} class="hidden"{/if}>
                         {if $priceDisplay >= 0 && $priceDisplay <= 2}
-                            <span id="old_price_display">{if $productPriceWithoutReduction > $productPrice}{convertPrice price=$productPriceWithoutReduction}{/if}</span>
+                            <span id="old_price_display">
+                                {if $productPriceWithoutReduction > $productPrice}
+                                    {displayPrice price=$productPriceWithoutReduction currency=$currency->id}
+                                {/if}
+                            </span>
                             <!-- {if $tax_enabled && $display_tax_label == 1}{if $priceDisplay == 1}{l s='tax excl.'}{else}{l s='tax incl.'}{/if}{/if} -->
                         {/if}
                     </p>
@@ -820,10 +823,11 @@
         {addJsDef oosHookJsCodeFunctions=Array()}
         {addJsDef productHasAttributes=isset($groups)|boolval}
         {addJsDef productPriceTaxExcluded=($product->getPriceWithoutReduct(true)|default:'null' - $product->ecotax)|floatval}
-        {addJsDef productBasePriceTaxExcluded=($product->base_price - $product->ecotax)|floatval}
+        {addJsDef productBasePriceTaxExcl=($product->base_price - $product->ecotax)|floatval}
         {addJsDef productReference=$product->reference|escape:'html':'UTF-8'}
         {addJsDef productAvailableForOrder=$product->available_for_order|boolval}
         {addJsDef productPriceWithoutReduction=$productPriceWithoutReduction|floatval}
+        {addJsDef productOrginalPrice=$product->price|floatval}
         {addJsDef productPrice=$productPrice|floatval}
         {addJsDef productUnitPriceRatio=$product->unit_price_ratio|floatval}
         {addJsDef productShowPrice=(!$PS_CATALOG_MODE && $product->show_price)|boolval}

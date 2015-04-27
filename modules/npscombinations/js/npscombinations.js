@@ -10,7 +10,7 @@ function addCombinationToCart(id_product) {
             var qty = $(this).val();
             var id_comb = $(this).attr('data-target');
             if (qty && id_comb) {
-                ajaxCart.add(id_product, id_comb, true, null, qty);
+                ajaxCart.add(id_product, id_comb, false, '.cart-add-combinations', qty);
             }
         
         });

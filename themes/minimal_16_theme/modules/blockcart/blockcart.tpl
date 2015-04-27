@@ -310,11 +310,17 @@
 					</span>
 				</div>
 				<div class="button-container">	
+                    <span class="continue btn bbtn-default button button-small ccl" title="{l s='Continue shopping' mod='blockcart'}">
+                        <span>
+                            <i class="icon-chevron-left left"></i>{l s='Continue shopping' mod='blockcart'}
+                        </span>
+                    </span>
+<!--
 					<a class="btn btn-default button button-small ccl" href="{$link->getPageLink("index")|escape:"html":"UTF-8"}" title="{l s='Continue shopping' mod='blockcart'}">
 						<span>
 							<i class="icon-chevron-left left"></i> {l s='Continue shopping' mod='blockcart'}
 						</span>
-					</a>
+					</a>-->
 					<a class="btn btn-default button button-small"	href="{$link->getPageLink("$order_process", true)|escape:"html":"UTF-8"}" title="{l s='Proceed to checkout' mod='blockcart'}" rel="nofollow">
 						<span>
 							{l s='Proceed to checkout' mod='blockcart'} <i class="icon-chevron-right right"></i>

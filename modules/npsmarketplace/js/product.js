@@ -18,6 +18,11 @@ $(document).ready(function(){
         width       : '60%',
         height      : 'auto',
         autoSize    : false,
+        helpers: {
+        overlay: {
+          locked: false
+        }
+      }
     });
 
     initDatetimePickers();
@@ -70,7 +75,7 @@ function initDatetimePickers() {
         $( "#ead_expiry_date" ).datepicker( "option", "maxDate", selectedDate );
         $( "#ead_expiry_date" ).datepicker( "setDate", selectedDate );
     });
-    initDatetimePicker('#ad_expiry_date', function(selectedDate) {});
+    initDatetimePicker('#ead_expiry_date', function(selectedDate) {});
 }
 
 function initDatetimePicker(selector, onCloseCallback) {
@@ -149,6 +154,7 @@ function populateCombinations() {
     } else {
         $('.no-variants').show();
     }
+    $("input[type='checkbox']:not(.comparator)").uniform();
 }
 
 function renderCombination(combination) {
@@ -207,20 +213,13 @@ function addVariant(id_form) {
         updateCombinationsDropdown();
         $.fancybox.close();
         clearFancyboxForm(id_form);
-        setTimeout(function() {
-            $('body').scrollTo('.variants-box');
-            $("input[type='checkbox']:not(.comparator)").uniform();
-        }, 500);
+        window.dispatchEvent(new Event('resize'));
     }
 }
 
-function closeVariantBox() {
+function closeVariantBox(id_form) {
     $.fancybox.close();
     clearFancyboxForm(id_form);
-    setTimeout(function() {
-        $('body').scrollTo('.variants-box');
-        $("input[type='checkbox']:not(.comparator)").uniform();
-    }, 500);
 }
 
 function clearFancyboxForm(id_form) {
@@ -265,3 +264,54 @@ function validateVariant(id_form) {
     });
     return valid;
 };
+
+function validateForm() {
+    var valid = true;
+    $('#edit-product-form .validate').each( function( index ) {
+        if ($(this).hasClass('is_required') || $(this).val().length) {
+            if ($(this).attr('name') == 'postcode' && typeof(countriesNeedZipCode[$('#id_country option:selected').val()]) != 'undefined')
+                var result = window['validate_'+$(this).attr('data-validate')]($(this).val(), countriesNeedZipCode[$('#id_country option:selected').val()]);
+            else
+                var result = window['validate_'+$(this).attr('data-validate')]($(this).val());
+            if (!result) {
+                valid = false;
+            }
+            if (result) {
+                $(this).parent().removeClass('form-error').addClass('form-ok');
+            } else {
+                $(this).parent().addClass('form-error').removeClass('form-ok');
+                valid = false;
+            }
+        }
+    });
+    if (!valid) {
+        $('.validation-error').show();
+        $('body').scrollTo('.validation-error');
+    } else {
+        $('.validation-error').hide();
+    }
+    return valid;
+}
+
+function startNewEventTour() {
+    var tour = introJs();
+    tour.setOption('tooltipPosition', 'auto');
+    tour.setOption('positionPrecedence', ['top', 'left', 'right']);
+    tour.setOption('showProgress', true);
+    tour.setOption('exitOnOverlayClick', false);
+    tour.setOption('showBullets', false);
+    tour.setOption('scrollToElement', true);
+    tour.setOption('disableInteraction', false);
+    tour.setOption('showStepNumbers', false);
+    tour.setOption('nextLabel', npsTourNext);
+    tour.setOption('prevLabel', npsTourPrev);
+    tour.setOption('skipLabel', npsTourSkip);
+    tour.setOption('doneLabel', npsTourDone);
+    tour.oncomplete(endNewEventTour);
+    tour.onexit(endNewEventTour);
+    tour.start();
+}
+
+function endNewEventTour() {
+    localStorage.setItem("newEventTour", true);
+}

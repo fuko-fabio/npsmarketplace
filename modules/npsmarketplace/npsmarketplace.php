@@ -283,30 +283,47 @@ class NpsMarketplace extends Module {
 
     public function hookProductFooter($params) {
         $product = $params['product'];
-        if (!Product::showSellerDetails($product->id)) {
-            return;
-        }
-        $seller = new Seller(Seller::getSellerByProduct($product->id));
-        $products = $seller->getProducts(3, false);
-        $p1 = null;
-        $p2 = null;
-        $p3 = null;
-        if (isset($products[0])) {
-            $p1 = $this->getProductObject($products[0]);
-        }
-        if (isset($products[1])) {
-            $p2 = $this->getProductObject($products[1]);
-        }
-        if (isset($products[2])) {
-            $p3 = $this->getProductObject($products[2]);
+        if (Product::showSellerDetails($product->id)) {
+            $seller = new Seller(Seller::getSellerByProduct($product->id));
+            $products = $seller->getProducts(3, false);
+            $p1 = null;
+            $p2 = null;
+            $p3 = null;
+            if (isset($products[0])) {
+                $p1 = $this->getProductObject($products[0]);
+            }
+            if (isset($products[1])) {
+                $p2 = $this->getProductObject($products[1]);
+            }
+            if (isset($products[2])) {
+                $p3 = $this->getProductObject($products[2]);
+            }
+            $p4 = null;
+            $this->context->smarty->assign(array(
+                'seller' => $seller,
+                'logo' => Seller::getImageLink($seller->id, 'cart_default', $this->context),
+                'seller_shop_url' => $this->context->link->getModuleLink('npsmarketplace', 'SellerShop', array('id_seller' => $seller->id)),
+            ));
+        } else {
+            $products = Product::getNewProducts($this->context->language->id);
+            if (isset($products[0])) {
+                $p1 = $this->getProductObject(new Product($products[0]['id_product']));
+            }
+            if (isset($products[1])) {
+                $p2 = $this->getProductObject(new Product($products[1]['id_product']));
+            }
+            if (isset($products[2])) {
+                $p3 = $this->getProductObject(new Product($products[2]['id_product']));
+            }
+            if (isset($products[3])) {
+                $p4 = $this->getProductObject(new Product($products[3]['id_product']));
+            }
         }
         $this->context->smarty->assign(array(
-            'seller' => $seller,
-            'logo' => Seller::getImageLink($seller->id, 'cart_default', $this->context),
-            'seller_shop_url' => $this->context->link->getModuleLink('npsmarketplace', 'SellerShop', array('id_seller' => $seller->id)),
             'p1' => $p1,
             'p2' => $p2,
             'p3' => $p3,
+            'p4' => $p4,
         ));
         return $this->display(__FILE__, 'views/templates/hook/product_footer.tpl');
     }

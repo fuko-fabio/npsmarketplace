@@ -8,5 +8,7 @@
 .combinations-list .combinations-item {
   padding: 10px 0;
   border-bottom: 1px solid #d6d4d4; }
+  .combinations-list .combinations-item:hover {
+    font-weight: bold; }
 .combinations-list button {
   margin-top: 10px; }

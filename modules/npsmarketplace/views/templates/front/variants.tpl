@@ -67,7 +67,7 @@
     </form>
 
     <p class="submit">
-      <input class="button ccl" type="button" value="{l s='Cancel' mod='npsmarketplace'}" onclick="closeVariantBox();"/>
+      <input class="button ccl" type="button" value="{l s='Cancel' mod='npsmarketplace'}" onclick="closeVariantBox('#ticket_combination_form');"/>
       <input class="button" onclick="addVariant('#ticket_combination_form');" value="{l s='Add' mod='npsmarketplace'}"/>
     </p>
   </div>
@@ -130,7 +130,7 @@
     </form>
 
     <p class="submit">
-      <input class="button ccl" type="button" value="{l s='Cancel' mod='npsmarketplace'}" onclick="closeVariantBox();"/>
+      <input class="button ccl" type="button" value="{l s='Cancel' mod='npsmarketplace'}" onclick="closeVariantBox('#carnet_combination_form');"/>
       <input class="button" onclick="addVariant('#carnet_combination_form');" value="{l s='Add' mod='npsmarketplace'}"/>
     </p>
   </div>
@@ -156,7 +156,7 @@
     </form>
 
     <p class="submit">
-      <input class="button ccl" type="button" value="{l s='Cancel' mod='npsmarketplace'}" onclick="closeVariantBox();"/>
+      <input class="button ccl" type="button" value="{l s='Cancel' mod='npsmarketplace'}" onclick="closeVariantBox('#ad_combination_form');"/>
       <input class="button" onclick="addVariant('#ad_combination_form');" value="{l s='Add' mod='npsmarketplace'}"/>
     </p>
   </div>
@@ -182,7 +182,7 @@
     </form>
 
     <p class="submit">
-      <input class="button ccl" type="button" value="{l s='Cancel' mod='npsmarketplace'}" onclick="closeVariantBox();"/>
+      <input class="button ccl" type="button" value="{l s='Cancel' mod='npsmarketplace'}" onclick="closeVariantBox('#outer_ad_combination_form');"/>
       <input class="button" onclick="addVariant('#outer_ad_combination_form');" value="{l s='Add' mod='npsmarketplace'}"/>
     </p>
   </div>

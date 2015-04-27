@@ -48,7 +48,7 @@
                     <div class="nps-ticket">
                         <div class="info">
                             <div class="name">{$ticket.name|truncate:25}</div>
-                            {if $ticket.type == 0}
+                            {if $ticket.type == 'ticket'}
                                 <div class="term"><span>{l s='Term'}:</span>{date_format(date_create($ticket.date), 'Y-m-d H:i')}</div>
                             {else}
                                 <div class="term">{l s='Carnet'}</div>
@@ -65,7 +65,7 @@
                                 {l s="Click to download ticket as PDF file"}
                             </span>
                         </span>
-                        {if $ticket.type == 0}
+                        {if $ticket.type == 'ticket'}
                         <span class="qs ticket-calendar">
                             <span class="addtocalendar atc-style-blue">
                                 <var class="atc_event">

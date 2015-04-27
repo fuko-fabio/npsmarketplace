@@ -38,7 +38,6 @@
     .shopping_cart > a:first-child span.ajax_cart_total, .shopping_cart > a:first-child span.ajax_cart_product_txt, .shopping_cart > a:first-child span.ajax_cart_product_txt_s, .shopping_cart > a:first-child span.ajax_cart_no_product {
       display: none !important; }
     .shopping_cart > a:first-child span.ajax_cart_quantity {
-      display: inline !important;
       font: 600 16px/16px "Open Sans", sans-serif;
       margin-left: 10px;
       float: right; }

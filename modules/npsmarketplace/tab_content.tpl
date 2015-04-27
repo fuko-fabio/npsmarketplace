@@ -9,6 +9,7 @@
 {/if}
 
 <div class="tab-pane fade" id="product_map_tab">
+    <div id="map-canvas" data-target="{$product_address}"></div>
     <table class="table-data-sheet">
         {if !empty($product_address)}
         <tr>
@@ -29,7 +30,6 @@
         </tr>
         {/if}
     </table>
-    <div id="map-canvas" data-target="{$product_address}"></div>
 </div>
 
 {if $show_seller_details}

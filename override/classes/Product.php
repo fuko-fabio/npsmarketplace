@@ -300,7 +300,7 @@ class Product extends ProductCore {
 
     public static function showSellerDetails($id_product) {
         foreach(Product::getStaticAttributeCombinations($id_product) as $key => $value) {
-            if ($value['id_attribute_group'] == Configuration::get('NPS_ATTRIBUTE_TYPE_ID') && $value['attribute_name'] == 3)
+            if ($value['id_attribute_group'] == Configuration::get('NPS_ATTRIBUTE_TYPE_ID') && $value['attribute_name'] == 'externalad')
                 return false;
         }
         return true;
@@ -308,7 +308,7 @@ class Product extends ProductCore {
 
     public static function isAdvertisment($id_product) {
         foreach(Product::getStaticAttributeCombinations($id_product) as $key => $value) {
-            if ($value['id_attribute_group'] == Configuration::get('NPS_ATTRIBUTE_TYPE_ID') && $value['attribute_name'] > 1)
+            if ($value['id_attribute_group'] == Configuration::get('NPS_ATTRIBUTE_TYPE_ID') && ($value['attribute_name'] == 'ad' || $value['attribute_name'] == 'externalad'))
                 return true;
         }
         return false;

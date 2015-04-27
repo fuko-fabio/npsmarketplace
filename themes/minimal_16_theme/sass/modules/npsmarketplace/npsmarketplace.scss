@@ -414,6 +414,7 @@
   }
   
   .dropdown {
+    border: none;
     .dropdown-toggle {
       background: $primary-color;
       font-weight: bold;
@@ -474,4 +475,8 @@
       }
     }
   }
+}
+
+.pac-container {
+    z-index: 10000000;
 }

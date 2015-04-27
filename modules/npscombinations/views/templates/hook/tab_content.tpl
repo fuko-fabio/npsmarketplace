@@ -27,7 +27,14 @@
           <div class="col-sm-3">{if isset($combination.name)}{$combination.name}{/if}</div>
           <div class="col-sm-2">{if isset($combination.type) && $combination.type == 'ticket'}{$combination.date} {$combination.time}{/if}</div>
           <div class="col-sm-2">{if isset($combination.expiry_date) && isset($combination.expiry_time)}{$combination.expiry_date} {$combination.expiry_time}{/if}</div>
-          <div class="col-sm-2">{if isset($combination.price) && (!isset($combination.type) || $combination.type == 'ticket' || $combination.type == 'carnet')}{displayPrice price=$combination.price currency=$currency->id}{/if}</div>
+          <div class="col-sm-2">
+              {if isset($combination.price) && (!isset($combination.type) || $combination.type == 'ticket' || $combination.type == 'carnet')}
+                {displayPrice price=$combination.price currency=$currency->id}
+                {if isset($combination.full_price) && $combination.full_price != $combination.price}
+                    <br /><span class="old-price">{displayPrice price=$combination.full_price currency=$currency->id}</span>
+                {/if}
+              {/if}
+          </div>
           <div class="col-sm-2">
             {if isset($combination.type) && ($combination.type == 'ticket' || $combination.type == 'carnet') }
                 {if $combination.quantity > 0}
@@ -46,7 +53,7 @@
           </div>
         </div>
     {/foreach}
-    <button type="button" onclick="addCombinationToCart({$product->id});" class="btn btn-default button button-small pull-right">
+    <button type="button" onclick="addCombinationToCart({$product->id});" class="btn btn-default button button-small pull-right cart-add-combinations">
         <span><i class="icon-shopping-cart"></i> {l s='Add to cart'}</span>
     </button>
   </div>

@@ -47,11 +47,12 @@
 {if isset($product['id'])}
 <h1 class="page-heading bottom-indent">{l s='Edit Event' mod='npsmarketplace'}</h1>
 {else}
-<h1 class="page-heading bottom-indent">{l s='Add Event' mod='npsmarketplace'}</h1>
+<h1 class="page-heading bottom-indent">{l s='Add Event' mod='npsmarketplace'}<button class="get-tour-button pull-right" type="button" onclick="startNewEventTour();"><i class="icon-info"></i></button></h1>
 {/if}
 {include file="$tpl_dir./errors.tpl"}
 <div class="block-center" id="block-seller-product">
-    <form role="form" action="{$request_uri}" method="post" id="edit-product-form">
+    <form role="form" action="{$request_uri}" method="post" id="edit-product-form" onsubmit="return validateForm()">
+        <p class="alert alert-error validation-error" style="display: none"><span class="alert-content">{l s='Form contains errors, please check form and fix issues.' mod='npsmarketplace'}</span></p>
         <input type="hidden" name="form_token" value="{$form_token}" />
         {include file="$product_fieldset_tpl_path" categories_tree=$categories_tree category_partial_tpl_path=$category_partial_tpl_path}
         {if !isset($product['id'])}
