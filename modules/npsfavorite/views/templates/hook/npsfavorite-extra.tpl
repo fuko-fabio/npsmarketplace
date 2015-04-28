@@ -25,18 +25,26 @@
 
 {if !$isCustomerFavoriteProduct AND $isLogged}
 <li id="npsfavorite_block_extra_add" class="add">
-	{l s='Add this product to my list of favorites.' mod='npsfavorite'}
+    <a href="javascript:void(0);" class="btn btn-default button button-small">
+        <i class="icon-heart-empty"></i> {l s='Add this product to my list of favorites.' mod='npsfavorite'}
+    </a>
 </li>
 {/if}
 {if $isCustomerFavoriteProduct AND $isLogged}
 <li id="npsfavorite_block_extra_remove">
-	{l s='Remove this product from my favorite\'s list. ' mod='npsfavorite'}
+    <a href="javascript:void(0);" class="btn btn-default button button-small">
+        <i class="icon-heart-empty"></i> {l s='Remove this product from my favorite\'s list. ' mod='npsfavorite'}
+    </a>
 </li>
 {/if}
 
 <li id="npsfavorite_block_extra_added">
-	{l s='Remove this product from my favorite\'s list. ' mod='npsfavorite'}
+    <a href="javascript:void(0);" class="btn btn-default button button-small">
+        <i class="icon-heart-empty"></i> {l s='Remove this product from my favorite\'s list. ' mod='npsfavorite'}
+    </a>
 </li>
 <li id="npsfavorite_block_extra_removed">
-	{l s='Add this product to my list of favorites.' mod='npsfavorite'}
+    <a href="javascript:void(0);" class="btn btn-default button button-small">
+        <i class="icon-heart"></i> {l s='Add this product to my list of favorites.' mod='npsfavorite'}
+    </a>
 </li>

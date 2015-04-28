@@ -1,57 +1,6 @@
 @import "compass";
 @import "theme_variables";
 
-#seller_info_block_extra {
-  list-style-type: none;
-
-  li {
-    margin-bottom: 15px;
-    @media (min-width: $screen-sm) and (max-width: $screen-sm-max) {
-      //min 768px max 991px
-      float: none !important;
-    }
-    border: 1px solid $dark-background-hover;
-    @include box-shadow(0 2px 8px rgba(0, 0, 0, 0.16));
-    text-align: center;
-    padding: 5px;
-    a {
-      color: $dark-background;
-      font-weight: 300;
-      position: relative;
-      padding-left: 20px;
-      line-height: 22px;
-      display: inline-block;
-
-      &:before {
-        font-family: $font-icon;
-        color: $dark-background;
-        font-size: 19px;
-        line-height: 24px;
-        position: absolute;
-        top: -1px;
-        left: 0;
-        font-weight: normal;
-      }
-      &:hover {
-        color: $primary-color;
-      }
-    }
-    &.seller-name {
-      display: none;
-    }
-    &.seller-ask {
-      a:before {
-        content: "\f128";
-      }
-    }
-    &.seller-info {
-      a:before {
-        content: "\f129";
-      }
-    }
-  }
-}
-
 #send_seller_form {
 
   textarea {

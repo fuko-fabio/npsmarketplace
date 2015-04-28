@@ -12,3 +12,10 @@
     font-weight: bold; }
 .combinations-list button {
   margin-top: 10px; }
+
+.goto-combinations .btn {
+  font-size: 18px !important;
+  border: 2px solid #5E6A72 !important;
+  font-weight: bold !important; }
+  .goto-combinations .btn:hover {
+    border-color: #FFC654 !important; }

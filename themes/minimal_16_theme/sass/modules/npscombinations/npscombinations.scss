@@ -23,3 +23,14 @@
     margin-top: 10px;
   }
 }
+
+.goto-combinations {
+  .btn {
+    font-size: 18px !important;
+    border: 2px solid $dark-background-hover !important;
+    font-weight: bold !important;
+    &:hover {
+      border-color: $primary-color-light !important;
+    }
+  }
+}

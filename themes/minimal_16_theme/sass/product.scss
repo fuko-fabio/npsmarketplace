@@ -232,63 +232,30 @@ span.view_scroll_spacer {
 #usefull_link_block {
   list-style-type: none;
   li {
-    margin-bottom: 15px;
+        margin-bottom: 15px;
     @media (min-width: $screen-sm) and (max-width: $screen-sm-max) {
       //min 768px max 991px
       float: none !important;
     }
-    border: 1px solid $dark-background-hover;
-    @include box-shadow(0 2px 8px rgba(0, 0, 0, 0.16));
-    text-align: center;
-    padding: 5px;
-    a {
+    .btn {
+      padding: 8px;
+      border: 1px solid $dark-background-hover;
       color: $dark-background;
-      font-weight: 300;
-      position: relative;
-      padding-left: 30px;
-      line-height: 22px;
-      display: inline-block;
-
-      &:before {
-        font-family: $font-icon;
-        color: $dark-background;
-        font-size: 19px;
-        line-height: 24px;
-        position: absolute;
-        top: -2px;
-        left: 0;
-        font-weight: normal;
+      @include box-shadow(0 2px 8px rgba(0, 0, 0, 0.16));
+      text-align: center;
+      width: 100%;
+      background: $light-background;
+      font-weight: normal;
+      i {
+        font-weight: bold;
       }
       &:hover {
-        color: $primary-color;
+        background-color: $primary-color-light;
+        border-color: $primary-color-light;
       }
     }
     &.print {
       display: none;
-      @media (min-width: $screen-sm) and (max-width: $screen-sm-max) {
-        //min 768px max 991px
-        margin: 8px 0 0;
-        padding: 0;
-        border: none;
-      }
-      a:before {
-        content: "\f02f";
-      }
-    }
-    &.sendtofriend {
-      a:before {
-        content: "\f003";
-      }
-    }
-    &#left_share_fb {
-      clear: both;
-      float: none;
-      a {
-        padding-left: 18px;
-      }
-      a:before {
-        content: "\f09a";
-      }
     }
     &#favoriteproducts_block_extra_remove,
     &#favoriteproducts_block_extra_add,
@@ -316,37 +283,6 @@ span.view_scroll_spacer {
       }
     }
     &#favoriteproducts_block_extra_removed:before {
-      content: "\f004";
-    }
-
-    &#npsfavorite_block_extra_remove,
-    &#npsfavorite_block_extra_add,
-    &#npsfavorite_block_extra_removed,
-    &#npsfavorite_block_extra_added {
-      cursor: pointer;
-      font-weight: 300;
-      clear: both;
-      float: none;
-      margin: 0 0 8px 0;
-      position: relative;
-      color: $dark-background;
-      cursor: pointer;
-      background: none !important;
-      &:before {
-        font-family: $font-icon;
-        color: $dark-background;
-        font-size: 19px;
-        line-height: 24px;
-        font-weight: normal;
-        content: "\f08a";
-        position: relative;
-        top: 2px;
-      }
-      &:hover {
-        color: $primary-color;
-      }
-    }
-    &#npsfavorite_block_extra_removed:before {
       content: "\f004";
     }
   }
@@ -761,9 +697,6 @@ table.table-product-discounts {
       color: $dark-text-color;
       display: block;
     }
-    .combination_info {
-      margin-top: 10px;
-    }
   }
   label {
     float: left;
@@ -950,12 +883,6 @@ table.table-product-discounts {
 }
 /* SEND TO FRIEND (pop-in) ##################################################################### */
 #send_friend_form {
-  width: 555px;
-  overflow: hidden;
-  @media (max-width: $screen-xs-max) {
-    // max 767px
-    width: 280px;
-  }
   .row {
     margin-bottom: 50px;
   }

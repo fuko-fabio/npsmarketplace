@@ -3,6 +3,8 @@
 * @copyright 2014 npsoftware
 *}
 
+{addJsDef npsCombinations=$npscombinations}
+
 <div class="tab-pane fade" id="product_combinations_tab">
   <div class="table combinations-list">
     <div class="row combinations-header">

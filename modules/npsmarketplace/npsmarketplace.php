@@ -54,7 +54,7 @@ class NpsMarketplace extends Module {
             || !$this->registerHook('productTab')
             || !$this->registerHook('productTabContent')
             || !$this->registerHook('productFooter')
-            || !$this->registerHook('displayRightColumnProduct')
+            || !$this->registerHook('extraLeft')
             || !$this->registerHook('displayMyAccountColumn')
             || !$this->registerHook('displayHome')
             || !$this->registerHook('displayNav')
@@ -78,14 +78,14 @@ class NpsMarketplace extends Module {
     }
 
     public function uninstall() {
-        return $this->upgrade();
+        return $this->registerHook('extraLeft');
         if (!parent::uninstall()
             || !$this->unregisterHook('header')
             || !$this->unregisterHook('displayCustomerAccount')
             || !$this->unregisterHook('productTab')
             || !$this->unregisterHook('productTabContent')
             || !$this->unregisterHook('productFooter')
-            || !$this->unregisterHook('displayRightColumnProduct')
+            || !$this->unregisterHook('extraLeft')
             || !$this->unregisterHook('displayMyAccountColumn')
             || !$this->unregisterHook('displayHome')
             || !$this->unregisterHook('displayNav')
@@ -250,7 +250,7 @@ class NpsMarketplace extends Module {
         return $products;
     }
 
-    public function hookDisplayRightColumnProduct() {
+    public function hookExtraLeft() {
         $id_product = Tools::getValue('id_product');
         if (!Product::showSellerDetails($id_product)) {
             return;
@@ -955,29 +955,6 @@ class NpsMarketplace extends Module {
         $ad = new AttributeGroup(Configuration::get('NPS_ATTRIBUTE_DATE_ID'));
         $at = new AttributeGroup(Configuration::get('NPS_ATTRIBUTE_TIME_ID'));
         return $ad->delete() && $at->delete();
-    }
-
-    private function upgrade() {
-        $names = array('Name', 'Type');
-        $attrs = array();
-        $langs = Language::getLanguages();
-        foreach ($names as $name) {
-            $n = array();
-            foreach ($langs as $key => $lang) {
-                $n[$lang['id_lang']] = $name;
-            }
-            $attrs[$name] = $n;
-        }
-        foreach ($attrs as $key => $names) {
-            $ag = new AttributeGroup();
-            $ag->name = $names;
-            $ag->public_name = $names;
-            $ag->group_type = 'select';
-            $ag->position = -1;
-            $ag->save();
-            Configuration::updateValue('NPS_ATTRIBUTE_'.strtoupper($key).'_ID', $ag->id);
-        }
-        return true;
     }
 }
 ?>

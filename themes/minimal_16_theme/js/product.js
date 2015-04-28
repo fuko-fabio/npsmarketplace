@@ -774,6 +774,12 @@ function updateTypeData() {
         default:
             $('p.ticket, p.carnet, p.ad').hide();
     }
+    
+    if (typeof npsCombinations !== 'undefined' && ($.isEmptyObject(npsCombinations) || $.map(npsCombinations, function(n, i) { return i; }).length < 2)) {
+        $('.more-prices').hide();
+    } else {
+        $('.more-prices').show();
+    }
 }
 
 //update display of the large image

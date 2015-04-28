@@ -26,15 +26,17 @@ class NpsCombinations extends Module {
     public function install() {
         if (!parent::install()
             || !$this->registerHook('productTab')
-            || !$this->registerHook('productTabContent'))
-            return false;
+            || !$this->registerHook('productTabContent')
+            || !$this->registerHook('extraLeft'))
+                return false;
         return true;
     }
 
     public function uninstall() {
         if (!parent::uninstall()
             || !$this->unregisterHook('productTab')
-            || !$this->unregisterHook('productTabContent'))
+            || !$this->unregisterHook('productTabContent')
+            || !$this->unregisterHook('extraLeft'))
             return false;
         return true;
     }
@@ -56,6 +58,19 @@ class NpsCombinations extends Module {
                 'npscombinations' => $this->getCombinations($product),
             ));
             return ($this->display(__FILE__, 'tab_content.tpl'));
+        }
+    }
+
+    public function hookExtraLeft($params) {
+        $product = new Product(Tools::getValue('id_product'), false, $this->context->language->id);
+        if (!Product::isAdvertisment($product->id)) {
+            $combinations = $this->getCombinations($product);
+            if (count($combinations) > 1) {
+                $this->context->smarty->assign(array(
+                    'npscombinations' => $combinations,
+                ));
+                return ($this->display(__FILE__, 'product_right_column.tpl'));
+            }
         }
     }
 

@@ -116,8 +116,6 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                 $this -> errors[] = $this->module->l('Product town is required', 'Product');
             if (!isset($province))
                 $this -> errors[] = $this->module->l('Product province is required', 'Product');
-            if (empty($combinations))
-                $this -> errors[] = $this->module->l('At least one combination is required', 'Product');
             if (empty($categories))
                 $this -> errors[] = $this->module->l('At least one category must be selected', 'Product');
 
@@ -214,7 +212,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                     $this->_product -> is_virtual = true;
                     $this->_product -> indexed = 1;
                     $this->_product -> id_tax_rules_group = 0;
-                    $this->_product -> active = $this->isSellerAllowedToPublish();
+                    $this->_product -> active = count($combinations) > 0 ? $this->isSellerAllowedToPublish() : false;
                 }
                 if (!$this->_product->save()) {
                     $this->errors[] = $this->module->l('Unable to save product.', 'Product');

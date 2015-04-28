@@ -11,7 +11,7 @@
       <div class="row">
         <div class="col-md-6 form-group">
           <label class="required">{l s='Name' mod='npsmarketplace'}</label>
-          <input class="is_required validate form-control" data-validate="isGenericName" type="text" name="name"/>
+          <input class="is_required validate form-control" data-validate="isGenericName" type="text" name="name" placeholder="{l s='Normal, students, kids etc' mod='npsmarketplace'}"/>
         </div>
       </div>
       <div class="row">
@@ -81,7 +81,7 @@
       <div class="row">
         <div class="col-md-6 form-group">
           <label class="required">{l s='Name' mod='npsmarketplace'}</label>
-          <input class="is_required validate form-control" data-validate="isGenericName" type="text" name="name"/>
+          <input class="is_required validate form-control" data-validate="isGenericName" type="text" name="name" placeholder="{l s='For year, month, week etc' mod='npsmarketplace'}"/>
         </div>
         <div class="form-group col-md-6">
           <label class="required">{l s='Expiration date end time' mod='npsmarketplace'}</label>

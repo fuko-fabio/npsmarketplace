@@ -24,8 +24,8 @@
 *  International Registered Trademark & Property of PrestaShop SA
 *}
 <li class="sendtofriend">
-    <a id="send_friend_button" href="#send_friend_form">
-        {l s='Send to a friend' mod='sendtoafriend'}
+    <a id="send_friend_button" href="#send_friend_form" class="btn btn-default button button-small">
+        <i class="icon-envelope"></i> {l s='Send to a friend' mod='sendtoafriend'}
     </a>
 
     <div style="display: none;">

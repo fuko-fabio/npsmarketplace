@@ -192,52 +192,28 @@ span.view_scroll_spacer {
 #usefull_link_block {
   list-style-type: none; }
   #usefull_link_block li {
-    margin-bottom: 15px;
-    border: 1px solid #5E6A72;
-    -moz-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
-    -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
-    text-align: center;
-    padding: 5px; }
+    margin-bottom: 15px; }
     @media (min-width: 768px) and (max-width: 991px) {
       #usefull_link_block li {
         float: none !important; } }
-    #usefull_link_block li a {
+    #usefull_link_block li .btn {
+      padding: 8px;
+      border: 1px solid #5E6A72;
       color: #36454f;
-      font-weight: 300;
-      position: relative;
-      padding-left: 30px;
-      line-height: 22px;
-      display: inline-block; }
-      #usefull_link_block li a:before {
-        font-family: "FontAwesome";
-        color: #36454f;
-        font-size: 19px;
-        line-height: 24px;
-        position: absolute;
-        top: -2px;
-        left: 0;
-        font-weight: normal; }
-      #usefull_link_block li a:hover {
-        color: #ffaa00; }
+      -moz-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+      -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+      text-align: center;
+      width: 100%;
+      background: #fff;
+      font-weight: normal; }
+      #usefull_link_block li .btn i {
+        font-weight: bold; }
+      #usefull_link_block li .btn:hover {
+        background-color: #FFC654;
+        border-color: #FFC654; }
     #usefull_link_block li.print {
       display: none; }
-      @media (min-width: 768px) and (max-width: 991px) {
-        #usefull_link_block li.print {
-          margin: 8px 0 0;
-          padding: 0;
-          border: none; } }
-      #usefull_link_block li.print a:before {
-        content: "\f02f"; }
-    #usefull_link_block li.sendtofriend a:before {
-      content: "\f003"; }
-    #usefull_link_block li#left_share_fb {
-      clear: both;
-      float: none; }
-      #usefull_link_block li#left_share_fb a {
-        padding-left: 18px; }
-      #usefull_link_block li#left_share_fb a:before {
-        content: "\f09a"; }
     #usefull_link_block li#favoriteproducts_block_extra_remove, #usefull_link_block li#favoriteproducts_block_extra_add, #usefull_link_block li#favoriteproducts_block_extra_removed, #usefull_link_block li#favoriteproducts_block_extra_added {
       cursor: pointer;
       font-weight: 300;
@@ -258,29 +234,6 @@ span.view_scroll_spacer {
       #usefull_link_block li#favoriteproducts_block_extra_remove:hover, #usefull_link_block li#favoriteproducts_block_extra_add:hover, #usefull_link_block li#favoriteproducts_block_extra_removed:hover, #usefull_link_block li#favoriteproducts_block_extra_added:hover {
         color: #ffaa00; }
     #usefull_link_block li#favoriteproducts_block_extra_removed:before {
-      content: "\f004"; }
-    #usefull_link_block li#npsfavorite_block_extra_remove, #usefull_link_block li#npsfavorite_block_extra_add, #usefull_link_block li#npsfavorite_block_extra_removed, #usefull_link_block li#npsfavorite_block_extra_added {
-      cursor: pointer;
-      font-weight: 300;
-      clear: both;
-      float: none;
-      margin: 0 0 8px 0;
-      position: relative;
-      color: #36454f;
-      cursor: pointer;
-      background: none !important; }
-      #usefull_link_block li#npsfavorite_block_extra_remove:before, #usefull_link_block li#npsfavorite_block_extra_add:before, #usefull_link_block li#npsfavorite_block_extra_removed:before, #usefull_link_block li#npsfavorite_block_extra_added:before {
-        font-family: "FontAwesome";
-        color: #36454f;
-        font-size: 19px;
-        line-height: 24px;
-        font-weight: normal;
-        content: "\f08a";
-        position: relative;
-        top: 2px; }
-      #usefull_link_block li#npsfavorite_block_extra_remove:hover, #usefull_link_block li#npsfavorite_block_extra_add:hover, #usefull_link_block li#npsfavorite_block_extra_removed:hover, #usefull_link_block li#npsfavorite_block_extra_added:hover {
-        color: #ffaa00; }
-    #usefull_link_block li#npsfavorite_block_extra_removed:before {
       content: "\f004"; }
 
 /* pb-left-column ****************************************************************************** */
@@ -617,8 +570,6 @@ table.table-product-discounts {
     font-size: 21px;
     color: #353535;
     display: block; }
-  #current_term .term-inputs .combination_info {
-    margin-top: 10px; }
   #current_term label {
     float: left;
     margin-right: 10px; }
@@ -779,31 +730,25 @@ table.table-product-discounts {
   margin-bottom: 50px; }
 
 /* SEND TO FRIEND (pop-in) ##################################################################### */
-#send_friend_form {
-  width: 555px;
-  overflow: hidden; }
-  @media (max-width: 767px) {
-    #send_friend_form {
-      width: 280px; } }
-  #send_friend_form .row {
-    margin-bottom: 50px; }
-  #send_friend_form .product img {
-    margin: 0 0 10px 0;
-    border: 1px solid #d6d4d4; }
-  #send_friend_form .product p {
-    padding: 0;
-    color: #333; }
-    #send_friend_form .product p .product_name {
-      font-size: 12px;
-      color: #000; }
-  #send_friend_form .form_container p.intro_form {
-    padding-bottom: 6px;
-    font-weight: 700;
-    font-size: 13px;
-    color: #333; }
-  #send_friend_form .form_container p.txt_required {
-    padding-bottom: 0;
-    color: #666; }
+#send_friend_form .row {
+  margin-bottom: 50px; }
+#send_friend_form .product img {
+  margin: 0 0 10px 0;
+  border: 1px solid #d6d4d4; }
+#send_friend_form .product p {
+  padding: 0;
+  color: #333; }
+  #send_friend_form .product p .product_name {
+    font-size: 12px;
+    color: #000; }
+#send_friend_form .form_container p.intro_form {
+  padding-bottom: 6px;
+  font-weight: 700;
+  font-size: 13px;
+  color: #333; }
+#send_friend_form .form_container p.txt_required {
+  padding-bottom: 0;
+  color: #666; }
 
 /* PERSONNALISATION ##################################################################### */
 p.infoCustomizable {

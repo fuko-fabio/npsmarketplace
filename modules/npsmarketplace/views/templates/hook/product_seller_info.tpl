@@ -8,7 +8,15 @@
 {literal}
 $('document').ready(function(){
     $('#send_seller_button').fancybox({
-        'hideOnContentClick': false
+        hideOnContentClick: false,
+        width       : '60%',
+        height      : 'auto',
+        autoSize    : false,
+        helpers: {
+            overlay: {
+              locked: false
+            }
+        }
     });
     $('#send_seller_form_error, #send_seller_form_error_general').hide();
 
@@ -49,14 +57,13 @@ $('document').ready(function(){
 });
 {/literal}
 </script>
-<ul id="seller_info_block_extra">
-    <li class="seller-name"><a href="{$seller_shop_url}">{$seller_name}</a><br/></li>
-    <li class="seller-info"><a href="{$seller_shop_url}">{l s='Information about seller' mod='npsmarketplace'}</a><br/></li>
-    <li class="seller-ask"><a id="send_seller_button" href="#send_seller_form">{l s='Ask seller' mod='npsmarketplace'}</a></li>
-</ul>
+
+<li class="seller-info"><a href="{$seller_shop_url}" class="btn btn-default button button-small"><i class="icon-info"></i> {l s='Information about seller' mod='npsmarketplace'}</a><br/></li>
+<li class="seller-ask"><a id="send_seller_button" class="btn btn-default button button-small" href="#send_seller_form"><i class="icon-question"></i> {l s='Ask seller' mod='npsmarketplace'}</a></li>
+
 <div style="display: none;">
     <div id="send_seller_form">
-            <h2 class="title">{l s='Ask seller' mod='npsmarketplace'}</h2>
+            <h2 class="page-subheading">{l s='Ask seller' mod='npsmarketplace'}</h2>
 
             <div class="send_seller_form_content" id="send_seller_form_content">
                 <p id="send_seller_form_error" class="alert alert-error"><span class="alert-content">

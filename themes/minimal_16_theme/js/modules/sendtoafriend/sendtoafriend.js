@@ -26,7 +26,15 @@ $(document).ready(function () {
 
     if (!!$.prototype.fancybox)
         $('#send_friend_button').fancybox({
-            'hideOnContentClick': false
+            hideOnContentClick: false,
+            width       : '60%',
+            height      : 'auto',
+            autoSize    : false,
+            helpers: {
+                overlay: {
+                  locked: false
+                }
+            }
         });
     $('#send_friend_form_error').hide();
 

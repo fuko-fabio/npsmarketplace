@@ -316,6 +316,7 @@
                             <link itemprop="availability" href="http://schema.org/InStock"/>
                         {/if}
                         {if $priceDisplay >= 0 && $priceDisplay <= 2}
+                            <span class="more-prices">{l s='price from'}</span>
                             <span id="our_price_display"
                                   itemprop="price">{convertPrice price=$productPrice}</span>
                             <!--{if $tax_enabled  && ((isset($display_tax_label) && $display_tax_label == 1) || !isset($display_tax_label))}
@@ -431,7 +432,7 @@
             {if isset($groups)}
                 <div id="current_term">
                 <div class="term-inputs">
-                    <span class="combination_name"></span>
+                    <span class="combination_name hidden"></span>
                     <span class="combination_info"></span>
                 </div>
                 </div>
