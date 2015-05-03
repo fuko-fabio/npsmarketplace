@@ -143,7 +143,6 @@ $_MODULE['<{npsmarketplace}minimal_16_theme>product_343fc7286b801e88044cdfef8015
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_5b3f124fe930dda0b6ec3b021673bcc5'] = 'Niepoprawna nazwa dzielnicy';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_5aaa8378a78262c52a0715d7b26d7ee0'] = 'Miasto wydarzenia jest wymagane';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_3eec064c1de624b2b2091919b2ca6f34'] = 'Województwo jest wymagane';
-$_MODULE['<{npsmarketplace}minimal_16_theme>product_aa559712984f973e82b0452c7406a6b9'] = 'Przynajmniej jeden bilet lub karnet jest wymagany ';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_a35474c4b0e448788db726eabedc1183'] = 'Przynajmniej jedna kategoria musi być wybrana';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_b4a4420c7aa0a5348cf54e49bdbf8b4d'] = 'Próbujesz dodać wydarzenie w przeszłości. Sprawdź datę i godzinę wydarzenia.';
 $_MODULE['<{npsmarketplace}minimal_16_theme>product_2bd8b56f7dc73eb99cb91f8ecd7a8c3d'] = 'Data i godzina wygaśnięcia wydażenia nie mogą być późniejsze niż data i godzina wydarzenia';

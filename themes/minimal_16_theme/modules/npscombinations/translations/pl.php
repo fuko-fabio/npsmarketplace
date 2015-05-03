@@ -2,6 +2,7 @@
 
 global $_MODULE;
 $_MODULE = array();
+$_MODULE['<{npscombinations}minimal_16_theme>product_right_column_7bb7bf00cead13ea375a84374d594162'] = 'Sprawdź dostępne bilety';
 $_MODULE['<{npscombinations}minimal_16_theme>tab_content_a1fa27779242b4902f7ae3bdd5c6d508'] = 'Typ';
 $_MODULE['<{npscombinations}minimal_16_theme>tab_content_49ee3087348e8d44e1feda1917443987'] = 'Rodzaj';
 $_MODULE['<{npscombinations}minimal_16_theme>tab_content_359ff4ae83f885f7d3227a4353ea525e'] = 'Data wydarzenia';

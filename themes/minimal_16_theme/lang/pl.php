@@ -585,6 +585,7 @@ $_LANG['product_1e71f9d475db22b297e90ccd11eca14f'] = 'Szybki przelew z Przelewy 
 $_LANG['product_211f9708c679a5f4718a6bc15ff6b83c'] = 'Nie ma dostępnych biletów.';
 $_LANG['product_26f5a22330a8d5d32c87e6a4c7f3de95'] = 'nawet';
 $_LANG['product_28a623fd7e9d81936b562dc5241a16a7'] = 'Wybrany termin jest niedostępny dla tego wydarzenia. Proszę wybrać inny.';
+$_LANG['product_2c72a430423555c4f006df876c48fe3b'] = 'od';
 $_LANG['product_2d0f6b8300be19cf35e89e66f0677f95'] = 'Do koszyka';
 $_LANG['product_3601146c4e948c32b6424d2c0a7f0118'] = 'Cena';
 $_LANG['product_3b6d056ac93fc7b1947c3bc2ce720aaf'] = 'Proszę wypełnić wymagane pola przed zapisaniem dodatkowych parametrów.';
