@@ -11,6 +11,7 @@ require_once(_PS_MODULE_DIR_.'npsticketdelivery/classes/CartTicket.php');
 require_once(_PS_MODULE_DIR_.'npsticketdelivery/classes/Ticket.php');
 require_once(_PS_MODULE_DIR_.'npsticketdelivery/classes/TicketsGenerator.php');
 require_once _PS_MODULE_DIR_.'npsticketdelivery/classes/HTMLTemplateSellerOrderConfirmation.php';
+require_once _PS_MODULE_DIR_.'npsticketdelivery/classes/HTMLTemplateEventParticipants.php';
 require_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
 
 class NpsTicketDelivery extends Module {

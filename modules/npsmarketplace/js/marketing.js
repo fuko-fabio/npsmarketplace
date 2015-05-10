@@ -24,6 +24,7 @@ $(document).ready(function() {
             $('#max_events').val(4);
             $('#width').val(800);
         }
+        $.uniform.update();
     });
 });
 

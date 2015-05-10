@@ -2,13 +2,18 @@
 *  @author Norbert Pabian <norbert.pabian@gmail.com>
 *  @copyright 2014 npsoftware
 *}
+<script type="text/javascript">
+    var exportEentsList = {json_encode($export_events_list)};
+    var dictAll = '{l s='All' mod='npsticketdelivery'}';
+    var dictCarnet = '{l s='Carnet' mod='npsticketdelivery'}';
+</script>
 {capture name=path}
 <a href="{$link->getPageLink('my-account', true)|escape:'html':'UTF-8'}"> {l s='My account'} </a>
 <span class="navigation-pipe">{$navigationPipe}</span>
-<span class="navigation_page">{l s='Tickets Sold' mod='npsmarketplace'}</span>
+<span class="navigation_page">{l s='Tickets Sold' mod='npsticketdelivery'}</span>
 {/capture}
 <div class="block-center"  id="nps_tickets_block">
-    <h1 class="page-heading bottom-indent">{l s='Tickets Sold' mod='npsticketdelivery'}</h1>
+    <h1 class="page-heading with-button">{l s='Tickets Sold' mod='npsticketdelivery'}<a href="#export_tickets" class="btn btn-default button button-small pull-right export-list-btn"><i class="icon-download"></i> {l s='Eksport list' mod='npsticketdelivery'}</a></h1>
     {include file="$tpl_dir./errors.tpl"}
     {if $tickets}
     <div class="content_sortPagiBar">
@@ -35,7 +40,7 @@
                     <th class="item" data-hide="phone,tablet">{l s='Town' mod='npsticketdelivery'}</th>
                     <th class="item" data-hide="phone,tablet">{l s='Term' mod='npsticketdelivery'}</th>
                     <th class="item">{l s='Type' mod='npsticketdelivery'}</th>
-                    <th class="last_item" data-sort-ignore="true" width="100px" >{l s='Action' mod='npsmarketplace'}</th>
+                    <th class="last_item" data-sort-ignore="true" width="100px" >{l s='Action' mod='npsticketdelivery'}</th>
                 </tr>
             </thead>
             <tbody>
@@ -70,7 +75,7 @@
                     </td>
                     <td>
                         <div class="btn-group">
-                            <a href="{$ticket.order_url}" class="edit btn btn-default"><i class="icon-search"></i> {l s='View' mod='npsmarketplace'}</a>
+                            <a href="{$ticket.order_url}" class="edit btn btn-default"><i class="icon-search"></i> {l s='View' mod='npsticketdelivery'}</a>
                         </div>
                     </td>
                 </tr>
@@ -82,6 +87,30 @@
         <div class="bottom-pagination-content clearfix">
             {include file="$tpl_dir./pagination.tpl" paginationId='bottom'}
         </div>
+    </div>
+    <div style="display:none">
+      <div id="export_tickets">
+        <h2 class="page-subheading">{l s='Export participants list' mod='npsticketdelivery'}</h2>
+        <form id="export_tickets_form" action="{$request_uri}" method="post">
+          <input type="hidden" name="action" value="export" />
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label class="required">{l s='Event' mod='npsticketdelivery'}</label>
+              <select class="form-control" name="name">
+              </select>
+            </div>
+            <div class="form-group col-md-6">
+              <label class="required">{l s='Date' mod='npsticketdelivery'}</label>
+              <select class="form-control" name="date">
+              </select>
+            </div>
+          </div>
+          <p class="submit">
+            <input class="button ccl" type="button" value="{l s='Cancel' mod='npsticketdelivery'}" onclick="$.fancybox.close();"/>
+            <input class="button" type="submit" value="{l s='Export' mod='npsticketdelivery'}" onclick="$.fancybox.close();"/>
+          </p>
+        </form>
+      </div>
     </div>
     {else}
         <p class="alert alert-info"><span class="alert-content">{l s='You have no tickets sold.' mod='npsticketdelivery'}</span></p>
