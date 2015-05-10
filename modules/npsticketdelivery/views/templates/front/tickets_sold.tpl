@@ -13,7 +13,7 @@
 <span class="navigation_page">{l s='Tickets Sold' mod='npsticketdelivery'}</span>
 {/capture}
 <div class="block-center"  id="nps_tickets_block">
-    <h1 class="page-heading with-button">{l s='Tickets Sold' mod='npsticketdelivery'}<a href="#export_tickets" class="btn btn-default button button-small pull-right export-list-btn"><i class="icon-download"></i> {l s='Eksport list' mod='npsticketdelivery'}</a></h1>
+    <h1 class="page-heading with-button">{l s='Tickets Sold' mod='npsticketdelivery'}{if $tickets}<a href="#export_tickets" class="btn btn-default button button-small pull-right export-list-btn"><i class="icon-download"></i> {l s='Eksport list' mod='npsticketdelivery'}</a>{/if}</h1>
     {include file="$tpl_dir./errors.tpl"}
     {if $tickets}
     <div class="content_sortPagiBar">
