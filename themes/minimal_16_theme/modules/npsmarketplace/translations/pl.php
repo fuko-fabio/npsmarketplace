@@ -16,6 +16,7 @@ $_MODULE['<{npsmarketplace}minimal_16_theme>npsmarketplace_f9f9ea92a1c84d1a93af3
 $_MODULE['<{npsmarketplace}minimal_16_theme>npsmarketplace_ab67ef5a0a4ee1619c9a867d1f37f911'] = 'Identyfikatory sprcjalnych kategorii';
 $_MODULE['<{npsmarketplace}minimal_16_theme>npsmarketplace_fbbe3f507f7c3cd2015ccf884ccd7d42'] = 'Identyfikatory niewidocznych kategorii';
 $_MODULE['<{npsmarketplace}minimal_16_theme>npsmarketplace_78a6fcaf1fe0b63f12626efb2bb4aadd'] = 'Identyfikator darmowej kategorii';
+$_MODULE['<{npsmarketplace}minimal_16_theme>npsmarketplace_9f436269adb4b48506714836cec5c463'] = 'Zakotwicz na stronie iframe';
 $_MODULE['<{npsmarketplace}minimal_16_theme>npsmarketplace_93cba07454f06a4a960172bbd6e2a435'] = 'Tak';
 $_MODULE['<{npsmarketplace}minimal_16_theme>npsmarketplace_bafd7322c6e97d25b6299b5d6fe8920b'] = 'Nie';
 $_MODULE['<{npsmarketplace}minimal_16_theme>npsmarketplace_43a0cf02192baf87ccea7de85585bc84'] = 'Adres URL przewodnika użytkownika';
@@ -407,6 +408,7 @@ $_MODULE['<{npsmarketplace}minimal_16_theme>unlock_account_4c2a8fe7eaf24721cc7a9
 $_MODULE['<{npsmarketplace}minimal_16_theme>unlock_account_94966d90747b97d1f0f206c98a8b1ac3'] = 'Wyślij';
 $_MODULE['<{npsmarketplace}minimal_16_theme>variants_a969f9db667f867b87df593c0d47526f'] = 'Bilet';
 $_MODULE['<{npsmarketplace}minimal_16_theme>variants_49ee3087348e8d44e1feda1917443987'] = 'Rodzaj';
+$_MODULE['<{npsmarketplace}minimal_16_theme>variants_a9fe49eee983f740731eaa47b0ab81cf'] = 'Normalny, Studencki, Dla dzieci itp';
 $_MODULE['<{npsmarketplace}minimal_16_theme>variants_eaa8e97c9df8620bc249204f272de8e9'] = 'Data i godzina wydarzenia';
 $_MODULE['<{npsmarketplace}minimal_16_theme>variants_a4e8152f2377b3cf755f0346c722d2cd'] = 'Format: YYYY-MM-DD HH:MM';
 $_MODULE['<{npsmarketplace}minimal_16_theme>variants_7bb0334443a2b10487b36e8e82e1f63e'] = 'Data i godzina wygaśnięcia oferty';
@@ -422,6 +424,7 @@ $_MODULE['<{npsmarketplace}minimal_16_theme>variants_01b6e20344b68835c5ed1ddedf2
 $_MODULE['<{npsmarketplace}minimal_16_theme>variants_ea4788705e6873b424c65e91c2846b19'] = 'Anuluj';
 $_MODULE['<{npsmarketplace}minimal_16_theme>variants_ec211f7c20af43e742bf2570c3cb84f9'] = 'Dodaj';
 $_MODULE['<{npsmarketplace}minimal_16_theme>variants_dbd5e4beb2ff3117cf03aa63b83104c3'] = 'Karnet';
+$_MODULE['<{npsmarketplace}minimal_16_theme>variants_2445d3824b47d47ca4f58b202b117796'] = 'Roczny, Miesięczny, Tygodniowy itp';
 $_MODULE['<{npsmarketplace}minimal_16_theme>variants_943f14e775c6b469df723e5668580819'] = 'Ogłoszenie';
 $_MODULE['<{npsmarketplace}minimal_16_theme>variants_58405e9e44033482bce96a72e69a5055'] = 'Ogłoszenie zewnętrzne';
 $_MODULE['<{npsmarketplace}minimal_16_theme>header_top_10ac3d04253ef7e1ddc73e6091c0cd55'] = 'Dajel';

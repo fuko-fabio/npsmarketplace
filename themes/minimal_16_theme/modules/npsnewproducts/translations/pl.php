@@ -17,4 +17,11 @@ $_MODULE['<{npsnewproducts}minimal_16_theme>npsnewproducts_24ff4e4d39bb7811f6bdf
 $_MODULE['<{npsnewproducts}minimal_16_theme>npsnewproducts_d68e7b860a7dba819fa1c75225c284b5'] = 'Pokaż blok nawet jeżeli żaden produkt nie jest dostępny.';
 $_MODULE['<{npsnewproducts}minimal_16_theme>npsnewproducts_00d23a76e43b46dae9ec7aa9dcbebb32'] = 'Włączony';
 $_MODULE['<{npsnewproducts}minimal_16_theme>npsnewproducts_b9f5c797ebbf55adccdd8539a65a0241'] = 'Wyłączony';
+$_MODULE['<{npsnewproducts}minimal_16_theme>npsnewproducts_6c80c02ef9be7cfdec7bdfd998a22812'] = 'Pokaż bilety';
+$_MODULE['<{npsnewproducts}minimal_16_theme>npsnewproducts_93cba07454f06a4a960172bbd6e2a435'] = 'Tak';
+$_MODULE['<{npsnewproducts}minimal_16_theme>npsnewproducts_bafd7322c6e97d25b6299b5d6fe8920b'] = 'Nie';
+$_MODULE['<{npsnewproducts}minimal_16_theme>npsnewproducts_4ee3bd6fb0321de042eba0b5e008ddfd'] = 'Pokaż karnety';
+$_MODULE['<{npsnewproducts}minimal_16_theme>npsnewproducts_7b29d340e52321cc223f1a9dab45606c'] = 'Pokaż ogłoszenia';
+$_MODULE['<{npsnewproducts}minimal_16_theme>npsnewproducts_9f735347513c6f6ccd922b05f02de735'] = 'Pokaż ogłoszenia zewnętrzne';
+$_MODULE['<{npsnewproducts}minimal_16_theme>npsnewproducts_9f436269adb4b48506714836cec5c463'] = 'Zakotwicz na stronie iframe';
 $_MODULE['<{npsnewproducts}minimal_16_theme>npsnewproducts_c9cc8cce247e49bae79f15173ce97354'] = 'Zapisz';

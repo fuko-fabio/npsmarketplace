@@ -18,6 +18,7 @@ $_MODULE['<{npsfeatured}minimal_16_theme>npsfeatured_49417670345173e7b95018b7bf9
 $_MODULE['<{npsfeatured}minimal_16_theme>npsfeatured_3c12c1068fb0e02fe65a6c4fc40bc29a'] = 'Włącz jeśli chcesz pokazywać produkty losowo (domyślnie: nie).';
 $_MODULE['<{npsfeatured}minimal_16_theme>npsfeatured_93cba07454f06a4a960172bbd6e2a435'] = 'Tak';
 $_MODULE['<{npsfeatured}minimal_16_theme>npsfeatured_bafd7322c6e97d25b6299b5d6fe8920b'] = 'Nie';
+$_MODULE['<{npsfeatured}minimal_16_theme>npsfeatured_9f436269adb4b48506714836cec5c463'] = 'Zakotwicz na stronie iframe';
 $_MODULE['<{npsfeatured}minimal_16_theme>npsfeatured_c9cc8cce247e49bae79f15173ce97354'] = 'Zapisz';
 $_MODULE['<{npsfeatured}minimal_16_theme>npsfeatured_2cc1943d4c0b46bfcf503a75c44f988b'] = 'Polecane';
 $_MODULE['<{npsfeatured}minimal_16_theme>npsfeatured_e0e572ae0d8489f8bf969e93d469e89c'] = 'Brak polecanych wydarzeń';

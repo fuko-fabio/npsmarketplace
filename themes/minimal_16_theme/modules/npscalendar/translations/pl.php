@@ -7,6 +7,7 @@ $_MODULE['<{npscalendar}minimal_16_theme>npscalendar_462390017ab0938911d2d4e964c
 $_MODULE['<{npscalendar}minimal_16_theme>npscalendar_73bbf438168b3a9283df36c628096527'] = 'Konfiguracja kalendarza wydarzeń';
 $_MODULE['<{npscalendar}minimal_16_theme>npscalendar_603143db24977c018fea8f9daf1773b7'] = 'Ilość wydarzeń na dzień';
 $_MODULE['<{npscalendar}minimal_16_theme>npscalendar_1827b6255fe5af0ef7b6e2b2522999dc'] = 'Maksymalna liczba wyszukiwań';
+$_MODULE['<{npscalendar}minimal_16_theme>npscalendar_9f436269adb4b48506714836cec5c463'] = 'Zakotwicz na stronie iframe';
 $_MODULE['<{npscalendar}minimal_16_theme>npscalendar_93cba07454f06a4a960172bbd6e2a435'] = 'Tak';
 $_MODULE['<{npscalendar}minimal_16_theme>npscalendar_bafd7322c6e97d25b6299b5d6fe8920b'] = 'Nie';
 $_MODULE['<{npscalendar}minimal_16_theme>npscalendar_c9cc8cce247e49bae79f15173ce97354'] = 'Zapisz';
