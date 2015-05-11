@@ -81,7 +81,10 @@ class NpsFavorite extends Module
     {
         if (!$this->isCached('npsfavorite_button.tpl', $this->getCacheId('npsfavorite|'.(int)$params['product']['id_product'])))
         {
-            $this->smarty->assign('product', $params['product']);
+            $this->smarty->assign(array(
+                'product' => $params['product'],
+                'isLogged' => (int)$this->context->customer->logged,
+            ));
         }
 
         return $this->display(__FILE__, 'npsfavorite_button.tpl', $this->getCacheId('npsfavorite|'.(int)$params['product']['id_product']));

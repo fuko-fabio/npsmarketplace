@@ -77,9 +77,11 @@
 							</span>
 						{/if}
 						{if isset($product.on_sale) && $product.on_sale && isset($product.show_price) && $product.show_price && !$PS_CATALOG_MODE}
+						    {if isset($product.specific_prices) && $product.specific_prices && isset($product.specific_prices.reduction) && $product.specific_prices.reduction > 0}
 							<span class="sale-box">
 								<span class="sale-label">{l s='Sale!'}</span>
 							</span>
+							{/if}
 						{/if}
 					</div>
 				</div>

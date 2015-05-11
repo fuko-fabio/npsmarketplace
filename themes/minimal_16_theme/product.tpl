@@ -80,7 +80,7 @@
 						<span class="new-label">{l s='New'}</span>
 					</span>
                     {/if}
-                    {if $product->on_sale}
+                    {if $product->on_sale && $productPrice != $productPriceWithoutReduction}
                         <span class="sale-box no-print">
 						<span class="sale-label">{l s='Sale!'}</span>
 					</span>
