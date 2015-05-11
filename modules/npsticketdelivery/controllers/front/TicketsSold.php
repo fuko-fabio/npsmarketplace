@@ -69,6 +69,7 @@ class NpsTicketDeliveryTicketsSoldModuleFrontController extends ModuleFrontContr
         $dbquery = new DbQuery();
         $dbquery->select('name')
             ->from('ticket')
+            ->where('`id_seller`='.$this->seller->id)
             ->orderBy('name ASC')
             ->groupBy('name');
 
@@ -77,7 +78,7 @@ class NpsTicketDeliveryTicketsSoldModuleFrontController extends ModuleFrontContr
             $dbquery = new DbQuery();
             $dbquery->select('date')
                 ->from('ticket')
-                ->where('`name`=\''.$value['name'].'\'')
+                ->where('`name`=\''.$value['name'].'\' AND `id_seller`='.$this->seller->id)
                 ->orderBy('date ASC')
                 ->groupBy('date');
                 $terms = array();
@@ -95,7 +96,7 @@ class NpsTicketDeliveryTicketsSoldModuleFrontController extends ModuleFrontContr
             $dbquery->select('*')
                 ->from('ticket')
                 ->orderBy('person ASC')
-                ->where('name=\''.$name.'\' '.($date != '0' ? 'AND date=\''.$date.'\'' : ''));
+                ->where('`id_seller`='.$this->seller->id.' AND name=\''.$name.'\' '.($date != '0' ? 'AND date=\''.$date.'\'' : ''));
             $pdf = new PDF(array(array(
                 'participants' => $this->module->fillTickets(Db::getInstance()->executeS($dbquery)),
                 'name' => $name,
