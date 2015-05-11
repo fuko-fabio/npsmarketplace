@@ -4,8 +4,6 @@
 */
 
 $(document).ready(function(){
-    $(".textarea-autosize").autosize();
-
     CollapsibleLists.apply();
     $('.collapsibleListClosed').click();
 

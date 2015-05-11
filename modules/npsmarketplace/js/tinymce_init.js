@@ -1,11 +1,15 @@
 tinymce.init({
     selector : "textarea.tinymce",
-    plugins : "preview spellchecker textcolor",
+    plugins : "preview spellchecker textcolor autoresize",
     toolbar : " bold italic | preview",
     insertdatetime_formats : ["%Y.%m.%d", "%H:%M"],
     menubar : false,
     statusbar : false,
     skin : 'nps',
     language : 'pl',
+    width: '100%',
+    height: 100,
+    autoresize_min_height: 100,
+    autoresize_max_height: 800,
     valid_styles : {'*' : 'font-size,font-weight,text-decoration'},
 });

@@ -29,7 +29,6 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
 
     public function setMedia() {
         parent::setMedia();
-        $this->addjQueryPlugin('autosize');
         $this->addJqueryUI(array('ui.slider', 'ui.datepicker'));
         $this->addJS(array(
             _PS_JS_DIR_.'jquery/plugins/timepicker/jquery-ui-timepicker-addon.js',
