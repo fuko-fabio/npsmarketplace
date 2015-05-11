@@ -285,7 +285,7 @@ class NpsMarketplace extends Module {
         $product = $params['product'];
         if (Product::showSellerDetails($product->id)) {
             $seller = new Seller(Seller::getSellerByProduct($product->id));
-            $products = $seller->getProducts(3, false);
+            $products = $seller->getProducts(0, 3, true, true);
             $p1 = null;
             $p2 = null;
             $p3 = null;
