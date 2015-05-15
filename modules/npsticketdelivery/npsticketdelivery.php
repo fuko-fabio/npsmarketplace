@@ -13,6 +13,7 @@ require_once(_PS_MODULE_DIR_.'npsticketdelivery/classes/TicketsGenerator.php');
 require_once _PS_MODULE_DIR_.'npsticketdelivery/classes/HTMLTemplateSellerOrderConfirmation.php';
 require_once _PS_MODULE_DIR_.'npsticketdelivery/classes/HTMLTemplateEventParticipants.php';
 require_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
+require_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Question.php');
 
 class NpsTicketDelivery extends Module {
         const INSTALL_SQL_FILE = 'install.sql';
@@ -469,12 +470,24 @@ class NpsTicketDelivery extends Module {
 
     public function hookDisplayBeforeVirtualCarrier() {
         $this->context->controller->addJS(_PS_JS_DIR_.'validate.js');
+        $cart_ticket = CartTicket::getByCartId($this->context->cart->id);
         $this->context->smarty->assign(array(
             'send_tickets_info_url' => Configuration::get('NPS_TICKETS_INFO_URL'),
-            
+            'ticket_questions' => $this->getTicketQuestions(),
+            'ticket_person' => json_decode($cart_ticket->persons, true),
+            'ticket_question' => json_decode($cart_ticket->questions, true),
+            'ticket_destination' => $cart_ticket->email
         ));
         
         return $this->display(__FILE__, 'views/templates/hook/virtual_carrier.tpl');
+    }
+
+    private function getTicketQuestions() {
+        $resutl = array();
+        foreach($this->context->cart->getProducts() as $key => $value) {
+            $resutl[$value['id_product']] = Question::getByProductId($value['id_product']);
+        }
+        return $resutl;
     }
 
     public function getContent() {
@@ -499,6 +512,7 @@ class NpsTicketDelivery extends Module {
         $ticket->email = $emails;
         $ticket->id_currency = $this->context->currency->id;
         $ticket->persons = json_encode($params['ticket_person']);
+        $ticket->questions = json_encode($params['ticket_question']);
         $ticket->save();
     }
 

@@ -80,3 +80,11 @@ CREATE TABLE IF NOT EXISTS `PREFIX_product_attribute_expiry_date` (
   PRIMARY KEY (`id_expiry`),
   KEY `id_product_attribute` (`id_product_attribute`)
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `PREFIX_question` (
+  `id_question` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id_product` int(10) unsigned NOT NULL,
+  `question` varchar(1024) NOT NULL,
+  `required` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id_question`)
+) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;

@@ -11,14 +11,17 @@
       </span>
       
       {l s='Answer required' mod='npsmarketplace'}:
-      {literal}{% if (o.required) { %}{/literal}
-        <i class="icon-ok">
+      {literal}{% if (o.required == "1") { %}{/literal}
+        <i class="icon-ok"></i>
       {literal}{% } else { %}{/literal}
-        <i class="icon-remove">
+        <i class="icon-remove"></i>
       {literal}{% } %}{/literal}
       {literal}
       <input type="hidden" name="questions[{%=o.index%}][question]" value="{%=o.question%}" />
       <input type="hidden" name="questions[{%=o.index%}][required]" value="{%=o.required%}" />
+      {% if (o.id_question) { %}
+      <input type="hidden" name="questions[{%=o.index%}][id_question]" value="{%=o.id_question%}" />
+      {% } %}
       {/literal}
   </div>
 </script>
@@ -45,7 +48,7 @@
         </form>
 
         <p class="submit">
-            <input class="button ccl" type="button" value="{l s='Cancel' mod='npsmarketplace'}" onclick="closeQuestionBox('#question_form');"/>
+            <input class="button ccl" type="button" value="{l s='Cancel' mod='npsmarketplace'}" onclick="closeFancyBox('#question_form');"/>
             <input class="button" onclick="addQuestion('#question_form');" value="{l s='Add' mod='npsmarketplace'}"/>
         </p>
     </div>

@@ -25,6 +25,7 @@ $(document).ready(function(){
 
     initDatetimePickers();
     populateCombinations();
+    populateQuestions();
     updateCombinationsDropdown();
     initVariantReductions('#ticket_combination_form');
     initVariantReductions('#carnet_combination_form');
@@ -215,7 +216,7 @@ function addVariant(id_form) {
     }
 }
 
-function closeVariantBox(id_form) {
+function closeFancyBox(id_form) {
     $.fancybox.close();
     clearFancyboxForm(id_form);
 }
@@ -321,12 +322,15 @@ function addQuestion(id_form) {
           if (data.hasOwnProperty(item.name)) {
             data[item.name] = $.makeArray(data[item.name]);
             data[item.name].push(item.value);
-          }
-          else {
+          } else {
             data[item.name] = item.value;
           }
         });
-        data['required'] = $(id_form + ' [name=required]').is(':checked');
+        if ($(id_form + ' [name=required]').is(':checked')) {
+            data['required'] = 1;
+        } else {
+            data['required'] = 0;
+        }
 
         productQuestions.push(data);
         clearQuestions();
@@ -356,4 +360,10 @@ function populateQuestions() {
 
 function renderQuestion(question) {
     $('.questions-container').append(tmpl("question-tmpl", question));
+}
+
+function removeQuestion(index) {
+    productQuestions.splice(index, 1);
+    clearQuestions();
+    populateQuestions();
 }
