@@ -422,7 +422,8 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             'province' => Province::getFeatureValueId($id_province),
             'town' => $town->id ? Town::getFeatureValueId($town->id) : 0,
             'images' => array(),
-            'combinations' => array()
+            'combinations' => array(),
+            'questions' => array()
         );
 
         if ($this->_product->id) {
@@ -448,7 +449,8 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                 'district' => $this->getFeatureValue($features, 'district'),
                 'categories' => $this->_product->getCategories(),
                 'images' => $images,
-                'combinations' => $this->getCombinations()
+                'combinations' => $this->getCombinations(),
+                'questions' => array()
             );
             $extras = Product::getExtras($this->_product->id, $this->context->language->id);
             if ($extras) {
@@ -476,6 +478,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             'category_partial_tpl_path' =>_PS_MODULE_DIR_.'npsmarketplace/views/templates/front/category_tree_partial.tpl',
             'product_fieldset_tpl_path'=> _PS_MODULE_DIR_.'npsmarketplace/views/templates/front/product_fieldset.tpl',
             'variants_tpl_path' => _PS_MODULE_DIR_.'npsmarketplace/views/templates/front/variants.tpl',
+            'questions_tpl_path' => _PS_MODULE_DIR_.'npsmarketplace/views/templates/front/questions.tpl',
             'free_category_id' => Configuration::get('NPS_FREE_CATEGORY_ID'),
             'product' => $tpl_product,
             'edit_product' => array_key_exists('id', $tpl_product),

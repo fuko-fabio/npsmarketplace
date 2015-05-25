@@ -29,10 +29,17 @@
 {else}
 {assign var="combinations" value=$product.combinations}
 {/if}
+
+{if isset($smarty.post.questions)}
+{assign var="questions" value=$smarty.post.questions}
+{else}
+{assign var="questions" value=$product.questions}
+{/if}
 <script>
     var dropzoneImages = {$product['images']|json_encode};
     var provincesMap = {json_encode($provinces)};
     var productCombinations = {json_encode(array_values($combinations))};
+    var productQuestions = {json_encode(array_values($questions))};
 </script>
 
 {capture name=path}
@@ -61,4 +68,5 @@
         <button type="submit" class="btn btn-default button button-medium pull-right" name="saveProduct"><span>{l s='Save' mod='npsmarketplace'} <i class="icon-save right"></i></span></button>
     </form>
     {include file="$variants_tpl_path"}
+    {include file="$questions_tpl_path"}
 </div>

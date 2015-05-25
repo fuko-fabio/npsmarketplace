@@ -262,48 +262,82 @@
 .bootstrap-datetimepicker-widget {
   z-index: 1000001 !important; }
 
-.variants-box .page-heading {
+.variants-box .page-heading,
+.questions-box .page-heading {
   padding-bottom: 13px; }
-.variants-box .dropdown {
+.variants-box .dropdown,
+.questions-box .dropdown {
   border: none; }
-  .variants-box .dropdown .dropdown-toggle {
+  .variants-box .dropdown .dropdown-toggle,
+  .questions-box .dropdown .dropdown-toggle {
     background: #ffaa00;
     font-weight: bold; }
-    .variants-box .dropdown .dropdown-toggle:hover {
+    .variants-box .dropdown .dropdown-toggle:hover,
+    .questions-box .dropdown .dropdown-toggle:hover {
       background: #FFC654; }
   .variants-box .dropdown a .caret,
-  .variants-box .dropdown a:hover .caret {
+  .variants-box .dropdown a:hover .caret,
+  .questions-box .dropdown a .caret,
+  .questions-box .dropdown a:hover .caret {
     color: #353535;
     border-top-color: #353535;
     border-bottom-color: #353535; }
-.variants-box .variants-container .item {
+.variants-box .variants-container .item,
+.variants-box .questions-container .item,
+.questions-box .variants-container .item,
+.questions-box .questions-container .item {
   border: 1px solid #d6d4d4;
   background-color: #f3f3f3;
   padding: 10px;
   margin-bottom: 15px; }
-  .variants-box .variants-container .item .icon-btn {
+  .variants-box .variants-container .item .icon-btn,
+  .variants-box .questions-container .item .icon-btn,
+  .questions-box .variants-container .item .icon-btn,
+  .questions-box .questions-container .item .icon-btn {
     color: black;
     font-size: 28px; }
-    .variants-box .variants-container .item .icon-btn:hover {
+    .variants-box .variants-container .item .icon-btn:hover,
+    .variants-box .questions-container .item .icon-btn:hover,
+    .questions-box .variants-container .item .icon-btn:hover,
+    .questions-box .questions-container .item .icon-btn:hover {
       color: #ffaa00; }
-  .variants-box .variants-container .item .name {
+  .variants-box .variants-container .item .question,
+  .variants-box .questions-container .item .question,
+  .questions-box .variants-container .item .question,
+  .questions-box .questions-container .item .question {
+    display: block;
+    color: #353535;
+    font-weight: bold; }
+  .variants-box .variants-container .item .name,
+  .variants-box .questions-container .item .name,
+  .questions-box .variants-container .item .name,
+  .questions-box .questions-container .item .name {
     display: block;
     font-size: 18px;
     color: #353535;
     font-weight: bold; }
-  .variants-box .variants-container .item .special-prices-collapse {
+  .variants-box .variants-container .item .special-prices-collapse,
+  .variants-box .questions-container .item .special-prices-collapse,
+  .questions-box .variants-container .item .special-prices-collapse,
+  .questions-box .questions-container .item .special-prices-collapse {
     color: #333;
     border-color: #d6d4d4;
     background: #fbfbfb;
     border-bottom: none; }
-  .variants-box .variants-container .item .special-prices-container {
+  .variants-box .variants-container .item .special-prices-container,
+  .variants-box .questions-container .item .special-prices-container,
+  .questions-box .variants-container .item .special-prices-container,
+  .questions-box .questions-container .item .special-prices-container {
     padding: 10px;
     margin-bottom: 0;
     background-color: #fbfbfb;
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
     box-shadow: none; }
-    .variants-box .variants-container .item .special-prices-container .special-item {
+    .variants-box .variants-container .item .special-prices-container .special-item,
+    .variants-box .questions-container .item .special-prices-container .special-item,
+    .questions-box .variants-container .item .special-prices-container .special-item,
+    .questions-box .questions-container .item .special-prices-container .special-item {
       border: 1px solid #d6d4d4;
       padding: 10px;
       margin-bottom: 15px;

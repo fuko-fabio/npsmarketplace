@@ -357,7 +357,8 @@
   z-index: 1000001 !important;
 }
 
-.variants-box {
+.variants-box,
+.questions-box {
   .page-heading {
     padding-bottom: 13px;
   }
@@ -379,7 +380,8 @@
       border-bottom-color: $dark-text-color;
     }
   }
-  .variants-container {
+  .variants-container,
+  .questions-container {
     .item {
       border: $main_border;
       background-color: #f3f3f3;
@@ -394,8 +396,14 @@
           color: $primary-color;
         }
       }
-      
-      .name {
+
+      .question {
+        display: block;
+        color: $dark-text-color;
+        font-weight: bold;
+      }
+
+      .name{
         display: block;
         font-size: 18px;
         color: $dark-text-color;
