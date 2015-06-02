@@ -33,7 +33,7 @@ class OrderController extends OrderControllerCore {
             'id_cart' =>$this->context->cart->id,
             'ticket_email' => Tools::getValue('ticket_destination'),
             'ticket_person' => $_POST['ticket_person'],
-            'ticket_question' => $_POST['ticket_question']
+            'ticket_answer' => $_POST['ticket_answer']
         ));
 	}
 

@@ -30,8 +30,8 @@
                   {foreach $ticket_questions[$product.id_product] as $key => $question}
                   <div class="form-group">
                       <label {if $question.required}class="required"{/if}>{$question.question}</label>
-                      <input class="{if $question.required}is_required{/if} validate form-control" data-validate="isMessage" type="text" name="ticket_question[{$product.id_product}][{$x}][{$question.id_question}]"
-                        value="{if isset($ticket_question[{$product.id_product}][{$x}][{$question.id_question}])}{$ticket_question[{$product.id_product}][{$x}][{$question.id_question}]}{/if}"/>
+                      <input class="{if $question.required}is_required{/if} validate form-control" data-validate="isMessage" type="text" name="ticket_answer[{$product.id_product}][{$x}][{$question.id_question}]"
+                        value="{if isset($ticket_answer[{$product.id_product}][{$x}][{$question.id_question}])}{$ticket_answer[{$product.id_product}][{$x}][{$question.id_question}]}{/if}"/>
                   </div>
                   {/foreach}
                   </div>

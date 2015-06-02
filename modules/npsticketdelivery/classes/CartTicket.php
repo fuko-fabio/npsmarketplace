@@ -11,7 +11,7 @@ class CartTicket extends ObjectModel {
     public $id_currency;
     public $email;
     public $persons;
-    public $questions;
+    public $answers;
 
     public function __construct($id_cart_ticket = null, $id_cart = null) {
         if (empty($id_cart_ticket) && !empty($id_cart))
@@ -36,7 +36,7 @@ class CartTicket extends ObjectModel {
             'id_currency' => array('type' => self::TYPE_INT,    'validate' => 'isUnsignedId',  'required' => true),
             'email' =>       array('type' => self::TYPE_STRING, 'required' => true),
             'persons' =>     array('type' => self::TYPE_STRING),
-            'questions' =>   array('type' => self::TYPE_STRING),
+            'answers' =>     array('type' => self::TYPE_STRING),
         ),
     );
 
