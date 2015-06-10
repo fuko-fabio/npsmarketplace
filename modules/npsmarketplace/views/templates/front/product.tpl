@@ -54,7 +54,7 @@
 {if isset($product['id'])}
 <h1 class="page-heading bottom-indent">{l s='Edit Event' mod='npsmarketplace'}</h1>
 {else}
-<h1 class="page-heading bottom-indent">{l s='Add Event' mod='npsmarketplace'}<button class="get-tour-button pull-right" type="button" onclick="startNewEventTour();"><i class="icon-info"></i></button></h1>
+<h1 class="page-heading bottom-indent with-button">{l s='Add Event' mod='npsmarketplace'}<button class="get-tour-button pull-right" type="button" onclick="startNewEventTour();"><i class="icon-info"></i></button></h1>
 {/if}
 {include file="$tpl_dir./errors.tpl"}
 <div class="block-center" id="block-seller-product">

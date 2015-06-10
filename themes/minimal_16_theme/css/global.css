@@ -7542,6 +7542,8 @@ div.star.star_hover:after {
   .fancybox-skin .row {
     margin-left: 0;
     margin-right: 0; }
+  .fancybox-skin .radio-inline, .fancybox-skin .checkbox {
+    padding-left: 15px; }
 
 #fancybox-loading {
   top: 0 !important;

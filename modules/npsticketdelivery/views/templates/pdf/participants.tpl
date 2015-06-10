@@ -5,7 +5,7 @@
 
   <table style="width: 100%">
     <tr><td style="width: 100%"><b>{$name}</b></td></tr>
-    {if isset($date) && $date != '0'}
+    {if isset($date) && $date != '0' && $date != '0000-00-00 00:00:00'}
     <tr><td style="width: 100%">{date_format(date_create($date), 'Y-m-d H:i')}</td></tr>
     {/if}
   </table>
@@ -26,8 +26,8 @@
     {foreach $participants as $participant}
     {cycle values='#FFF,#DDD' assign=bgcolor}
     <tr style="line-height:8px;background-color:{$bgcolor};">
-      <td style="text-align: left; width: 20%">{$participant.person}</td>
-      <td style="text-align: left; width: 20%">{$participant.combination_name}</td>
+      <td style="text-align: left; width: 20%">{$participant.person|escape:'html':'UTF-8'}</td>
+      <td style="text-align: left; width: 20%">{$participant.combination_name|escape:'html':'UTF-8'}</td>
       <td style="text-align: left; width: 10%">{round($participant.price, 2)} {$currency->iso_code}</td>
       <td style="text-align: left; width: 20%">{$participant.code}</td>
       <td style="text-align: left; width: 20%">
@@ -39,6 +39,11 @@
       </td>
       <td style="text-align: left; width: 10%"></td>
     </tr>
+    {if isset($participant.questions) && !empty($participant.questions)}
+    <tr style="line-height:4px;background-color:{$bgcolor};">
+        <td style="text-align: left; width: 100%">{foreach from=$participant.questions item=q}<span style="font-size: 7pt">{$q.question|escape:'html':'UTF-8'}</span><br />{$q.answer|escape:'html':'UTF-8'}<br />{/foreach}</td>
+    </tr>
+    {/if}
     {/foreach}
   </table>
 

@@ -359,10 +359,7 @@
 
 .variants-box,
 .questions-box {
-  .page-heading {
-    padding-bottom: 13px;
-  }
-  
+
   .dropdown {
     border: none;
     .dropdown-toggle {
@@ -378,6 +375,10 @@
       color: $dark-text-color;
       border-top-color: $dark-text-color;
       border-bottom-color: $dark-text-color;
+    }
+    
+    a {
+      padding: 5px 7px !important;
     }
   }
   .variants-container,

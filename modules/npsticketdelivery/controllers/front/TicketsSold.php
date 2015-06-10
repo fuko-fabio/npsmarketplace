@@ -25,7 +25,7 @@ class NpsTicketDeliveryTicketsSoldModuleFrontController extends ModuleFrontContr
     public function postProcess() {
         if (Tools::isSubmit('action') && Tools::isSubmit('name')) {
             if (Tools::getValue('action') == 'export') {
-                $this->exportToPdf(Tools::getValue('name'), Tools::getValue('date'));
+                $this->exportToPdf(Tools::getValue('name'), Tools::getValue('date'), Tools::getIsset('questions'));
             }
         }
     }
@@ -90,19 +90,21 @@ class NpsTicketDeliveryTicketsSoldModuleFrontController extends ModuleFrontContr
         return $result;
     }
 
-    function exportToPdf($name, $date) {
+    function exportToPdf($name, $date, $questions) {
         if ($name) {
             $dbquery = new DbQuery();
             $dbquery->select('*')
                 ->from('ticket')
                 ->orderBy('person ASC')
                 ->where('`id_seller`='.$this->seller->id.' AND name=\''.$name.'\' '.($date != '0' ? 'AND date=\''.$date.'\'' : ''));
+
             $pdf = new PDF(array(array(
-                'participants' => $this->module->fillTickets(Db::getInstance()->executeS($dbquery)),
+                'participants' => $this->module->fillTickets(Db::getInstance()->executeS($dbquery), $questions),
                 'name' => $name,
                 'date' => $date,
                 'currency' => $this->context->currency
             )), 'EventParticipants', $this->context->smarty);
+            $pdf->pdf_renderer->setFontSubsetting(false);
             $pdf->render();
         }
     }

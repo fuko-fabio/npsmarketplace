@@ -262,9 +262,6 @@
 .bootstrap-datetimepicker-widget {
   z-index: 1000001 !important; }
 
-.variants-box .page-heading,
-.questions-box .page-heading {
-  padding-bottom: 13px; }
 .variants-box .dropdown,
 .questions-box .dropdown {
   border: none; }
@@ -282,6 +279,9 @@
     color: #353535;
     border-top-color: #353535;
     border-bottom-color: #353535; }
+  .variants-box .dropdown a,
+  .questions-box .dropdown a {
+    padding: 5px 7px !important; }
 .variants-box .variants-container .item,
 .variants-box .questions-container .item,
 .questions-box .variants-container .item,

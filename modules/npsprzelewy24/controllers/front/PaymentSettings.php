@@ -40,50 +40,50 @@ class NpsPrzelewy24PaymentSettingsModuleFrontController extends ModuleFrontContr
             $iban = preg_replace('/\s+/', '', trim(Tools::getValue('iban')));
 
             if (empty($company_name))
-                $this -> errors[] = $this->module->l('Company name is required');
+                $this -> errors[] = $this->module->l('Company name is required', 'PaymentSettings');
             else if (!Validate::isGenericName($company_name))
-                $this -> errors[] = $this->module->l('Invalid company name');
+                $this -> errors[] = $this->module->l('Invalid company name', 'PaymentSettings');
 
             if (empty($city))
-                $this -> errors[] = $this->module->l('City name is required');
+                $this -> errors[] = $this->module->l('City name is required', 'PaymentSettings');
             else if (!Validate::isCityName($city))
-                $this -> errors[] = $this->module->l('Invalid city name');
+                $this -> errors[] = $this->module->l('Invalid city name', 'PaymentSettings');
 
             if (empty($street))
-                $this -> errors[] = $this->module->l('Address is required');
+                $this -> errors[] = $this->module->l('Address is required', 'PaymentSettings');
             else if (!Validate::isAddress($street))
-                $this -> errors[] = $this->module->l('Invalid address');
+                $this -> errors[] = $this->module->l('Invalid address', 'PaymentSettings');
 
             if (empty($post_code))
-                $this -> errors[] = $this->module->l('Post code is required');
+                $this -> errors[] = $this->module->l('Post code is required', 'PaymentSettings');
             else if (!Validate::isPostCode($post_code))
-                $this -> errors[] = $this->module->l('Invalid post code');
+                $this -> errors[] = $this->module->l('Invalid post code', 'PaymentSettings');
 
             if (empty($person))
-                $this -> errors[] = $this->module->l('Person name is required');
+                $this -> errors[] = $this->module->l('Person name is required', 'PaymentSettings');
             else if (!Validate::isName($person))
-                $this -> errors[] = $this->module->l('Invalid person name');
+                $this -> errors[] = $this->module->l('Invalid person name', 'PaymentSettings');
 
             if (empty($email))
-                $this -> errors[] = $this->module->l('Buisness email is required');
+                $this -> errors[] = $this->module->l('Buisness email is required', 'PaymentSettings');
             else if (!Validate::isEmail($email))
-                $this -> errors[] = $this->module->l('Invalid email addres');
+                $this -> errors[] = $this->module->l('Invalid email addres', 'PaymentSettings');
 
             if (empty($nip))
-                $this -> errors[] = $this->module->l('NIP number is required');
+                $this -> errors[] = $this->module->l('NIP number is required', 'PaymentSettings');
             else if (empty($nip) && !Validate::isNip($nip))
-                $this -> errors[] = $this->module->l('Invalid NIP number');
+                $this -> errors[] = $this->module->l('Invalid NIP number', 'PaymentSettings');
 
             if (!empty($regon) && !Validate::isRegon($regon))
-                $this -> errors[] = $this->module->l('Invalid REGON number');
+                $this -> errors[] = $this->module->l('Invalid REGON number', 'PaymentSettings');
 
             if(empty($iban))
-                 $this -> errors[] = $this->module->l('Bank account number is required');
+                 $this -> errors[] = $this->module->l('Bank account number is required', 'PaymentSettings');
             elseif(!Validate::isNrb($iban))
-                 $this -> errors[] = $this->module->l('Invalid bank account number');
+                 $this -> errors[] = $this->module->l('Invalid bank account number', 'PaymentSettings');
 
             if (!$acceptance)
-                $this -> errors[] = $this->module->l('Acceptance of the Przelewy24 regulations is required');
+                $this -> errors[] = $this->module->l('Acceptance of the Przelewy24 regulations is required', 'PaymentSettings');
 
             if(empty($this->errors)) {
                 $company = array(
@@ -101,8 +101,8 @@ class NpsPrzelewy24PaymentSettingsModuleFrontController extends ModuleFrontContr
 
                 $res = P24::companyRegister($company);
                 if ($res->error->errorCode) {
-                    $this -> errors[] = $this->module->l('Unable register company in Przelewy24 payment service.')
-                        .' '.$this->module->errorMsg($res->error->errorCode).' '.$this->module->l('Please contact with customer service');
+                    $this -> errors[] = $this->module->l('Unable register company in Przelewy24 payment service.', 'PaymentSettings')
+                        .' '.$this->module->errorMsg($res->error->errorCode).' '.$this->module->l('Please contact with customer service', 'PaymentSettings');
                 } else {
                     $settings->id_seller = $seller->id;
                     $settings->registration_date = date("Y-m-d H:i:s");
@@ -163,15 +163,15 @@ class NpsPrzelewy24PaymentSettingsModuleFrontController extends ModuleFrontContr
                 $res = (object) array('error' => (object) array('errorCode' => 0), 'result' => 0);
             }
             if ($res->error->errorCode) {
-                $this->errors[] = $this->module->l('Unable to check company existence in Przelewy24 payment service.')
-                        .' '.$this->module->errorMsg($res->error->errorCode).' '.$this->module->l('Please contact with customer service');
+                $this->errors[] = $this->module->l('Unable to check company existence in Przelewy24 payment service.', 'PaymentSettings')
+                        .' '.$this->module->errorMsg($res->error->errorCode).' '.$this->module->l('Please contact with customer service', 'PaymentSettings');
                 $this->context->smarty->assign(array(
                     'company' => array(),
                     'p24_agreement_url' => Configuration::get('NPS_P24_REGULATIONS_URL'))
                 );
                 $this->setTemplate('payment_company_registered.tpl');
             } else if ($res->result) {
-                $this->errors[] = sprintf($this->module->l('Your company with NIP "%s" has been already registered in Przelewy24 service. Please contact with customer service.'), $seller->nip);
+                $this->errors[] = sprintf($this->module->l('Your company with NIP "%s" has been already registered in Przelewy24 service. Please contact with customer service.', 'PaymentSettings'), $seller->nip);
                 $this->context->smarty->assign(array('company' => array()));
                 $this->setTemplate('payment_company_registered.tpl');
             } else {

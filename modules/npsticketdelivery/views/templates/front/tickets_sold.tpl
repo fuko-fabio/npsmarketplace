@@ -48,8 +48,8 @@
                 {foreach from=$tickets item=ticket}
                 <tr>
                     <td>{$ticket.id_ticket}</td>
-                    <td>{$ticket.name}</td>
-                    <td>{$ticket.combination_name}</td>
+                    <td>{$ticket.name|escape:'html':'UTF-8'}</td>
+                    <td>{$ticket.combination_name|escape:'html':'UTF-8'}</td>
                     <td>{$ticket.code}</td>
                     <td>{displayPrice price=$ticket.price currency=$ticket.id_currency}</td>
                     <td>{if $ticket.gift == 1}
@@ -58,10 +58,10 @@
                         {l s='No' mod='npsticketdelivery'}
                         {/if}
                     </td>
-                    <td>{$ticket.person}</td>
-                    <td>{$ticket.address}</td>
-                    <td>{$ticket.district}</td>
-                    <td>{$ticket.town}</td>
+                    <td>{$ticket.person|escape:'html':'UTF-8'}</td>
+                    <td>{$ticket.address|escape:'html':'UTF-8'}</td>
+                    <td>{$ticket.district|escape:'html':'UTF-8'}</td>
+                    <td>{$ticket.town|escape:'html':'UTF-8'}</td>
                     <td>
                     {if $ticket.type == 'ticket'}
                         {date_format(date_create($ticket.date), 'Y-m-d H:i')}
@@ -70,7 +70,7 @@
                     <td>
                     {if isset($ticket.questions) && !empty($ticket.questions)}
                     {foreach from=$ticket.questions item=q}
-                        <strong>{$q.question}</strong><br />{$q.answer}<br />
+                        <strong>{$q.question|escape:'html':'UTF-8'}</strong><br />{$q.answer|escape:'html':'UTF-8'}<br />
                     {/foreach}
                     {/if}
                     </td>
@@ -111,6 +111,13 @@
               <label class="required">{l s='Date' mod='npsticketdelivery'}</label>
               <select class="form-control" name="date">
               </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-md-12 checkbox">
+              <label>
+                <input type="checkbox" name="questions" value="1" />
+                {l s='Include customers answers'  mod='npsticketdelivery'} </label>
             </div>
           </div>
           <p class="submit">
