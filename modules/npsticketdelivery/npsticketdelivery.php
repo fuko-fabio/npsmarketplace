@@ -107,11 +107,14 @@ class NpsTicketDelivery extends Module {
         }
     }
 
-    public function fillTickets($tickets) {
+    public function fillTickets($tickets, $questions = false) {
         foreach ($tickets as $key => $value) {
             $tickets[$key]['code'] = TicketsGenerator::getCode($value);
             $tickets[$key]['seller'] = Db::getInstance()->getValue('SELECT name FROM '._DB_PREFIX_.'seller WHERE id_seller='.$value['id_seller']);
             $tickets[$key]['seller_shop'] = $this->context->link->getModuleLink('npsmarketplace', 'SellerShop', array('id_seller' => $value['id_seller']));
+            if ($questions) {
+                $tickets[$key]['questions'] = Answer::getByTicketId($value['id_ticket'], true);
+            }
         }
         return $tickets;
     }

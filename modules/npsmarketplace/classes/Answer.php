@@ -23,15 +23,17 @@ class Answer extends ObjectModel {
         )
     );
 
-    public static function getByTicketId($id_ticket) {
+    public static function getByTicketId($id_ticket, $questions = false) {
         if (!isset($id_ticket) || empty($id_ticket)) {
             return array();
         }
         $dbquery = new DbQuery();
         $dbquery->select('*')
-            ->from('answer')
-            ->where('`id_ticket` = '.$id_ticket)
-            ->orderBy('answer ASC');
+            ->from('answer', 'a')
+            ->where('a.`id_ticket` = '.$id_ticket);
+        if ($questions) {
+            $dbquery->leftJoin('question', 'q', 'a.id_question = q.id_question');
+        }
         return Db::getInstance()->ExecuteS($dbquery);
     }
 

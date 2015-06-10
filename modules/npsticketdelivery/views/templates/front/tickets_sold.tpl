@@ -39,6 +39,7 @@
                     <th class="item" data-hide="phone,tablet">{l s='District' mod='npsticketdelivery'}</th>
                     <th class="item" data-hide="phone,tablet">{l s='Town' mod='npsticketdelivery'}</th>
                     <th class="item" data-hide="phone,tablet">{l s='Term' mod='npsticketdelivery'}</th>
+                    <th class="item" data-hide="phone,tablet">{l s='Question/Answer' mod='npsticketdelivery'}</th>
                     <th class="item">{l s='Type' mod='npsticketdelivery'}</th>
                     <th class="last_item" data-sort-ignore="true" width="100px" >{l s='Action' mod='npsticketdelivery'}</th>
                 </tr>
@@ -62,14 +63,21 @@
                     <td>{$ticket.district}</td>
                     <td>{$ticket.town}</td>
                     <td>
-                    {if $ticket.type == 0}
+                    {if $ticket.type == 'ticket'}
                         {date_format(date_create($ticket.date), 'Y-m-d H:i')}
                     {/if}
                     </td>
                     <td>
-                        {if $ticket.type == 0}
+                    {if isset($ticket.questions) && !empty($ticket.questions)}
+                    {foreach from=$ticket.questions item=q}
+                        <strong>{$q.question}</strong><br />{$q.answer}<br />
+                    {/foreach}
+                    {/if}
+                    </td>
+                    <td>
+                        {if $ticket.type == 'ticket'}
                         {l s='Ticket' mod='npsticketdelivery'}
-                        {else if $ticket.type == 1}
+                        {else if $ticket.type == 'carnet'}
                         {l s='Carnet' mod='npsticketdelivery'}
                         {/if}
                     </td>

@@ -56,7 +56,7 @@ class NpsTicketDeliveryTicketsSoldModuleFrontController extends ModuleFrontContr
         }
         $this->context->smarty->assign(array(
             'HOOK_MY_ACCOUNT_COLUMN' => Hook::exec('displayMyAccountColumn'),
-            'tickets' => $this->module->fillTickets($tickets),
+            'tickets' => $this->module->fillTickets($tickets, true),
             'is_seller' => false,
             'export_events_list' => $this->getEventsToExport()
         ));
