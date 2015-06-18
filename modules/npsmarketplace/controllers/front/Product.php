@@ -8,6 +8,7 @@ include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/CategoriesList.php');
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Town.php');
 include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Province.php');
+include_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Question.php');
 include_once(_PS_MODULE_DIR_.'npsprzelewy24/classes/P24SellerCompany.php');
 
 class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
@@ -66,6 +67,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             $lng = trim(Tools::getValue('lng'));
 
             $combinations = array();
+            $questions = array();
             $categories = array();
             $link_rewrite = array();
             $images = array();
@@ -73,6 +75,9 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             
             if (isset($_POST['combinations'])) {
                 $combinations = $_POST['combinations'];
+            }
+            if (isset($_POST['questions'])) {
+                $questions = $_POST['questions'];
             }
 
             if (isset($_POST['category'])) {
@@ -119,19 +124,6 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                 $this -> errors[] = $this->module->l('At least one category must be selected', 'Product');
 
             if(empty($current_id_product)) {
-                //    if (strtotime($date.' '.$time) < time())
-                //        $this -> errors[] = $this->module->l('You are trying to add event in the past. Check event date and time.', 'Product');
-                //    if (strtotime($expiry_date.' '.$expiry_time) > strtotime($date.' '.$time))
-                //        $this -> errors[] = $this->module->l('Expiry date and time cannot be later than event date.', 'Product');
-
-                //} if ($type == 1) {
-                //    if (isset($date_to) && !empty($date_to) && !Validate::isDateFormat($date_to))
-                //        $this -> errors[] = $this->module->l('Invalid carnet \'date to\' format', 'Product');
-                //    if (isset($date_from) && !empty($date_from) && !Validate::isDateFormat($date_from))
-                //        $this -> errors[] = $this->module->l('Invalid carnet \'date from\' format', 'Product');
-                //    if (isset($entries) && !empty($entries) && !Validate::isInt($entries))
-                //        $this -> errors[] = $this->module->l('Invalid entries value', 'Product');
-                //}
                 if (empty($images))
                     $this -> errors[] = $this->module->l('At least one picture is required', 'Product');
                 else if (count($images) > self::MAX_IMAGES)
@@ -230,6 +222,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                             $this->_product->persistExtraInfo($lat, $lng, $video_url);
                             $this->removeProductImages($removed_images, $current_id_product);
                             $this->saveCombinations($combinations);
+                            $this->saveQuestions($questions);
                         } else {
                             $done = false;
                         }
@@ -265,6 +258,28 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             return $settings->id != null ? true : false;
         }
         return false;
+    }
+
+    private function saveQuestions($questions) {
+        $current = Question::getByProductId($this->_product->id, true);
+        $updated = array();
+        foreach ($questions as $key => $question) {
+            if(isset($question['id_question'])) {
+                $q = new Question($question['id_question']);
+                $updated[] = $question['id_question'];
+            } else {
+                $q = new Question();
+            }
+            $q->id_product = $this->_product->id;
+            $q->question = $question['question'];
+            $q->required = (int)$question['required'];
+            $q->save();
+        }
+        $removed = array_diff($current, $updated);
+        foreach ($removed as $key => $value) {
+            $q = new Question($value);
+            $q->delete();
+        }
     }
 
     private function saveCombinations($combinations) {
@@ -422,7 +437,8 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             'province' => Province::getFeatureValueId($id_province),
             'town' => $town->id ? Town::getFeatureValueId($town->id) : 0,
             'images' => array(),
-            'combinations' => array()
+            'combinations' => array(),
+            'questions' => array()
         );
 
         if ($this->_product->id) {
@@ -448,7 +464,8 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
                 'district' => $this->getFeatureValue($features, 'district'),
                 'categories' => $this->_product->getCategories(),
                 'images' => $images,
-                'combinations' => $this->getCombinations()
+                'combinations' => $this->getCombinations(),
+                'questions' => Question::getByProductId($this->_product->id)
             );
             $extras = Product::getExtras($this->_product->id, $this->context->language->id);
             if ($extras) {
@@ -476,6 +493,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
             'category_partial_tpl_path' =>_PS_MODULE_DIR_.'npsmarketplace/views/templates/front/category_tree_partial.tpl',
             'product_fieldset_tpl_path'=> _PS_MODULE_DIR_.'npsmarketplace/views/templates/front/product_fieldset.tpl',
             'variants_tpl_path' => _PS_MODULE_DIR_.'npsmarketplace/views/templates/front/variants.tpl',
+            'questions_tpl_path' => _PS_MODULE_DIR_.'npsmarketplace/views/templates/front/questions.tpl',
             'free_category_id' => Configuration::get('NPS_FREE_CATEGORY_ID'),
             'product' => $tpl_product,
             'edit_product' => array_key_exists('id', $tpl_product),

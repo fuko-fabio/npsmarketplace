@@ -13,6 +13,8 @@ require_once(_PS_MODULE_DIR_.'npsticketdelivery/classes/TicketsGenerator.php');
 require_once _PS_MODULE_DIR_.'npsticketdelivery/classes/HTMLTemplateSellerOrderConfirmation.php';
 require_once _PS_MODULE_DIR_.'npsticketdelivery/classes/HTMLTemplateEventParticipants.php';
 require_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
+require_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Question.php');
+require_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Answer.php');
 
 class NpsTicketDelivery extends Module {
         const INSTALL_SQL_FILE = 'install.sql';
@@ -105,11 +107,14 @@ class NpsTicketDelivery extends Module {
         }
     }
 
-    public function fillTickets($tickets) {
+    public function fillTickets($tickets, $questions = false) {
         foreach ($tickets as $key => $value) {
             $tickets[$key]['code'] = TicketsGenerator::getCode($value);
             $tickets[$key]['seller'] = Db::getInstance()->getValue('SELECT name FROM '._DB_PREFIX_.'seller WHERE id_seller='.$value['id_seller']);
             $tickets[$key]['seller_shop'] = $this->context->link->getModuleLink('npsmarketplace', 'SellerShop', array('id_seller' => $value['id_seller']));
+            if ($questions) {
+                $tickets[$key]['questions'] = Answer::getByTicketId($value['id_ticket'], true);
+            }
         }
         return $tickets;
     }
@@ -121,13 +126,15 @@ class NpsTicketDelivery extends Module {
             $info_seller = array();
             $cart = Cart::getCartByOrderId($order_history->id_order);
             $c_t = CartTicket::getByCartId($cart->id);
-            $persons = json_decode($c_t->persons);
+            $persons = json_decode($c_t->persons, true);
+            $cart_answer = json_decode($c_t->answers, true);
             foreach ($cart->getProducts() as $product) {
                 $id_seller = Seller::getSellerByProduct($product['id_product']);
                 if (!$id_seller) {
                     PrestaShopLogger::addLog('Unable to find owner of product '.$product['name'].'with ID: '.$product['id_product'].' Ticket cannot be generated');
                     continue;
                 }
+                $questions = Question::getByProductId($product['id_product']);
                 $qty = $product['cart_quantity'];
                 $seller = new Seller($id_seller);
                 if (isset($info_seller[$seller->id])) {
@@ -186,10 +193,23 @@ class NpsTicketDelivery extends Module {
                     $t->address = $address;
                     $t->town = $town;
                     $t->district = $district;
-                    $t->person = $persons->$product['id_product']->$x;
+                    $t->person = $persons[$product['id_product']][$x];
                     $t->type = $type;
                     $t->combination_name = $combination_name;
-                    $t->save();
+                    if ($t->save()) {
+                        if (isset($cart_answer[$product['id_product']][$x]) && $questions != null) {
+                            $answ = $cart_answer[$product['id_product']][$x];
+                            foreach ($questions as $key => $value) {
+                                $a = new Answer();
+                                $a->id_question = $value['id_question'];
+                                $a->id_ticket = $t->id;
+                                $a->answer = $answ[$value['id_question']];
+                                $a->save();
+                            }
+                        }
+                    } else {
+                        PrestaShopLogger::addLog('Unable to save ticket for cart ID: '.$cart->id, 3);
+                    }
                 }
             }
             TicketsGenerator::generateAndSend($c_t->id, $this->context);
@@ -292,14 +312,16 @@ class NpsTicketDelivery extends Module {
             }
             $product_var_tpl_list = array();
 
-            $hooks_results = Hook::exec('displaySellerOrderCartRules', array('seller' => $seller, 'order' => $order), null ,true);
             $seller_cart_rules_list = array();
-            foreach ($hooks_results as $seller_cart_rules) {
-                foreach ($seller_cart_rules as $key => $value) {
-                    $seller_cart_rules_list[] = array(
-                        'voucher_name' => $value['name'],
-                        'voucher_reduction' => ($value['value'] != 0.00 ? '-' : '').Tools::displayPrice($value['value'], $this->context->currency, false)
-                    );
+            $hooks_results = Hook::exec('displaySellerOrderCartRules', array('seller' => $seller, 'order' => $order), null ,true);
+            if ($hooks_results && !empty($hooks_results)) {
+                foreach ($hooks_results as $seller_cart_rules) {
+                    foreach ($seller_cart_rules as $key => $value) {
+                        $seller_cart_rules_list[] = array(
+                            'voucher_name' => $value['name'],
+                            'voucher_reduction' => ($value['value'] != 0.00 ? '-' : '').Tools::displayPrice($value['value'], $this->context->currency, false)
+                        );
+                    }
                 }
             }
             $seller_cart_rules_list_txt = '';
@@ -469,12 +491,27 @@ class NpsTicketDelivery extends Module {
 
     public function hookDisplayBeforeVirtualCarrier() {
         $this->context->controller->addJS(_PS_JS_DIR_.'validate.js');
+        $cart_ticket = CartTicket::getByCartId($this->context->cart->id);
         $this->context->smarty->assign(array(
             'send_tickets_info_url' => Configuration::get('NPS_TICKETS_INFO_URL'),
-            
+            'ticket_questions' => $this->getTicketQuestions(),
         ));
-        
+        if ($cart_ticket != null) {
+            $this->context->smarty->assign(array(
+                'ticket_person' => json_decode($cart_ticket->persons, true),
+                'ticket_answer' => json_decode($cart_ticket->answers, true),
+                'ticket_destination' => $cart_ticket->email
+            ));
+        }
         return $this->display(__FILE__, 'views/templates/hook/virtual_carrier.tpl');
+    }
+
+    private function getTicketQuestions() {
+        $resutl = array();
+        foreach($this->context->cart->getProducts() as $key => $value) {
+            $resutl[$value['id_product']] = Question::getByProductId($value['id_product']);
+        }
+        return $resutl;
     }
 
     public function getContent() {
@@ -499,6 +536,7 @@ class NpsTicketDelivery extends Module {
         $ticket->email = $emails;
         $ticket->id_currency = $this->context->currency->id;
         $ticket->persons = json_encode($params['ticket_person']);
+        $ticket->answers = json_encode($params['ticket_answer']);
         $ticket->save();
     }
 

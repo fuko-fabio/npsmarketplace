@@ -11,7 +11,7 @@ $(document).ready(function(){
         populateTowns(this.value);
     });
 
-    $('.add-variant-btn').fancybox({
+    $('.add-variant-btn, .add-question-btn').fancybox({
         hideOnContentClick : false,
         width       : '60%',
         height      : 'auto',
@@ -25,6 +25,7 @@ $(document).ready(function(){
 
     initDatetimePickers();
     populateCombinations();
+    populateQuestions();
     updateCombinationsDropdown();
     initVariantReductions('#ticket_combination_form');
     initVariantReductions('#carnet_combination_form');
@@ -183,7 +184,7 @@ function populateTowns(id_feature_value) {
 }
 
 function addVariant(id_form) {
-    if (validateVariant(id_form)) {
+    if (validateScope(id_form)) {
         var data = {};
         $.each($(id_form + ' .validate').serializeArray(), function(index, item) {
           if (data.hasOwnProperty(item.name)) {
@@ -215,7 +216,7 @@ function addVariant(id_form) {
     }
 }
 
-function closeVariantBox(id_form) {
+function closeFancyBox(id_form) {
     $.fancybox.close();
     clearFancyboxForm(id_form);
 }
@@ -241,7 +242,7 @@ function removeSpecialPrice(cominationIndex, specificPriceIndex) {
     updateCombinationsDropdown();
 }
 
-function validateVariant(id_form) {
+function validateScope(id_form) {
     var valid = true;
     $(id_form + ' .validate').each( function( index ) {
         if ($(this).hasClass('is_required') || $(this).val().length) {
@@ -312,4 +313,57 @@ function startNewEventTour() {
 
 function endNewEventTour() {
     localStorage.setItem("newEventTour", true);
+}
+
+function addQuestion(id_form) {
+    if (validateScope(id_form)) {
+        var data = {};
+        $.each($(id_form + ' .validate').serializeArray(), function(index, item) {
+          if (data.hasOwnProperty(item.name)) {
+            data[item.name] = $.makeArray(data[item.name]);
+            data[item.name].push(item.value);
+          } else {
+            data[item.name] = item.value;
+          }
+        });
+        if ($(id_form + ' [name=required]').is(':checked')) {
+            data['required'] = 1;
+        } else {
+            data['required'] = 0;
+        }
+
+        productQuestions.push(data);
+        clearQuestions();
+        populateQuestions();
+        $.fancybox.close();
+        clearFancyboxForm(id_form);
+        window.dispatchEvent(new Event('resize'));
+    }
+}
+
+function clearQuestions() {
+    $('.questions-container').empty();
+}
+
+function populateQuestions() {
+    if (productQuestions.length > 0) {
+        $('.no-questions').hide();
+        $.each(productQuestions, function(index, question) {
+            question['index'] = index;
+            renderQuestion(question);
+        });
+    } else {
+        $('.no-questions').show();
+    }
+    $("input[type='checkbox']:not(.comparator)").uniform();
+}
+
+function renderQuestion(question) {
+    $('.questions-container').append(tmpl("question-tmpl", question));
+}
+
+function removeQuestion(index) {
+    productQuestions.splice(index, 1);
+    clearQuestions();
+    populateQuestions();
 }

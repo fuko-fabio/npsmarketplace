@@ -44,20 +44,48 @@ $(document).ready(function(){
 	});
 
 	$(document).on('submit', 'form[name=carrier_area]', function(){
-		return acceptCGV();
+		return acceptCGV() && validateInputs();
 	});
 });
 
-function acceptCGV()
-{
-	if ($('#cgv').length && !$('input#cgv:checked').length)
-	{
+function acceptCGV() {
+    if ($('#cgv').length && !$('input#cgv:checked').length) {
         $('.error-terms-of-service').slideDown('slow');
+        $('body').scrollTo('.error-terms-of-service');
         $.fancybox.hideLoading();
-	}
-	else {
+    }
+    else {
         $('.error-terms-of-service').hide('slow');
         return true;
     }
-	return false;
+    return false;
+}
+
+function validateInputs() {
+    var valid = true;
+    $('.order_carrier_content .validate').each( function( index ) {
+        if ($(this).hasClass('is_required') || $(this).val().length) {
+            if ($(this).attr('name') == 'postcode' && typeof(countriesNeedZipCode[$('#id_country option:selected').val()]) != 'undefined')
+                var result = window['validate_'+$(this).attr('data-validate')]($(this).val(), countriesNeedZipCode[$('#id_country option:selected').val()]);
+            else
+                var result = window['validate_'+$(this).attr('data-validate')]($(this).val());
+            if (!result) {
+                valid = false;
+            }
+            if (result) {
+                $(this).parent().removeClass('form-error').addClass('form-ok');
+            } else {
+                $(this).parent().addClass('form-error').removeClass('form-ok');
+                valid = false;
+            }
+        }
+    });
+    if (!valid) {
+        $('.error-form-content').slideDown('slow');
+        $('body').scrollTo('.error-form-content');
+        $.fancybox.hideLoading();
+    } else {
+        $('.error-form-content').hide();
+    }
+    return valid;
 }

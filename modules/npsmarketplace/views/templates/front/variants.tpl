@@ -3,6 +3,112 @@
 *  @copyright 2014 npsoftware
 *}
 
+<script type="text/x-tmpl" id="ticket-tmpl">
+  <div class="item variant-index-{literal}{%=o.index%}{/literal}">
+      <a href="javascript: void(0)" class="icon-btn pull-right" title="{l s='Delete'  mod='npsmarketplace'}" onclick="removeVariant({literal}{%=o.index%}{/literal});"><i class="icon-trash right"></i></a>
+      <span class="name">
+          {literal}{%=o.name%}{/literal}
+          <span class="type">
+              {literal}{% if (o.type == 'ticket') { %}{/literal}
+                ({l s='Ticket'  mod='npsmarketplace'})
+              {literal}{% } %}{/literal}
+              {literal}{% if (o.type == 'carnet') { %}{/literal}
+                ({l s='Carnet'  mod='npsmarketplace'})
+              {literal}{% } %}{/literal}
+              {literal}{% if (o.type == 'ad') { %}{/literal}
+                ({l s='Ad'  mod='npsmarketplace'})
+              {literal}{% } %}{/literal}
+              {literal}{% if (o.type == 'externalad') { %}{/literal}
+                ({l s='External ad'  mod='npsmarketplace'})
+              {literal}{% } %}{/literal}
+          </span>
+      </span>
+      {literal}{% if (o.date) { %}{/literal}
+      <div>
+        {l s='Event date'  mod='npsmarketplace'}
+        <span class="date">{literal}{%=o.date%}{/literal}</span>
+      </div>
+      {literal}{% } %}{/literal}
+      <div>
+        {l s='Expiry date'  mod='npsmarketplace'}
+        <span class="date">{literal}{%=o.expiry_date%}{/literal}</span>
+      </div>
+    
+      {literal}{% if (o.type == 'ticket' || o.type == 'carnet') { %}{/literal}
+      <div class="row">
+          <div class="form-group col-sm-4">
+            <label>{l s='Price' mod='npsmarketplace'}</label>
+            {literal}<input type="text" class="validate form-control" data-validate="isPrice" name="combinations[{%=o.index%}][price]" value="{%=o.price%}" />{/literal}
+          </div>
+          <div class="form-group col-sm-4">
+            <label>{l s='Quantity' mod='npsmarketplace'}</label>
+            {literal}<input type="text" class="validate form-control" data-validate="isQuantity" name="combinations[{%=o.index%}][quantity]" value="{%=o.quantity%}" />{/literal}
+          </div>
+          <div class="form-group col-sm-4">
+            <label>{l s='Default' mod='npsmarketplace'}</label>
+            {literal}
+            <input type="checkbox" class="form-control" name="combinations[{%=o.index%}][default]" value="1" {% if (o.default == 1) { %}checked=""{% } %}/>
+            {/literal}
+          </div>
+      </div>
+      <a class="btn special-prices-collapse" data-toggle="collapse" href="#collapse-{literal}{%=o.index%}{/literal}" aria-expanded="false">{l s='Specific Price' mod='npsmarketplace'} <i class="icon-arrow-down"></i></a>
+      <div class="collapse" id="collapse-{literal}{%=o.index%}{/literal}">
+          <div class="well special-prices-container">
+              {literal}{% if (o.specific_prices && o.specific_prices.length > 0) { %}{/literal}
+                  {literal}{% for (var i=0; i < o.specific_prices.length; i++) { %}{/literal}
+                      <div class="special-item item-index-{literal}{%=i%}{/literal}">
+                          <div class="row">
+                              <div class="form-group col-sm-3">
+                                  <label>{l s='Reduction' mod='npsmarketplace'}</label>
+                                  {literal}
+                                  <input type="text" class="validate form-control" data-validate="isPrice" name="combinations[{%=o.index%}][specific_prices][{%=i%}][reduction]" value="{%=o.specific_prices[i].reduction%}" />
+                                  {/literal}
+                              </div>
+                              <div class="form-group col-sm-3">
+                                  <label>{l s='From' mod='npsmarketplace'}</label>
+                                  {literal}
+                                  <input type="text" class="validate form-control" data-validate="isDateTime" name="combinations[{%=o.index%}][specific_prices][{%=i%}][from]" value="{%=o.specific_prices[i].from%}" readonly=""/>
+                                  {/literal}
+                              </div>
+                              <div class="form-group col-sm-3">
+                                  <label>{l s='To' mod='npsmarketplace'}</label>
+                                  {literal}
+                                  <input type="text" class="validate form-control" data-validate="isDateTime" name="combinations[{%=o.index%}][specific_prices][{%=i%}][to]" value="{%=o.specific_prices[i].to%}" readonly=""/>
+                                  {/literal}
+                              </div>
+                              <div class="col-sm-3">
+                                  <a href="javascript: void(0)" title="{l s='Delete'  mod='npsmarketplace'}" class="icon-btn pull-right" onclick="removeSpecialPrice({literal}{%=o.index%},{%=o.specific_prices[i].index%}{/literal});"><i class="icon-trash right"></i></a>
+                              </div>
+                          </div>
+                      </div>
+                      {literal}
+                      {% if (o.specific_prices[i].id_specific_price) { %}
+                        <input type="hidden" name="combinations[{%=o.index%}][specific_prices][{%=i%}][id_specific_price]" value="{%=o.specific_prices[i].id_specific_price%}" />
+                      {% } %}
+                  {% } %}
+              {% } %}
+              {/literal}
+              <p class="alert alert-info no-specific-prices">
+                  <span class="alert-content">{l s='No specific prices' mod='npsmarketplace'}</span>
+              </p>
+          </div>
+      </div>
+      {literal}{% } %}{/literal}
+    
+      {literal}
+      <input type="hidden" name="combinations[{%=o.index%}][name]" value="{%=o.name%}" />
+      <input type="hidden" name="combinations[{%=o.index%}][type]" value="{%=o.type%}" />
+      {% if (o.type != 'carnet') { %}
+      <input type="hidden" name="combinations[{%=o.index%}][date]" value="{%=o.date%}" />
+      {% } %}
+      <input type="hidden" name="combinations[{%=o.index%}][expiry_date]" value="{%=o.expiry_date%}" />
+      {% if (o.id_product_attribute) { %}
+      <input type="hidden" name="combinations[{%=o.index%}][id_product_attribute]" value="{%=o.id_product_attribute%}" />
+      {% } %}
+      {/literal}
+  </div>
+</script>
+
 <div style="display:none">
   <div id="ticket_combination" class="event-combination">
     <h2 class="page-subheading">{l s='New ticket' mod='npsmarketplace'}</h2>
@@ -67,7 +173,7 @@
     </form>
 
     <p class="submit">
-      <input class="button ccl" type="button" value="{l s='Cancel' mod='npsmarketplace'}" onclick="closeVariantBox('#ticket_combination_form');"/>
+      <input class="button ccl" type="button" value="{l s='Cancel' mod='npsmarketplace'}" onclick="closeFancyBox('#ticket_combination_form');"/>
       <input class="button" onclick="addVariant('#ticket_combination_form');" value="{l s='Add' mod='npsmarketplace'}"/>
     </p>
   </div>
@@ -130,7 +236,7 @@
     </form>
 
     <p class="submit">
-      <input class="button ccl" type="button" value="{l s='Cancel' mod='npsmarketplace'}" onclick="closeVariantBox('#carnet_combination_form');"/>
+      <input class="button ccl" type="button" value="{l s='Cancel' mod='npsmarketplace'}" onclick="closeFancyBox('#carnet_combination_form');"/>
       <input class="button" onclick="addVariant('#carnet_combination_form');" value="{l s='Add' mod='npsmarketplace'}"/>
     </p>
   </div>
@@ -156,7 +262,7 @@
     </form>
 
     <p class="submit">
-      <input class="button ccl" type="button" value="{l s='Cancel' mod='npsmarketplace'}" onclick="closeVariantBox('#ad_combination_form');"/>
+      <input class="button ccl" type="button" value="{l s='Cancel' mod='npsmarketplace'}" onclick="closeFancyBox('#ad_combination_form');"/>
       <input class="button" onclick="addVariant('#ad_combination_form');" value="{l s='Add' mod='npsmarketplace'}"/>
     </p>
   </div>
@@ -182,7 +288,7 @@
     </form>
 
     <p class="submit">
-      <input class="button ccl" type="button" value="{l s='Cancel' mod='npsmarketplace'}" onclick="closeVariantBox('#outer_ad_combination_form');"/>
+      <input class="button ccl" type="button" value="{l s='Cancel' mod='npsmarketplace'}" onclick="closeFancyBox('#outer_ad_combination_form');"/>
       <input class="button" onclick="addVariant('#outer_ad_combination_form');" value="{l s='Add' mod='npsmarketplace'}"/>
     </p>
   </div>

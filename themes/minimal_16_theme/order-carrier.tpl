@@ -37,6 +37,7 @@
 				<div id="opc_delivery_methods-overlay" class="opc-overlay" style="display: none;"></div>
 {/if}
 <p class="alert alert-error error-terms-of-service" style="display: none;"><span class="alert-content">{l s='You must agree to the terms of service before continuing.'}</span></p>
+<p class="alert alert-error error-form-content" style="display: none;"><span class="alert-content">{l s='Form contains error. Plase provide valida data.'}</span></p>
 
 <div class="order_carrier_content box">
 	{if isset($virtual_cart) && $virtual_cart}

@@ -2333,6 +2333,35 @@ table#cart_summary .gift-icon {
   & + div {
     padding-bottom: 15px;
   }
+  
+  .tickets-container {
+    .item {
+      border: $main_border;
+      background-color: #eee;
+      padding: 10px;
+      margin-bottom: 15px;
+
+      .name{
+        display: block;
+        font-size: 18px;
+        color: $dark-text-color;
+        font-weight: bold;
+      }
+      
+      .attributes {
+        font-size: 12px;
+        font-weight: normal;
+      }
+      
+      .questions-container {
+        padding: 10px;
+        margin-bottom: 0;
+        background-color: $base-box-bg;
+        @include box-shadow(none);
+        border: $main_border;
+      }
+    }
+  }
 }
 
 .address_delivery {
@@ -3006,6 +3035,9 @@ div.star.star_hover {
   .row {
     margin-left: 0;
     margin-right: 0;
+  }
+  .radio-inline, .checkbox {
+    padding-left: 15px;
   }
 }
 

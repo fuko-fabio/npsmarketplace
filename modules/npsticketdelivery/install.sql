@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS `PREFIX_cart_ticket` (
   `id_currency` int(10) unsigned NOT NULL,
   `email` varchar(128) NOT NULL,
   `persons` text,
+  `answers` text,
   PRIMARY KEY (`id_cart_ticket`),
   KEY `id_cart` (`id_cart`),
   KEY `id_customer` (`id_customer`),

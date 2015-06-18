@@ -32,7 +32,8 @@ class OrderController extends OrderControllerCore {
         Hook::exec('actionPostProcessCarrier', array(
             'id_cart' =>$this->context->cart->id,
             'ticket_email' => Tools::getValue('ticket_destination'),
-            'ticket_person' => $_POST['ticket_person']
+            'ticket_person' => $_POST['ticket_person'],
+            'ticket_answer' => $_POST['ticket_answer']
         ));
 	}
 

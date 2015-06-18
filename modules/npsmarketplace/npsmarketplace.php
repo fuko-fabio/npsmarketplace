@@ -111,6 +111,8 @@ class NpsMarketplace extends Module {
             || !Configuration::deleteByName('NPS_FEATURE_ENTRIES_ID')
             || !Configuration::deleteByName('NPS_FEATURE_FROM_ID')
             || !Configuration::deleteByName('NPS_FEATURE_TO_ID')
+            || !Configuration::deleteByName('NPS_ATTRIBUTE_NAME_ID')
+            || !Configuration::deleteByName('NPS_ATTRIBUTE_TYPE_ID')
             || !Configuration::deleteByName('NPS_ATTRIBUTE_DATE_ID')
             || !Configuration::deleteByName('NPS_ATTRIBUTE_TIME_ID')
             || !Tools::deleteDirectory(_NPS_SEL_IMG_DIR_))
@@ -514,6 +516,10 @@ class NpsMarketplace extends Module {
 
         if (Tools::isSubmit('submitConfiguration')) {
             Configuration::updateValue('NPS_GLOBAL_COMMISION', Tools::getValue('NPS_GLOBAL_COMMISION'));
+            Configuration::updateValue('NPS_ATTRIBUTE_NAME_ID', Tools::getValue('NPS_ATTRIBUTE_NAME_ID'));
+            Configuration::updateValue('NPS_ATTRIBUTE_TYPE_ID', Tools::getValue('NPS_ATTRIBUTE_TYPE_ID'));
+            Configuration::updateValue('NPS_ATTRIBUTE_DATE_ID', Tools::getValue('NPS_ATTRIBUTE_DATE_ID'));
+            Configuration::updateValue('NPS_ATTRIBUTE_TIME_ID', Tools::getValue('NPS_ATTRIBUTE_TIME_ID'));
             Configuration::updateValue('NPS_MERCHANT_EMAILS', Tools::getValue('NPS_MERCHANT_EMAILS'));
             Configuration::updateValue('NPS_SPECIAL_CATEGORIES', Tools::getValue('NPS_SPECIAL_CATEGORIES'));
             Configuration::updateValue('NPS_INVISIBLE_CATEGORIES', Tools::getValue('NPS_INVISIBLE_CATEGORIES'));
@@ -688,6 +694,30 @@ class NpsMarketplace extends Module {
                             )
                         ),
                     ),
+                    array(
+                        'type' => 'text',
+                        'label' => $this->l('Name attribute ID'),
+                        'name' => 'NPS_ATTRIBUTE_NAME_ID',
+                        'required' => true
+                    ),
+                    array(
+                        'type' => 'text',
+                        'label' => $this->l('Type attribute ID'),
+                        'name' => 'NPS_ATTRIBUTE_TYPE_ID',
+                        'required' => true
+                    ),
+                    array(
+                        'type' => 'text',
+                        'label' => $this->l('Date attribute ID'),
+                        'name' => 'NPS_ATTRIBUTE_DATE_ID',
+                        'required' => true
+                    ),
+                    array(
+                        'type' => 'text',
+                        'label' => $this->l('Time attribute ID'),
+                        'name' => 'NPS_ATTRIBUTE_TIME_ID',
+                        'required' => true
+                    ),
                 ),
                 'submit' => array(
                     'title' => $this->l('Save'),
@@ -766,6 +796,10 @@ class NpsMarketplace extends Module {
     public function getConfigFieldsValues() {
         return array(
             'NPS_GLOBAL_COMMISION' => Tools::getValue('NPS_GLOBAL_COMMISION', Configuration::get('NPS_GLOBAL_COMMISION')),
+            'NPS_ATTRIBUTE_NAME_ID' => Tools::getValue('NPS_ATTRIBUTE_NAME_ID', Configuration::get('NPS_ATTRIBUTE_NAME_ID')),
+            'NPS_ATTRIBUTE_TYPE_ID' => Tools::getValue('NPS_ATTRIBUTE_TYPE_ID', Configuration::get('NPS_ATTRIBUTE_TYPE_ID')),
+            'NPS_ATTRIBUTE_DATE_ID' => Tools::getValue('NPS_ATTRIBUTE_DATE_ID', Configuration::get('NPS_ATTRIBUTE_DATE_ID')),
+            'NPS_ATTRIBUTE_TIME_ID' => Tools::getValue('NPS_ATTRIBUTE_TIME_ID', Configuration::get('NPS_ATTRIBUTE_TIME_ID')),
             'NPS_PRODUCT_GUIDE_URL' => Tools::getValue('NPS_PRODUCT_GUIDE_URL', Configuration::get('NPS_PRODUCT_GUIDE_URL')),
             'NPS_USER_GUIDE_URL' => Tools::getValue('NPS_USER_GUIDE_URL', Configuration::get('NPS_USER_GUIDE_URL')),
             'NPS_SELLER_GUIDE_URL' => Tools::getValue('NPS_SELLER_GUIDE_URL', Configuration::get('NPS_SELLER_GUIDE_URL')),

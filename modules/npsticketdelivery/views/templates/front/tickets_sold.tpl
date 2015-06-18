@@ -39,6 +39,7 @@
                     <th class="item" data-hide="phone,tablet">{l s='District' mod='npsticketdelivery'}</th>
                     <th class="item" data-hide="phone,tablet">{l s='Town' mod='npsticketdelivery'}</th>
                     <th class="item" data-hide="phone,tablet">{l s='Term' mod='npsticketdelivery'}</th>
+                    <th class="item" data-hide="phone,tablet">{l s='Question/Answer' mod='npsticketdelivery'}</th>
                     <th class="item">{l s='Type' mod='npsticketdelivery'}</th>
                     <th class="last_item" data-sort-ignore="true" width="100px" >{l s='Action' mod='npsticketdelivery'}</th>
                 </tr>
@@ -47,8 +48,8 @@
                 {foreach from=$tickets item=ticket}
                 <tr>
                     <td>{$ticket.id_ticket}</td>
-                    <td>{$ticket.name}</td>
-                    <td>{$ticket.combination_name}</td>
+                    <td>{$ticket.name|escape:'html':'UTF-8'}</td>
+                    <td>{$ticket.combination_name|escape:'html':'UTF-8'}</td>
                     <td>{$ticket.code}</td>
                     <td>{displayPrice price=$ticket.price currency=$ticket.id_currency}</td>
                     <td>{if $ticket.gift == 1}
@@ -57,19 +58,26 @@
                         {l s='No' mod='npsticketdelivery'}
                         {/if}
                     </td>
-                    <td>{$ticket.person}</td>
-                    <td>{$ticket.address}</td>
-                    <td>{$ticket.district}</td>
-                    <td>{$ticket.town}</td>
+                    <td>{$ticket.person|escape:'html':'UTF-8'}</td>
+                    <td>{$ticket.address|escape:'html':'UTF-8'}</td>
+                    <td>{$ticket.district|escape:'html':'UTF-8'}</td>
+                    <td>{$ticket.town|escape:'html':'UTF-8'}</td>
                     <td>
-                    {if $ticket.type == 0}
+                    {if $ticket.type == 'ticket'}
                         {date_format(date_create($ticket.date), 'Y-m-d H:i')}
                     {/if}
                     </td>
                     <td>
-                        {if $ticket.type == 0}
+                    {if isset($ticket.questions) && !empty($ticket.questions)}
+                    {foreach from=$ticket.questions item=q}
+                        <strong>{$q.question|escape:'html':'UTF-8'}</strong><br />{$q.answer|escape:'html':'UTF-8'}<br />
+                    {/foreach}
+                    {/if}
+                    </td>
+                    <td>
+                        {if $ticket.type == 'ticket'}
                         {l s='Ticket' mod='npsticketdelivery'}
-                        {else if $ticket.type == 1}
+                        {else if $ticket.type == 'carnet'}
                         {l s='Carnet' mod='npsticketdelivery'}
                         {/if}
                     </td>
@@ -103,6 +111,13 @@
               <label class="required">{l s='Date' mod='npsticketdelivery'}</label>
               <select class="form-control" name="date">
               </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-md-12 checkbox">
+              <label>
+                <input type="checkbox" name="questions" value="1" />
+                {l s='Include customers answers'  mod='npsticketdelivery'} </label>
             </div>
           </div>
           <p class="submit">
