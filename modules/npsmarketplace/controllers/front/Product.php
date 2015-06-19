@@ -177,7 +177,7 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
 
             $free_cat_id = Configuration::get('NPS_FREE_CATEGORY_ID');
             if (isset($free_cat_id) && !empty($free_cat_id)){
-                $is_free = true;
+                $is_free = false;
                 foreach ($combinations as $key => $value) {
                     if (($value['type'] == 'ticket' || $value['type'] == 'carnet') && $value['price'] == 0) {
                         $is_free = true;

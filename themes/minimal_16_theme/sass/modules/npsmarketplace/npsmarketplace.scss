@@ -365,6 +365,7 @@
     .dropdown-toggle {
       background: $primary-color;
       font-weight: bold;
+      text-transform: uppercase;
       &:hover {
         background: $primary-color-light;
       }

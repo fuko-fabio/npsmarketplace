@@ -268,7 +268,8 @@
   .variants-box .dropdown .dropdown-toggle,
   .questions-box .dropdown .dropdown-toggle {
     background: #ffaa00;
-    font-weight: bold; }
+    font-weight: bold;
+    text-transform: uppercase; }
     .variants-box .dropdown .dropdown-toggle:hover,
     .questions-box .dropdown .dropdown-toggle:hover {
       background: #FFC654; }
