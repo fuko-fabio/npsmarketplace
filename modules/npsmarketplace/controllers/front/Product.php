@@ -288,10 +288,14 @@ class NpsMarketplaceProductModuleFrontController extends ModuleFrontController {
         foreach ($combinations as $key => $combination) {
             if (isset($combination['id_product_attribute'])) {
                 $comb = new Combination($combination['id_product_attribute']);
-                $comb->price = $combination['price'];
+                if (isset($combination['price'])) {
+                    $comb->price = $combination['price'];
+                }
                 $comb->default_on = isset($combination['default']) ? $combination['default'] : false;
                 $comb->save();
-                StockAvailable::setQuantity((int)$this->_product->id, (int)$combination['id_product_attribute'], $combination['quantity'], $this->context->shop->id);
+                if (isset($combination['quantity'])) {
+                    StockAvailable::setQuantity((int)$this->_product->id, (int)$combination['id_product_attribute'], $combination['quantity'], $this->context->shop->id);
+                }
                 $updated[] = $combination['id_product_attribute'];
             } else {
                 $dt = new DateTime($combination['expiry_date']);
