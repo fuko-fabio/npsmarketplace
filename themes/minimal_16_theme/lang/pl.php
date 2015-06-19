@@ -299,6 +299,7 @@ $_LANG['order-address_f5bf48aa40cad7891eb709fcf1fde128'] = 'wydarzenie';
 $_LANG['order-address_f6107d8b50c27328335407ef41c41921'] = 'Proszę o fakturę';
 $_LANG['order-carrier_068f80c7519d0528fb08e82137a72131'] = 'Wydarzenia';
 $_LANG['order-carrier_0d9175fe89fb80d815e7d03698b6e83a'] = 'Prezent';
+$_LANG['order-carrier_129198c746a8681a43aad324ab2a49a9'] = 'Formularz zawiera błedne pola. Proszę poprawić błędy aby móc kontynuować zakupy.';
 $_LANG['order-carrier_1f87346a16cf80c372065de3c54c86d9'] = '(z podatkiem)';
 $_LANG['order-carrier_21034ae6d01a83e702839a72ba8a77b0'] = '(bez podatku)';
 $_LANG['order-carrier_2d51d96d770cc2244be31a85e608de19'] = 'Brak dostępnych przewożników';
