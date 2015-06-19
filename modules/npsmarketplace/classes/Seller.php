@@ -173,9 +173,9 @@ class Seller extends ObjectModel {
      *
      * @return array of products objects
      */
-    public function getProducts($start = 0, $limit = 0, $only_active = false, $random = false) {
+    public function getProducts($start = 0, $limit = 0, $only_active = false, $random = false, $externalad = true) {
         $products = array();
-        $products_id = Seller::getSellerProducts($this->id, $start, $limit, $only_active, $random);
+        $products_id = Seller::getSellerProducts($this->id, $start, $limit, $only_active, $random, $externalad);
         if (!empty($products_id))
             foreach ($products_id as $product_id)
                 $products[] = new Product($product_id);
@@ -187,7 +187,7 @@ class Seller extends ObjectModel {
      *
      * @return array of products
      */
-    public static function getSellerProducts($id_seller, $start = 0, $limit = 0, $only_active = false, $random = false) {
+    public static function getSellerProducts($id_seller, $start = 0, $limit = 0, $only_active = false, $random = false, $externalad = true) {
         $ret = array();
         if(!isset($id_seller))
             return $ret;
@@ -211,6 +211,14 @@ class Seller extends ObjectModel {
             $dbquery->orderBy('RAND()');
         else 
             $dbquery->orderBy('UNIX_TIMESTAMP(p.`date_add`) DESC');
+        
+        if(!$externalad) {
+            $dbquery->leftJoin('product_attribute', 'pa', 'p.`id_product` = pa.`id_product`');
+            $dbquery->leftJoin('product_attribute_combination', 'pac', 'pac.`id_product_attribute` = pa.`id_product_attribute`');
+            $dbquery->leftJoin('attribute', 'a', 'a.`id_attribute` = pac.`id_attribute`');
+            $dbquery->leftJoin('attribute_lang', 'al', '(a.`id_attribute` = al.`id_attribute` AND al.`id_lang` = '.(int)Context::getContext()->language->id.')');
+            $dbquery->where('al.`name` = "ticket" OR al.`name` = "carnet" OR al.`name` = "ad"');
+        }
 
         $row = Db::getInstance()->executeS($dbquery);
         if ($row)

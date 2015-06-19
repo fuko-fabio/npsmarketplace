@@ -7029,6 +7029,27 @@ table#cart_summary .gift-icon {
     margin-bottom: 17px; }
   .order_carrier_content + div {
     padding-bottom: 15px; }
+  .order_carrier_content .tickets-container .item {
+    border: 1px solid #d6d4d4;
+    background-color: #eee;
+    padding: 10px;
+    margin-bottom: 15px; }
+    .order_carrier_content .tickets-container .item .name {
+      display: block;
+      font-size: 18px;
+      color: #353535;
+      font-weight: bold; }
+    .order_carrier_content .tickets-container .item .attributes {
+      font-size: 12px;
+      font-weight: normal; }
+    .order_carrier_content .tickets-container .item .questions-container {
+      padding: 10px;
+      margin-bottom: 0;
+      background-color: #fbfbfb;
+      -moz-box-shadow: none;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+      border: 1px solid #d6d4d4; }
 
 .address_delivery .selector {
   width: 100% !important; }
@@ -7521,6 +7542,8 @@ div.star.star_hover:after {
   .fancybox-skin .row {
     margin-left: 0;
     margin-right: 0; }
+  .fancybox-skin .radio-inline, .fancybox-skin .checkbox {
+    padding-left: 15px; }
 
 #fancybox-loading {
   top: 0 !important;

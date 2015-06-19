@@ -534,6 +534,20 @@ class Product extends ProductCore {
             $sql->select('MAX(product_attribute_shop.id_product_attribute) id_product_attribute');
             $sql->leftOuterJoin('product_attribute', 'pa', 'p.`id_product` = pa.`id_product`');
             $sql->join(Shop::addSqlAssociation('product_attribute', 'pa', false, 'product_attribute_shop.default_on = 1'));
+
+            $sql->leftJoin('product_attribute_combination', 'pac', 'pac.`id_product_attribute` = pa.`id_product_attribute`');
+            $sql->leftJoin('attribute', 'a', 'a.`id_attribute` = pac.`id_attribute`');
+            $sql->leftJoin('attribute_group', 'ag', 'ag.`id_attribute_group` = a.`id_attribute_group`');
+            $sql->leftJoin('attribute_lang', 'al', '(a.`id_attribute` = al.`id_attribute` AND al.`id_lang` = '.(int)$id_lang.')');
+            $sql->leftJoin('attribute_group_lang', 'agl', '(ag.`id_attribute_group` = agl.`id_attribute_group` AND agl.`id_lang` = '.(int)$id_lang.')');
+            
+            if ($types != null && !empty($types)) {
+                $q = '';
+                foreach ($types as $type) {
+                    $q = $q.' al.`name` = "'.$type.'" OR';
+                }
+                $sql->where(rtrim($q, 'OR'));
+            }
         }
         $sql->join(Product::sqlStock('p', Combination::isFeatureActive() ? 'product_attribute_shop' : 0));
 
