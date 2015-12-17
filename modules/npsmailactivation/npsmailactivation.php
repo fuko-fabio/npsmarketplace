@@ -163,16 +163,17 @@ class NpsMailActivation extends Module {
                 '{firstname}' => $customer->firstname,
                 '{lastname}' => $customer->lastname,
                 '{email}' => $customer->email,
-                '{passwd}' => Tools::getValue('passwd'),
+                '{passwd}' => mask_string(Tools::getValue('passwd')),
                 '{link}' => $link
             );
+            $full_name = $customer->firstname.' '.$customer->lastname;
 
             Mail::Send($id_lang,
                 'account_activation',
-                $this->l('Welcome!'),
+                sprintf($this->l('Welcome %1$s!'), $full_name),
                 $data,
                 $customer->email,
-                $customer->firstname.' '.$customer->lastname,
+                $full_name,
                 null,
                 null,
                 null,
@@ -183,6 +184,17 @@ class NpsMailActivation extends Module {
                 $bcc);
             Tools::redirect($this->context->link->getModuleLink($this->name, 'info', array('customer' => $customer->id)));
         }
+    }
+
+    function mask_string( $string, $mask_char='*', $percent=50 ) { 
+        $len = strlen( $string ); 
+        $mask_count = floor( $len * $percent /100 ); 
+        $offset = floor( ( $len - $mask_count ) / 2 ); 
+        $masked = substr( $string, 0, $offset ) 
+                .str_repeat( $mask_char, $mask_count ) 
+                .substr( $string, $mask_count+$offset ); 
+
+        return $masked; 
     }
 
     private function isMD5($str) {
