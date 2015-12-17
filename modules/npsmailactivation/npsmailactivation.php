@@ -163,7 +163,7 @@ class NpsMailActivation extends Module {
                 '{firstname}' => $customer->firstname,
                 '{lastname}' => $customer->lastname,
                 '{email}' => $customer->email,
-                '{passwd}' => mask_string(Tools::getValue('passwd')),
+                '{passwd}' => $this->mask_string(Tools::getValue('passwd')),
                 '{link}' => $link
             );
             $full_name = $customer->firstname.' '.$customer->lastname;
@@ -186,7 +186,7 @@ class NpsMailActivation extends Module {
         }
     }
 
-    function mask_string( $string, $mask_char='*', $percent=50 ) { 
+    private function mask_string( $string, $mask_char='*', $percent=50 ) { 
         $len = strlen( $string ); 
         $mask_count = floor( $len * $percent /100 ); 
         $offset = floor( ( $len - $mask_count ) / 2 ); 
