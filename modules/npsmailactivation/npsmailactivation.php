@@ -35,6 +35,80 @@ class NpsMailActivation extends Module {
             Db::getInstance()->Execute('alter table ' . _DB_PREFIX_ . 'customer drop activation_token');
     }
 
+    private function configurationForm() {
+        return array(
+            'form' => array(
+                'legend' => array(
+                    'title' => $this->l('Mail account activation'),
+                ),
+                'input' => array(
+                     array(
+                        'type' => 'text',
+                        'label' => $this->l('Send activation emal copy to'),
+                        'name' => 'NPS_MAILACTIVATION_COPY_EMAIL',
+                        'required' => true
+                    ),
+                ),
+                'submit' => array(
+                    'title' => $this->l('Save'),
+                    'class' => 'btn btn-default pull-right',
+                    'name' => 'submit',
+                )
+            )
+        );
+    }
+
+    public function getContent() {
+        $output = null;
+
+        if (Tools::isSubmit('submit')) {
+            Configuration::updateValue('NPS_MAILACTIVATION_COPY_EMAIL', Tools::getValue('NPS_MAILACTIVATION_COPY_EMAIL'));
+            $output .= $this->displayConfirmation($this->l('Settings updated successfuly'));
+        }
+        return $output.$this->displayForm();
+    }
+
+    public function getConfigFieldsValues() {
+        return array(
+            'NPS_MAILACTIVATION_COPY_EMAIL' => Tools::getValue('NPS_MAILACTIVATION_COPY_EMAIL', Configuration::get('NPS_MAILACTIVATION_COPY_EMAIL')),
+        );
+    }
+
+    private function displayForm() {
+        // Get default language
+        $default_lang = (int)Configuration::get('PS_LANG_DEFAULT');
+
+        // Init Fields form array
+        $fields_form[0] = $this->configurationForm();
+        $helper = new HelperForm();
+         
+        // Module, token and currentIndex
+        $helper->module = $this;
+        $helper->name_controller = $this->name;
+        $helper->token = Tools::getAdminTokenLite('AdminModules');
+        $helper->currentIndex = AdminController::$currentIndex.'&configure='.$this->name;
+
+        // Language
+        $helper->default_form_language = $default_lang;
+        $helper->allow_employee_form_lang = $default_lang;
+
+        // Title and toolbar
+        $helper->title = $this->displayName;
+        $helper->show_toolbar = true;        // false -> remove toolbar
+        $helper->toolbar_scroll = true;      // yes - > Toolbar is always visible on the top of the screen.
+        $helper->submit_action = 'submit';
+        $helper->toolbar_btn = array(
+            'back' => array(
+                'href' => AdminController::$currentIndex.'&token='.Tools::getAdminTokenLite('AdminModules'),
+                'desc' => $this->l('Back to list')
+            )
+        );
+
+        // Load current value
+        $helper->fields_value = $this->getConfigFieldsValues();
+        return $helper->generateForm($fields_form);
+    }
+
     public function hookCreateAccount() {
         global $cookie;
         $customer = new Customer($this->context->customer->id);
@@ -74,6 +148,11 @@ class NpsMailActivation extends Module {
             $token = md5(uniqid(rand(), true));
             $glu = Configuration::get('PS_REWRITING_SETTINGS') ? '?' : '&';
             $link = $this->context->link->getModuleLink($this->name, 'activation').$glu.'token=' . $token;
+            $bcc = Configuration::get('NPS_MAILACTIVATION_COPY_EMAIL');
+            
+            if (empty($bcc)) {
+                $bcc = null;
+            }
 
             Db::getInstance()->update(
                 'customer',
@@ -94,11 +173,14 @@ class NpsMailActivation extends Module {
                 $data,
                 $customer->email,
                 $customer->firstname.' '.$customer->lastname,
-                NULL,
-                NULL,
-                NULL,
-                NULL,
-                'modules/npsmailactivation/mails/');
+                null,
+                null,
+                null,
+                null,
+                'modules/npsmailactivation/mails/',
+                false,
+                null,
+                $bcc);
             Tools::redirect($this->context->link->getModuleLink($this->name, 'info', array('customer' => $customer->id)));
         }
     }
