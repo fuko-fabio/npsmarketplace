@@ -204,7 +204,11 @@ class NpsTicketDelivery extends Module {
                                 $a->id_question = $value['id_question'];
                                 $a->id_ticket = $t->id;
                                 $a->answer = $answ[$value['id_question']];
-                                $a->save();
+								if ($a->validateFields(false, false)) {
+									$a->save();
+								} else {
+									PrestaShopLogger::addLog('Unable to save answer for question ID: '.$value['id_question'].' cart ID: '.$cart->id, 3);
+								}
                             }
                         }
                     } else {

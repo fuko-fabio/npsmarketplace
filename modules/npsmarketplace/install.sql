@@ -93,6 +93,6 @@ CREATE TABLE IF NOT EXISTS `PREFIX_answer` (
   `id_answer` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `id_question` int(10) unsigned NOT NULL,
   `id_ticket` int(10) unsigned NOT NULL,
-  `answer` varchar(1024) NOT NULL,
+  `answer` varchar(1024),
   PRIMARY KEY (`id_answer`)
 ) ENGINE=ENGINE_TYPE DEFAULT CHARSET=utf8;
