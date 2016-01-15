@@ -17,7 +17,7 @@ class Answer extends ObjectModel {
         'primary' => 'id_answer',
         'multilang' => false,
         'fields' => array(
-            'answer' =>      array('type' => self::TYPE_STRING, 'validate' => 'isMessage', 'required' => true, 'size' => 1024),
+            'answer' =>      array('type' => self::TYPE_STRING, 'validate' => 'isString', 'size' => 1024),
             'id_question' => array('type' => self::TYPE_INT, 'validate' => 'isUnsignedId', 'required' => true),
             'id_ticket' =>   array('type' => self::TYPE_INT, 'validate' => 'isUnsignedId', 'required' => true),
         )
