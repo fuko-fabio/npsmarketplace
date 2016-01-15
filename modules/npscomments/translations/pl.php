@@ -16,7 +16,6 @@ $_MODULE['<{npscomments}prestashop>npscomments_186c30cab59f6b64a453778330d4bbf0'
 $_MODULE['<{npscomments}prestashop>npscomments_e0aa021e21dddbd6d8cecec71e9cf564'] = 'OK';
 $_MODULE['<{npscomments}prestashop>npscomments_4b3b9db8c9784468094acde0f8bf7071'] = 'Ocena';
 $_MODULE['<{npscomments}prestashop>npscomments_f35965b2d600c9747c8943e8f2f221fa'] = 'Skomentuj butik, Podziel się opinią o wydarzeniu';
-$_MODULE['<{npscomments}prestashop>npscomments_964cfd7f71281750b9e1cafe7c8c1366'] = 'Brak komentarzy';
 $_MODULE['<{npscomments}prestashop>npscomments_7966126831926ad29c528b239d69f855'] = 'Dodaj komentarz';
 $_MODULE['<{npscomments}prestashop>npscomments_45dacce3e2bc0f7bebde95098b9326a8'] = 'Tytuł komentarza';
 $_MODULE['<{npscomments}prestashop>npscomments_3421ad00975533fbbd5f17d2cb568125'] = 'Komentarz';

@@ -16,10 +16,6 @@ $_MODULE['<{npsprzelewy24}prestashop>npsprzelewy24_8b0b6c8f897b81339a71f5528df05
 $_MODULE['<{npsprzelewy24}prestashop>npsprzelewy24_518f2e843acff34b295c8db76a5ae93f'] = 'Unikalny klucz sklepu';
 $_MODULE['<{npsprzelewy24}prestashop>npsprzelewy24_df06998a80deb7b3d179d30fc53f2c81'] = 'Unikalny klucz otrzymany od Przelewy24';
 $_MODULE['<{npsprzelewy24}prestashop>npsprzelewy24_50acfb85ed36f150a674228a20a92bef'] = 'klucz CRC sklepu';
-$_MODULE['<{npsprzelewy24}prestashop>p24paymentvalidator_c9cdf71dc32b926d56e09ab5e6095087'] = 'Nie można zweryfikować płatności';
-$_MODULE['<{npsprzelewy24}prestashop>p24paymentvalidator_8c6942604679e15e97ce7e0d26fc90e2'] = 'Niepoprawny token weryfikacyjny';
-$_MODULE['<{npsprzelewy24}prestashop>p24paymentvalidator_47b5ba3ab6a4d8603699675cf9942308'] = 'Płatność została już zakończona i zweryfikowana';
-$_MODULE['<{npsprzelewy24}prestashop>p24paymentvalidator_8cc1415be2b283104aaadc47ff122a84'] = 'Nie można zweryfikować płatności. Niepoprawne ID sesji.';
 $_MODULE['<{npsprzelewy24}prestashop>admindispatchhistorycontroller_b718adec73e04ce3ec720dd11a06a308'] = 'ID';
 $_MODULE['<{npsprzelewy24}prestashop>admindispatchhistorycontroller_1e63d1811556fc2dad106dcbd4217a69'] = 'ID płatności';
 $_MODULE['<{npsprzelewy24}prestashop>admindispatchhistorycontroller_7be4322275de650c0109d2e447a36285'] = 'Wartość dla sprzedawców';
@@ -33,7 +29,6 @@ $_MODULE['<{npsprzelewy24}prestashop>admindispatchhistorycontroller_fbc0d2bae9b3
 $_MODULE['<{npsprzelewy24}prestashop>adminsellercompanycontroller_b718adec73e04ce3ec720dd11a06a308'] = 'ID';
 $_MODULE['<{npsprzelewy24}prestashop>adminsellercompanycontroller_3126e180423b2256ea60fb1df8c9a8cf'] = 'ID sprzedawcy';
 $_MODULE['<{npsprzelewy24}prestashop>adminsellercompanycontroller_86d16211b0151426945c6887c93267af'] = 'Nazwa sprzedawcy';
-$_MODULE['<{npsprzelewy24}prestashop>adminsellercompanycontroller_dde2dcf0783536d73e6a03511c6d47e4'] = 'Nazwa firmy sprzedawcy';
 $_MODULE['<{npsprzelewy24}prestashop>adminsellercompanycontroller_d6279e7d038e0da421d570bcfe031f72'] = 'NIP sprzedawcy';
 $_MODULE['<{npsprzelewy24}prestashop>adminsellercompanycontroller_8035b6df2ac8fe186f092ca402d1ef02'] = 'SPID';
 $_MODULE['<{npsprzelewy24}prestashop>adminsellercompanycontroller_d98a13bb67f63faec3d8813a532d4367'] = 'Numer rachunku bankowego';
@@ -56,7 +51,6 @@ $_MODULE['<{npsprzelewy24}prestashop>adminsellercompanycontroller_c9cc8cce247e49
 $_MODULE['<{npsprzelewy24}prestashop>adminsellerinvoicescontroller_b718adec73e04ce3ec720dd11a06a308'] = 'ID';
 $_MODULE['<{npsprzelewy24}prestashop>adminsellerinvoicescontroller_3126e180423b2256ea60fb1df8c9a8cf'] = 'ID sprzedawcy';
 $_MODULE['<{npsprzelewy24}prestashop>adminsellerinvoicescontroller_86d16211b0151426945c6887c93267af'] = 'Nazwa sprzedawcy';
-$_MODULE['<{npsprzelewy24}prestashop>adminsellerinvoicescontroller_dde2dcf0783536d73e6a03511c6d47e4'] = 'Nazwa firmy sprzedawcy';
 $_MODULE['<{npsprzelewy24}prestashop>adminsellerinvoicescontroller_d6279e7d038e0da421d570bcfe031f72'] = 'NIP sprzedawcy';
 $_MODULE['<{npsprzelewy24}prestashop>adminsellerinvoicescontroller_38c707ecdfab44f35c0891e330b98d6e'] = 'Data od';
 $_MODULE['<{npsprzelewy24}prestashop>adminsellerinvoicescontroller_136bdde66060491ec375cfcc63a51a71'] = 'Data do';
@@ -73,7 +67,6 @@ $_MODULE['<{npsprzelewy24}prestashop>paymentconfirmation_49ee145aceecd9a38c7d74b
 $_MODULE['<{npsprzelewy24}prestashop>paymentconfirmation_f155196e046f8168fc5a377e8a85c819'] = 'Płatność została już zakończona. Przejdź do swojego konta i sprawdź historię zamówień.';
 $_MODULE['<{npsprzelewy24}prestashop>paymentconfirmation_aeb7b97d4f698f237c49466025f498af'] = 'Nie można zweryfikować płatności. Proszę o kontakt z obsługą klienta.';
 $_MODULE['<{npsprzelewy24}prestashop>paymentconfirmation_1994c65b552844ccc241928a9a4f7068'] = 'Nie można dokończyć zamówienia. Proszę o kontakt z obsługą klienta.';
-$_MODULE['<{npsprzelewy24}prestashop>paymentconfirmation_7a3b10d463ead79457dbe69b18f7d715'] = 'Nie można zarejestrować transakcji w serwisie Przelewy24.  Proszę o kontakt z obsługą klienta.';
 $_MODULE['<{npsprzelewy24}prestashop>paymentsettings_844728e1dc874629bc7450484fa79b73'] = 'Nazwa firmy jest wymagana';
 $_MODULE['<{npsprzelewy24}prestashop>paymentsettings_f518d6efc432b3756ace71fd696d0b65'] = 'Niepoprawna nazwa firmy';
 $_MODULE['<{npsprzelewy24}prestashop>paymentsettings_829d443d9e911b2d0586c88111cbb7ed'] = 'Miasto jest wymagane';
@@ -154,14 +147,6 @@ $_MODULE['<{npsprzelewy24}prestashop>payment_register_company_d26c078fbaa4300428
 $_MODULE['<{npsprzelewy24}prestashop>payment_register_company_2e16f351fe2e610c9364c4aa7c74dcf8'] = 'Akceptuję';
 $_MODULE['<{npsprzelewy24}prestashop>payment_register_company_cd01fbfbb767c30ef555acaf27f5c71a'] = 'regulamin Przelewy24';
 $_MODULE['<{npsprzelewy24}prestashop>payment_register_company_0ba7583639a274c434bbe6ef797115a4'] = 'Wyślij';
-$_MODULE['<{npsprzelewy24}prestashop>payment_return_fb077ecba55e5552916bde26d8b9e794'] = 'Potwierdzenie zamówienia';
-$_MODULE['<{npsprzelewy24}prestashop>payment_return_3fcd6df41c6b47d713f21ea209574bed'] = 'Proszę skontaktować się z obsługą klienta';
-$_MODULE['<{npsprzelewy24}prestashop>payment_return_0e61d8a1f47f88c9f51f997990d60171'] = 'Transakcja zakończna sukcesem';
-$_MODULE['<{npsprzelewy24}prestashop>payment_return_8a16f9617cddf85af32cb3ab7f2c7e54'] = 'Wartość zamówienia';
-$_MODULE['<{npsprzelewy24}prestashop>payment_return_a378cd7a0839cbd4ec3e45bbdeeb69be'] = 'ID zamówienia';
-$_MODULE['<{npsprzelewy24}prestashop>payment_return_0103106e5b047a944d727f065dd10c9c'] = 'ID transakcji w systemie Pzelewy24';
-$_MODULE['<{npsprzelewy24}prestashop>payment_return_4082ea29b4f196c4f60533500139725a'] = 'Śledź zamówienie';
-$_MODULE['<{npsprzelewy24}prestashop>payment_return_9390390581f54c65d6acfc8da4e17362'] = 'Powrót do zamówień';
 $_MODULE['<{npsprzelewy24}prestashop>payment_c8ed360cbe1ba919f8c40f07a31125d7'] = 'Zapłać z Przelewy24';
 $_MODULE['<{npsprzelewy24}prestashop>seller_generate_report_08512c0c5db8120b6786f387ee84a8a8'] = 'Raport sprzedaży';
 $_MODULE['<{npsprzelewy24}prestashop>seller_generate_report_50d9d560b468ec07f8b4fe721fcae24e'] = 'Data od';
