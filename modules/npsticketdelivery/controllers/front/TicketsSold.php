@@ -24,8 +24,18 @@ class NpsTicketDeliveryTicketsSoldModuleFrontController extends ModuleFrontContr
 
     public function postProcess() {
         if (Tools::isSubmit('action') && Tools::isSubmit('name')) {
-            if (Tools::getValue('action') == 'export') {
-                $this->exportToPdf(Tools::getValue('name'), Tools::getValue('date'), Tools::getIsset('questions'));
+            $action = Tools::getValue('action');
+            $name = Tools::getValue('name');
+            $date = Tools::getValue('date');
+            $filetype = Tools::getValue('filetype');
+            $participants = $this->getParticipantsList($name, $date, Tools::getIsset('questions'));
+
+            if ($action == 'export') {
+                if ($filetype == 'pdf') {
+                    $this->exportToPdf($participants, $name, $date);
+                } elseif ($filetype == 'excel') {
+                    $this->exportToExcel($participants);
+                }
             }
         }
     }
@@ -90,22 +100,30 @@ class NpsTicketDeliveryTicketsSoldModuleFrontController extends ModuleFrontContr
         return $result;
     }
 
-    function exportToPdf($name, $date, $questions) {
-        if ($name) {
-            $dbquery = new DbQuery();
-            $dbquery->select('*')
-                ->from('ticket')
-                ->orderBy('person ASC')
-                ->where('`id_seller`='.$this->seller->id.' AND name=\''.$name.'\' '.($date != '0' ? 'AND date=\''.$date.'\'' : ''));
-
-            $pdf = new PDF(array(array(
-                'participants' => $this->module->fillTickets(Db::getInstance()->executeS($dbquery), $questions),
-                'name' => $name,
-                'date' => $date,
-                'currency' => $this->context->currency
-            )), 'EventParticipants', $this->context->smarty);
-            $pdf->pdf_renderer->setFontSubsetting(false);
-            $pdf->render();
-        }
+    function exportToPdf($participants, $name, $date) {
+        $pdf = new PDF(array(array(
+            'participants' => $participants,
+            'name' => $name,
+            'date' => $date,
+            'currency' => $this->context->currency
+        )), 'EventParticipants', $this->context->smarty);
+        $pdf->pdf_renderer->setFontSubsetting(false);
+        $pdf->render();
     }
+
+    function exportToExcel($participants, $name, $date) {
+        
+    }
+
+    function getParticipantsList($name, $date, $questions) {
+        $dbquery = new DbQuery();
+        $dbquery->select('*')
+            ->from('ticket', 't')
+            ->orderBy('person ASC')
+            ->where('`id_seller`='.$this->seller->id.' AND name=\''.$name.'\' '.($date != '0' ? 'AND date=\''.$date.'\'' : ''))
+            ->leftJoin('cart_ticket', 'ct', 't.id_cart_ticket = ct.id_cart_ticket');
+
+        return $this->module->fillTickets(Db::getInstance()->executeS($dbquery), $questions);
+    }
+
 }

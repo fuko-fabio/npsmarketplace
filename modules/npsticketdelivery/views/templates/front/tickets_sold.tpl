@@ -114,7 +114,14 @@
             </div>
           </div>
           <div class="row">
-            <div class="form-group col-md-12 checkbox">
+            <div class="form-group col-md-6">
+              <label class="required">{l s='File type' mod='npsticketdelivery'}</label>
+              <select class="form-control" name="filetype">
+                  <option value="pdf" selected="selected">{l s='PDF' mod='npsticketdelivery'}</option>
+                  <option value="excel">{l s='Excel' mod='npsticketdelivery'}</option>
+              </select>
+            </div>
+            <div class="form-group col-md-6 checkbox">
               <label>
                 <input type="checkbox" name="questions" value="1" />
                 {l s='Include customers answers'  mod='npsticketdelivery'} </label>
