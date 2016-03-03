@@ -60,8 +60,15 @@ class NpsFacebookLogin extends Module {
     }
 
     public function hookDisplayLoginSource() {
+        $appId = Configuration::get('NPS_FB_APP_ID');
+        $appSecret = Configuration::get('NPS_FB_APP_SECRET');
+        
+        if (empty($appId) || empty($appSecret)) {
+            error_log("Log in with facebook module not configured.", 0);
+            return "";
+        }
         session_start();
-        FacebookSession::setDefaultApplication(Configuration::get('NPS_FB_APP_ID'), Configuration::get('NPS_FB_APP_SECRET'));
+        FacebookSession::setDefaultApplication($appId, appSecret);
         $helper = new FacebookRedirectLoginHelper($this->context->link->getModuleLink('npsfacebooklogin', 'auth'));
         $this->context->smarty->assign(array(
             'nps_fb_controller' => $helper->getLoginUrl(array('scope' => 'public_profile, email'))

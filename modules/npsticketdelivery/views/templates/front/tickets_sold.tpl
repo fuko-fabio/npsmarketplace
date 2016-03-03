@@ -63,7 +63,7 @@
                     <td>{$ticket.district|escape:'html':'UTF-8'}</td>
                     <td>{$ticket.town|escape:'html':'UTF-8'}</td>
                     <td>
-                    {if $ticket.type == 'ticket'}
+                    {if $ticket.type == 0}
                         {date_format(date_create($ticket.date), 'Y-m-d H:i')}
                     {/if}
                     </td>
@@ -75,9 +75,9 @@
                     {/if}
                     </td>
                     <td>
-                        {if $ticket.type == 'ticket'}
+                        {if $ticket.type == 0}
                         {l s='Ticket' mod='npsticketdelivery'}
-                        {else if $ticket.type == 'carnet'}
+                        {else if $ticket.type == 1}
                         {l s='Carnet' mod='npsticketdelivery'}
                         {/if}
                     </td>
@@ -117,8 +117,8 @@
             <div class="form-group col-md-6">
               <label class="required">{l s='File type' mod='npsticketdelivery'}</label>
               <select class="form-control" name="filetype">
-                  <option value="pdf" selected="selected">{l s='PDF' mod='npsticketdelivery'}</option>
-                  <option value="excel">{l s='Excel' mod='npsticketdelivery'}</option>
+                  <option value="excel" selected="selected">{l s='Excel' mod='npsticketdelivery'}</option>
+                  <option value="pdf">{l s='PDF' mod='npsticketdelivery'}</option>
               </select>
             </div>
             <div class="form-group col-md-6 checkbox">

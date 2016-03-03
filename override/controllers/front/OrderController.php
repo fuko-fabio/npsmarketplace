@@ -27,15 +27,15 @@ class OrderController extends OrderControllerCore {
         parent::initContent();
     }
 
-	protected function processCarrier()	{
-		parent::processCarrier();
+    protected function processCarrier()	{
+        parent::processCarrier();
         Hook::exec('actionPostProcessCarrier', array(
             'id_cart' =>$this->context->cart->id,
             'ticket_email' => Tools::getValue('ticket_destination'),
             'ticket_person' => $_POST['ticket_person'],
-            'ticket_answer' => $_POST['ticket_answer']
+            'ticket_answer' => isset($_POST['ticket_answer']) ? $_POST['ticket_answer'] : array()
         ));
-	}
+    }
 
     public function processAddress() {
         if(Tools::getIsset('attach_invoice'))

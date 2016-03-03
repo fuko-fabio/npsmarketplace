@@ -6,6 +6,7 @@
 require_once(_PS_MODULE_DIR_.'npsticketdelivery/classes/CartTicket.php');
 require_once(_PS_MODULE_DIR_.'npsmarketplace/classes/Seller.php');
 require_once _PS_MODULE_DIR_.'npsticketdelivery/classes/HTMLTemplateEventParticipants.php';
+require_once(_PS_TOOL_DIR_.'phpexcel/PHPExcel.php');
 
 class NpsTicketDeliveryTicketsSoldModuleFrontController extends ModuleFrontController {
 
@@ -34,7 +35,7 @@ class NpsTicketDeliveryTicketsSoldModuleFrontController extends ModuleFrontContr
                 if ($filetype == 'pdf') {
                     $this->exportToPdf($participants, $name, $date);
                 } elseif ($filetype == 'excel') {
-                    $this->exportToExcel($participants);
+                    $this->exportToExcel($participants, $name, $date);
                 }
             }
         }
@@ -111,8 +112,91 @@ class NpsTicketDeliveryTicketsSoldModuleFrontController extends ModuleFrontContr
         $pdf->render();
     }
 
+    static $KEY_CELLS = array(
+        'A' => 'person',
+        'B' => 'combination_name',
+        'C' => 'price',
+        'D' => 'code',
+        'E' => 'date',
+        'F' => 'email'
+    );
+
     function exportToExcel($participants, $name, $date) {
+        $fullName = $name." - ";
+        if ($date == 0) {
+            $fullName = $fullName.$this->module->l('All terms', 'TicketsSold');
+        } else {
+            $fullName = $fullName.date_format(date_create($date), 'Y-m-d H:i');
+        }
+
+        #PHPExcel_Shared_Font::setAutoSizeMethod(PHPExcel_Shared_Font::AUTOSIZE_METHOD_EXACT);
+
+        $objPHPExcel = new PHPExcel();
+        $objPHPExcel->getProperties()
+            ->setCreator($this->module->l('Labsintown', 'TicketsSold'))
+            ->setLastModifiedBy($this->module->l('Labsintown', 'TicketsSold'))
+            ->setTitle($fullName)
+            ->setSubject($fullName)
+            ->setDescription($this->module->l('List of event participants.', 'TicketsSold'))
+            ->setKeywords("labsintown participants")
+            ->setCategory("labsintown");
+            
+        $sheet = $objPHPExcel->setActiveSheetIndex(0);
+        foreach(range('A','F') as $columnID) {
+            $sheet->getColumnDimension($columnID)->setAutoSize(true);
+        }
+
+        $headerCells = array(
+            'A' => $this->module->l('Person', 'TicketsSold'),
+            'B' => $this->module->l('Type', 'TicketsSold'),
+            'C' => $this->module->l('Price', 'TicketsSold'),
+            'D' => $this->module->l('Ticket', 'TicketsSold'),
+            'E' => $this->module->l('Date', 'TicketsSold'),
+            'F' => $this->module->l('Email(buyer)', 'TicketsSold')
+        );
+        foreach ($headerCells as $key => $value) {
+            $sheet->setCellValue($key.'1', $value);
+        }
+        $index = 2;
+        foreach ($participants as $participant) {
+            foreach (self::$KEY_CELLS as $key => $value) {
+                if ($value == 'price') {
+                    $v = round($participant[$value], 2);
+                } elseif ($value == 'date') {
+                    if($participant[$value] == '0000-00-00 00:00:00') {
+                        $v = $this->module->l('Carnet', 'TicketsSold');
+                    } else {
+                        $v = date_format(date_create($participant[$value]), 'Y-m-d H:i');
+                    }
+                } else {
+                    $v = $participant[$value];
+                }
+                $sheet->setCellValue($key.$index, $v);
+            }
+            $index++;
+        }
         
+        $sheet->getStyle('A1:F1')->applyFromArray(array(
+            'fill' => array(
+                'type'  => PHPExcel_Style_Fill::FILL_SOLID,
+                'color' => array('argb' => 'FFFFAA00')),
+            'font'  => array(
+                'bold'  => true,
+                'size'  => 12)
+        ));
+        
+        $sheet->getStyle('A2:F1000')->applyFromArray(array(
+            'font'  => array(
+                'bold'  => false,
+                'size'  => 12)
+        ));
+
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="'.$fullName.'.xls"');
+        header('Cache-Control: max-age=0');
+
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+        $objWriter->save('php://output');
     }
 
     function getParticipantsList($name, $date, $questions) {
