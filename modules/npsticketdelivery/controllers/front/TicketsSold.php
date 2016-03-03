@@ -142,7 +142,10 @@ class NpsTicketDeliveryTicketsSoldModuleFrontController extends ModuleFrontContr
             ->setCategory("labsintown");
             
         $sheet = $objPHPExcel->setActiveSheetIndex(0);
-        foreach(range('A','F') as $columnID) {
+        foreach($sheet->getRowDimensions() as $rd) { 
+            $rd->setRowHeight(-1); 
+        }
+        foreach(range('A','G') as $columnID) {
             $sheet->getColumnDimension($columnID)->setAutoSize(true);
         }
 
@@ -173,6 +176,16 @@ class NpsTicketDeliveryTicketsSoldModuleFrontController extends ModuleFrontContr
                 }
                 $sheet->setCellValue($key.$index, $v);
             }
+            if (isset($participant['questions']) && !empty($participant['questions'])) {
+                $celVal = "";
+                foreach ($participant['questions'] as $item) {
+                    if (isset($item['question']) && $item['answer']) {
+                        $celVal = $celVal.$item['question']."  ".$item['answer']."\n";
+                    }
+                }
+                $sheet->setCellValue("G".$index, $celVal);
+                $sheet->getStyle("G".$index)->getAlignment()->setWrapText(true);
+            }
             $index++;
         }
         
@@ -185,7 +198,7 @@ class NpsTicketDeliveryTicketsSoldModuleFrontController extends ModuleFrontContr
                 'size'  => 12)
         ));
         
-        $sheet->getStyle('A2:F1000')->applyFromArray(array(
+        $sheet->getStyle('A2:G1000')->applyFromArray(array(
             'font'  => array(
                 'bold'  => false,
                 'size'  => 12)
