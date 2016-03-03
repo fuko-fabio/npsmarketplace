@@ -88,6 +88,7 @@
 /tools/*
 !/tools/dompdf
 !/tools/facebook_sdk
+!/tools/phpexcel
 
 !/js
 /js/*
