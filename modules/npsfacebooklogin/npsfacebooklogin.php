@@ -68,7 +68,7 @@ class NpsFacebookLogin extends Module {
             return "";
         }
         session_start();
-        FacebookSession::setDefaultApplication($appId, appSecret);
+        FacebookSession::setDefaultApplication($appId, $appSecret);
         $helper = new FacebookRedirectLoginHelper($this->context->link->getModuleLink('npsfacebooklogin', 'auth'));
         $this->context->smarty->assign(array(
             'nps_fb_controller' => $helper->getLoginUrl(array('scope' => 'public_profile, email'))
