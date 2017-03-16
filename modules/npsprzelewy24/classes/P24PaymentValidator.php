@@ -111,6 +111,38 @@ class P24PaymentValodator {
             return array('error' => 1, 'errorMessage' => $module->errorMsg('intErr04'));
         }
     }
+    
+    public function validateManually() {
+	$module = new NpsPrzelewy24();
+        if (isset($this->session_id)) {
+            $session_id_array = explode('|', $this->session_id);
+            $id_cart = $session_id_array[1];
+            
+            $p24_payment = P24Payment::getBySessionId($this->session_id);
+            if ($p24_payment == null) {
+                 $module->reportError(array(
+                    $prefix.'P24PaymentValodator:',
+                    ' Unabe to verify payment. Could not find database payment entry for session ID: '.$this->session_id
+                ));
+                return array('error' => 1, 'errorMessage' => $module->errorMsg('intErr01'));
+            }
+            $ps = new P24PaymentStatement(null, $p24_payment->id);
+            if($ps->id != null) {
+                return array('error' => -1, 'errorMessage' => $module->errorMsg('intErr03'));
+            }
+            $this->persistPaymentStatement($p24_payment->id);
+	    $this->updateOrderState($id_cart);
+	    return array('error' => 0);
+        } else {
+            $module->reportError(array(
+                $prefix.'P24PaymentValodator:',
+                'Unabe to verify payment. Invalid session ID',
+                'Current: '.$this->session_id,
+                'Expected: '.$this->generateSign()
+            ));
+            return array('error' => 1, 'errorMessage' => $module->errorMsg('intErr04'));
+        }
+    }
 
     /** persistPaymentStatement Persists payment status returned from przelewy24
     * 

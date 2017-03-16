@@ -581,7 +581,7 @@ class NpsPrzelewy24 extends PaymentModule {
     }
 
     public function validateP24Response($p24_error_code, $p24_token, $p24_session_id, $p24_amount,
-            $p24_currency, $p24_order_id, $p24_method, $p24_statement, $p24_sign) {
+            $p24_currency, $p24_order_id, $p24_method, $p24_statement, $p24_sign, $manual = false) {
         if (isset($p24_session_id) && !empty($p24_session_id)) {
             $session_id_array = explode('|', $p24_session_id);
             $id_cart = $session_id_array[1];
@@ -596,7 +596,11 @@ class NpsPrzelewy24 extends PaymentModule {
                     $p24_statement,
                     $p24_sign
                 );
-                $result = $validator->validate($p24_token, true);
+                if ($manual) {
+            	    $result = $validator->validateManually();
+                } else {
+            	    $result = $validator->validate($p24_token, true);
+                }
                 if ($result['error'] == 0) {
                     PrestaShopLogger::addLog('Background payment. Verification success. Session ID: '.$p24_session_id.' Dispatching money.');
                     $dispatcher = new P24TransactionDispatcher($id_cart);
